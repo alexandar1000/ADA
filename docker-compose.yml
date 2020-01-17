@@ -12,7 +12,7 @@ services :
     ports :
       - "5432:5432"
     volumes :
-      - pgvol:/data/postgresql
+      - pmavegvol:/data/postgresql
     networks :
       - ada-db-network
     restart: unless-stopped
