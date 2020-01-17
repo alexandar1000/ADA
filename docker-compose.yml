@@ -1,0 +1,42 @@
+version : "3"
+
+services :
+  postgres :
+    container_name: postgres_container
+    image : postgres
+    environment :
+      POSTGRES_USER : "ada-team"
+      POSTGRES_PASSWORD : 1234
+      POSTGRES_DB : "ada"
+      PGDATA: /data/postgres
+    ports :
+      - "5432:5432"
+    volumes :
+      - pgvol:/data/postgresql
+    networks :
+      - ada-db-network
+    restart: unless-stopped
+
+  pgadmin :
+    container_name: pgadmin_container
+    image : dpage/pgadmin4
+    environment :
+      PGADMIN_DEFAULT_EMAIL : "ada-team@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD : "ada-team"
+    volumes:
+      - pgadminvol:/root/.pgadmin
+    ports :
+      - "15050:80"
+    depends_on :
+      - postgres
+    networks :
+      - ada-db-network
+    restart: unless-stopped
+
+networks :
+  ada-db-network :
+    driver : bridge
+
+volumes:
+  pgvol:
+  pgadminvol:
