@@ -1,10 +1,60 @@
 # ADA - Architectural Design Advisor
-The repository of ADA, the Architectural Design Advisor
 
-The Trello board for this project can be found [here](https://trello.com/invite/b/CHtfAIFN/d2ebc24144c32afd61693a4605d8c898/ada).
+### The repository of ADA, the Architectural Design Advisor
 
-The simple Java Android application used for testing can be found [here](https://github.com/alexandar1000/ADA-test-simple-Java-project).
+## General Information
 
-The group report for this project can be found on [overleaf](https://www.overleaf.com/read/fcsmpbsrfndf).
 
-The docker image can be found at [Docker Hub](https://hub.docker.com/repository/docker/alexandar1000/ada).
+The project and sprint backlogs can be found on the project's [Trello board](https://trello.com/invite/b/CHtfAIFN/d2ebc24144c32afd61693a4605d8c898/ada), and the group report on [Overleaf](https://www.overleaf.com/read/fcsmpbsrfndf).
+
+The project uses [a simple Java Android application](https://github.com/alexandar1000/ADA-test-simple-Java-project) for testing.
+
+## Getting Started
+
+### Prerequisites
+
+In order to get the project started you will need to install [docker](https://www.docker.com/) 19+ installed, along with [compose](https://docs.docker.com/compose/install/). 
+
+Furthermore, this project uses [java 11](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html), so please make sure that you have it installed prior to development.
+
+Finally, depending on your environment, you might need to install [maven](https://maven.apache.org/)
+
+### Setting up the project
+
+In order to set up the project and get ready for development, follow these steps:
+1. Pull the Git repository.
+2. Import the project to your IDE using the `pom.xml` file.
+3. Execute the docker-compose.yml file via running the `docker-compose up -d` command. You should be able to see that both the `postgres` and the `pgadmin` containers are running.
+4. Open `pgadmin` by visiting `localhost:15050`. You can log in using the credidentials as stated in the `docker-compose.yml`.
+    - **Email**: `ada-team@gmail.com`
+    -  **Password**: `ada-team`
+ 5. Once `pgadmin` is running connect to a server with the following credentials:
+    - **Name**: `ada-team`
+    -  **Host name/address**: `postgres_container`
+    - **Port**: `5432`
+    - **Username**: ada-team
+    - **Password**: `1234`
+ 
+    and press `Save`.
+6. Run the application with the `./mvnw spring-boot:run` command.
+7. Open `localhost:8080` and enjoy the masterpiece.
+
+### Possible Additional Setup
+
+If you are using IntelliJ, you can similarily connect to PostgreSQL through it. 
+
+Also, using Maven is a lot easier through IntelliJ.
+
+## Deployment
+
+Deployment has not yet been dockerized, but will come soon.
+
+## Helpful Docker Commands
+
+- Starting the database containers: `docker-compose up -d`
+- Stopping the database containers: `docker-compose stop`
+- Removing the database containers: `docker-compose down`
+- Pruning everything docker related: `docker system prune`
+- Pruning the volumes: `docker volume prune`
+
+Furthermore, a useful docker cheat sheet can be found [here](https://afourtech.com/guide-docker-commands-examples/).
