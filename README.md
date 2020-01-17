@@ -49,6 +49,17 @@ Also, using Maven is a lot easier through IntelliJ.
 
 Deployment has not yet been dockerized, but will come soon.
 
+## Development Instructions
+
+1. Writing unit tests is mandatory for all features which are written.
+2. Code review and an approval are mandatory before a merge.
+3. Master branch is to be updated only in the end of a sprint. 
+4. During the sprints all new features are to be developed on branches branching out from development, and are to be mearged back into development.
+5. Please actively use Trello and mark the features which you are working on in order not to have overlaps.
+6. If you believe new tasks should be added to the Trello board, please feel free to add them to the `project backlog`.
+7. Ask for help whenever you are stuck. Also, if you feel that you are progressing a bit slower, please feel free to mention it as soon as possible.
+
+ 
 ## Helpful Docker Commands
 
 - Starting the database containers: `docker-compose up -d`
