@@ -3,7 +3,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /*
-* This is a model class.. All of the data, as in database will go here. Moreover, no functionality is to be added here.
+* This is a model class. All of the data, as in database will go here. Moreover, no functionality is to be added here.
 * IMPORTANT: These classes need to have the default (empty) constructor.
 * */
 
