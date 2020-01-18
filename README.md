@@ -55,10 +55,19 @@ Deployment has not yet been dockerized, but will come soon.
 2. Code review and an approval are mandatory before a merge.
 3. Master branch is to be updated only in the end of a sprint. 
 4. During the sprints all new features are to be developed on branches branching out from development, and are to be mearged back into development.
-5. Please actively use Trello and mark the features which you are working on in order not to have overlaps.
-6. If you believe new tasks should be added to the Trello board, please feel free to add them to the `project backlog`.
-7. Ask for help whenever you are stuck. Also, if you feel that you are progressing a bit slower, please feel free to mention it as soon as possible.
+5. Prefix your branch names with your initials. An example would be: `asj_simpleBranchExample`.
+6. Adhere to the migration instructions found in the following section.
+7. Please actively use Trello and mark the features which you are working on in order not to have overlaps.
+8. If you believe new tasks should be added to the Trello board, please feel free to add them to the `project backlog`.
+9. Ask for help whenever you are stuck. Also, if you feel that you are progressing a bit slower, please feel free to mention it as soon as possible.
 
+## Migration Instructions
+
+All of the migrations should be saved in a `.sql` file and in the `migrations` folder. More precisely, in the `migrations` folder, they should be placed in the folder `done` if they have been integrated in the deployed database, or under `pending` if they are yet to be integrated in the deployed database.
+
+This should be done in order to populate the database once the server is deployed, and to be able to restore the database in the event of an failure.
+
+The naming convention for the migrations should be as follows. The names should state the year, month, day, initials, number, and the name of the migration. Please take care of the leading zeros, and also keep in mind that the migration numbers are related only to your migrations, and are reset with different dates. An example for this would be: `2020_01_18_asj_000_sample_migration_name`.
  
 ## Helpful Docker Commands
 
