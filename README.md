@@ -27,11 +27,12 @@ In order to set up the project and get ready for development, follow these steps
 3. Execute the docker-compose.yml file via running the `docker-compose up -d` command. You should be able to see that both the `postgres` and the `pgadmin` containers are running.
 4. Open `pgadmin` by visiting `localhost:15050`. You can log in using the credidentials as stated in the `docker-compose.yml`.
     - **Email**: `ada-team@gmail.com`
-    -  **Password**: `ada-team`
+    - **Password**: `ada-team`
  5. Once `pgadmin` is running connect to a server with the following credentials:
     - **Name**: `ada-team`
-    -  **Host name/address**: `postgres_container`
+    - **Host name/address**: `postgres_container`
     - **Port**: `5432`
+    - **Maintenance Database**: `ada`
     - **Username**: ada-team
     - **Password**: `1234`
  
