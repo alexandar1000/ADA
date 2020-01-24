@@ -64,11 +64,14 @@ Deployment has not yet been dockerized, but will come soon.
 
 ## Migration Instructions
 
-All of the migrations should be saved in a `.sql` file and in the `migrations` folder. More precisely, in the `migrations` folder, they should be placed in the folder `done` if they have been integrated in the deployed database, or under `pending` if they are yet to be integrated in the deployed database.
+All of the migrations should be saved in a `.sql` file and in the `src/main/resources/db/migration` folder.
+Flyway is used for handling the migrations. The explanation and the documentation can be found on their [website](https://flywaydb.org/documentation/migrations).
 
-This should be done in order to populate the database once the server is deployed, and to be able to restore the database in the event of an failure.
+Keep in mind that the naming convention for the migrations should be as state on the aforementioned website, 
+ with the emphasis of naming the versions by stating the year, month, day, hours and minutes in a dotted and zero-padded format.
+ Again, please take care of the leading zeros. An example for this would be: `V2020.01.24.19.45__Example_migration.sql`.
 
-The naming convention for the migrations should be as follows. The names should state the year, month, day, initials, number, and the name of the migration. Please take care of the leading zeros, and also keep in mind that the migration numbers are related only to your migrations, and are reset with different dates. An example for this would be: `2020_01_18_asj_000_sample_migration_name`.
+This must be done in order to populate the database once the server is deployed, and to be able to restore the database schema in an event of a failure.
  
 ## Helpful Docker Commands
 
