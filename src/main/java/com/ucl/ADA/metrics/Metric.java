@@ -2,18 +2,19 @@ package com.ucl.ADA.metrics;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "METRIC")
 public class Metric {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "TYPE")
     private MetricTypes type;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "VALUE")
     private Float value;
 
     public Metric() {

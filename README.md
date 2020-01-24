@@ -42,7 +42,8 @@ In order to set up the project and get ready for development, follow these steps
 
 ### Possible Additional Setup
 
-If you are using IntelliJ, you can similarily connect to PostgreSQL through it. 
+If you are using IntelliJ, you can similarily connect to PostgreSQL through it. The only difference is that you would have to now
+use `15432` as a port number. This is due to the connection now being from the host to the container and not from within.
 
 Also, using Maven is a lot easier through IntelliJ.
 
@@ -72,6 +73,8 @@ Keep in mind that the naming convention for the migrations should be as state on
  Again, please take care of the leading zeros. An example for this would be: `V2020.01.24.19.45__Example_migration.sql`.
 
 This must be done in order to populate the database once the server is deployed, and to be able to restore the database schema in an event of a failure.
+
+The unexecuted migrations will be ran automatically upon the start of spring project.
  
 ## Helpful Docker Commands
 
