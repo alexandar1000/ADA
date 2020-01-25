@@ -21,6 +21,7 @@ public class Metric {
     }
 
     public Metric(MetricTypes type, Float value) {
+        this.id = null;
         this.type = type;
         this.value = value;
     }
