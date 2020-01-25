@@ -1,6 +1,5 @@
 package com.ucl.ADA.repo;
 
-import com.ucl.ADA.example.ElementRepository;
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -13,9 +12,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
-public class RepoServices {
+public class RepoService {
     protected Repo repository;
 //    @Autowired private RepoRepository repoRepository;
+
+    @Autowired
+    public RepoService() {
+        repository = new Repo();
+    }
 
     public void downloadRepository(String url, String branch) throws GitAPIException {
         if (branch.equals("")) {
@@ -51,7 +55,6 @@ public class RepoServices {
         String[] data = url.split("/|//");
         String owner = data[3];
         String name = data[4].substring(0, data[4].indexOf("."));
-        repository = new Repo();
         repository.setUrl(url);
         repository.setName(name);
         repository.setOwner(owner);

@@ -3,21 +3,20 @@ package com.ucl.ADA.repo;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
 @SpringBootTest
-public class RepoServicesTests {
+public class RepoServiceTests {
     private Repo repository;
     private String url = "https://github.com/sebastianvburlacu/Fitbit-JSON-Data-Generator.git";
 
     @BeforeEach
     void initUseCase() throws GitAPIException {
-        RepoServices repoServices = new RepoServices();
+        RepoService repoService = new RepoService();
         String branch = "";
-        repoServices.downloadRepository(url, branch);
-        repository = repoServices.repository;
+        repoService.downloadRepository(url, branch);
+        repository = repoService.repository;
     }
 
     @Test
