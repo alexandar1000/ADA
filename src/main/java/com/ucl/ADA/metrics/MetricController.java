@@ -38,7 +38,7 @@ public class MetricController {
      */
     @GetMapping(value = "/{id}", produces = {"application/json"})
     @ResponseBody
-    public Metric retrieveAllMetrics(@PathVariable Long id) {
+    public Metric retrieveMetricById(@PathVariable Long id) {
         return metricServices.getMetric(id);
     }
 }
