@@ -14,7 +14,7 @@ import java.util.Date;
 
 @Service
 public class RepoServices {
-    private Repo repository;
+    protected Repo repository;
 //    @Autowired private RepoRepository repoRepository;
 
     public void downloadRepository(String url, String branch) throws GitAPIException {
