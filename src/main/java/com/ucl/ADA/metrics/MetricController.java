@@ -12,7 +12,6 @@ public class MetricController {
     @Autowired
     MetricServices metricServices;
 
-
     /**
      * Saves a new random metric into the database
      * */

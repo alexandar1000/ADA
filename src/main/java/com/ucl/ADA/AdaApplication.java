@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-public class 	AdaApplication {
+public class AdaApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AdaApplication.class, args);
