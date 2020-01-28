@@ -15,7 +15,10 @@ public class RepoServiceTests {
     void initUseCase() throws GitAPIException {
         RepoService repoService = new RepoService();
         String branch = "";
-        repoService.downloadRepository(url, branch);
+        Repo repo = new Repo();
+        repo.setUrl(url);
+        repo.setBranch(branch);
+        repoService.downloadRepository(repo);
         repository = repoService.repository;
     }
 
