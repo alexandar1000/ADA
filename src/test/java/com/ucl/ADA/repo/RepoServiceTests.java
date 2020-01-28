@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 @SpringBootTest
-public class RepositoryServiceTests {
+public class RepoServiceTests {
     private Repo repository;
     private String url = "https://github.com/sebastianvburlacu/Fitbit-JSON-Data-Generator.git";
 
