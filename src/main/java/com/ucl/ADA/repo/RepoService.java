@@ -20,7 +20,10 @@ public class RepoService {
         repository = new Repo();
     }
 
-    public void downloadRepository(String url, String branch) throws GitAPIException {
+    public void downloadRepository(Repo repo) throws GitAPIException {
+        String branch = repo.getBranch();
+        String url = repo.getUrl();
+
         if (branch.equals("")) {
             branch = "master";
         }
