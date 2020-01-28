@@ -28,12 +28,22 @@ In order to set up the project and get ready for development, follow these steps
 4. Open `pgadmin` by visiting `localhost:15050`. You can log in using the credidentials as stated in the `docker-compose.yml`.
     - **Email**: `ada-team@gmail.com`
     - **Password**: `ada-team`
- 5. Once `pgadmin` is running connect to a server with the following credentials:
-    - **Name**: `ada-team`
-    - **Host name/address**: `postgres_container`
+ 5. Once `pgadmin` is running connect to the dev and test database servers, with the following credentials:
+    
+    Dev Database:
+    - **Name**: name the dev server as you wish.
+    - **Host name/address**: `db_dev`
     - **Port**: `5432`
     - **Maintenance Database**: `ada`
-    - **Username**: ada-team
+    - **Username**: `ada-team`
+    - **Password**: `1234`
+    
+    Test Database:
+    - **Name**: name the test server as you wish.
+    - **Host name/address**: `db_test`
+    - **Port**: `5432`
+    - **Maintenance Database**: `ada`
+    - **Username**: `ada-team`
     - **Password**: `1234`
  
     and press `Save`.
@@ -43,7 +53,7 @@ In order to set up the project and get ready for development, follow these steps
 ### Possible Additional Setup
 
 If you are using IntelliJ, you can similarily connect to PostgreSQL through it. The only difference is that you would have to now
-use `15432` as a port number. This is due to the connection now being from the host to the container and not from within.
+use the ports `15432` and `25432` respectively. This is due to the connection now being from the host to the container and not from within the docker network.
 
 Also, using Maven is a lot easier through IntelliJ.
 
