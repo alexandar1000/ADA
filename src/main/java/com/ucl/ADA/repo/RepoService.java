@@ -14,14 +14,16 @@ import java.util.Date;
 @Service
 public class RepoService {
     protected Repo repository;
-//    @Autowired private RepoRepository repoRepository;
 
     @Autowired
     public RepoService() {
         repository = new Repo();
     }
 
-    public void downloadRepository(String url, String branch) throws GitAPIException {
+    public void downloadRepository(Repo repo) throws GitAPIException {
+        String branch = repo.getBranch();
+        String url = repo.getUrl();
+
         if (branch.equals("")) {
             branch = "master";
         }
@@ -62,6 +64,5 @@ public class RepoService {
     }
 
     private void saveRepository() {
-//        repoRepository.save(repository);
     }
 }

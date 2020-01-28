@@ -12,14 +12,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import {MatInputModule} from '@angular/material/input';
 import { SidenavComponent } from './sidenav/sidenav.component';
-import { GitdownloaderComponent } from './gitdownloader/gitdownloader.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { RepoFormComponent } from './repo-form/repo-form.component';
+import { RepoService } from './repo.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     SidenavComponent,
-    GitdownloaderComponent,
+    RepoFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,9 +35,10 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     MatListModule,
     MatInputModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [RepoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

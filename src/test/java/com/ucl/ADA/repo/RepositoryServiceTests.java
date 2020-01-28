@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 @SpringBootTest
-public class RepoServiceTests {
+public class RepositoryServiceTests {
     private Repo repository;
     private String url = "https://github.com/sebastianvburlacu/Fitbit-JSON-Data-Generator.git";
 
@@ -15,7 +15,10 @@ public class RepoServiceTests {
     void initUseCase() throws GitAPIException {
         RepoService repoService = new RepoService();
         String branch = "";
-        repoService.downloadRepository(url, branch);
+        Repo repo = new Repo();
+        repo.setUrl(url);
+        repo.setBranch(branch);
+        repoService.downloadRepository(repo);
         repository = repoService.repository;
     }
 

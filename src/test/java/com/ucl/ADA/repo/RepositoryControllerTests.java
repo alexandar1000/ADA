@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class RepoControllerTests {
+public class RepositoryControllerTests {
 
     @Autowired
     private MockMvc mvc;
@@ -22,7 +22,7 @@ public class RepoControllerTests {
     @Test
     public void getDownloadResponse() throws Exception {
         String url = "https://github.com/sebastianvburlacu/Fitbit-JSON-Data-Generator.git";
-        mvc.perform(MockMvcRequestBuilders.get("/analyse").param("url", url).accept(MediaType.TEXT_PLAIN))
+        mvc.perform(MockMvcRequestBuilders.get("/download").param("url", url).accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
                 .andExpect(content().string(equalTo("success")));
     }

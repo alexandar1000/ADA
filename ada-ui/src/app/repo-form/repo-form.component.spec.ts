@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GitdownloaderComponent } from './gitdownloader.component';
+import { RepoFormComponent } from './repo-form.component';
 
-describe('GitdownloaderComponent', () => {
-  let component: GitdownloaderComponent;
-  let fixture: ComponentFixture<GitdownloaderComponent>;
+describe('RepoFormComponent', () => {
+  let component: RepoFormComponent;
+  let fixture: ComponentFixture<RepoFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GitdownloaderComponent ]
+      declarations: [ RepoFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GitdownloaderComponent);
+    fixture = TestBed.createComponent(RepoFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
