@@ -1,24 +1,19 @@
 package com.ucl.ADA.repo;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class RepoController {
 
-    @GetMapping("/analyse")
-    public String analyse(@RequestParam(value = "url") String url,
-                          @RequestParam(value = "branch", defaultValue = "master") String branch) {
-
+    @PostMapping("/download")
+    public void download(@RequestBody Repo repo) {
         RepoService repoService = new RepoService();
         try {
-            repoService.downloadRepository(url, branch);
-            return "success";
+              repoService.downloadRepository(repo);
         } catch (GitAPIException e) {
             e.printStackTrace();
-            return "fail";
         }
     }
 }
