@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Service
 public class RepoService {
-    protected Repo repository;
+    public Repo repository;
 
     @Autowired
     public RepoService() {
