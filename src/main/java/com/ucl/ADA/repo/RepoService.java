@@ -14,7 +14,6 @@ import java.util.Date;
 @Service
 public class RepoService {
     protected Repo repository;
-//    @Autowired private RepoRepository repoRepository;
 
     @Autowired
     public RepoService() {
@@ -62,6 +61,5 @@ public class RepoService {
     }
 
     private void saveRepository() {
-//        repoRepository.save(repository);
     }
 }
