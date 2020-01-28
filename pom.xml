@@ -5,6 +5,7 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>parser</module>
+		<module>metric-calculator</module>
 	</modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
