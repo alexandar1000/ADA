@@ -1,4 +1,4 @@
-package com.ucl.ADA.metrics;
+package com.ucl.ADA.unit.metrics;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,13 +13,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class MetricControllerTest {
+class MetricServicesTest {
 
     @InjectMocks
-    private MetricController metricController;
+    private MetricServices metricServices;
 
     @Mock
-    private MetricServices metricService;
+    private MetricRepository metricRepository;
 
     @BeforeEach
     void init() {
@@ -27,38 +27,10 @@ public class MetricControllerTest {
     }
 
     /**
-     * Test that the controller gets the element with the user id.
+     * Test the retrieval of all of the metrics.
      */
     @Test
-    void testGetUserById() {
-        Metric m = new Metric(MetricTypes.SIMPLE_METRIC, 8.07F);
-        m.setId(1L);
-        when(metricService.getMetric(1L)).thenReturn(m);
-        Metric metric = metricController.retrieveMetricById(1L);
-
-        verify(metricService).getMetric(1L);
-
-        assertThat(metric.getId()).isEqualTo(1L);
-        assertThat(metric.getType()).isEqualTo(MetricTypes.SIMPLE_METRIC);
-        assertThat(metric.getValue()).isEqualTo(8.07F);
-
-    }
-
-    /**
-     * Test that the element is not found and null is returned.
-     */
-    @Test
-    void testGetUserByIdNotFound() {
-        Metric metric = metricController.retrieveMetricById(1L);
-        verify(metricService).getMetric(1L);
-        assertThat(metric).isNull();
-    }
-
-    /**
-     * Test that the retrieval of the elements works when they exist inside an object.
-     */
-    @Test
-    void testRetrieveAllMetrics() {
+    void getAllMetrics() {
         Metric m1 = new Metric(MetricTypes.SIMPLE_METRIC, 1.0123F);
         Metric m2 = new Metric(MetricTypes.MEDIUM_METRIC, 2.4567F);
         Metric m3 = new Metric(MetricTypes.COMPLEX_METRIC, 3.8910F);
@@ -72,11 +44,11 @@ public class MetricControllerTest {
         metricArrayList.add(m2);
         metricArrayList.add(m3);
 
-        when(metricService.getAllMetrics()).thenReturn(metricArrayList);
+        when(metricRepository.findAll()).thenReturn(metricArrayList);
 
-        List<Metric> retrievedMetrics = metricController.retrieveAllMetrics();
+        List<Metric> retrievedMetrics = metricServices.getAllMetrics();
 
-        verify(metricService).getAllMetrics();
+        verify(metricRepository).findAll();
 
         assertThat(retrievedMetrics).hasSize(3);
 
@@ -94,18 +66,49 @@ public class MetricControllerTest {
     }
 
     /**
-     * Test that the retrieval of elements works if the source is empty.
+     * Test the retrieval of all of the present metrics when the source is empty.
      */
     @Test
-    void testRetrieveAllMetricsFromEmptySource() {
+    void getAllMetricsFromEmptySource() {
         List<Metric> metricArrayList = new ArrayList<>();
-        when(metricService.getAllMetrics()).thenReturn(metricArrayList);
+        when(metricRepository.findAll()).thenReturn(metricArrayList);
 
-        List<Metric> retrievedMetrics = metricController.retrieveAllMetrics();
+        List<Metric> retrievedMetrics = metricServices.getAllMetrics();
 
-        verify(metricService).getAllMetrics();
+        verify(metricRepository).findAll();
 
         assertThat(retrievedMetrics).isNotNull();
         assertThat(retrievedMetrics).hasSize(0);
+    }
+
+    /**
+     * Test the retrieval of a specific metric (with a specific ID).
+     */
+    @Test
+    void getMetric() {
+        Metric m = new Metric(MetricTypes.SIMPLE_METRIC, 8.07F);
+        m.setId(1L);
+        when(metricRepository.findById(1L)).thenReturn(java.util.Optional.of(m));
+        Metric metric = metricServices.getMetric(1L);
+
+        verify(metricRepository).findById(1L);
+
+        assertThat(metric.getId()).isEqualTo(1L);
+        assertThat(metric.getType()).isEqualTo(MetricTypes.SIMPLE_METRIC);
+        assertThat(metric.getValue()).isEqualTo(8.07F);
+
+    }
+
+    /**
+     * Test the retrieval of a non-existing specific metric (with a specific ID).
+     */
+    @Test
+    void getMetricNotFound() {
+        when(metricRepository.findById(1L)).thenReturn(java.util.Optional.empty());
+        Metric metric = metricServices.getMetric(1L);
+
+        verify(metricRepository).findById(1L);
+
+        assertThat(metric).isNull();
     }
 }

@@ -1,4 +1,4 @@
-package com.ucl.ADA.metrics;
+package com.ucl.ADA.unit.metrics;
 
 import javax.persistence.*;
 

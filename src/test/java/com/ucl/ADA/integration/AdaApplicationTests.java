@@ -1,6 +1,7 @@
-package com.ucl.ADA;
+package com.ucl.ADA.integration;
 
-import com.ucl.ADA.metrics.MetricController;
+import com.ucl.ADA.AdaApplication;
+import com.ucl.ADA.unit.metrics.MetricController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,5 +26,4 @@ class AdaApplicationTests {
 		String result = adaApplication.home();
 		assertEquals(result, "Welcome to this wonderfully amazing webpage. Still a bit shy tho..");
 	}
-
 }

@@ -59,7 +59,33 @@
 			<artifactId>mockito-core</artifactId>
 			<version>3.2.4</version>
 		</dependency>
-    </dependencies>
+<!--		<dependency>-->
+<!--			<groupId>io.rest-assured</groupId>-->
+<!--			<artifactId>rest-assured</artifactId>-->
+<!--			<version>4.2.0</version>-->
+<!--			<scope>test</scope>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>json-path</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>xml-path</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
