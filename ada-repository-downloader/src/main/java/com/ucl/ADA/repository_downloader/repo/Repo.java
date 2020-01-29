@@ -1,10 +1,27 @@
 package com.ucl.ADA.repository_downloader.repo;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "REPOSITORY")
 public class Repo {
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Long id;
+
+    @Column(name = "URL")
     private String url;
+
+    @Column(name = "NAME")
     private String name;
+
+    @Column(name = "OWNER")
     private String owner;
+
+    @Column(name = "BRANCH")
     private String branch;
+
     public String getUrl() {
         return url;
     }
