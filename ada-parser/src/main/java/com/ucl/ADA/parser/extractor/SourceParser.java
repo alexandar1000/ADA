@@ -1,4 +1,5 @@
-package extractor;
+package com.ucl.ADA.parser.extractor;
+
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
@@ -11,8 +12,8 @@ import com.github.javaparser.symbolsolver.model.resolution.TypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
-import model.SourceFile;
-import model.SourceMethod;
+import com.ucl.ADA.parser.model.SourceFile;
+import com.ucl.ADA.parser.model.SourceMethod;
 
 import java.io.File;
 import java.io.FileNotFoundException;

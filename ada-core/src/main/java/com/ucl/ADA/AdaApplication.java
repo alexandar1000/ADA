@@ -2,11 +2,19 @@ package com.ucl.ADA;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
+@EnableJpaRepositories(basePackages = "com.ucl.ADA.*")
+@ComponentScan(basePackages = { "com.ucl.ADA.*" })
+@EntityScan(basePackages = "com.ucl.ADA.*")
+//@ComponentScan(basePackages = {"com.ucl.ADA.metric_calculator", "com.ucl.ADA.parser", "com.ucl.ADA.repository_downloader"})
+//@EntityScan(basePackages = {"com.ucl.ADA.metric_calculator", "com.ucl.ADA.parser", "com.ucl.ADA.repository_downloader"})
 public class AdaApplication {
 
 	public static void main(String[] args) {

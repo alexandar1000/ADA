@@ -1,6 +1,6 @@
 package com.ucl.ADA;
 
-import com.ucl.metricCalculator.metrics.MetricController;
+import com.ucl.ADA.metric_calculator.metrics.MetricController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,11 +1,10 @@
-package com.ucl.repostitoryDownloader.repo;
+package com.ucl.ADA.repository_downloader.repo;
 
 public class Repo {
     private String url;
     private String name;
     private String owner;
     private String branch;
-
     public String getUrl() {
         return url;
     }

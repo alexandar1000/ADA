@@ -1,4 +1,4 @@
-package com.ucl.metricCalculator.metrics;
+package com.ucl.ADA.metric_calculator.metrics;
 
 public enum MetricTypes {
     SIMPLE_METRIC,

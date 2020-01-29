@@ -1,8 +1,8 @@
-package extractor;
+package com.ucl.ADA.parser.extractor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.SourceFile;
+import com.ucl.ADA.parser.model.SourceFile;
 
 import java.io.FileNotFoundException;
 import java.util.Set;

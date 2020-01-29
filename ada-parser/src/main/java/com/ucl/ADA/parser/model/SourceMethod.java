@@ -1,4 +1,4 @@
-package model;
+package com.ucl.ADA.parser.model;
 
 import java.util.List;
 import java.util.Map;

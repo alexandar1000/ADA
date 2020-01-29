@@ -1,4 +1,4 @@
-package com.ucl.metricCalculator.metrics;
+package com.ucl.ADA.metric_calculator.metrics;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

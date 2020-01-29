@@ -1,4 +1,4 @@
-package com.ucl.repostitoryDownloader.repo;
+package com.ucl.ADA.repository_downloader.repo;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
