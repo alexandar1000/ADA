@@ -1,7 +1,7 @@
-package com.ucl.ADA.unit.repoTests;
+package com.ucl.repositoryDownloader.unitTests;
 
-import com.ucl.ADA.repo.Repo;
-import com.ucl.ADA.repo.RepoService;
+import com.ucl.repostitoryDownloader.repo.Repo;
+import com.ucl.repostitoryDownloader.repo.RepoService;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

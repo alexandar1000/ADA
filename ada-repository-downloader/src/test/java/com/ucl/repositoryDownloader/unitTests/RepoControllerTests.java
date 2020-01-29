@@ -1,9 +1,9 @@
-package com.ucl.ADA.unit.repoTests;
+package com.ucl.repositoryDownloader.unitTests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.ucl.ADA.repo.Repo;
+import com.ucl.repostitoryDownloader.repo.Repo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,11 +13,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc

@@ -9,9 +9,15 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>parser</artifactId>
+    <artifactId>ada-parser</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>com.ucl</groupId>
+            <artifactId>ada-repository-downloader</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>com.github.javaparser</groupId>
             <artifactId>javaparser-symbol-solver-core</artifactId>

@@ -1,7 +1,6 @@
-package com.ucl.ADA.integration;
+package com.ucl.ADA;
 
-import com.ucl.ADA.AdaApplication;
-import com.ucl.ADA.metricsCalculator.MetricController;
+import com.ucl.metricCalculator.metrics.MetricController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(args = "--spring.profiles.active=test")
+@SpringBootTest
 class AdaApplicationTests {
 
 	@Autowired

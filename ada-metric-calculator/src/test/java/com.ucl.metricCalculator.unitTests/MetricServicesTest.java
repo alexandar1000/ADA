@@ -1,9 +1,9 @@
-package com.ucl.ADA.unit.metricsTests;
+package com.ucl.metricCalculator.unitTests;
 
-import com.ucl.ADA.metrics.Metric;
-import com.ucl.ADA.metrics.MetricRepository;
-import com.ucl.ADA.metrics.MetricServices;
-import com.ucl.ADA.metrics.MetricTypes;
+import com.ucl.metricCalculator.metrics.Metric;
+import com.ucl.metricCalculator.metrics.MetricRepository;
+import com.ucl.metricCalculator.metrics.MetricServices;
+import com.ucl.metricCalculator.metrics.MetricTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
