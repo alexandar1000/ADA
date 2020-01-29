@@ -4,9 +4,11 @@ import com.ucl.ADA.metric_calculator.metrics.Metric;
 import com.ucl.ADA.metric_calculator.metrics.MetricController;
 import com.ucl.ADA.metric_calculator.metrics.MetricServices;
 import com.ucl.ADA.metric_calculator.metrics.MetricTypes;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,11 @@ public class MetricControllerTest {
     @Mock
     private MetricServices metricService;
 
+
+    @BeforeEach
+    public void initMocks() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     /**
      * Test that the controller gets the element with the user id.

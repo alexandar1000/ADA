@@ -18,7 +18,7 @@
 	<groupId>com.ucl</groupId>
 	<artifactId>ADA</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>com.ucl.metricCalculator</name>
+	<name>ADA</name>
 	<description>Architectural Design Advisor</description>
 
 	<properties>
