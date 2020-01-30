@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableJpaRepositories(basePackages = "com.ucl.ADA.*")
 @ComponentScan(basePackages = { "com.ucl.ADA.*" })
 @EntityScan(basePackages = "com.ucl.ADA.*")
-//@ComponentScan(basePackages = {"com.ucl.ADA.metric_calculator", "com.ucl.ADA.parser", "com.ucl.ADA.repository_downloader"})
-//@EntityScan(basePackages = {"com.ucl.ADA.metric_calculator", "com.ucl.ADA.parser", "com.ucl.ADA.repository_downloader"})
 public class AdaApplication {
 
 	public static void main(String[] args) {
