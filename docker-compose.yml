@@ -1,19 +1,35 @@
 version : "3"
 
 services :
-  postgres :
-    container_name: postgres_container
-    image : postgres
-    environment :
-      POSTGRES_USER : "ada-team"
-      POSTGRES_PASSWORD : 1234
-      POSTGRES_DB : "ada"
+  db_dev:
+    container_name: postgres_dev_container
+    image: postgres
+    environment:
+      POSTGRES_USER: "ada-team"
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: "ada"
       PGDATA: /data/postgres
-    ports :
-      - "5432:5432"
-    volumes :
-      - pgvol:/data/postgresql
-    networks :
+    ports:
+      - "15432:5432"
+    volumes:
+      - pgvol_dev:/data/postgresql
+    networks:
+      - ada-db-network
+    restart: unless-stopped
+
+  db_test:
+    container_name: postgres_test_container
+    image: postgres
+    environment:
+      POSTGRES_USER: "ada-team"
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: "ada"
+      PGDATA: /data/postgres
+    ports:
+      - "25432:5432"
+    volumes:
+      - pgvol_test:/data/postgresql
+    networks:
       - ada-db-network
     restart: unless-stopped
 
@@ -27,8 +43,6 @@ services :
       - pgadminvol:/root/.pgadmin
     ports :
       - "15050:80"
-    depends_on :
-      - postgres
     networks :
       - ada-db-network
     restart: unless-stopped
@@ -38,5 +52,6 @@ networks :
     driver : bridge
 
 volumes:
-  pgvol:
+  pgvol_dev:
+  pgvol_test:
   pgadminvol:
