@@ -1,4 +1,4 @@
-package com.ucl.ADA.repository_analyser;
+package com.ucl.ADA.core.repository_analyser;
 
 import com.ucl.ADA.metric_calculator.metrics.MetricServices;
 import com.ucl.ADA.parser.ParserServices;

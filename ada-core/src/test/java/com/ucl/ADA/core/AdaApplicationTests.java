@@ -1,5 +1,6 @@
-package com.ucl.ADA;
+package com.ucl.ADA.core;
 
+import com.ucl.ADA.core.AdaApplication;
 import com.ucl.ADA.metric_calculator.metrics.MetricController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
