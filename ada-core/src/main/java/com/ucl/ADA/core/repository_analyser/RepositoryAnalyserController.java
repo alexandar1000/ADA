@@ -27,6 +27,12 @@ public class RepositoryAnalyserController {
     @Autowired
     MetricServices metricServices;
 
+    /**
+     * A top level endpoint which will analyse the entire repository branch which is provided, at the current time
+     * point. Currently awaiting other modules to be developed.
+     * @return Currently only a string, but in the future something which links to the resulting data.
+     * @throws FileNotFoundException In the case of a failed repository download, an exception will be thrown.
+     */
     @GetMapping(produces = {"application/json"})
     @ResponseBody
     public String analyseRepository() throws FileNotFoundException {

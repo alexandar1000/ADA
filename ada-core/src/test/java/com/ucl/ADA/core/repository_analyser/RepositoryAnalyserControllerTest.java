@@ -1,7 +1,5 @@
 package com.ucl.ADA.core.repository_analyser;
 
-import com.ucl.ADA.core.repository_analyser.RepositoryAnalyserController;
-import com.ucl.ADA.core.repository_analyser.RepositoryAnalyserServices;
 import com.ucl.ADA.metric_calculator.metrics.MetricServices;
 import com.ucl.ADA.parser.ParserServices;
 import com.ucl.ADA.repository_downloader.repo.RepoService;
@@ -37,6 +35,11 @@ class RepositoryAnalyserControllerTest {
         MockitoAnnotations.initMocks(this);
     }
 
+    /**
+     * Test which is currently only a placeholder, but will be updated accordingly when the proper functionality is
+     * added.
+     * @throws FileNotFoundException In the case of a failed repository download, an exception will be thrown.
+     */
     @Test
     void analyseRepository() throws FileNotFoundException {
         assertThat(repositoryAnalyserController.analyseRepository()).isEqualTo("It works! :)");
