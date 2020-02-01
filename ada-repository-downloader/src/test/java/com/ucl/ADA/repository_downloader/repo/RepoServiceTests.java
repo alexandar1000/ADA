@@ -1,6 +1,5 @@
-package com.ucl.repositoryDownloader.unitTests;
+package com.ucl.ADA.repository_downloader.repo;
 
-import com.ucl.ADA.repository_downloader.repo.Repo;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
