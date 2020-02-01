@@ -1,26 +1,28 @@
-package com.ucl.ADA.repository_downloader.repo;
+package com.ucl.ADA.repository_downloader.helpers;
 
-import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity
-@Table(name = "REPOSITORY")
-public class Repo {
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Long id;
 
-    @Column(name = "URL")
+/**
+ * A helper class, created and initialized by the RepoDownloaderService and used to populate the database.
+ */
+public class RepoHelper {
+
     private String url;
-
-    @Column(name = "NAME")
     private String name;
-
-    @Column(name = "OWNER")
     private String owner;
-
-    @Column(name = "BRANCH")
     private String branch;
+    private List<String> fileNames = new ArrayList<>();
+
+
+    public List<String> getFileNames() {
+        return fileNames;
+    }
+
+    public void setFileNames(List<String> fileNames) {
+        this.fileNames = fileNames;
+    }
 
     public String getUrl() {
         return url;
@@ -58,4 +60,5 @@ public class Repo {
     public String toString() {
         return "Repository -> url: " + url + "name: " + name + "owner: " + owner + "branch: " + branch;
     }
+
 }
