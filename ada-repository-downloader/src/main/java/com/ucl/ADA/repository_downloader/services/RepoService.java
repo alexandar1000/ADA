@@ -5,7 +5,7 @@ import com.ucl.ADA.repository_downloader.entities.Branch;
 import com.ucl.ADA.repository_downloader.entities.GitRepository;
 import com.ucl.ADA.repository_downloader.entities.Snapshot;
 import com.ucl.ADA.repository_downloader.entities.User;
-import com.ucl.ADA.repository_downloader.helpers.RepoHelper;
+import com.ucl.ADA.repository_downloader.helpers.RepoDbPopulator;
 import com.ucl.ADA.repository_downloader.repositories.BranchRepository;
 import com.ucl.ADA.repository_downloader.repositories.RepoEntityRepository;
 import com.ucl.ADA.repository_downloader.repositories.SnapshotRepository;
@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Service class for storing the repo metadata in the database.
+ * Service class for downloading and storing the Git repository metadata in the DB (owner, repoName, branch, timestamp, .java files etc..)
+ * @see RepoDbPopulator
+ * @see RepoDownloader
  *
  */
 @Service
@@ -33,28 +35,23 @@ public class RepoService {
     @Autowired private SnapshotRepository snapshotRepository;
 
     /**
-     * Add an entry in the database, following the hierarchical database model of User -*> GitRepo -*> Branch -*> Snapshot
-
-     */
-    public void addEntry(RepoHelper repoInfoUI) {
+     * Download Git repository and populate database, following the hierarchical database model of User -*> GitRepo -*> Branch -*> Snapshot
+     * @param repoInfoUI - instance of RepoDbPopulator which initially holds the git URL and branch name
+     *
+     * */
+    public void addEntry(RepoDbPopulator repoInfoUI) throws GitAPIException {
 
         LocalDateTime timestamp = LocalDateTime.now();
 
-        RepoHelper repoHelper = null;
-        try {
-            repoHelper = RepoDownloader.downloadRepository(repoInfoUI);
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-        }
+        RepoDbPopulator repoDbPopulator = RepoDownloader.downloadRepository(repoInfoUI);
 
-        assert repoHelper != null;
-        User user = initUser(repoHelper);
+        User user = initUser(repoDbPopulator);
 
-        GitRepository repo = initRepo(user, repoHelper);
+        GitRepository repo = initRepo(user, repoDbPopulator);
 
-        Branch branchEntity = initBranch(repo, repoHelper);
+        Branch branchEntity = initBranch(repo, repoDbPopulator);
 
-        List<String> fileNames = repoHelper.getFileNames();
+        List<String> fileNames = repoDbPopulator.getFileNames();
 
         userRepository.save(user);
         repoEntityRepository.save(repo);
@@ -66,6 +63,13 @@ public class RepoService {
         }
     }
 
+    /**
+     * Create and initialize a new Snapshot entity.
+     * @param timestamp
+     * @param branchEntity
+     * @param file
+     * @return
+     */
     private Snapshot initSnapshot(LocalDateTime timestamp, Branch branchEntity, String file) {
         Snapshot snapshot = new Snapshot();
         Snapshot.ID snapshotID = new Snapshot.ID();
@@ -78,7 +82,14 @@ public class RepoService {
         return snapshot;
     }
 
-    private Branch initBranch(GitRepository repo, RepoHelper downloadedRepo) {
+    /**
+     * Initialize a Branch entity by searching for existing branch within a repository, and returning it if found.
+     * Otherwise, create, initialize and return a new Branch entity.
+     * @param repo
+     * @param downloadedRepo
+     * @return an existing (or new) Branch entity.
+     */
+    private Branch initBranch(GitRepository repo, RepoDbPopulator downloadedRepo) {
         Set<Branch> branches = repo.getBranches();
         String branchName = downloadedRepo.getBranch();
 
@@ -100,7 +111,14 @@ public class RepoService {
         return branchEntity;
     }
 
-    private GitRepository initRepo(User user, RepoHelper downloadedRepo) {
+    /**
+     * Initialize a GitRepository entity by searching for existing repo associated with a given user, and returning it if found.
+     * Otherwise, create, initialize and return a new GitRepository entity.
+     * @param user
+     * @param downloadedRepo
+     * @return an existing (or new) GitRepository
+     */
+    private GitRepository initRepo(User user, RepoDbPopulator downloadedRepo) {
 
         Set<GitRepository> repos = user.getRepos();
         String repoName = downloadedRepo.getName();
@@ -115,7 +133,13 @@ public class RepoService {
         return repo;
     }
 
-    private User initUser(RepoHelper repo) {
+    /**
+     * Initialize a User entity by searching for existing User in the database, and returning it if found.
+     * Otherwise, create, initialize and return a new User entity.
+     * @param repo
+     * @return an existing (or new) User
+     */
+    private User initUser(RepoDbPopulator repo) {
 
         List<User> users = (List<User>) userRepository.findAll();
         String testUserName = repo.getOwner();

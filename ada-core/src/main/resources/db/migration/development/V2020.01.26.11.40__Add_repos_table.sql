@@ -1,13 +1,13 @@
 CREATE TABLE public.repositories
 (
-    repoid bigint NOT NULL,
+    repo_id bigint NOT NULL,
     repo_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
-    fk_userid bigint NOT NULL,
-    CONSTRAINT repositories_pkey PRIMARY KEY (repoid),
-    CONSTRAINT fkbcntee4fw6mc8rqxlaxwvnu1 FOREIGN KEY (fk_userid)
-        REFERENCES public.users (userid) MATCH SIMPLE
+    fk_user_id bigint NOT NULL,
+    CONSTRAINT repositories_pkey PRIMARY KEY (repo_id),
+    CONSTRAINT repositories_fkey FOREIGN KEY (fk_user_id)
+        REFERENCES public.users (user_id) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+        ON DELETE CASCADE 
 )
 
 TABLESPACE pg_default;

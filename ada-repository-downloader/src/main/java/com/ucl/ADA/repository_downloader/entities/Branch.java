@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "Branches")
+@Table(name = "BRANCHES")
 public class Branch {
 
     @EmbeddedId
@@ -37,11 +37,11 @@ public class Branch {
     @Embeddable
     public static class ID implements Serializable {
 
-        @Column(name = "BranchName")
+        @Column(name = "branch_name")
         private String branchName;
 
         @ManyToOne
-        @JoinColumn(name = "FK_RepoID")
+        @JoinColumn(name = "fk_repo_id")
         private GitRepository repository;
 
         public ID(){}

@@ -7,7 +7,8 @@ import java.util.List;
 /**
  * A helper class, created and initialized by the RepoDownloaderService and used to populate the database.
  */
-public class RepoHelper {
+
+public class RepoDbPopulator {
 
     private String url;
     private String name;

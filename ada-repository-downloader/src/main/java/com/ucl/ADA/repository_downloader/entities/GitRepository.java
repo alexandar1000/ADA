@@ -5,25 +5,30 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "Repositories")
+@Table(name = "REPOSITORIES")
 public class GitRepository {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "RepoID", nullable = false)
+    @Column(name = "repo_id", nullable = false)
     private Long repoID;
 
-    @Column(name = "RepoName", nullable = false)
+    @Column(name = "repo_name", nullable = false)
     private String repoName;
 
     @OneToMany(mappedBy = "ID.repository",targetEntity = Branch.class, cascade = CascadeType.ALL, orphanRemoval = true)
     Set<Branch> branches = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "FK_UserID", nullable = false)
+    @JoinColumn(name = "fk_user_id", nullable = false)
     private User user;
 
     public GitRepository(){}
+
+    public GitRepository(String repoName, User user) {
+        this.repoName = repoName;
+        this.user = user;
+    }
 
     public Long getRepoID() {
         return repoID;
