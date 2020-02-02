@@ -13,5 +13,5 @@ public class ParsedDataOfClassPlaceholder {
 
 //    For environmental coupling:
     private Integer importedModules = 0; // number of modules called (fan-out)
-    private Integer moduleInvokations = 0; // number of modules calling the module under consideration (fan-in)
+    private Integer moduleInvocations = 0; // number of modules calling the module under consideration (fan-in)
 }
