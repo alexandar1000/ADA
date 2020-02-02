@@ -20,16 +20,20 @@ public class UserService {
         return (List<User>) userRepository.findAll();
     }
 
+    public User getUser(Long id){
+        return userRepository.findById(id).orElse(null);
+    }
+
+    public void addUser(User user){
+        userRepository.save(user);
+    }
+
     public void deleteAllUsers(){
         userRepository.deleteAll();
     }
 
     public void deleteUser(Long id){
-        List<User> list = listUsers();
-        for(User u : list) {
-            if(u.getUserID().equals(id)) userRepository.delete(u);
-            return;
-        }
+        userRepository.deleteById(id);
     }
 
 }
