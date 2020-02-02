@@ -24,10 +24,10 @@ public class UserService {
         userRepository.deleteAll();
     }
 
-    public void deleteUser(String name){
+    public void deleteUser(Long id){
         List<User> list = listUsers();
         for(User u : list) {
-            if(u.getUserName().equals(name)) userRepository.delete(u);
+            if(u.getUserID().equals(id)) userRepository.delete(u);
             return;
         }
     }

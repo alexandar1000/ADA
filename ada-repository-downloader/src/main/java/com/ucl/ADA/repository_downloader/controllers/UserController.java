@@ -12,21 +12,20 @@ import java.util.List;
 /**
  * Controller for listing and deleting users/owners of Git repos in the database.
  */
-@Controller
+
+@RestController
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired private UserService userService;
 
-    @DeleteMapping("/deleteAllUsers")
-    @ResponseBody
+    @DeleteMapping
     public void deleteAll(){ userService.deleteAllUsers();}
 
-    @DeleteMapping("/deleteUser")
-    @ResponseBody
-    public void deleteUser(@RequestParam(name = "name") String userName){ userService.deleteUser(userName);}
+    @DeleteMapping(value = "/{id}")
+    public void deleteUser(@PathVariable Long id){ userService.deleteUser(id);}
 
-    @GetMapping("/allUsers")
-    @ResponseBody
+    @GetMapping
     public List<User> listAllUsers() {
         return userService.listUsers();
     }

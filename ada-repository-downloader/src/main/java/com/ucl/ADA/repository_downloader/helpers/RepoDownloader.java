@@ -19,13 +19,13 @@ import java.util.stream.Stream;
 
 public class RepoDownloader {
 
-    public static RepoHelper downloadRepository(RepoHelper repoInfoUI) throws GitAPIException {
+    public static RepoDbPopulator downloadRepository(RepoDbPopulator repoInfoUI) throws GitAPIException {
 
         if (repoInfoUI.getBranch().equals("")) {
             repoInfoUI.setBranch("master");
         }
 
-        RepoHelper repo = setup(repoInfoUI);
+        RepoDbPopulator repo = setup(repoInfoUI);
 
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
         String clone_path = System.getProperty("user.dir") + "/temp/"
@@ -54,7 +54,7 @@ public class RepoDownloader {
         return repo;
     }
 
-    private static RepoHelper setup(RepoHelper repo) {
+    private static RepoDbPopulator setup(RepoDbPopulator repo) {
         String[] data = repo.getUrl().split("/|//");
         String owner = data[3];
         String name = data[4].substring(0, data[4].indexOf("."));

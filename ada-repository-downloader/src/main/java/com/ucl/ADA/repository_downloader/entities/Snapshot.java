@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Snapshot")
+@Table(name = "SNAPSHOT")
 public class Snapshot {
 
     @EmbeddedId
@@ -26,15 +26,15 @@ public class Snapshot {
     public static class ID implements Serializable {
         @ManyToOne
         @JoinColumns({
-                @JoinColumn(name = "FK_branchname", referencedColumnName = "BranchName"),
-                @JoinColumn(name = "FK_b_repoid", referencedColumnName = "FK_RepoID")
+                @JoinColumn(name = "fk_branch_name", referencedColumnName = "branch_name"),
+                @JoinColumn(name = "fk_b_repo_id", referencedColumnName = "fk_repo_id")
         })
         private Branch branch;
 
-        @Column(name = "Timestamp")
+        @Column(name = "timestamp")
         private LocalDateTime timestamp;
 
-        @Column(name = "fileName")
+        @Column(name = "file_name")
         private String fileName;
 
         public ID(){}
