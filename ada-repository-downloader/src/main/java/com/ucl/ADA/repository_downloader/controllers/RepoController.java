@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
-@RequestMapping("/repo-metadata")
-@CrossOrigin(origins = "http://localhost:4200")
+
+
 public class RepoController {
 
     @Autowired private RepoService repoService;
@@ -22,7 +22,8 @@ public class RepoController {
      * Download a repository and populate the database with its metadata (owner, repoName, branch, timestamp, fileNames etc...)
      */
 
-    @PostMapping
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/addEntry")
     public void addEntry(@RequestBody RepoDbPopulator repo) throws GitAPIException {
         repoService.addEntry(repo);
     }
