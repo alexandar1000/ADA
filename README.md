@@ -1,6 +1,6 @@
-# ADA - Architectural Design Advisor
+# com.ucl.metricCalculator - Architectural Design Advisor
 
-### The repository of ADA, the Architectural Design Advisor
+### The repository of com.ucl.metricCalculator, the Architectural Design Advisor
 
 ## General Information
 
@@ -28,12 +28,22 @@ In order to set up the project and get ready for development, follow these steps
 4. Open `pgadmin` by visiting `localhost:15050`. You can log in using the credidentials as stated in the `docker-compose.yml`.
     - **Email**: `ada-team@gmail.com`
     - **Password**: `ada-team`
- 5. Once `pgadmin` is running connect to a server with the following credentials:
-    - **Name**: `ada-team`
-    - **Host name/address**: `postgres_container`
+ 5. Once `pgadmin` is running connect to the dev and test database servers, with the following credentials:
+    
+    Dev Database:
+    - **Name**: name the dev server as you wish.
+    - **Host name/address**: `db_dev`
     - **Port**: `5432`
     - **Maintenance Database**: `ada`
-    - **Username**: ada-team
+    - **Username**: `ada-team`
+    - **Password**: `1234`
+    
+    Test Database:
+    - **Name**: name the test server as you wish.
+    - **Host name/address**: `db_test`
+    - **Port**: `5432`
+    - **Maintenance Database**: `ada`
+    - **Username**: `ada-team`
     - **Password**: `1234`
  
     and press `Save`.
@@ -42,7 +52,8 @@ In order to set up the project and get ready for development, follow these steps
 
 ### Possible Additional Setup
 
-If you are using IntelliJ, you can similarily connect to PostgreSQL through it. 
+If you are using IntelliJ, you can similarily connect to PostgreSQL through it. The only difference is that you would have to now
+use the ports `15432` and `25432` respectively. This is due to the connection now being from the host to the container and not from within the docker network.
 
 Also, using Maven is a lot easier through IntelliJ.
 
@@ -64,11 +75,16 @@ Deployment has not yet been dockerized, but will come soon.
 
 ## Migration Instructions
 
-All of the migrations should be saved in a `.sql` file and in the `migrations` folder. More precisely, in the `migrations` folder, they should be placed in the folder `done` if they have been integrated in the deployed database, or under `pending` if they are yet to be integrated in the deployed database.
+All of the migrations should be saved in a `.sql` file and in the `src/main/resources/db/migration` folder.
+Flyway is used for handling the migrations. The explanation and the documentation can be found on their [website](https://flywaydb.org/documentation/migrations).
 
-This should be done in order to populate the database once the server is deployed, and to be able to restore the database in the event of an failure.
+Keep in mind that the naming convention for the migrations should be as state on the aforementioned website, 
+ with the emphasis of naming the versions by stating the year, month, day, hours and minutes in a dotted and zero-padded format.
+ Again, please take care of the leading zeros. An example for this would be: `V2020.01.24.19.45__Example_migration.sql`.
 
-The naming convention for the migrations should be as follows. The names should state the year, month, day, initials, number, and the name of the migration. Please take care of the leading zeros, and also keep in mind that the migration numbers are related only to your migrations, and are reset with different dates. An example for this would be: `2020_01_18_asj_000_sample_migration_name`.
+This must be done in order to populate the database once the server is deployed, and to be able to restore the database schema in an event of a failure.
+
+The unexecuted migrations will be ran automatically upon the start of spring project.
  
 ## Helpful Docker Commands
 
