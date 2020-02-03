@@ -3,23 +3,30 @@ package com.ucl.ADA.parser.extractor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ucl.ADA.parser.model.SourceFile;
+import com.ucl.ADA.parser.util.SourceFileCollector;
 
-import java.io.FileNotFoundException;
+import java.io.File;
+import java.util.List;
 import java.util.Set;
 
 public class SimpleParser {
 
-    public String getParsedSourceInJSON(String src_dir, String file_path) throws FileNotFoundException {
+    static final String src_dir = "/home/mrhmisu/UCL-MS/Test-Project/src/";
 
-        SourceParser sourceParser = new SourceParser(src_dir, file_path);
-        Set<SourceFile> sourceSet = sourceParser.parseSource();
-        ObjectMapper objMapper = new ObjectMapper();
-        String jsonStr = "[]";
-        try {
-            jsonStr = objMapper.writeValueAsString(sourceSet);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return jsonStr;
+    public static void main(String[] args) {
+
+        SourceParser sourceParser = new SourceParser(src_dir);
+        List<String> filePaths = new SourceFileCollector().getJavaFilesFromSourceDirectory(new File(src_dir));
+        filePaths.forEach(f -> {
+            Set<SourceFile> sourceSet = sourceParser.parseSource(f);
+            ObjectMapper objMapper = new ObjectMapper();
+            String jsonStr = "[]";
+            try {
+                jsonStr = objMapper.writeValueAsString(sourceSet);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            System.out.println(jsonStr);
+        });
     }
 }

@@ -6,17 +6,20 @@ import java.util.Set;
 public class SourceFile {
 
     private String className;
+    private String packageName;
     private String parentClassName;
     private Set<String> implementedInterfaces;
-    private Map<String, String> staticVariables;
+    private Map<String, String> staticFields;
+    private Map<String,String> publicFields;
     private Set<SourceMethod> methods;
 
 
-    public SourceFile(String className, String parentClassName, Set<String> implementedInterface, Map<String, String> staticVariables, Set<SourceMethod> methods) {
+    public SourceFile(String className, String parentClassName, Set<String> implementedInterface, Map<String, String> staticFields, Map<String,String> publicFields, Set<SourceMethod> methods) {
         this.className = className;
         this.parentClassName = parentClassName;
         this.implementedInterfaces = implementedInterface;
-        this.staticVariables = staticVariables;
+        this.staticFields = staticFields;
+        this.publicFields = publicFields;
         this.methods = methods;
     }
 
@@ -44,12 +47,20 @@ public class SourceFile {
         this.implementedInterfaces = implementedInterfaces;
     }
 
-    public Map<String, String> getStaticVariables() {
-        return staticVariables;
+    public Map<String, String> getStaticFields() {
+        return staticFields;
     }
 
-    public void setStaticVariables(Map<String, String> staticVariables) {
-        this.staticVariables = staticVariables;
+    public void setStaticFields(Map<String, String> staticFields) {
+        this.staticFields = staticFields;
+    }
+
+    public Map<String, String> getPublicFields() {
+        return publicFields;
+    }
+
+    public void setPublicFields(Map<String, String> publicFields) {
+        this.publicFields = publicFields;
     }
 
     public Set<SourceMethod> getMethods() {
@@ -71,7 +82,8 @@ public class SourceFile {
         return sourceClass.className.equals(this.className)
                 && sourceClass.parentClassName.equals(this.parentClassName)
                 && sourceClass.implementedInterfaces.equals(this.implementedInterfaces)
-                && sourceClass.staticVariables.equals(this.staticVariables)
+                && sourceClass.staticFields.equals(this.staticFields)
+                && sourceClass.publicFields.equals(this.publicFields)
                 && sourceClass.methods.equals(this.methods);
     }
 
@@ -81,7 +93,8 @@ public class SourceFile {
         result = 31 * result + className.hashCode();
         result = 31 * result + parentClassName.hashCode();
         result = 31 * result + implementedInterfaces.hashCode();
-        result = 31 * result + staticVariables.hashCode();
+        result = 31 * result + staticFields.hashCode();
+        result = 31 * result + publicFields.hashCode();
         result = 31 * result + methods.hashCode();
         return result;
     }
