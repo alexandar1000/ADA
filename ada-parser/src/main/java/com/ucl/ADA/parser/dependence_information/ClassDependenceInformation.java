@@ -37,6 +37,7 @@ public class ClassDependenceInformation {
     private Integer exportedModulesAmount = 0; // number of modules calling the module under consideration (fan-in)
     private ArrayList<String> exportedModulesList = new ArrayList<>();
 
+
     public ClassDependenceInformation assignRandomValues() {
         Faker faker = new Faker();
 
@@ -83,7 +84,7 @@ public class ClassDependenceInformation {
         return this;
     }
 
-   public ClassDependenceInformation assignHardcodedValues() {
+    public ClassDependenceInformation assignHardcodedValues() {
 
         invokesDataAmount = 1;
         for (int i = 0; i < invokesDataAmount; i++) {
@@ -155,27 +156,5 @@ public class ClassDependenceInformation {
 
     public void addExportedModulesList(String moduleName) {
         this.exportedModulesList.add(moduleName);
-    }
-
-    @Override
-    public String toString() {
-        return "\n\t\t\tMetricInformationPlaceholder{" +
-                "\n\t\t\t\tinvokesDataAmount=" + invokesDataAmount +
-                ", \n\t\t\t\tinvokesDataList=" + invokesDataList +
-                ", \n\t\t\t\tinvokesMethodsAmount=" + invokesMethodsAmount +
-                ", \n\t\t\t\tinvokesMethodsList=" + invokesMethodsList +
-                ", \n\t\t\t\tinvokedDataAmount=" + invokedDataAmount +
-                ", \n\t\t\t\tinvokedDataList=" + invokedDataList +
-                ", \n\t\t\t\tinvokedMethodsAmount=" + invokedMethodsAmount +
-                ", \n\t\t\t\tinvokedMethodsList=" + invokedMethodsList +
-                ", \n\t\t\t\tglobalDataAmount=" + globalDataAmount +
-                ", \n\t\t\t\tglobalDataList=" + globalDataList +
-                ", \n\t\t\t\tglobalMethodsAmount=" + globalMethodsAmount +
-                ", \n\t\t\t\tglobalMethodsList=" + globalMethodsList +
-                ", \n\t\t\t\timportedModulesAmount=" + importedModulesAmount +
-                ", \n\t\t\t\timportedModulesList=" + importedModulesList +
-                ", \n\t\t\t\texportedModulesAmount=" + exportedModulesAmount +
-                ", \n\t\t\t\texportedModulesList=" + exportedModulesList +
-                "\n\t\t\t}";
     }
 }

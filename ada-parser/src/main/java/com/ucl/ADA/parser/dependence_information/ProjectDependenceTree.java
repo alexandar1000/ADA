@@ -21,12 +21,4 @@ public class ProjectDependenceTree {
 
         return this;
     }
-
-    @Override
-    public String toString() {
-        return "\nParsedDataOfRepoPlaceholder{" +
-                "\n\trepositoryValueMap=" + repositoryValueMap +
-                ",\n\t classNames=" + classNames +
-                "\n}";
-    }
 }

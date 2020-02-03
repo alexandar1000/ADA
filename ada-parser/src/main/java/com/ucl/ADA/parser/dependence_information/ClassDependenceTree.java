@@ -10,25 +10,17 @@ import java.util.Random;
 
 @Getter @Setter @NoArgsConstructor
 public class ClassDependenceTree {
-    private HashMap<String, ClassDependenceInformation> invokesInfo = new HashMap<>();
-    private HashMap<String, ClassDependenceInformation> invokedInfo = new HashMap<>();
+    private HashMap<String, ClassDependenceInformation> invokesDependenceInfo = new HashMap<>();
+    private HashMap<String, ClassDependenceInformation> invokedDependenceInfo = new HashMap<>();
 
     public ClassDependenceTree randomParsedDataOfClassPlaceholder(String currentClass, ArrayList<String> classNames) {
         Random random = new Random();
         for (String className : classNames) {
             if (!currentClass.equals(className) && random.nextBoolean()) {
-                invokesInfo.put(className, new ClassDependenceInformation().assignRandomValues());
+                invokesDependenceInfo.put(className, new ClassDependenceInformation().assignRandomValues());
             }
         }
 
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return "\n\t\tParsedDataOfClassPlaceholder{" +
-                "\n\t\tinvokesInfo=" + invokesInfo +
-                ", \n\t\tinvokedInfo=" + invokedInfo +
-                "\n\t\t}";
     }
 }
