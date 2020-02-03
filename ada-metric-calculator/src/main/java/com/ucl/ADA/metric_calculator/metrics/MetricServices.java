@@ -41,15 +41,8 @@ public class MetricServices {
     }
 
     public ProjectMetrics computeAllMetrics(ProjectDependenceTree projectDependenceTree) {
-        // Simple Metric
-        computeSimpleMetric();
 
-        // Medium Metric
-        computeMediumMetric();
-
-        // Complex Metric
-        computeComplexMetric();
-
+        // TODO: Implement proper metrics calculation
         return new ProjectMetrics();
     }
 
