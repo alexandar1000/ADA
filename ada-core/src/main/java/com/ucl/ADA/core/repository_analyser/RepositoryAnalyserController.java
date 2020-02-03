@@ -2,6 +2,7 @@ package com.ucl.ADA.core.repository_analyser;
 
 import com.ucl.ADA.metric_calculator.metrics.MetricServices;
 import com.ucl.ADA.parser.ParserServices;
+import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
 import com.ucl.ADA.repository_downloader.repo.RepoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +42,9 @@ public class RepositoryAnalyserController {
 
         metricServices.computeAllMetrics();
 
-        return "It works! :)";
+        ProjectDependenceTree projectDependenceTree = new ProjectDependenceTree().randomParsedDataOfRepoPlaceholder();
+
+        return projectDependenceTree.toString();
     }
 }
 
