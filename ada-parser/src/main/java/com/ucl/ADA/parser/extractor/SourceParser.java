@@ -1,6 +1,5 @@
 package com.ucl.ADA.parser.extractor;
 
-
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
@@ -14,7 +13,6 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeS
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import com.ucl.ADA.parser.model.SourceFile;
 import com.ucl.ADA.parser.model.SourceMethod;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -26,7 +24,7 @@ public class SourceParser {
 
     public SourceParser(String SRC_DIRECTORY_PATH) {
         this.SRC_DIRECTORY_PATH = SRC_DIRECTORY_PATH;
-        this.symbolSolver = constructJavaSymbolSolver(this.SRC_DIRECTORY_PATH);
+        this.symbolSolver = getConstructedJavaSymbolSolver(this.SRC_DIRECTORY_PATH);
     }
 
     public Set<SourceFile> parseSource(String sourceFilePath) {
@@ -54,7 +52,8 @@ public class SourceParser {
                 });
                 implementedInterface.remove(parentClassName);
 
-                //System.out.println(cl.resolve().getPackageName());
+                String packageName=" ";
+                packageName = cl.resolve().getPackageName();
 
                 // all static fields
                 Map<String, String> staticFields = new HashMap<String, String>();
@@ -70,22 +69,9 @@ public class SourceParser {
                     }
                 });
 
-
-                // constructors
-                cl.getConstructors().forEach(c -> {
-                    c.getNameAsString();
-                    c.getParameters();
-                    c.findAll(MethodCallExpr.class).forEach(f -> {
-
-                    });
-
-                });
-
-
                 // extracted methods
                 Set<SourceMethod> methods = new HashSet<SourceMethod>();
                 cl.findAll(MethodDeclaration.class).forEach(n -> {
-
                     // name and return type
                     String methodName = n.getNameAsString();
                     String returnType = n.getType().toString();
@@ -119,7 +105,7 @@ public class SourceParser {
                             methodCallExpression, usedVariables);
                     methods.add(sm);
                 });
-                sourceClasses.add(new SourceFile(className, parentClassName, implementedInterface, staticFields, publicFields, methods));
+                sourceClasses.add(new SourceFile(packageName, className, parentClassName, implementedInterface, staticFields, publicFields, methods));
 
             });
 
@@ -129,21 +115,18 @@ public class SourceParser {
         return sourceClasses;
     }
 
-    private static JavaSymbolSolver constructJavaSymbolSolver(String SRC_DIRECTORY_PATH) {
+    private static JavaSymbolSolver getConstructedJavaSymbolSolver(String SRC_DIRECTORY_PATH) {
         File[] directories = new File(SRC_DIRECTORY_PATH).listFiles(File::isDirectory);
         CombinedTypeSolver combinedSolver = new CombinedTypeSolver();
-        TypeSolver javaParserTypeSolver=new JavaParserTypeSolver(new File(SRC_DIRECTORY_PATH));
+        TypeSolver javaParserTypeSolver = new JavaParserTypeSolver(new File(SRC_DIRECTORY_PATH));
         combinedSolver.add(javaParserTypeSolver);
         for (File directory : directories) {
-            System.out.println(directory.getAbsolutePath());
-            TypeSolver jst=new JavaParserTypeSolver(new File(directory.getAbsolutePath()));
+            TypeSolver jst = new JavaParserTypeSolver(new File(directory.getAbsolutePath()));
             combinedSolver.add(jst);
         }
         TypeSolver typeSolver = new ReflectionTypeSolver();
         combinedSolver.add(typeSolver);
-        System.out.println("Type Solver Ends");
         return new JavaSymbolSolver(combinedSolver);
     }
-
 
 }

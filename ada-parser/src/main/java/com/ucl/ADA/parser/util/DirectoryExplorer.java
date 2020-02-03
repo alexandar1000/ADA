@@ -1,7 +1,6 @@
 package com.ucl.ADA.parser.util;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 public class DirectoryExplorer {
 

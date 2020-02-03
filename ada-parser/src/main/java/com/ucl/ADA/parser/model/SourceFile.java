@@ -5,22 +5,31 @@ import java.util.Set;
 
 public class SourceFile {
 
-    private String className;
     private String packageName;
+    private String className;
     private String parentClassName;
     private Set<String> implementedInterfaces;
     private Map<String, String> staticFields;
-    private Map<String,String> publicFields;
+    private Map<String, String> publicFields;
     private Set<SourceMethod> methods;
 
 
-    public SourceFile(String className, String parentClassName, Set<String> implementedInterface, Map<String, String> staticFields, Map<String,String> publicFields, Set<SourceMethod> methods) {
+    public SourceFile(String packageName, String className, String parentClassName, Set<String> implementedInterface, Map<String, String> staticFields, Map<String, String> publicFields, Set<SourceMethod> methods) {
+        this.packageName = packageName;
         this.className = className;
         this.parentClassName = parentClassName;
         this.implementedInterfaces = implementedInterface;
         this.staticFields = staticFields;
         this.publicFields = publicFields;
         this.methods = methods;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 
     public String getClassName() {
@@ -79,7 +88,8 @@ public class SourceFile {
             return false;
         }
         SourceFile sourceClass = (SourceFile) sf;
-        return sourceClass.className.equals(this.className)
+        return sourceClass.packageName.equals(this.packageName)
+                &&sourceClass.className.equals(this.className)
                 && sourceClass.parentClassName.equals(this.parentClassName)
                 && sourceClass.implementedInterfaces.equals(this.implementedInterfaces)
                 && sourceClass.staticFields.equals(this.staticFields)
@@ -90,6 +100,7 @@ public class SourceFile {
     @Override
     public int hashCode() {
         int result = 31;
+        result = 31 * result + packageName.hashCode();
         result = 31 * result + className.hashCode();
         result = 31 * result + parentClassName.hashCode();
         result = 31 * result + implementedInterfaces.hashCode();

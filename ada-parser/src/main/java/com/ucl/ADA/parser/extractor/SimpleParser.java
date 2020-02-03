@@ -11,12 +11,13 @@ import java.util.Set;
 
 public class SimpleParser {
 
-    static final String src_dir = "/home/mrhmisu/UCL-MS/Test-Project/src/";
-
+    // change this path for further parsing
+    static final String src_dir = "/home/mrhmisu/UCL-MS/IRDM-Project/src/";
     public static void main(String[] args) {
 
         SourceParser sourceParser = new SourceParser(src_dir);
         List<String> filePaths = new SourceFileCollector().getJavaFilesFromSourceDirectory(new File(src_dir));
+
         filePaths.forEach(f -> {
             Set<SourceFile> sourceSet = sourceParser.parseSource(f);
             ObjectMapper objMapper = new ObjectMapper();
