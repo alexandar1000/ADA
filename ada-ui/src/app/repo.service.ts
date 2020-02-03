@@ -10,7 +10,7 @@ export class RepoService {
   private repoFormUrl: string;
 
   constructor(private http: HttpClient) { 
-    this.repoFormUrl = 'http://localhost:8080/addEntry';
+    this.repoFormUrl = 'http://localhost:8080/repo-metadata';
   }
 
   public download(repository: Repository) {

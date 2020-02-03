@@ -23,7 +23,7 @@ public class RepoController {
      */
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @PostMapping("/addEntry")
+    @PostMapping("/repo-metadata")
     public void addEntry(@RequestBody RepoDbPopulator repo) throws GitAPIException {
         repoService.addEntry(repo);
     }
