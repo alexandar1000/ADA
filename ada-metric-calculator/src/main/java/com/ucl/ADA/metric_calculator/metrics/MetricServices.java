@@ -1,6 +1,8 @@
 package com.ucl.ADA.metric_calculator.metrics;
 
 import com.github.javafaker.Faker;
+import com.ucl.ADA.metric_calculator.metrics_structure.ProjectMetrics;
+import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,12 @@ public class MetricServices {
 
         // Complex Metric
         computeComplexMetric();
+    }
+
+    public ProjectMetrics computeAllMetrics(ProjectDependenceTree projectDependenceTree) {
+
+        // TODO: Implement proper metrics calculation
+        return new ProjectMetrics();
     }
 
     private void computeSimpleMetric() {
