@@ -18,7 +18,7 @@ export class RepoFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.repoService.download(this.repository).subscribe(result => console.log(result));
+    this.repoService.download(this.repository).subscribe(result => console.log('ok'));
   }
 
 }

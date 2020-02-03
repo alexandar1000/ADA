@@ -10,7 +10,7 @@ export class RepoService {
   private repoFormUrl: string;
 
   constructor(private http: HttpClient) { 
-    this.repoFormUrl = 'http://localhost:8080/download';
+    this.repoFormUrl = 'http://localhost:8080/addEntry';
   }
 
   public download(repository: Repository) {
