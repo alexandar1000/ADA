@@ -12,7 +12,8 @@ import java.util.Set;
 public class SimpleParser {
 
     // change this path for further parsing
-    static final String src_dir = "/home/mrhmisu/UCL-MS/IRDM-Project/src/";
+//    static final String src_dir = "/home/mrhmisu/UCL-MS/IRDM-Project/src/";
+    static final String src_dir = "ada-parser/src/main/java/com/ucl/ADA/parser";
     public static void main(String[] args) {
 
         SourceParser sourceParser = new SourceParser(src_dir);
