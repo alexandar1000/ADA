@@ -1,6 +1,6 @@
 package com.ucl.ADA.core.repository_analyser;
 
-import com.ucl.ADA.metric_calculator.metrics_structure.ProjectMetrics;
+import com.ucl.ADA.metric_calculator.metrics_structure.ProjectMetricsContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +20,7 @@ public class RepositoryAnalyserController {
      */
     @GetMapping(produces = {"application/json"})
     @ResponseBody
-    public ProjectMetrics analyseRepository() {
+    public ProjectMetricsContainer analyseRepository() {
         return repositoryAnalyserServices.analyseRepositoryService();
     }
 }

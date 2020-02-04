@@ -7,8 +7,8 @@ import lombok.Setter;
 import java.util.HashMap;
 
 @Getter @Setter @NoArgsConstructor
-public class ClassMetrics {
+public class ClassMetricsContainer {
 
-    private HashMap<String, MetricValues> metricValues = new HashMap<>();
+    private HashMap<String, MetricValue> metricValues = new HashMap<>();
 
 }
