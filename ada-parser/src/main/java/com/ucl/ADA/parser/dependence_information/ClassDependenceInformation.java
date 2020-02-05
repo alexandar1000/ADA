@@ -1,7 +1,7 @@
 package com.ucl.ADA.parser.dependence_information;
 
 import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.DataInvocationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.AttributeInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.ModuleInvocationInformation;
 import lombok.Getter;
@@ -14,7 +14,7 @@ public class ClassDependenceInformation {
 
     // For data and control flow coupling:
     // Data fields invoked
-    private ArrayList<DataInvocationInformation> dataFields = new ArrayList<>();
+    private ArrayList<AttributeInvocationInformation> attributes = new ArrayList<>();
 
     // Constructors invoked
     private ArrayList<ConstructorInvocationInformation> constructors = new ArrayList<>();
@@ -25,7 +25,7 @@ public class ClassDependenceInformation {
 
     // For global coupling:
     // Global data invoked
-    private ArrayList<DataInvocationInformation> globalData = new ArrayList<>();
+    private ArrayList<AttributeInvocationInformation> globalData = new ArrayList<>();
 
     // Global methods invoked
     private ArrayList<MethodInvocationInformation> globalMethods = new ArrayList<>();
@@ -39,8 +39,8 @@ public class ClassDependenceInformation {
     public ClassDependenceInformation() {
     }
 
-    public void addNewDataField(DataInvocationInformation dataInvocationInformation) {
-        this.dataFields.add(dataInvocationInformation);
+    public void addNewDataField(AttributeInvocationInformation attributeInvocationInformation) {
+        this.attributes.add(attributeInvocationInformation);
     }
 
     public void addNewConstructor(ConstructorInvocationInformation constructorInvocationInformation) {
@@ -51,8 +51,8 @@ public class ClassDependenceInformation {
         this.methods.add(methodInvocationInformation);
     }
 
-    public void addNewGlobalData(DataInvocationInformation dataInvocationInformation) {
-        this.globalData.add(dataInvocationInformation);
+    public void addNewGlobalData(AttributeInvocationInformation attributeInvocationInformation) {
+        this.globalData.add(attributeInvocationInformation);
     }
 
     public void addNewGlobalMethod(MethodInvocationInformation methodInvocationInformation) {

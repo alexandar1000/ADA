@@ -1,7 +1,7 @@
 package com.ucl.ADA.parser.dependence_information;
 
 import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.DataDeclarationInformation;
+import com.ucl.ADA.parser.dependence_information.declaration_information.AttributeDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.ModuleDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.*;
@@ -31,11 +31,11 @@ class ClassDependenceTreeTest {
 
     @Test
     void addDataDeclaration_addNewElement() {
-        DataDeclarationInformation dataDeclarationInformation = new DataDeclarationInformation("declarationInformationName");
+        AttributeDeclarationInformation attributeDeclarationInformation = new AttributeDeclarationInformation("declarationInformationName");
 
-        cdt.addDataDeclaration(dataDeclarationInformation);
+        cdt.addAttributeDeclaration(attributeDeclarationInformation);
 
-        assertThat(cdt.getDataFieldDeclarations()).containsExactly(dataDeclarationInformation);
+        assertThat(cdt.getAttributeDeclarations()).containsExactly(attributeDeclarationInformation);
     }
 
     @Test
@@ -73,13 +73,13 @@ class ClassDependenceTreeTest {
     void addDataElement_testAddingOutgoingInvocation() {
         String className = "TestClass";
 
-        DataInvocationInformation dataInvocationInformation = new DataInvocationInformation("dataInvocationInformationName");
+        AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("dataInvocationInformationName");
 
-        cdt.addDataInvocationElement(className, InvocationType.OUTGOING_INVOCATION, dataInvocationInformation);
+        cdt.addAttributeInvocationElement(className, InvocationType.OUTGOING_INVOCATION, attributeInvocationInformation);
 
         assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getOutgoingDependenceInfo().get(className).getDataFields()).containsExactly(dataInvocationInformation);
+        assertThat(cdt.getOutgoingDependenceInfo().get(className).getAttributes()).containsExactly(attributeInvocationInformation);
     }
 
     @Test
@@ -126,13 +126,13 @@ class ClassDependenceTreeTest {
     void addDataElement_testAddingIncomingInvocation() {
         String className = "TestClass";
 
-        DataInvocationInformation dataInvocationInformation = new DataInvocationInformation("dataInvocationInformationName");
+        AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("dataInvocationInformationName");
 
-        cdt.addDataInvocationElement(className, InvocationType.INCOMING_INVOCATION, dataInvocationInformation);
+        cdt.addAttributeInvocationElement(className, InvocationType.INCOMING_INVOCATION, attributeInvocationInformation);
 
         assertThat(cdt.getIncomingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getIncomingDependenceInfo().get(className).getDataFields()).containsExactly(dataInvocationInformation);
+        assertThat(cdt.getIncomingDependenceInfo().get(className).getAttributes()).containsExactly(attributeInvocationInformation);
     }
 
     @Test
@@ -167,7 +167,7 @@ class ClassDependenceTreeTest {
         ArrayList<String> classNames = new ArrayList<>(Arrays.asList("FirstClass", "SecondClass", "ThirdClass", "FourthClass"));
 
         cdt.addModuleInvocationElement(classNames.get(0), InvocationType.OUTGOING_INVOCATION, null);
-        cdt.addDataInvocationElement(classNames.get(1), InvocationType.OUTGOING_INVOCATION, null);
+        cdt.addAttributeInvocationElement(classNames.get(1), InvocationType.OUTGOING_INVOCATION, null);
         cdt.addConstructorInvocationElement(classNames.get(2), InvocationType.OUTGOING_INVOCATION, null);
         cdt.addMethodInvocationElement(classNames.get(3), InvocationType.OUTGOING_INVOCATION, null);
 
@@ -179,20 +179,20 @@ class ClassDependenceTreeTest {
         ArrayList<String> classNames = new ArrayList<>(Arrays.asList("FirstClass", "SecondClass", "ThirdClass", "FourthClass"));
 
         ModuleInvocationInformation moduleInvocationInformation = new ModuleInvocationInformation("moduleImportInformationName");
-        DataInvocationInformation dataInvocationInformation = new DataInvocationInformation("dataInvocationInformationName");
+        AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("dataInvocationInformationName");
         ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorInvocationInformationName");
         MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodInvocationInformationName");
 
 
         cdt.addModuleInvocationElement(classNames.get(0), InvocationType.OUTGOING_INVOCATION, moduleInvocationInformation);
-        cdt.addDataInvocationElement(classNames.get(1), InvocationType.OUTGOING_INVOCATION, dataInvocationInformation);
+        cdt.addAttributeInvocationElement(classNames.get(1), InvocationType.OUTGOING_INVOCATION, attributeInvocationInformation);
         cdt.addConstructorInvocationElement(classNames.get(2), InvocationType.OUTGOING_INVOCATION, constructorInvocationInformation);
         cdt.addMethodInvocationElement(classNames.get(3), InvocationType.OUTGOING_INVOCATION, methodInvocationInformation);
 
         assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactlyInAnyOrderElementsOf(classNames);
 
         assertThat(cdt.getOutgoingDependenceInfo().get(classNames.get(0)).getPackages()).containsExactly(moduleInvocationInformation);
-        assertThat(cdt.getOutgoingDependenceInfo().get(classNames.get(1)).getDataFields()).containsExactly(dataInvocationInformation);
+        assertThat(cdt.getOutgoingDependenceInfo().get(classNames.get(1)).getAttributes()).containsExactly(attributeInvocationInformation);
         assertThat(cdt.getOutgoingDependenceInfo().get(classNames.get(2)).getConstructors()).containsExactly(constructorInvocationInformation);
         assertThat(cdt.getOutgoingDependenceInfo().get(classNames.get(3)).getMethods()).containsExactly(methodInvocationInformation);
     }
@@ -202,20 +202,20 @@ class ClassDependenceTreeTest {
         String className = "TestClass";
 
         ModuleInvocationInformation moduleInvocationInformation = new ModuleInvocationInformation("moduleImportInformationName");
-        DataInvocationInformation dataInvocationInformation = new DataInvocationInformation("dataInvocationInformationName");
+        AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("dataInvocationInformationName");
         ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorInvocationInformationName");
         MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodInvocationInformationName");
 
 
         cdt.addModuleInvocationElement(className, InvocationType.OUTGOING_INVOCATION, moduleInvocationInformation);
-        cdt.addDataInvocationElement(className, InvocationType.OUTGOING_INVOCATION, dataInvocationInformation);
+        cdt.addAttributeInvocationElement(className, InvocationType.OUTGOING_INVOCATION, attributeInvocationInformation);
         cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING_INVOCATION, constructorInvocationInformation);
         cdt.addMethodInvocationElement(className, InvocationType.OUTGOING_INVOCATION, methodInvocationInformation);
 
         assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
         assertThat(cdt.getOutgoingDependenceInfo().get(className).getPackages()).containsExactly(moduleInvocationInformation);
-        assertThat(cdt.getOutgoingDependenceInfo().get(className).getDataFields()).containsExactly(dataInvocationInformation);
+        assertThat(cdt.getOutgoingDependenceInfo().get(className).getAttributes()).containsExactly(attributeInvocationInformation);
         assertThat(cdt.getOutgoingDependenceInfo().get(className).getConstructors()).containsExactly(constructorInvocationInformation);
         assertThat(cdt.getOutgoingDependenceInfo().get(className).getMethods()).containsExactly(methodInvocationInformation);
     }

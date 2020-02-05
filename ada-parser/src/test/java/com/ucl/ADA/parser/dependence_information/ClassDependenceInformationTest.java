@@ -1,7 +1,7 @@
 package com.ucl.ADA.parser.dependence_information;
 
 import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.DataInvocationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.AttributeInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.ModuleInvocationInformation;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,11 +20,11 @@ class ClassDependenceInformationTest {
 
     @Test
     void addNewDataField_addNewElement() {
-        DataInvocationInformation dataInvocationInformation = new DataInvocationInformation("invocationInformationName");
+        AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("invocationInformationName");
 
-        cdi.addNewDataField(dataInvocationInformation);
+        cdi.addNewDataField(attributeInvocationInformation);
 
-        assertThat(cdi.getDataFields()).containsExactly(dataInvocationInformation);
+        assertThat(cdi.getAttributes()).containsExactly(attributeInvocationInformation);
     }
 
     @Test
@@ -47,11 +47,11 @@ class ClassDependenceInformationTest {
 
     @Test
     void addNewGlobalData_addNewElement() {
-         DataInvocationInformation dataInvocationInformation = new DataInvocationInformation("globalInvocationInformationName");
+         AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("globalInvocationInformationName");
 
-        cdi.addNewGlobalData(dataInvocationInformation);
+        cdi.addNewGlobalData(attributeInvocationInformation);
 
-        assertThat(cdi.getGlobalData()).containsExactly(dataInvocationInformation);
+        assertThat(cdi.getGlobalData()).containsExactly(attributeInvocationInformation);
     }
 
     @Test

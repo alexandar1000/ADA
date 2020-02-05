@@ -1,7 +1,7 @@
 package com.ucl.ADA.parser.dependence_information;
 
 import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.DataDeclarationInformation;
+import com.ucl.ADA.parser.dependence_information.declaration_information.AttributeDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.ModuleDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.*;
@@ -23,7 +23,7 @@ public class ClassDependenceTree {
     /**
      * Attributes declared in this class.
      */
-    private ArrayList<DataDeclarationInformation> dataFieldDeclarations = new ArrayList<>();
+    private ArrayList<AttributeDeclarationInformation> attributeDeclarations = new ArrayList<>();
 
     /**
      * Constructors declared in this class.
@@ -50,8 +50,8 @@ public class ClassDependenceTree {
         this.currentPackage = moduleDeclarationInformation;
     }
 
-    public void addDataDeclaration(DataDeclarationInformation dataDeclarationInformation) {
-        this.dataFieldDeclarations.add(dataDeclarationInformation);
+    public void addAttributeDeclaration(AttributeDeclarationInformation attributeDeclarationInformation) {
+        this.attributeDeclarations.add(attributeDeclarationInformation);
     }
 
     public void addMethodDeclaration(MethodDeclarationInformation methodDeclarationInformation) {
@@ -81,20 +81,20 @@ public class ClassDependenceTree {
         }
     }
 
-    public void addDataInvocationElement(String className, InvocationType outgoingInvocation, DataInvocationInformation dataInvocationInformation) {
+    public void addAttributeInvocationElement(String className, InvocationType outgoingInvocation, AttributeInvocationInformation attributeInvocationInformation) {
         if (this.outgoingDependenceInfo.containsKey(className)) {
             if (outgoingInvocation == InvocationType.OUTGOING_INVOCATION) {
-                this.outgoingDependenceInfo.get(className).addNewDataField(dataInvocationInformation);
+                this.outgoingDependenceInfo.get(className).addNewDataField(attributeInvocationInformation);
             } else {
-                this.incomingDependenceInfo.get(className).addNewDataField(dataInvocationInformation);
+                this.incomingDependenceInfo.get(className).addNewDataField(attributeInvocationInformation);
             }
         } else {
             ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
             if (outgoingInvocation == InvocationType.OUTGOING_INVOCATION) {
-                classDependenceInformation.addNewDataField(dataInvocationInformation);
+                classDependenceInformation.addNewDataField(attributeInvocationInformation);
                 this.outgoingDependenceInfo.put(className, classDependenceInformation);
             } else {
-                classDependenceInformation.addNewDataField(dataInvocationInformation);
+                classDependenceInformation.addNewDataField(attributeInvocationInformation);
                 this.incomingDependenceInfo.put(className, classDependenceInformation);
             }
         }
