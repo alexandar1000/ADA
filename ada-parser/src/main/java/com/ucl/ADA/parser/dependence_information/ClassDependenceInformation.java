@@ -1,9 +1,6 @@
 package com.ucl.ADA.parser.dependence_information;
 
-import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.DataDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.ModuleDeclarationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.DataInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.ModuleInvocationInformation;
@@ -15,25 +12,21 @@ import java.util.ArrayList;
 @Getter @Setter
 public class ClassDependenceInformation {
 
-    // Attributes declared in this class
-    private ArrayList<DataDeclarationInformation> dataDeclarations = new ArrayList<>();
-
-    // Methods declared in this class
-    private ArrayList<MethodDeclarationInformation> methodsDeclarations = new ArrayList<>();
-
-    // Constructors declared in this class
-    private ArrayList<ConstructorDeclarationInformation> constructorDeclarations = new ArrayList<>();
-
-
     // For data and control flow coupling:
     // Data fields from other classes which this class invokes
     private ArrayList<DataInvocationInformation> invokedData = new ArrayList<>();
+
+    // Constructors of other classes which are invoked from this class
+    private ArrayList<ConstructorInvocationInformation> invokedConstructors = new ArrayList<>();
 
     // Methods from other classes which this class invokes
     private ArrayList<MethodInvocationInformation> invokedMethods = new ArrayList<>();
 
     // Data from this class which are invoked by other classes
     private ArrayList<DataInvocationInformation> incomingDataInvocations = new ArrayList<>();
+
+    // Constructors of this class which are invoked from other classes
+    private ArrayList<ConstructorInvocationInformation> incomingConstructorInvocations = new ArrayList<>();
 
     // Methods from this class which are invoked by other classes
     private ArrayList<MethodInvocationInformation> incomingMethodInvocations = new ArrayList<>();
@@ -55,31 +48,15 @@ public class ClassDependenceInformation {
     private ArrayList<ModuleInvocationInformation> incomingModuleImports = new ArrayList<>();
 
 
-    // Class package
-    private ModuleDeclarationInformation currentModule = null;
-
-
     public ClassDependenceInformation() {
-    }
-
-    public ClassDependenceInformation(ModuleDeclarationInformation moduleDeclarationInformation) {
-        this.currentModule = moduleDeclarationInformation;
-    }
-
-    public void addDataDeclaration(DataDeclarationInformation dataDeclarationInformation) {
-        this.dataDeclarations.add(dataDeclarationInformation);
-    }
-
-    public void addMethodDeclaration(MethodDeclarationInformation methodDeclarationInformation) {
-        this.methodsDeclarations.add(methodDeclarationInformation);
-    }
-
-    public void addConstructorDeclaration(ConstructorDeclarationInformation constructorDeclarationInformation) {
-        this.constructorDeclarations.add(constructorDeclarationInformation);
     }
 
     public void addInvokedData(DataInvocationInformation dataInvocationInformation) {
         this.invokedData.add(dataInvocationInformation);
+    }
+
+    public void addInvokedConstructor(ConstructorInvocationInformation constructorInvocationInformation) {
+        this.invokedConstructors.add(constructorInvocationInformation);
     }
 
     public void addInvokedMethod(MethodInvocationInformation methodInvocationInformation) {
@@ -88,6 +65,10 @@ public class ClassDependenceInformation {
 
     public void addIncomingDataInvocation(DataInvocationInformation dataInvocationInformation) {
         this.incomingDataInvocations.add(dataInvocationInformation);
+    }
+
+    public void addIncomingConstructorInvocation(ConstructorInvocationInformation constructorInvocationInformation) {
+        this.incomingConstructorInvocations.add(constructorInvocationInformation);
     }
 
     public void addIncomingMethodInvocation(MethodInvocationInformation methodInvocationInformation) {

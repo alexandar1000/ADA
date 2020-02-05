@@ -1,8 +1,6 @@
 package com.ucl.ADA.parser.dependence_information;
 
-import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.DataDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclarationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.DataInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.ModuleInvocationInformation;
@@ -18,33 +16,6 @@ class ClassDependenceInformationTest {
     @BeforeEach
     void setUp() {
         cdi = new ClassDependenceInformation();
-    }
-
-    @Test
-    void addDataDeclaration_addNewElement() {
-        DataDeclarationInformation dataDeclarationInformation = new DataDeclarationInformation("declarationInformationName");
-
-        cdi.addDataDeclaration(dataDeclarationInformation);
-
-        assertThat(cdi.getDataDeclarations()).containsExactly(dataDeclarationInformation);
-    }
-
-    @Test
-    void addMethodDeclaration_addNewElement() {
-        MethodDeclarationInformation methodDeclarationInformation = new MethodDeclarationInformation("declarationInformationName");
-
-        cdi.addMethodDeclaration(methodDeclarationInformation);
-
-        assertThat(cdi.getMethodsDeclarations()).containsExactly(methodDeclarationInformation);
-    }
-
-    @Test
-    void addConstructorDeclaration_addNewElement() {
-        ConstructorDeclarationInformation constructorDeclarationInformation = new ConstructorDeclarationInformation("declarationInformationName");
-
-        cdi.addConstructorDeclaration(constructorDeclarationInformation);
-
-        assertThat(cdi.getConstructorDeclarations()).containsExactly(constructorDeclarationInformation);
     }
 
     @Test
@@ -117,6 +88,24 @@ class ClassDependenceInformationTest {
         cdi.addIncomingModuleImport(moduleInvocationInformation);
 
         assertThat(cdi.getIncomingModuleImports()).containsExactly(moduleInvocationInformation);
+    }
+
+    @Test
+    void addInvokedConstructor_addNewElement() {
+        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("invocationInformationName");
+
+        cdi.addInvokedConstructor(constructorInvocationInformation);
+
+        assertThat(cdi.getInvokedConstructors()).containsExactly(constructorInvocationInformation);
+    }
+
+    @Test
+    void addIncomingConstructorInvocation_addNewElement() {
+        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("invocationInformationName");
+
+        cdi.addIncomingConstructorInvocation(constructorInvocationInformation);
+
+        assertThat(cdi.getIncomingConstructorInvocations()).containsExactly(constructorInvocationInformation);
     }
 
 
