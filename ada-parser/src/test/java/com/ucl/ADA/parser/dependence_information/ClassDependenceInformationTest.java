@@ -19,94 +19,56 @@ class ClassDependenceInformationTest {
     }
 
     @Test
-    void addInvokedData_addNewElement() {
+    void addNewDataField_addNewElement() {
         DataInvocationInformation dataInvocationInformation = new DataInvocationInformation("invocationInformationName");
 
-        cdi.addInvokedData(dataInvocationInformation);
+        cdi.addNewDataField(dataInvocationInformation);
 
-        assertThat(cdi.getInvokedData()).containsExactly(dataInvocationInformation);
+        assertThat(cdi.getDataFields()).containsExactly(dataInvocationInformation);
     }
 
     @Test
-    void addInvokedMethod_addNewElement() {
+    void addNewConstructor_addNewElement() {
+        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("invocationInformationName");
+
+        cdi.addNewConstructor(constructorInvocationInformation);
+
+        assertThat(cdi.getConstructors()).containsExactly(constructorInvocationInformation);
+    }
+
+    @Test
+    void addNewMethod_addNewElement() {
          MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("invocationInformationName");
 
-        cdi.addInvokedMethod(methodInvocationInformation);
+        cdi.addNewMethod(methodInvocationInformation);
 
-        assertThat(cdi.getInvokedMethods()).containsExactly(methodInvocationInformation);
+        assertThat(cdi.getMethods()).containsExactly(methodInvocationInformation);
     }
 
     @Test
-    void addIncomingDataInvocation_addNewElement() {
-        DataInvocationInformation dataInvocationInformation = new DataInvocationInformation("invocationInformationName");
-
-        cdi.addIncomingDataInvocation(dataInvocationInformation);
-
-        assertThat(cdi.getIncomingDataInvocations()).containsExactly(dataInvocationInformation);
-    }
-
-    @Test
-    void addIncomingMethodInvocation_addNewElement() {
-         MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("invocationInformationName");
-
-        cdi.addIncomingMethodInvocation(methodInvocationInformation);
-
-        assertThat(cdi.getIncomingMethodInvocations()).containsExactly(methodInvocationInformation);
-    }
-
-    @Test
-    void addInvokedGlobalData_addNewElement() {
+    void addNewGlobalData_addNewElement() {
          DataInvocationInformation dataInvocationInformation = new DataInvocationInformation("globalInvocationInformationName");
 
-        cdi.addInvokedGlobalData(dataInvocationInformation);
+        cdi.addNewGlobalData(dataInvocationInformation);
 
-        assertThat(cdi.getInvokedGlobalData()).containsExactly(dataInvocationInformation);
+        assertThat(cdi.getGlobalData()).containsExactly(dataInvocationInformation);
     }
 
     @Test
-    void addInvokedGlobalMethods_addNewElement() {
+    void addNewGlobalMethod_addNewElement() {
          MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("globalInvocationInformationName");
 
-        cdi.addInvokedGlobalMethod(methodInvocationInformation);
+        cdi.addNewGlobalMethod(methodInvocationInformation);
 
-        assertThat(cdi.getInvokedGlobalMethods()).containsExactly(methodInvocationInformation);
+        assertThat(cdi.getGlobalMethods()).containsExactly(methodInvocationInformation);
     }
 
     @Test
-    void addImportedModule_addNewElement() {
+    void addNewModule_addNewElement() {
          ModuleInvocationInformation moduleInvocationInformation = new ModuleInvocationInformation("moduleInvocationInformationName");
 
-        cdi.addImportedModule(moduleInvocationInformation);
+        cdi.addNewModule(moduleInvocationInformation);
 
-        assertThat(cdi.getImportedModules()).containsExactly(moduleInvocationInformation);
+        assertThat(cdi.getPackages()).containsExactly(moduleInvocationInformation);
     }
-
-    @Test
-    void addIncomingModuleImport_addNewElement() {
-         ModuleInvocationInformation moduleInvocationInformation = new ModuleInvocationInformation("moduleInvocationInformationName");
-
-        cdi.addIncomingModuleImport(moduleInvocationInformation);
-
-        assertThat(cdi.getIncomingModuleImports()).containsExactly(moduleInvocationInformation);
-    }
-
-    @Test
-    void addInvokedConstructor_addNewElement() {
-        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("invocationInformationName");
-
-        cdi.addInvokedConstructor(constructorInvocationInformation);
-
-        assertThat(cdi.getInvokedConstructors()).containsExactly(constructorInvocationInformation);
-    }
-
-    @Test
-    void addIncomingConstructorInvocation_addNewElement() {
-        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("invocationInformationName");
-
-        cdi.addIncomingConstructorInvocation(constructorInvocationInformation);
-
-        assertThat(cdi.getIncomingConstructorInvocations()).containsExactly(constructorInvocationInformation);
-    }
-
-
 }
