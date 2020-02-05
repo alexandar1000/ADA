@@ -32,10 +32,10 @@ public class ClassDependenceInformation {
     private ArrayList<MethodInvocationInformation> invokedMethods = new ArrayList<>();
 
     // Data from this class which are invoked by other classes
-    private ArrayList<DataInvocationInformation> incomingDataInvocation = new ArrayList<>();
+    private ArrayList<DataInvocationInformation> incomingDataInvocations = new ArrayList<>();
 
     // Methods from this class which are invoked by other classes
-    private ArrayList<MethodInvocationInformation> incomingMethodInvocation = new ArrayList<>();
+    private ArrayList<MethodInvocationInformation> incomingMethodInvocations = new ArrayList<>();
 
 
     // For global coupling:
@@ -67,5 +67,21 @@ public class ClassDependenceInformation {
 
     public void addConstructorDeclaration(ConstructorDeclarationInformation constructorDeclarationInformation) {
         this.constructorDeclarations.add(constructorDeclarationInformation);
+    }
+
+    public void addInvokedData(DataInvocationInformation dataInvocationInformation) {
+        this.invokedData.add(dataInvocationInformation);
+    }
+
+    public void addInvokedMethod(MethodInvocationInformation methodInvocationInformation) {
+        this.invokedMethods.add(methodInvocationInformation);
+    }
+
+    public void addIncomingDataInvocation(DataInvocationInformation dataInvocationInformation) {
+        this.incomingDataInvocations.add(dataInvocationInformation);
+    }
+
+    public void addIncomingMethodInvocation(MethodInvocationInformation methodInvocationInformation) {
+        this.incomingMethodInvocations.add(methodInvocationInformation);
     }
 }
