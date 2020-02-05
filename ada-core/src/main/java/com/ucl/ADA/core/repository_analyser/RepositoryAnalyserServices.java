@@ -4,7 +4,7 @@ import com.ucl.ADA.metric_calculator.metrics.MetricServices;
 import com.ucl.ADA.metric_calculator.metrics_structure.ProjectMetrics;
 import com.ucl.ADA.parser.ParserServices;
 import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
-import com.ucl.ADA.repository_downloader.repo.RepoService;
+import com.ucl.ADA.repository_downloader.services.RepoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
