@@ -1,4 +1,4 @@
-export class Repository {
+export class RepoForm {
     url: string;
     branch: string;
 }
