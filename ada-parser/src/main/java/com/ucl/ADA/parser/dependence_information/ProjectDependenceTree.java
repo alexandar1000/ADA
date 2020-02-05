@@ -10,13 +10,20 @@ import java.util.HashMap;
 
 @Getter @Setter @NoArgsConstructor
 public class ProjectDependenceTree {
-    private HashMap<String, ClassDependenceTree> repositoryValueMap = new HashMap<>();
+    private HashMap<String, ClassDependenceTree> classDependenceTrees = new HashMap<>();
 
     private ArrayList<String> classNames = new ArrayList<>(Arrays.asList("Aaa", "Bbb", "Ccc", "Ddd", "Eee", "Fff"));
 
+
+    public ProjectDependenceTree(ArrayList<String> classNames) {
+        for (String className : classNames) {
+            classDependenceTrees.put(className, null);
+        }
+    }
+
     public ProjectDependenceTree randomParsedDataOfRepoPlaceholder () {
         for (String className : classNames) {
-            repositoryValueMap.put(className, new ClassDependenceTree().randomParsedDataOfClassPlaceholder(className, classNames));
+            classDependenceTrees.put(className, new ClassDependenceTree().randomParsedDataOfClassPlaceholder(className, classNames));
         }
 
         return this;
