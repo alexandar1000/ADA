@@ -3,6 +3,7 @@ package com.ucl.ADA.parser.dependence_information;
 import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.DataDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclarationInformation;
+import com.ucl.ADA.parser.dependence_information.declaration_information.ModuleDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.DataInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.ModuleInvocationInformation;
@@ -53,8 +54,16 @@ public class ClassDependenceInformation {
     // Packages importing this package (fan-in)
     private ArrayList<ModuleInvocationInformation> incomingModuleImports = new ArrayList<>();
 
-    public ClassDependenceInformation() {
 
+    // Class package
+    private ModuleDeclarationInformation currentModule = null;
+
+
+    public ClassDependenceInformation() {
+    }
+
+    public ClassDependenceInformation(ModuleDeclarationInformation moduleDeclarationInformation) {
+        this.currentModule = moduleDeclarationInformation;
     }
 
     public void addDataDeclaration(DataDeclarationInformation dataDeclarationInformation) {
