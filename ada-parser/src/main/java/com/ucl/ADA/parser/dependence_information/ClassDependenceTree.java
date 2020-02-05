@@ -4,10 +4,7 @@ import com.ucl.ADA.parser.dependence_information.declaration_information.Constru
 import com.ucl.ADA.parser.dependence_information.declaration_information.DataDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.ModuleDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.DataInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.ModuleInvocationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -65,7 +62,7 @@ public class ClassDependenceTree {
         this.constructorDeclarations.add(constructorDeclarationInformation);
     }
 
-    public void addModuleInvocationElement(String className, ModuleInvocationInformation moduleInvocationInformation) {
+    public void addModuleInvocationElement(String className, InvocationType outgoingInvocation, ModuleInvocationInformation moduleInvocationInformation) {
         if (this.outgoingDependenceInfo.containsKey(className)) {
             this.outgoingDependenceInfo.get(className).addImportedModule(moduleInvocationInformation);
         } else {
@@ -75,7 +72,7 @@ public class ClassDependenceTree {
         }
     }
 
-    public void addDataInvocationElement(String className, DataInvocationInformation dataInvocationInformation) {
+    public void addDataInvocationElement(String className, InvocationType outgoingInvocation, DataInvocationInformation dataInvocationInformation) {
         if (this.outgoingDependenceInfo.containsKey(className)) {
             this.outgoingDependenceInfo.get(className).addInvokedData(dataInvocationInformation);
         } else {
@@ -85,7 +82,7 @@ public class ClassDependenceTree {
         }
     }
 
-    public void addConstructorInvocationElement(String className, ConstructorInvocationInformation constructorInvocationInformation) {
+    public void addConstructorInvocationElement(String className, InvocationType outgoingInvocation, ConstructorInvocationInformation constructorInvocationInformation) {
         if (this.outgoingDependenceInfo.containsKey(className)) {
             this.outgoingDependenceInfo.get(className).addInvokedConstructor(constructorInvocationInformation);
         } else {
@@ -96,7 +93,7 @@ public class ClassDependenceTree {
 
     }
 
-    public void addMethodInvocationElement(String className, MethodInvocationInformation methodInvocationInformation) {
+    public void addMethodInvocationElement(String className, InvocationType outgoingInvocation, MethodInvocationInformation methodInvocationInformation) {
         if (this.outgoingDependenceInfo.containsKey(className)) {
             this.outgoingDependenceInfo.get(className).addInvokedMethod(methodInvocationInformation);
         } else {

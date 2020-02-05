@@ -4,10 +4,7 @@ import com.ucl.ADA.parser.dependence_information.declaration_information.Constru
 import com.ucl.ADA.parser.dependence_information.declaration_information.DataDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.ModuleDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.DataInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.ModuleInvocationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -64,10 +61,10 @@ class ClassDependenceTreeTest {
     public void addNewElements_testCreationOfKeys() {
         ArrayList<String> classNames = new ArrayList<>(Arrays.asList("FirstClass", "SecondClass", "ThirdClass", "FourthClass"));
 
-        cdt.addModuleInvocationElement(classNames.get(0), null);
-        cdt.addDataInvocationElement(classNames.get(1), null);
-        cdt.addConstructorInvocationElement(classNames.get(2), null);
-        cdt.addMethodInvocationElement(classNames.get(3), null);
+        cdt.addModuleInvocationElement(classNames.get(0), InvocationType.OUTGOING_INVOCATION, null);
+        cdt.addDataInvocationElement(classNames.get(1), InvocationType.OUTGOING_INVOCATION, null);
+        cdt.addConstructorInvocationElement(classNames.get(2), InvocationType.OUTGOING_INVOCATION, null);
+        cdt.addMethodInvocationElement(classNames.get(3), InvocationType.OUTGOING_INVOCATION, null);
 
         assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactlyInAnyOrderElementsOf(classNames);
     }
@@ -82,10 +79,10 @@ class ClassDependenceTreeTest {
         MethodInvocationInformation methodInvocationInformation0 = new MethodInvocationInformation("methodInvocationInformationName");
 
 
-        cdt.addModuleInvocationElement(classNames.get(0), moduleInvocationInformation);
-        cdt.addDataInvocationElement(classNames.get(1), dataInvocationInformation);
-        cdt.addConstructorInvocationElement(classNames.get(2), constructorInvocationInformation);
-        cdt.addMethodInvocationElement(classNames.get(3), methodInvocationInformation0);
+        cdt.addModuleInvocationElement(classNames.get(0), InvocationType.OUTGOING_INVOCATION, moduleInvocationInformation);
+        cdt.addDataInvocationElement(classNames.get(1), InvocationType.OUTGOING_INVOCATION, dataInvocationInformation);
+        cdt.addConstructorInvocationElement(classNames.get(2), InvocationType.OUTGOING_INVOCATION, constructorInvocationInformation);
+        cdt.addMethodInvocationElement(classNames.get(3), InvocationType.OUTGOING_INVOCATION, methodInvocationInformation0);
 
         assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactlyInAnyOrderElementsOf(classNames);
 
