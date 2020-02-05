@@ -12,14 +12,15 @@ import java.util.Set;
 public class SimpleParser {
 
     // change this path for further parsing
-//    static final String src_dir = "/home/mrhmisu/UCL-MS/IRDM-Project/src/";
-    static final String src_dir = "ada-parser/src/main/java/com/ucl/ADA/parser";
+    static final String src_dir = "/home/mrhmisu/Downloads/Egami-master/src";
+    //static final String src_dir = "ada-parser/src/main/java/com/ucl/ADA/parser/";
     public static void main(String[] args) {
 
         SourceParser sourceParser = new SourceParser(src_dir);
         List<String> filePaths = new SourceFileCollector().getJavaFilesFromSourceDirectory(new File(src_dir));
 
         filePaths.forEach(f -> {
+            System.out.println(f.toString());
             Set<SourceFile> sourceSet = sourceParser.parseSource(f);
             ObjectMapper objMapper = new ObjectMapper();
             String jsonStr = "[]";
