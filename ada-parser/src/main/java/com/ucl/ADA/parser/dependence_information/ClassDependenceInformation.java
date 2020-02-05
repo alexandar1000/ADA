@@ -7,16 +7,15 @@ import com.ucl.ADA.parser.dependence_information.invocation_information.DataInvo
 import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.ModuleInvocationInformation;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
 
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter
 public class ClassDependenceInformation {
 
     // Attributes declared in this class
-    private ArrayList<DataDeclarationInformation> dataFieldDeclarations = new ArrayList<>();
+    private ArrayList<DataDeclarationInformation> dataDeclarations = new ArrayList<>();
 
     // Methods declared in this class
     private ArrayList<MethodDeclarationInformation> methodsDeclarations = new ArrayList<>();
@@ -54,7 +53,19 @@ public class ClassDependenceInformation {
     // Packages importing this package (fan-in)
     private ArrayList<ModuleInvocationInformation> incomingModuleImports = new ArrayList<>();
 
-    public void addDataFieldDeclaration() {
+    public ClassDependenceInformation() {
 
+    }
+
+    public void addDataDeclaration(DataDeclarationInformation dataDeclarationInformation) {
+        this.dataDeclarations.add(dataDeclarationInformation);
+    }
+
+    public void addMethodDeclaration(MethodDeclarationInformation methodDeclarationInformation) {
+        this.methodsDeclarations.add(methodDeclarationInformation);
+    }
+
+    public void addConstructorDeclaration(ConstructorDeclarationInformation constructorDeclarationInformation) {
+        this.constructorDeclarations.add(constructorDeclarationInformation);
     }
 }

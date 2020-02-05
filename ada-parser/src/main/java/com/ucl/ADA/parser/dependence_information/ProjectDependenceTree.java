@@ -14,18 +14,10 @@ public class ProjectDependenceTree {
 
     private ArrayList<String> classNames = new ArrayList<>(Arrays.asList("Aaa", "Bbb", "Ccc", "Ddd", "Eee", "Fff"));
 
-
     public ProjectDependenceTree(ArrayList<String> classNames) {
         for (String className : classNames) {
             classDependenceTrees.put(className, null);
         }
     }
 
-    public ProjectDependenceTree randomParsedDataOfRepoPlaceholder () {
-        for (String className : classNames) {
-            classDependenceTrees.put(className, new ClassDependenceTree().randomParsedDataOfClassPlaceholder(className, classNames));
-        }
-
-        return this;
-    }
 }
