@@ -84,4 +84,20 @@ public class ClassDependenceInformation {
     public void addIncomingMethodInvocation(MethodInvocationInformation methodInvocationInformation) {
         this.incomingMethodInvocations.add(methodInvocationInformation);
     }
+
+    public void addInvokedGlobalData(DataInvocationInformation dataInvocationInformation) {
+        this.invokedGlobalData.add(dataInvocationInformation);
+    }
+
+    public void addInvokedGlobalMethod(MethodInvocationInformation methodInvocationInformation) {
+        this.invokedGlobalMethods.add(methodInvocationInformation);
+    }
+
+    public void addImportedModule(ModuleInvocationInformation moduleInvocationInformation) {
+        this.importedModules.add(moduleInvocationInformation);
+    }
+
+    public void addIncomingModuleImport(ModuleInvocationInformation moduleInvocationInformation) {
+        this.incomingModuleImports.add(moduleInvocationInformation);
+    }
 }

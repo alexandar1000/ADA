@@ -5,6 +5,7 @@ import com.ucl.ADA.parser.dependence_information.declaration_information.DataDec
 import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.DataInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.ModuleInvocationInformation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -80,6 +81,42 @@ class ClassDependenceInformationTest {
         cdi.addIncomingMethodInvocation(methodInvocationInformation);
 
         assertThat(cdi.getIncomingMethodInvocations()).containsExactly(methodInvocationInformation);
+    }
+
+    @Test
+    void addInvokedGlobalData_addNewElement() {
+         DataInvocationInformation dataInvocationInformation = new DataInvocationInformation("globalInvocationInformationName");
+
+        cdi.addInvokedGlobalData(dataInvocationInformation);
+
+        assertThat(cdi.getInvokedGlobalData()).containsExactly(dataInvocationInformation);
+    }
+
+    @Test
+    void addInvokedGlobalMethods_addNewElement() {
+         MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("globalInvocationInformationName");
+
+        cdi.addInvokedGlobalMethod(methodInvocationInformation);
+
+        assertThat(cdi.getInvokedGlobalMethods()).containsExactly(methodInvocationInformation);
+    }
+
+    @Test
+    void addImportedModule_addNewElement() {
+         ModuleInvocationInformation moduleInvocationInformation = new ModuleInvocationInformation("moduleInvocationInformationName");
+
+        cdi.addImportedModule(moduleInvocationInformation);
+
+        assertThat(cdi.getImportedModules()).containsExactly(moduleInvocationInformation);
+    }
+
+    @Test
+    void addIncomingModuleImport_addNewElement() {
+         ModuleInvocationInformation moduleInvocationInformation = new ModuleInvocationInformation("moduleInvocationInformationName");
+
+        cdi.addIncomingModuleImport(moduleInvocationInformation);
+
+        assertThat(cdi.getIncomingModuleImports()).containsExactly(moduleInvocationInformation);
     }
 
 
