@@ -1,6 +1,5 @@
 package com.ucl.ADA.metric_calculator.metrics;
 
-import com.ucl.ADA.metric_calculator.metrics_structure.ClassMetricsContainer;
 import com.ucl.ADA.metric_calculator.metrics_structure.ProjectMetricsContainer;
 import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +18,15 @@ public class MetricServices {
     }
 
     public ProjectMetricsContainer computeAllMetrics(ProjectDependenceTree projectDependenceTree) {
+//
+//        // TODO: Implement proper metrics calculation
+//        ProjectMetricsContainer projectMetricsContainer = new ProjectMetricsContainer(projectDependenceTree.getClassNames());
+//
+//        for (String className : projectDependenceTree.getClassNames()) {
+//            projectMetricsContainer.getClassMetrics().put(className, new ClassMetricsContainer());
+//        }
 
-        // TODO: Implement proper metrics calculation
-        ProjectMetricsContainer projectMetricsContainer = new ProjectMetricsContainer(projectDependenceTree.getClassNames());
-
-        for (String className : projectDependenceTree.getClassNames()) {
-            projectMetricsContainer.getClassMetrics().put(className, new ClassMetricsContainer());
-        }
-
-        return projectMetricsContainer;
+        return null;
     }
 
 
