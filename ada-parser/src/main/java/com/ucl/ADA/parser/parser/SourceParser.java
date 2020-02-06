@@ -1,4 +1,4 @@
-package com.ucl.ADA.parser.extractor;
+package com.ucl.ADA.parser.parser;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
@@ -36,7 +36,6 @@ public class SourceParser {
 
         try {
             CompilationUnit cu = StaticJavaParser.parse(new File(sourceFilePath));
-
             cu.findAll(ClassOrInterfaceDeclaration.class).forEach(cl -> {
                 // class name
                 String className = cl.getNameAsString();
@@ -45,7 +44,7 @@ public class SourceParser {
                 if (!cl.getExtendedTypes().isEmpty()) {
                     parentClassName = cl.getExtendedTypes().get(0).toString();
                 }
-                ;
+
                 // implemented interfaces
                 Set<String> implementedInterface = new HashSet<String>();
 
@@ -95,6 +94,7 @@ public class SourceParser {
                     n.findAll(MethodCallExpr.class).forEach(m -> {
                         try {
                             String callee = m.resolve().getQualifiedName();
+
                             // ignore java library methods
                             if (!callee.substring(0, 4).equals("java"))
                                 methodCallExpression.add(callee);
@@ -123,8 +123,8 @@ public class SourceParser {
 
     private static JavaSymbolSolver getConstructedJavaSymbolSolver(String SRC_DIRECTORY_PATH) {
         File[] directories = new File(SRC_DIRECTORY_PATH).listFiles(File::isDirectory);
-        System.out.println(Arrays.asList(SRC_DIRECTORY_PATH));
-        System.out.println(Arrays.asList(directories));
+        //System.out.println(Arrays.asList(SRC_DIRECTORY_PATH));
+        //System.out.println(Arrays.asList(directories));
         System.out.println("Path added to JavaParserTypeSolver");
         CombinedTypeSolver combinedSolver = new CombinedTypeSolver();
         TypeSolver javaParserTypeSolver = new JavaParserTypeSolver(new File(SRC_DIRECTORY_PATH));

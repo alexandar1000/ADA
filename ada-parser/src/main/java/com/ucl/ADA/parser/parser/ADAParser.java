@@ -1,4 +1,4 @@
-package com.ucl.ADA.parser.extractor;
+package com.ucl.ADA.parser.parser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,19 +6,27 @@ import com.ucl.ADA.parser.model.SourceFile;
 import com.ucl.ADA.parser.util.SourceFileCollector;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SimpleParser {
+public class ADAParser {
 
-    // change this path for further parsing
-    static final String src_dir = "/home/mrhmisu/Downloads/Egami-master/src";
-    //static final String src_dir = "ada-parser/src/main/java/com/ucl/ADA/parser/";
-    public static void main(String[] args) {
-
+    public Set<SourceFile> getParsedSourceFile(String src_dir) {
+        Set<SourceFile> allParsedFile = new HashSet<>();
         SourceParser sourceParser = new SourceParser(src_dir);
-        List<String> filePaths = new SourceFileCollector().getJavaFilesFromSourceDirectory(new File(src_dir));
+        List<String> filePaths = SourceFileCollector.getJavaFilesFromSourceDirectory(new File(src_dir));
+        filePaths.forEach(f -> {
+            System.out.println(f.toString());
+            Set<SourceFile> sourceSet = sourceParser.parseSource(f);
+            allParsedFile.addAll(sourceSet);
+        });
+        return allParsedFile;
+    }
 
+    public void printParsedSourceFileInJSON(String src_dir) {
+        SourceParser sourceParser = new SourceParser(src_dir);
+        List<String> filePaths = SourceFileCollector.getJavaFilesFromSourceDirectory(new File(src_dir));
         filePaths.forEach(f -> {
             System.out.println(f.toString());
             Set<SourceFile> sourceSet = sourceParser.parseSource(f);
