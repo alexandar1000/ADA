@@ -6,6 +6,7 @@ import com.ucl.ADA.parser.dependence_information.declaration_information.MethodD
 import com.ucl.ADA.parser.dependence_information.declaration_information.PackageDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.AttributeInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocationInformation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -178,7 +179,7 @@ class ProjectDependenceTreeTest {
 
         ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorExample");
 
-        pdt.addConstructorInformation(consumingClassName, declaringClassName, constructorInvocationInformation);
+        pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation);
 
         assertThat(pdt.getClassDependenceTrees().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getConstructors()).containsExactly(constructorInvocationInformation);
     }
@@ -191,7 +192,7 @@ class ProjectDependenceTreeTest {
 
         ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorExample");
 
-        pdt.addConstructorInformation(consumingClassName, declaringClassName, constructorInvocationInformation);
+        pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation);
 
         assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getConstructors()).containsExactly(constructorInvocationInformation);
     }
@@ -204,8 +205,8 @@ class ProjectDependenceTreeTest {
         ConstructorInvocationInformation constructorInvocationInformation0 = new ConstructorInvocationInformation("constructorExample0");
         ConstructorInvocationInformation constructorInvocationInformation1 = new ConstructorInvocationInformation("constructorExample1");
 
-        pdt.addConstructorInformation(consumingClassName, declaringClassName, constructorInvocationInformation0);
-        pdt.addConstructorInformation(consumingClassName, declaringClassName, constructorInvocationInformation1);
+        pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation0);
+        pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation1);
 
         assertThat(pdt.getClassDependenceTrees().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getConstructors()).containsExactlyInAnyOrderElementsOf(Arrays.asList(constructorInvocationInformation0, constructorInvocationInformation1));
     }
@@ -219,10 +220,64 @@ class ProjectDependenceTreeTest {
         ConstructorInvocationInformation constructorInvocationInformation0 = new ConstructorInvocationInformation("constructorExample0");
         ConstructorInvocationInformation constructorInvocationInformation1 = new ConstructorInvocationInformation("constructorExample1");
 
-        pdt.addConstructorInformation(consumingClassName, declaringClassName, constructorInvocationInformation0);
-        pdt.addConstructorInformation(consumingClassName, declaringClassName, constructorInvocationInformation1);
+        pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation0);
+        pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation1);
 
         assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getConstructors()).containsExactlyInAnyOrderElementsOf(Arrays.asList(constructorInvocationInformation0, constructorInvocationInformation1));
+    }
+
+    @Test
+    public void addMethodInvocation_testIfItIsStoredInOutgoingDependenciesAndKeyDoesntAlreadyExist() {
+        String declaringClassName = "DeclaringTestClass";
+        String consumingClassName = "ConsumingTestClass";
+
+        MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodExample");
+
+        pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation);
+
+        assertThat(pdt.getClassDependenceTrees().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getMethods()).containsExactly(methodInvocationInformation);
+    }
+
+
+    @Test
+    public void addMethodInvocation_testIfItIsStoredInIncomingDependenciesAndKeyDoesntAlreadyExist() {
+        String declaringClassName = "DeclaringTestClass";
+        String consumingClassName = "ConsumingTestClass";
+
+        MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodExample");
+
+        pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation);
+
+        assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getMethods()).containsExactly(methodInvocationInformation);
+    }
+
+    @Test
+    public void addMethodInvocation_testIfItIsStoredInOutgoingDependenciesAndKeyAlreadyExists() {
+        String declaringClassName = "DeclaringTestClass";
+        String consumingClassName = "ConsumingTestClass";
+
+        MethodInvocationInformation methodInvocationInformation0 = new MethodInvocationInformation("methodExample0");
+        MethodInvocationInformation methodInvocationInformation1 = new MethodInvocationInformation("methodExample1");
+
+        pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation0);
+        pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation1);
+
+        assertThat(pdt.getClassDependenceTrees().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getMethods()).containsExactlyInAnyOrderElementsOf(Arrays.asList(methodInvocationInformation0, methodInvocationInformation1));
+    }
+
+
+    @Test
+    public void addMethodInvocation_testIfItIsStoredInIncomingDependenciesAndKeyAlreadyExists() {
+        String declaringClassName = "DeclaringTestClass";
+        String consumingClassName = "ConsumingTestClass";
+
+        MethodInvocationInformation methodInvocationInformation0 = new MethodInvocationInformation("methodExample0");
+        MethodInvocationInformation methodInvocationInformation1 = new MethodInvocationInformation("methodExample1");
+
+        pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation0);
+        pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation1);
+
+       assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getMethods()).containsExactlyInAnyOrderElementsOf(Arrays.asList(methodInvocationInformation0, methodInvocationInformation1));
     }
 
 }

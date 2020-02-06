@@ -4,10 +4,7 @@ import com.ucl.ADA.parser.dependence_information.declaration_information.Attribu
 import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.PackageDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.AttributeInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.InvocationType;
-import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -99,7 +96,7 @@ public class ProjectDependenceTree {
         }
     }
 
-    public void addConstructorInformation(String consumingClassName, String declaringClassName, ConstructorInvocationInformation constructorInvocationInformation) {
+    public void addConstructorInvocation(String consumingClassName, String declaringClassName, ConstructorInvocationInformation constructorInvocationInformation) {
         if (this.classDependenceTrees.containsKey(consumingClassName)) {
             this.classDependenceTrees.get(consumingClassName).addConstructorInvocationElement(declaringClassName, InvocationType.OUTGOING_INVOCATION, constructorInvocationInformation);
         } else {
@@ -113,6 +110,24 @@ public class ProjectDependenceTree {
         } else {
             ClassDependenceTree classDependenceTree = new ClassDependenceTree();
             classDependenceTree.addConstructorInvocationElement(consumingClassName, InvocationType.INCOMING_INVOCATION, constructorInvocationInformation);
+            this.classDependenceTrees.put(declaringClassName, classDependenceTree);
+        }
+    }
+
+    public void addMethodInvocation(String consumingClassName, String declaringClassName, MethodInvocationInformation methodInvocationInformation) {
+        if (this.classDependenceTrees.containsKey(consumingClassName)) {
+            this.classDependenceTrees.get(consumingClassName).addMethodInvocationElement(declaringClassName, InvocationType.OUTGOING_INVOCATION, methodInvocationInformation);
+        } else {
+            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
+            classDependenceTree.addMethodInvocationElement(declaringClassName, InvocationType.OUTGOING_INVOCATION, methodInvocationInformation);
+            this.classDependenceTrees.put(consumingClassName, classDependenceTree);
+        }
+
+        if (this.classDependenceTrees.containsKey(declaringClassName)) {
+            this.classDependenceTrees.get(declaringClassName).addMethodInvocationElement(consumingClassName, InvocationType.INCOMING_INVOCATION, methodInvocationInformation);
+        } else {
+            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
+            classDependenceTree.addMethodInvocationElement(consumingClassName, InvocationType.INCOMING_INVOCATION, methodInvocationInformation);
             this.classDependenceTrees.put(declaringClassName, classDependenceTree);
         }
     }
