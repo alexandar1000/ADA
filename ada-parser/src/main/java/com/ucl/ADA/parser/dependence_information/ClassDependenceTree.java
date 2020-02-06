@@ -36,108 +36,160 @@ public class ClassDependenceTree {
     private ArrayList<MethodDeclarationInformation> methodsDeclarations = new ArrayList<>();
 
     /**
-     * Information about the invocations of the elements from the other classes from this class
+     * Information about the invocations of the elements from the other classes from this class.
      */
     private HashMap<String, ClassDependenceInformation> outgoingDependenceInfo = new HashMap<>();
 
     /**
-     * Information about the invocations of elements from this class by the other classes
+     * Information about the invocations of elements from this class by the other classes.
      */
     private HashMap<String, ClassDependenceInformation> incomingDependenceInfo = new HashMap<>();
 
 
+    /**
+     * Creates a new instance using the package name.
+     * @param packageDeclarationInformation the name of the package corresponding to the current class
+     */
     public ClassDependenceTree(PackageDeclarationInformation packageDeclarationInformation) {
         this.currentPackage = packageDeclarationInformation;
     }
 
+    /**
+     * Adds a Attribute Declaration to the ClassDependenceTree
+     * @param attributeDeclarationInformation the attribute declaration object
+     */
     public void addAttributeDeclaration(AttributeDeclarationInformation attributeDeclarationInformation) {
         this.attributeDeclarations.add(attributeDeclarationInformation);
     }
 
+    /**
+     * Adds a Method Declaration to the ClassDependenceTree
+     * @param methodDeclarationInformation the method declaration object
+     */
     public void addMethodDeclaration(MethodDeclarationInformation methodDeclarationInformation) {
         this.methodsDeclarations.add(methodDeclarationInformation);
     }
 
+    /**
+     * Adds a Constructor Declaration to the ClassDependenceTree
+     * @param constructorDeclarationInformation the constructor declaration object
+     */
     public void addConstructorDeclaration(ConstructorDeclarationInformation constructorDeclarationInformation) {
         this.constructorDeclarations.add(constructorDeclarationInformation);
     }
 
-    public void addPackageInvocationElement(String className, InvocationType invocationType, PackageInvocationInformation packageInvocationInformation) {
+    /**
+     * Adds a package invocation element as either an incoming or outgoing dependency, depending on the call.
+     * @param relatingClass the class which the invocation relates to
+     * @param invocationType either an incoming invocation type in the case that the package is being invoked from the
+     *                       relatingClass, or an outgoing invocation type in the case that the package is invoked from
+     *                       the relatingClass
+     * @param packageInvocationInformation the package invocation object containing the data corresponding to the
+     *                                     invocation in question
+     */
+    public void addPackageInvocationElement(String relatingClass, InvocationType invocationType, PackageInvocationInformation packageInvocationInformation) {
         if (invocationType == InvocationType.OUTGOING_INVOCATION) {
-            if (this.outgoingDependenceInfo.containsKey(className)) {
-                this.outgoingDependenceInfo.get(className).addNewModule(packageInvocationInformation);
+            if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
+                this.outgoingDependenceInfo.get(relatingClass).addNewPackage(packageInvocationInformation);
             } else {
                 ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
-                classDependenceInformation.addNewModule(packageInvocationInformation);
-                this.outgoingDependenceInfo.put(className, classDependenceInformation);
+                classDependenceInformation.addNewPackage(packageInvocationInformation);
+                this.outgoingDependenceInfo.put(relatingClass, classDependenceInformation);
             }
         } else {
-            if (this.incomingDependenceInfo.containsKey(className)) {
-                this.incomingDependenceInfo.get(className).addNewModule(packageInvocationInformation);
+            if (this.incomingDependenceInfo.containsKey(relatingClass)) {
+                this.incomingDependenceInfo.get(relatingClass).addNewPackage(packageInvocationInformation);
             } else {
                 ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
-                classDependenceInformation.addNewModule(packageInvocationInformation);
-                this.incomingDependenceInfo.put(className, classDependenceInformation);
+                classDependenceInformation.addNewPackage(packageInvocationInformation);
+                this.incomingDependenceInfo.put(relatingClass, classDependenceInformation);
             }
         }
     }
 
-    public void addAttributeInvocationElement(String className, InvocationType invocationType, AttributeInvocationInformation attributeInvocationInformation) {
+    /**
+     * Adds an attribute invocation element as either an incoming or outgoing dependency, depending on the call.
+     * @param relatingClass the class which the invocation relates to
+     * @param invocationType either an incoming invocation type in the case that the attribute is being invoked from the
+     *                       relatingClass, or an outgoing invocation type in the case that the attribute is invoked from
+     *                       the relatingClass
+     * @param attributeInvocationInformation the attribute invocation object containing the data corresponding to the
+     *                                     invocation in question
+     */
+    public void addAttributeInvocationElement(String relatingClass, InvocationType invocationType, AttributeInvocationInformation attributeInvocationInformation) {
         if (invocationType == InvocationType.OUTGOING_INVOCATION) {
-            if (this.outgoingDependenceInfo.containsKey(className)) {
-                this.outgoingDependenceInfo.get(className).addNewAttribute(attributeInvocationInformation);
+            if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
+                this.outgoingDependenceInfo.get(relatingClass).addNewAttribute(attributeInvocationInformation);
             } else {
                 ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
                 classDependenceInformation.addNewAttribute(attributeInvocationInformation);
-                this.outgoingDependenceInfo.put(className, classDependenceInformation);
+                this.outgoingDependenceInfo.put(relatingClass, classDependenceInformation);
             }
         } else {
-            if (this.incomingDependenceInfo.containsKey(className)) {
-                this.incomingDependenceInfo.get(className).addNewAttribute(attributeInvocationInformation);
+            if (this.incomingDependenceInfo.containsKey(relatingClass)) {
+                this.incomingDependenceInfo.get(relatingClass).addNewAttribute(attributeInvocationInformation);
             } else {
                 ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
                 classDependenceInformation.addNewAttribute(attributeInvocationInformation);
-                this.incomingDependenceInfo.put(className, classDependenceInformation);
+                this.incomingDependenceInfo.put(relatingClass, classDependenceInformation);
             }
         }
     }
 
-    public void addConstructorInvocationElement(String className, InvocationType invocationType, ConstructorInvocationInformation constructorInvocationInformation) {
+    /**
+     * Adds a constructor invocation element as either an incoming or outgoing dependency, depending on the call.
+     * @param relatingClass the class which the invocation relates to
+     * @param invocationType either an incoming invocation type in the case that the constructor is being invoked from the
+     *                       relatingClass, or an outgoing invocation type in the case that the constructor is invoked from
+     *                       the relatingClass
+     * @param constructorInvocationInformation the constructor invocation object containing the data corresponding to the
+     *                                     invocation in question
+     */
+    public void addConstructorInvocationElement(String relatingClass, InvocationType invocationType, ConstructorInvocationInformation constructorInvocationInformation) {
         if (invocationType == InvocationType.OUTGOING_INVOCATION) {
-            if (this.outgoingDependenceInfo.containsKey(className)) {
-                this.outgoingDependenceInfo.get(className).addNewConstructor(constructorInvocationInformation);
+            if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
+                this.outgoingDependenceInfo.get(relatingClass).addNewConstructor(constructorInvocationInformation);
             } else {
                 ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
                 classDependenceInformation.addNewConstructor(constructorInvocationInformation);
-                this.outgoingDependenceInfo.put(className, classDependenceInformation);
+                this.outgoingDependenceInfo.put(relatingClass, classDependenceInformation);
             }
         } else {
-            if (this.incomingDependenceInfo.containsKey(className)) {
-                this.incomingDependenceInfo.get(className).addNewConstructor(constructorInvocationInformation);
+            if (this.incomingDependenceInfo.containsKey(relatingClass)) {
+                this.incomingDependenceInfo.get(relatingClass).addNewConstructor(constructorInvocationInformation);
             } else {
                 ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
                 classDependenceInformation.addNewConstructor(constructorInvocationInformation);
-                this.incomingDependenceInfo.put(className, classDependenceInformation);
+                this.incomingDependenceInfo.put(relatingClass, classDependenceInformation);
             }
         }
     }
 
-    public void addMethodInvocationElement(String className, InvocationType invocationType, MethodInvocationInformation methodInvocationInformation) {
+    /**
+     * Adds a method invocation element as either an incoming or outgoing dependency, depending on the call.
+     * @param relatingClass the class which the invocation relates to
+     * @param invocationType either an incoming invocation type in the case that the method is being invoked from the
+     *                       relatingClass, or an outgoing invocation type in the case that the method is invoked from
+     *                       the relatingClass
+     * @param methodInvocationInformation the method invocation object containing the data corresponding to the
+     *                                     invocation in question
+     */
+    public void addMethodInvocationElement(String relatingClass, InvocationType invocationType, MethodInvocationInformation methodInvocationInformation) {
         if (invocationType == InvocationType.OUTGOING_INVOCATION) {
-            if (this.outgoingDependenceInfo.containsKey(className)) {
-                this.outgoingDependenceInfo.get(className).addNewMethod(methodInvocationInformation);
+            if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
+                this.outgoingDependenceInfo.get(relatingClass).addNewMethod(methodInvocationInformation);
             } else {
                 ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
                 classDependenceInformation.addNewMethod(methodInvocationInformation);
-                this.outgoingDependenceInfo.put(className, classDependenceInformation);
+                this.outgoingDependenceInfo.put(relatingClass, classDependenceInformation);
             }
         } else {
-            if (this.incomingDependenceInfo.containsKey(className)) {
-                this.incomingDependenceInfo.get(className).addNewMethod(methodInvocationInformation);
+            if (this.incomingDependenceInfo.containsKey(relatingClass)) {
+                this.incomingDependenceInfo.get(relatingClass).addNewMethod(methodInvocationInformation);
             } else {
                 ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
                 classDependenceInformation.addNewMethod(methodInvocationInformation);
-                this.incomingDependenceInfo.put(className, classDependenceInformation);
+                this.incomingDependenceInfo.put(relatingClass, classDependenceInformation);
             }
         }
     }

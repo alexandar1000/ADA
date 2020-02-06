@@ -67,7 +67,7 @@ class ClassDependenceInformationTest {
     void addNewModule_addNewElement() {
          PackageInvocationInformation packageInvocationInformation = new PackageInvocationInformation("moduleInvocationInformationName");
 
-        cdi.addNewModule(packageInvocationInformation);
+        cdi.addNewPackage(packageInvocationInformation);
 
         assertThat(cdi.getPackages()).containsExactly(packageInvocationInformation);
     }
