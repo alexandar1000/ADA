@@ -6,8 +6,7 @@ import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor
 public class MetricValue {
-
-    private Double simpleMetric;
-    private Double mediumMetric;
-    private Double complexMetric;
+    private Float numberOfPackageImports;
+    private Float numberOfAttributeInvocations;
+    private Float numberOfMethodInvocations;
 }
