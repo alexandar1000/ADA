@@ -111,7 +111,62 @@ class MetricValueTest {
     }
 
     @Test
-    public void numberOfPackageImports_testMetricCorrectness() {
+    public void numberOfPackageImportsIncoming_testMetricCorrectness() {
+
+    }
+
+    @Test
+    public void numberOfPackageImportsOutgoing_testMetricCorrectness() {
+
+    }
+
+    @Test
+    public void numberOfAttributeInvocationsIncoming_testMetricCorrectness() {
+
+    }
+
+    @Test
+    public void numberOfAttributeInvocationsOutgoing_testMetricCorrectness() {
+
+    }
+
+    @Test
+    public void numberOfMethodInvocationsIncoming_testMetricCorrectness() {
+
+    }
+
+    @Test
+    public void numberOfMethodInvocationsOutgoing_testMetricCorrectness() {
+
+    }
+
+    @Test
+    public void numberOfConstructorInvocationsIncoming_testMetricCorrectness() {
+
+    }
+
+    @Test
+    public void numberOfConstructorInvocationsOutgoing_testMetricCorrectness() {
+
+    }
+
+    @Test
+    public void bidirectionalNumberOfPackageImports_testMetricCorrectness() {
+
+    }
+
+    @Test
+    public void bidirectionalNumberOfAttributeInvocations_testMetricCorrectness() {
+
+    }
+
+    @Test
+    public void bidirectionalNumberOfMethodInvocations_testMetricCorrectness() {
+
+    }
+
+    @Test
+    public void bidirectionalNumberOfConstructorInvocations_testMetricCorrectness() {
 
     }
 }
