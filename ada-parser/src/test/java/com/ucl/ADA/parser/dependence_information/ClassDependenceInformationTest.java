@@ -3,7 +3,7 @@ package com.ucl.ADA.parser.dependence_information;
 import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.AttributeInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.ModuleInvocationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocationInformation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +22,7 @@ class ClassDependenceInformationTest {
     void addNewDataField_addNewElement() {
         AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("invocationInformationName");
 
-        cdi.addNewDataField(attributeInvocationInformation);
+        cdi.addNewAttribute(attributeInvocationInformation);
 
         assertThat(cdi.getAttributes()).containsExactly(attributeInvocationInformation);
     }
@@ -65,10 +65,10 @@ class ClassDependenceInformationTest {
 
     @Test
     void addNewModule_addNewElement() {
-         ModuleInvocationInformation moduleInvocationInformation = new ModuleInvocationInformation("moduleInvocationInformationName");
+         PackageInvocationInformation packageInvocationInformation = new PackageInvocationInformation("moduleInvocationInformationName");
 
-        cdi.addNewModule(moduleInvocationInformation);
+        cdi.addNewModule(packageInvocationInformation);
 
-        assertThat(cdi.getPackages()).containsExactly(moduleInvocationInformation);
+        assertThat(cdi.getPackages()).containsExactly(packageInvocationInformation);
     }
 }

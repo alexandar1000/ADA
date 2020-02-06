@@ -3,7 +3,7 @@ package com.ucl.ADA.parser.dependence_information;
 import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.AttributeInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.ModuleInvocationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocationInformation;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,13 +33,13 @@ public class ClassDependenceInformation {
 
     // For environmental coupling:
     // Packages imported/exported
-    private ArrayList<ModuleInvocationInformation> packages = new ArrayList<>();
+    private ArrayList<PackageInvocationInformation> packages = new ArrayList<>();
 
 
     public ClassDependenceInformation() {
     }
 
-    public void addNewDataField(AttributeInvocationInformation attributeInvocationInformation) {
+    public void addNewAttribute(AttributeInvocationInformation attributeInvocationInformation) {
         this.attributes.add(attributeInvocationInformation);
     }
 
@@ -59,7 +59,7 @@ public class ClassDependenceInformation {
         this.globalMethods.add(methodInvocationInformation);
     }
 
-    public void addNewModule(ModuleInvocationInformation moduleInvocationInformation) {
-        this.packages.add(moduleInvocationInformation);
+    public void addNewModule(PackageInvocationInformation packageInvocationInformation) {
+        this.packages.add(packageInvocationInformation);
     }
 }

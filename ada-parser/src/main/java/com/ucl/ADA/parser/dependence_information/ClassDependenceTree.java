@@ -3,7 +3,7 @@ package com.ucl.ADA.parser.dependence_information;
 import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.AttributeDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.ModuleDeclarationInformation;
+import com.ucl.ADA.parser.dependence_information.declaration_information.PackageDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ public class ClassDependenceTree {
     /**
      * Class package
      */
-    private ModuleDeclarationInformation currentPackage = null;
+    private PackageDeclarationInformation currentPackage = null;
 
     /**
      * Attributes declared in this class.
@@ -46,8 +46,8 @@ public class ClassDependenceTree {
     private HashMap<String, ClassDependenceInformation> incomingDependenceInfo = new HashMap<>();
 
 
-    public ClassDependenceTree(ModuleDeclarationInformation moduleDeclarationInformation) {
-        this.currentPackage = moduleDeclarationInformation;
+    public ClassDependenceTree(PackageDeclarationInformation packageDeclarationInformation) {
+        this.currentPackage = packageDeclarationInformation;
     }
 
     public void addAttributeDeclaration(AttributeDeclarationInformation attributeDeclarationInformation) {
@@ -62,76 +62,80 @@ public class ClassDependenceTree {
         this.constructorDeclarations.add(constructorDeclarationInformation);
     }
 
-    public void addModuleInvocationElement(String className, InvocationType outgoingInvocation, ModuleInvocationInformation moduleInvocationInformation) {
-        if (this.outgoingDependenceInfo.containsKey(className)) {
-            if (outgoingInvocation == InvocationType.OUTGOING_INVOCATION) {
-                this.outgoingDependenceInfo.get(className).addNewModule(moduleInvocationInformation);
+    public void addPackageInvocationElement(String className, InvocationType invocationType, PackageInvocationInformation packageInvocationInformation) {
+        if (invocationType == InvocationType.OUTGOING_INVOCATION) {
+            if (this.outgoingDependenceInfo.containsKey(className)) {
+                this.outgoingDependenceInfo.get(className).addNewModule(packageInvocationInformation);
             } else {
-                this.incomingDependenceInfo.get(className).addNewModule(moduleInvocationInformation);
+                ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
+                classDependenceInformation.addNewModule(packageInvocationInformation);
+                this.outgoingDependenceInfo.put(className, classDependenceInformation);
             }
         } else {
-            ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
-            if (outgoingInvocation == InvocationType.OUTGOING_INVOCATION) {
-                classDependenceInformation.addNewModule(moduleInvocationInformation);
-                this.outgoingDependenceInfo.put(className, classDependenceInformation);
+            if (this.incomingDependenceInfo.containsKey(className)) {
+                this.incomingDependenceInfo.get(className).addNewModule(packageInvocationInformation);
             } else {
-                classDependenceInformation.addNewModule(moduleInvocationInformation);
+                ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
+                classDependenceInformation.addNewModule(packageInvocationInformation);
                 this.incomingDependenceInfo.put(className, classDependenceInformation);
             }
         }
     }
 
-    public void addAttributeInvocationElement(String className, InvocationType outgoingInvocation, AttributeInvocationInformation attributeInvocationInformation) {
-        if (this.outgoingDependenceInfo.containsKey(className)) {
-            if (outgoingInvocation == InvocationType.OUTGOING_INVOCATION) {
-                this.outgoingDependenceInfo.get(className).addNewDataField(attributeInvocationInformation);
+    public void addAttributeInvocationElement(String className, InvocationType invocationType, AttributeInvocationInformation attributeInvocationInformation) {
+        if (invocationType == InvocationType.OUTGOING_INVOCATION) {
+            if (this.outgoingDependenceInfo.containsKey(className)) {
+                this.outgoingDependenceInfo.get(className).addNewAttribute(attributeInvocationInformation);
             } else {
-                this.incomingDependenceInfo.get(className).addNewDataField(attributeInvocationInformation);
+                ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
+                classDependenceInformation.addNewAttribute(attributeInvocationInformation);
+                this.outgoingDependenceInfo.put(className, classDependenceInformation);
             }
         } else {
-            ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
-            if (outgoingInvocation == InvocationType.OUTGOING_INVOCATION) {
-                classDependenceInformation.addNewDataField(attributeInvocationInformation);
-                this.outgoingDependenceInfo.put(className, classDependenceInformation);
+            if (this.incomingDependenceInfo.containsKey(className)) {
+                this.incomingDependenceInfo.get(className).addNewAttribute(attributeInvocationInformation);
             } else {
-                classDependenceInformation.addNewDataField(attributeInvocationInformation);
+                ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
+                classDependenceInformation.addNewAttribute(attributeInvocationInformation);
                 this.incomingDependenceInfo.put(className, classDependenceInformation);
             }
         }
     }
 
-    public void addConstructorInvocationElement(String className, InvocationType outgoingInvocation, ConstructorInvocationInformation constructorInvocationInformation) {
-        if (this.outgoingDependenceInfo.containsKey(className)) {
-            if (outgoingInvocation == InvocationType.OUTGOING_INVOCATION) {
+    public void addConstructorInvocationElement(String className, InvocationType invocationType, ConstructorInvocationInformation constructorInvocationInformation) {
+        if (invocationType == InvocationType.OUTGOING_INVOCATION) {
+            if (this.outgoingDependenceInfo.containsKey(className)) {
                 this.outgoingDependenceInfo.get(className).addNewConstructor(constructorInvocationInformation);
             } else {
-                this.incomingDependenceInfo.get(className).addNewConstructor(constructorInvocationInformation);
-            }
-        } else {
-            ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
-            if (outgoingInvocation == InvocationType.OUTGOING_INVOCATION) {
+                ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
                 classDependenceInformation.addNewConstructor(constructorInvocationInformation);
                 this.outgoingDependenceInfo.put(className, classDependenceInformation);
+            }
+        } else {
+            if (this.incomingDependenceInfo.containsKey(className)) {
+                this.incomingDependenceInfo.get(className).addNewConstructor(constructorInvocationInformation);
             } else {
+                ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
                 classDependenceInformation.addNewConstructor(constructorInvocationInformation);
                 this.incomingDependenceInfo.put(className, classDependenceInformation);
             }
         }
     }
 
-    public void addMethodInvocationElement(String className, InvocationType outgoingInvocation, MethodInvocationInformation methodInvocationInformation) {
-        if (this.outgoingDependenceInfo.containsKey(className)) {
-            if (outgoingInvocation == InvocationType.OUTGOING_INVOCATION) {
+    public void addMethodInvocationElement(String className, InvocationType invocationType, MethodInvocationInformation methodInvocationInformation) {
+        if (invocationType == InvocationType.OUTGOING_INVOCATION) {
+            if (this.outgoingDependenceInfo.containsKey(className)) {
                 this.outgoingDependenceInfo.get(className).addNewMethod(methodInvocationInformation);
             } else {
-                this.incomingDependenceInfo.get(className).addNewMethod(methodInvocationInformation);
-            }
-        } else {
-            ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
-            if (outgoingInvocation == InvocationType.OUTGOING_INVOCATION) {
+                ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
                 classDependenceInformation.addNewMethod(methodInvocationInformation);
                 this.outgoingDependenceInfo.put(className, classDependenceInformation);
+            }
+        } else {
+            if (this.incomingDependenceInfo.containsKey(className)) {
+                this.incomingDependenceInfo.get(className).addNewMethod(methodInvocationInformation);
             } else {
+                ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
                 classDependenceInformation.addNewMethod(methodInvocationInformation);
                 this.incomingDependenceInfo.put(className, classDependenceInformation);
             }

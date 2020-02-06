@@ -3,9 +3,12 @@ package com.ucl.ADA.parser.dependence_information;
 import com.ucl.ADA.parser.dependence_information.declaration_information.AttributeDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.ModuleDeclarationInformation;
+import com.ucl.ADA.parser.dependence_information.declaration_information.PackageDeclarationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocationInformation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,17 +21,17 @@ class ProjectDependenceTreeTest {
     }
 
     @Test
-    public void addModuleDeclaration() {
+    public void testAddModuleDeclaration() {
         String declaringClassName = "DeclaringTestClass";
-        ModuleDeclarationInformation moduleDeclarationInformation = new ModuleDeclarationInformation("com.ADA.example");
+        PackageDeclarationInformation packageDeclarationInformation = new PackageDeclarationInformation("com.ADA.example");
 
-        pdt.addModuleDeclaration(declaringClassName, moduleDeclarationInformation);
+        pdt.addModuleDeclaration(declaringClassName, packageDeclarationInformation);
 
-        assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getCurrentPackage()).isEqualTo(moduleDeclarationInformation);
+        assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getCurrentPackage()).isEqualTo(packageDeclarationInformation);
     }
 
     @Test
-    public void addAttributeDeclaration() {
+    public void testAddAttributeDeclaration() {
         String declaringClassName = "DeclaringTestClass";
         AttributeDeclarationInformation attributeDeclarationInformation = new AttributeDeclarationInformation("exampleAttribute");
 
@@ -38,7 +41,7 @@ class ProjectDependenceTreeTest {
     }
 
     @Test
-    public void addConstructorDeclaration() {
+    public void testAddConstructorDeclaration() {
         String declaringClassName = "DeclaringTestClass";
         ConstructorDeclarationInformation constructorDeclarationInformation = new ConstructorDeclarationInformation("exampleConstructor");
 
@@ -48,7 +51,7 @@ class ProjectDependenceTreeTest {
     }
 
     @Test
-    public void addMethodDeclaration() {
+    public void testAddMethodDeclaration() {
         String declaringClassName = "DeclaringTestClass";
         MethodDeclarationInformation methodDeclarationInformation = new MethodDeclarationInformation("exampleMethod");
 
@@ -57,6 +60,58 @@ class ProjectDependenceTreeTest {
         assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getMethodsDeclarations()).containsExactly(methodDeclarationInformation);
     }
 
+    @Test
+    public void addImportedPackage_testIfItIsStoredInOutgoingDependenciesAndKeyDoesntAlreadyExist() {
+        String declaringClassName = "DeclaringTestClass";
+        String consumingClassName = "ConsumingTestClass";
 
+        PackageInvocationInformation packageDeclarationInformation = new PackageInvocationInformation("com.ADA.invocation_example");
+
+        pdt.addPackageInvocation(consumingClassName, declaringClassName, packageDeclarationInformation);
+
+        assertThat(pdt.getClassDependenceTrees().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getPackages()).containsExactly(packageDeclarationInformation);
+    }
+
+
+    @Test
+    public void addImportedPackage_testIfItIsStoredInIncomingDependenciesAndKeyDoesntAlreadyExist() {
+        String declaringClassName = "DeclaringTestClass";
+        String consumingClassName = "ConsumingTestClass";
+
+        PackageInvocationInformation packageDeclarationInformation = new PackageInvocationInformation("com.ADA.invocation_example");
+
+        pdt.addPackageInvocation(consumingClassName, declaringClassName, packageDeclarationInformation);
+
+        assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getPackages()).containsExactly(packageDeclarationInformation);
+    }
+
+    @Test
+    public void addImportedPackage_testIfItIsStoredInOutgoingDependenciesAndKeyAlreadyExists() {
+        String declaringClassName = "DeclaringTestClass";
+        String consumingClassName = "ConsumingTestClass";
+
+        PackageInvocationInformation packageDeclarationInformation0 = new PackageInvocationInformation("com.ADA.invocation_example0");
+        PackageInvocationInformation packageDeclarationInformation1 = new PackageInvocationInformation("com.ADA.invocation_example1");
+
+        pdt.addPackageInvocation(consumingClassName, declaringClassName, packageDeclarationInformation0);
+        pdt.addPackageInvocation(consumingClassName, declaringClassName, packageDeclarationInformation1);
+
+        assertThat(pdt.getClassDependenceTrees().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getPackages()).containsExactlyInAnyOrderElementsOf(Arrays.asList(packageDeclarationInformation0, packageDeclarationInformation1));
+    }
+
+
+    @Test
+    public void addImportedPackage_testIfItIsStoredInIncomingDependenciesAndKeyAlreadyExists() {
+        String declaringClassName = "DeclaringTestClass";
+        String consumingClassName = "ConsumingTestClass";
+
+        PackageInvocationInformation packageDeclarationInformation0 = new PackageInvocationInformation("com.ADA.invocation_example0");
+        PackageInvocationInformation packageDeclarationInformation1 = new PackageInvocationInformation("com.ADA.invocation_example1");
+
+        pdt.addPackageInvocation(consumingClassName, declaringClassName, packageDeclarationInformation0);
+        pdt.addPackageInvocation(consumingClassName, declaringClassName, packageDeclarationInformation1);
+
+        assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getPackages()).containsExactlyInAnyOrderElementsOf(Arrays.asList(packageDeclarationInformation0, packageDeclarationInformation1));
+    }
 
 }
