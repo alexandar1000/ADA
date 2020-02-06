@@ -1,9 +1,6 @@
 package com.ucl.ADA.parser.dependence_information;
 
-import com.ucl.ADA.parser.dependence_information.declaration_information.AttributeDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.PackageDeclarationInformation;
+import com.ucl.ADA.parser.dependence_information.declaration_information.*;
 import com.ucl.ADA.parser.dependence_information.invocation_information.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +28,7 @@ class ClassDependenceTreeTest {
 
     @Test
     void addDataDeclaration_addNewElement() {
-        AttributeDeclarationInformation attributeDeclarationInformation = new AttributeDeclarationInformation("declarationInformationName");
+        AttributeDeclarationInformation attributeDeclarationInformation = new AttributeDeclarationInformation(AccessModifierType.DEFAULT, "String", "attribute", "declaringAttributeName", true);
 
         cdt.addAttributeDeclaration(attributeDeclarationInformation);
 
@@ -40,7 +37,7 @@ class ClassDependenceTreeTest {
 
     @Test
     void addConstructorDeclaration_addNewElement() {
-        ConstructorDeclarationInformation constructorDeclarationInformation = new ConstructorDeclarationInformation("declarationInformationName");
+        ConstructorDeclarationInformation constructorDeclarationInformation = new ConstructorDeclarationInformation(AccessModifierType.DEFAULT, "String", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
         cdt.addConstructorDeclaration(constructorDeclarationInformation);
 
@@ -49,7 +46,7 @@ class ClassDependenceTreeTest {
 
     @Test
     void addMethodDeclaration_addNewElement() {
-        MethodDeclarationInformation methodDeclarationInformation = new MethodDeclarationInformation("declarationInformationName");
+        MethodDeclarationInformation methodDeclarationInformation = new MethodDeclarationInformation(AccessModifierType.DEFAULT, "String", "testingTesting", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
         cdt.addMethodDeclaration(methodDeclarationInformation);
 
@@ -86,7 +83,7 @@ class ClassDependenceTreeTest {
     void addConstructorElement_testAddingOutgoingInvocation() {
         String className = "TestClass";
 
-        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorInvocationInformationName");
+        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
         cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING_INVOCATION, constructorInvocationInformation);
 
@@ -99,7 +96,7 @@ class ClassDependenceTreeTest {
     void addMethodElement_testAddingOutgoingInvocation() {
         String className = "TestClass";
 
-        MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodInvocationInformationName");
+        MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
         cdt.addMethodInvocationElement(className, InvocationType.OUTGOING_INVOCATION, methodInvocationInformation);
 
@@ -139,7 +136,7 @@ class ClassDependenceTreeTest {
     void addConstructorElement_testAddingIncomingInvocation() {
         String className = "TestClass";
 
-        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorInvocationInformationName");
+        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
         cdt.addConstructorInvocationElement(className, InvocationType.INCOMING_INVOCATION, constructorInvocationInformation);
 
@@ -152,7 +149,7 @@ class ClassDependenceTreeTest {
     void addMethodElement_testAddingIncomingInvocation() {
         String className = "TestClass";
 
-        MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodInvocationInformationName");
+        MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
         cdt.addMethodInvocationElement(className, InvocationType.INCOMING_INVOCATION, methodInvocationInformation);
 
@@ -196,8 +193,8 @@ class ClassDependenceTreeTest {
     void addConstructorElement_testAddingOutgoingInvocationWithExistingElement() {
         String className = "TestClass";
 
-        ConstructorInvocationInformation constructorInvocationInformation0 = new ConstructorInvocationInformation("constructorInvocationInformationName0");
-        ConstructorInvocationInformation constructorInvocationInformation1 = new ConstructorInvocationInformation("constructorInvocationInformationName1");
+        ConstructorInvocationInformation constructorInvocationInformation0 = new ConstructorInvocationInformation("constructorExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
+        ConstructorInvocationInformation constructorInvocationInformation1 = new ConstructorInvocationInformation("constructorExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
 
         cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING_INVOCATION, constructorInvocationInformation0);
         cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING_INVOCATION, constructorInvocationInformation1);
@@ -211,8 +208,8 @@ class ClassDependenceTreeTest {
     void addMethodElement_testAddingOutgoingInvocationWithExistingElement() {
         String className = "TestClass";
 
-        MethodInvocationInformation methodInvocationInformation0 = new MethodInvocationInformation("methodInvocationInformationName0");
-        MethodInvocationInformation methodInvocationInformation1 = new MethodInvocationInformation("methodInvocationInformationName1");
+        MethodInvocationInformation methodInvocationInformation0 = new MethodInvocationInformation("methodExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
+        MethodInvocationInformation methodInvocationInformation1 = new MethodInvocationInformation("methodExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
 
         cdt.addMethodInvocationElement(className, InvocationType.OUTGOING_INVOCATION, methodInvocationInformation0);
         cdt.addMethodInvocationElement(className, InvocationType.OUTGOING_INVOCATION, methodInvocationInformation1);
@@ -257,8 +254,8 @@ class ClassDependenceTreeTest {
     void addConstructorElement_testAddingIncomingInvocationWithExistingElement() {
         String className = "TestClass";
 
-        ConstructorInvocationInformation constructorInvocationInformation0 = new ConstructorInvocationInformation("constructorInvocationInformationName0");
-        ConstructorInvocationInformation constructorInvocationInformation1 = new ConstructorInvocationInformation("constructorInvocationInformationName1");
+        ConstructorInvocationInformation constructorInvocationInformation0 = new ConstructorInvocationInformation("constructorExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
+        ConstructorInvocationInformation constructorInvocationInformation1 = new ConstructorInvocationInformation("constructorExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
 
         cdt.addConstructorInvocationElement(className, InvocationType.INCOMING_INVOCATION, constructorInvocationInformation0);
         cdt.addConstructorInvocationElement(className, InvocationType.INCOMING_INVOCATION, constructorInvocationInformation1);
@@ -272,8 +269,8 @@ class ClassDependenceTreeTest {
     void addMethodElement_testAddingIncomingInvocationWithExistingElement() {
         String className = "TestClass";
 
-        MethodInvocationInformation methodInvocationInformation0 = new MethodInvocationInformation("methodInvocationInformationName0");
-        MethodInvocationInformation methodInvocationInformation1 = new MethodInvocationInformation("methodInvocationInformationName1");
+        MethodInvocationInformation methodInvocationInformation0 = new MethodInvocationInformation("methodExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
+        MethodInvocationInformation methodInvocationInformation1 = new MethodInvocationInformation("methodExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
 
         cdt.addMethodInvocationElement(className, InvocationType.INCOMING_INVOCATION, methodInvocationInformation0);
         cdt.addMethodInvocationElement(className, InvocationType.INCOMING_INVOCATION, methodInvocationInformation1);
@@ -301,8 +298,8 @@ class ClassDependenceTreeTest {
 
         PackageInvocationInformation packageInvocationInformation = new PackageInvocationInformation("moduleImportInformationName");
         AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("dataInvocationInformationName");
-        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorInvocationInformationName");
-        MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodInvocationInformationName");
+        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
 
         cdt.addPackageInvocationElement(classNames.get(0), InvocationType.OUTGOING_INVOCATION, packageInvocationInformation);
@@ -324,8 +321,8 @@ class ClassDependenceTreeTest {
 
         PackageInvocationInformation packageInvocationInformation = new PackageInvocationInformation("moduleImportInformationName");
         AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("dataInvocationInformationName");
-        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorInvocationInformationName");
-        MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodInvocationInformationName");
+        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
 
         cdt.addPackageInvocationElement(className, InvocationType.OUTGOING_INVOCATION, packageInvocationInformation);
