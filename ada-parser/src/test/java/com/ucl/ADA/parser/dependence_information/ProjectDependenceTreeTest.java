@@ -28,7 +28,7 @@ class ProjectDependenceTreeTest {
         String declaringClassName = "DeclaringTestClass";
         PackageDeclarationInformation packageDeclarationInformation = new PackageDeclarationInformation("com.ADA.example");
 
-        pdt.addModuleDeclaration(declaringClassName, packageDeclarationInformation);
+        pdt.addPackageDeclaration(declaringClassName, packageDeclarationInformation);
 
         assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getCurrentPackage()).isEqualTo(packageDeclarationInformation);
     }
