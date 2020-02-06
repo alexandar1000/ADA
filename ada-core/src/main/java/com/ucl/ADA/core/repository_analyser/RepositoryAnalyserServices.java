@@ -1,7 +1,7 @@
 package com.ucl.ADA.core.repository_analyser;
 
 import com.ucl.ADA.metric_calculator.metrics.MetricServices;
-import com.ucl.ADA.metric_calculator.metrics_structure.ProjectMetrics;
+import com.ucl.ADA.metric_calculator.metrics_structure.ProjectMetricsContainer;
 import com.ucl.ADA.parser.ParserServices;
 import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
 import com.ucl.ADA.repository_downloader.services.RepoService;
@@ -27,7 +27,7 @@ public class RepositoryAnalyserServices {
      * @return ProjectMetrics object containing the resulting metric values between the objects, or null if there was
      * an error
      */
-    public ProjectMetrics analyseRepositoryService() {
+    public ProjectMetricsContainer analyseRepositoryService() {
 
         // TODO: Incorporate the downloader into this
 
@@ -40,7 +40,7 @@ public class RepositoryAnalyserServices {
         }
 
         // Calculate the metrics for the parsed repository.
-        ProjectMetrics parsedRepositoryMetrics = metricServices.computeAllMetrics(parsedRepositoryProjectDependenceTree);
+        ProjectMetricsContainer parsedRepositoryMetrics = metricServices.computeAllMetrics(parsedRepositoryProjectDependenceTree);
 
         return parsedRepositoryMetrics;
     }
