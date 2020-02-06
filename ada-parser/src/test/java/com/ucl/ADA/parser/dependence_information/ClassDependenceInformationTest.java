@@ -1,11 +1,14 @@
 package com.ucl.ADA.parser.dependence_information;
 
-import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.AttributeInvocationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocationInformation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,7 +22,7 @@ class ClassDependenceInformationTest {
     }
 
     @Test
-    void addNewDataField_addNewElement() {
+    void addNewAttribute_addNewElement() {
         AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("invocationInformationName");
 
         cdi.addNewAttribute(attributeInvocationInformation);
@@ -29,7 +32,7 @@ class ClassDependenceInformationTest {
 
     @Test
     void addNewConstructor_addNewElement() {
-        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("invocationInformationName");
+        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
         cdi.addNewConstructor(constructorInvocationInformation);
 
@@ -38,7 +41,7 @@ class ClassDependenceInformationTest {
 
     @Test
     void addNewMethod_addNewElement() {
-         MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("invocationInformationName");
+         MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
         cdi.addNewMethod(methodInvocationInformation);
 
@@ -56,7 +59,7 @@ class ClassDependenceInformationTest {
 
     @Test
     void addNewGlobalMethod_addNewElement() {
-         MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("globalInvocationInformationName");
+         MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("globalMethodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
         cdi.addNewGlobalMethod(methodInvocationInformation);
 
