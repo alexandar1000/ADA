@@ -16,12 +16,14 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RepoFormComponent } from './repo-form/repo-form.component';
 import { RepoService } from './repo.service';
+import { AcceptedUrlDirective } from './shared/accepted-url.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     SidenavComponent,
     RepoFormComponent,
+    AcceptedUrlDirective,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Repository } from './repository';
+import { HttpClient } from '@angular/common/http';
+import { RepoForm } from './repoform';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class RepoService {
     this.repoFormUrl = 'http://localhost:8080/repo-metadata';
   }
 
-  public download(repository: Repository) {
-    return this.http.post<Repository>(this.repoFormUrl, repository);
+  public download(repository: RepoForm) {
+    return this.http.post<RepoForm>(this.repoFormUrl, repository);
   }
 }
