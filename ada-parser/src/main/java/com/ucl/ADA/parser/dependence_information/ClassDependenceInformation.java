@@ -48,7 +48,7 @@ public class ClassDependenceInformation {
     private ArrayList<PackageInvocationInformation> packages = new ArrayList<>();
 
 
-    public ClassDependenceInformation() {
+    protected ClassDependenceInformation() {
     }
 
     /**
@@ -56,7 +56,7 @@ public class ClassDependenceInformation {
      * @param attributeInvocationInformation an attribute invocation information object containing all of the
      *                                       corresponding information about the attribute being added
      */
-    public void addNewAttribute(AttributeInvocationInformation attributeInvocationInformation) {
+    protected void addNewAttribute(AttributeInvocationInformation attributeInvocationInformation) {
         this.attributes.add(attributeInvocationInformation);
     }
 
@@ -65,7 +65,7 @@ public class ClassDependenceInformation {
      * @param constructorInvocationInformation a constructor invocation information object containing all of the
      *                                       corresponding information about the constructor being added
      */
-    public void addNewConstructor(ConstructorInvocationInformation constructorInvocationInformation) {
+    protected void addNewConstructor(ConstructorInvocationInformation constructorInvocationInformation) {
         this.constructors.add(constructorInvocationInformation);
     }
 
@@ -74,7 +74,7 @@ public class ClassDependenceInformation {
      * @param methodInvocationInformation a method invocation information object containing all of the
      *                                       corresponding information about the method being added
      */
-    public void addNewMethod(MethodInvocationInformation methodInvocationInformation) {
+    protected void addNewMethod(MethodInvocationInformation methodInvocationInformation) {
         this.methods.add(methodInvocationInformation);
     }
 
@@ -83,7 +83,7 @@ public class ClassDependenceInformation {
      * @param attributeInvocationInformation a global data invocation information object containing all of the
      *                                       corresponding information about the method being added
      */
-    public void addNewGlobalData(AttributeInvocationInformation attributeInvocationInformation) {
+    protected void addNewGlobalData(AttributeInvocationInformation attributeInvocationInformation) {
         this.globalData.add(attributeInvocationInformation);
     }
 
@@ -92,7 +92,7 @@ public class ClassDependenceInformation {
      * @param methodInvocationInformation a global method invocation information object containing all of the
      *                                       corresponding information about the global method being added
      */
-    public void addNewGlobalMethod(MethodInvocationInformation methodInvocationInformation) {
+    protected void addNewGlobalMethod(MethodInvocationInformation methodInvocationInformation) {
         this.globalMethods.add(methodInvocationInformation);
     }
 
@@ -101,7 +101,7 @@ public class ClassDependenceInformation {
      * @param packageInvocationInformation a package invocation information object containing all of the
      *                                       corresponding information about the package being added
      */
-    public void addNewPackage(PackageInvocationInformation packageInvocationInformation) {
+    protected void addNewPackage(PackageInvocationInformation packageInvocationInformation) {
         this.packages.add(packageInvocationInformation);
     }
 }
