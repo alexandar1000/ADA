@@ -4,6 +4,7 @@ import com.ucl.ADA.parser.dependence_information.declaration_information.Attribu
 import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.PackageDeclarationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.AttributeInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocationInformation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,7 +62,7 @@ class ProjectDependenceTreeTest {
     }
 
     @Test
-    public void addImportedPackage_testIfItIsStoredInOutgoingDependenciesAndKeyDoesntAlreadyExist() {
+    public void addPackageInvocation_testIfItIsStoredInOutgoingDependenciesAndKeyDoesntAlreadyExist() {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
@@ -74,7 +75,7 @@ class ProjectDependenceTreeTest {
 
 
     @Test
-    public void addImportedPackage_testIfItIsStoredInIncomingDependenciesAndKeyDoesntAlreadyExist() {
+    public void addPackageInvocation_testIfItIsStoredInIncomingDependenciesAndKeyDoesntAlreadyExist() {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
@@ -86,7 +87,7 @@ class ProjectDependenceTreeTest {
     }
 
     @Test
-    public void addImportedPackage_testIfItIsStoredInOutgoingDependenciesAndKeyAlreadyExists() {
+    public void addPackageInvocation_testIfItIsStoredInOutgoingDependenciesAndKeyAlreadyExists() {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
@@ -101,7 +102,7 @@ class ProjectDependenceTreeTest {
 
 
     @Test
-    public void addImportedPackage_testIfItIsStoredInIncomingDependenciesAndKeyAlreadyExists() {
+    public void addPackageInvocation_testIfItIsStoredInIncomingDependenciesAndKeyAlreadyExists() {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
@@ -112,6 +113,61 @@ class ProjectDependenceTreeTest {
         pdt.addPackageInvocation(consumingClassName, declaringClassName, packageDeclarationInformation1);
 
         assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getPackages()).containsExactlyInAnyOrderElementsOf(Arrays.asList(packageDeclarationInformation0, packageDeclarationInformation1));
+    }
+
+    @Test
+    public void addAttributeInvocation_testIfItIsStoredInOutgoingDependenciesAndKeyDoesntAlreadyExist() {
+        String declaringClassName = "DeclaringTestClass";
+        String consumingClassName = "ConsumingTestClass";
+
+        AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("attributeExample");
+
+        pdt.addAttributeInvocation(consumingClassName, declaringClassName, attributeInvocationInformation);
+
+        assertThat(pdt.getClassDependenceTrees().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getAttributes()).containsExactly(attributeInvocationInformation);
+    }
+
+
+    @Test
+    public void addAttributeInvocation_testIfItIsStoredInIncomingDependenciesAndKeyDoesntAlreadyExist() {
+        String declaringClassName = "DeclaringTestClass";
+        String consumingClassName = "ConsumingTestClass";
+
+        AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("attributeExample");
+
+        pdt.addAttributeInvocation(consumingClassName, declaringClassName, attributeInvocationInformation);
+
+
+        assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getAttributes()).containsExactly(attributeInvocationInformation);
+    }
+
+    @Test
+    public void addAttributeInvocation_testIfItIsStoredInOutgoingDependenciesAndKeyAlreadyExists() {
+        String declaringClassName = "DeclaringTestClass";
+        String consumingClassName = "ConsumingTestClass";
+
+        AttributeInvocationInformation attributeInvocationInformation0 = new AttributeInvocationInformation("attributeExample0");
+        AttributeInvocationInformation attributeInvocationInformation1 = new AttributeInvocationInformation("attributeExample1");
+
+        pdt.addAttributeInvocation(consumingClassName, declaringClassName, attributeInvocationInformation0);
+        pdt.addAttributeInvocation(consumingClassName, declaringClassName, attributeInvocationInformation1);
+
+        assertThat(pdt.getClassDependenceTrees().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getAttributes()).containsExactlyInAnyOrderElementsOf(Arrays.asList(attributeInvocationInformation0, attributeInvocationInformation1));
+    }
+
+
+    @Test
+    public void addAttributeInvocation_testIfItIsStoredInIncomingDependenciesAndKeyAlreadyExists() {
+        String declaringClassName = "DeclaringTestClass";
+        String consumingClassName = "ConsumingTestClass";
+
+        AttributeInvocationInformation attributeInvocationInformation0 = new AttributeInvocationInformation("attributeExample0");
+        AttributeInvocationInformation attributeInvocationInformation1 = new AttributeInvocationInformation("attributeExample1");
+
+        pdt.addAttributeInvocation(consumingClassName, declaringClassName, attributeInvocationInformation0);
+        pdt.addAttributeInvocation(consumingClassName, declaringClassName, attributeInvocationInformation1);
+
+        assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getAttributes()).containsExactlyInAnyOrderElementsOf(Arrays.asList(attributeInvocationInformation0, attributeInvocationInformation1));
     }
 
 }

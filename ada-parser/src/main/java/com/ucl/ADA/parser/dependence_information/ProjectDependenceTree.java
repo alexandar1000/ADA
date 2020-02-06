@@ -4,6 +4,7 @@ import com.ucl.ADA.parser.dependence_information.declaration_information.Attribu
 import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclarationInformation;
 import com.ucl.ADA.parser.dependence_information.declaration_information.PackageDeclarationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.AttributeInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.InvocationType;
 import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocationInformation;
 import lombok.Getter;
@@ -75,6 +76,24 @@ public class ProjectDependenceTree {
         } else {
             ClassDependenceTree classDependenceTree = new ClassDependenceTree();
             classDependenceTree.addPackageInvocationElement(consumingClassName, InvocationType.INCOMING_INVOCATION, packageDeclarationInformation);
+            this.classDependenceTrees.put(declaringClassName, classDependenceTree);
+        }
+    }
+
+    public void addAttributeInvocation(String consumingClassName, String declaringClassName, AttributeInvocationInformation attributeInvocationInformation) {
+        if (this.classDependenceTrees.containsKey(consumingClassName)) {
+            this.classDependenceTrees.get(consumingClassName).addAttributeInvocationElement(declaringClassName, InvocationType.OUTGOING_INVOCATION, attributeInvocationInformation);
+        } else {
+            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
+            classDependenceTree.addAttributeInvocationElement(declaringClassName, InvocationType.OUTGOING_INVOCATION, attributeInvocationInformation);
+            this.classDependenceTrees.put(consumingClassName, classDependenceTree);
+        }
+
+        if (this.classDependenceTrees.containsKey(declaringClassName)) {
+            this.classDependenceTrees.get(declaringClassName).addAttributeInvocationElement(consumingClassName, InvocationType.INCOMING_INVOCATION, attributeInvocationInformation);
+        } else {
+            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
+            classDependenceTree.addAttributeInvocationElement(consumingClassName, InvocationType.INCOMING_INVOCATION, attributeInvocationInformation);
             this.classDependenceTrees.put(declaringClassName, classDependenceTree);
         }
     }
