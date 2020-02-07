@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { RepoForm } from '../classes/repoform';
 import { UserService } from '../user.service';
-// import { User } from '../classes/user';
+import { User } from '../classes/user';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-repo-form',
@@ -11,7 +12,7 @@ import { UserService } from '../user.service';
 export class RepoFormComponent implements OnInit {
   private repositoryForm: RepoForm;
 
-  constructor(private userService: UserService) { 
+  constructor(private userService: UserService, private _snackBar: MatSnackBar) { 
     this.repositoryForm = new RepoForm();
   }
 
@@ -19,6 +20,17 @@ export class RepoFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.userService.getUser(this.repositoryForm).subscribe(user => console.log(user));
+    this.userService.getUser(this.repositoryForm).subscribe(user => this.checkUserResponse(user));
+  }
+
+  checkUserResponse(user: User) {
+    if (user) {
+      // all good
+    }
+    else { 
+      this._snackBar.open('Error: Incorrect url or branch', 'Close', {
+        duration: 10000,
+      });
+    }
   }
 }

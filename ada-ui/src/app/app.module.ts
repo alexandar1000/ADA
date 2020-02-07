@@ -10,9 +10,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import {MatInputModule} from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule}  from '@angular/material/snack-bar';
 import { SidenavComponent } from './sidenav/sidenav.component';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RepoFormComponent } from './repo-form/repo-form.component';
 import { UserService } from './user.service';
@@ -36,6 +37,7 @@ import { AcceptedUrlDirective } from './shared/accepted-url.directive';
     MatIconModule,
     MatListModule,
     MatInputModule,
+    MatSnackBarModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule
