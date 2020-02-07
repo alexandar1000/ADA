@@ -54,7 +54,7 @@ public class ClassMetricsContainer {
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
             for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getIncomingDependenceInfo().get(key).getPackages().size();
+                metricValue += classDependenceTree.getIncomingDependenceInfo().get(key).getAttributes().size();
             }
         }
 
@@ -72,7 +72,7 @@ public class ClassMetricsContainer {
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
             for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getOutgoingDependenceInfo().get(key).getPackages().size();
+                metricValue += classDependenceTree.getOutgoingDependenceInfo().get(key).getAttributes().size();
             }
         }
 
@@ -90,7 +90,7 @@ public class ClassMetricsContainer {
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
             for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getIncomingDependenceInfo().get(key).getPackages().size();
+                metricValue += classDependenceTree.getIncomingDependenceInfo().get(key).getMethods().size();
             }
         }
 
@@ -108,7 +108,7 @@ public class ClassMetricsContainer {
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
             for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getOutgoingDependenceInfo().get(key).getPackages().size();
+                metricValue += classDependenceTree.getOutgoingDependenceInfo().get(key).getMethods().size();
             }
         }
 
@@ -117,6 +117,126 @@ public class ClassMetricsContainer {
         } else {
             MetricValue metricValueObject = new MetricValue();
             metricValueObject.setNumberOfMethodInvocationsOutgoing(metricValue);
+            metricValues.put(correspondingClass, metricValueObject);
+        }
+    }
+
+    public void calculateNumberOfConstructorInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+        Float metricValue = 0F;
+        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
+                metricValue += classDependenceTree.getIncomingDependenceInfo().get(key).getConstructors().size();
+            }
+        }
+
+        if (metricValues.containsKey(correspondingClass)) {
+            metricValues.get(correspondingClass).setNumberOfConstructorInvocationsIncoming(metricValue);
+        } else {
+            MetricValue metricValueObject = new MetricValue();
+            metricValueObject.setNumberOfConstructorInvocationsIncoming(metricValue);
+            metricValues.put(correspondingClass, metricValueObject);
+        }
+    }
+
+    public void calculateNumberOfConstructorInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+        Float metricValue = 0F;
+        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
+                metricValue += classDependenceTree.getOutgoingDependenceInfo().get(key).getConstructors().size();
+            }
+        }
+
+        if (metricValues.containsKey(correspondingClass)) {
+            metricValues.get(correspondingClass).setNumberOfConstructorInvocationsOutgoing(metricValue);
+        } else {
+            MetricValue metricValueObject = new MetricValue();
+            metricValueObject.setNumberOfConstructorInvocationsOutgoing(metricValue);
+            metricValues.put(correspondingClass, metricValueObject);
+        }
+    }
+
+    public void calculateBidirectionalNumberOfPackageImports(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+        Float metricValue = 0F;
+        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
+                metricValue += classDependenceTree.getIncomingDependenceInfo().get(key).getPackages().size();
+            }
+            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
+                metricValue += classDependenceTree.getOutgoingDependenceInfo().get(key).getPackages().size();
+            }
+        }
+
+        if (metricValues.containsKey(correspondingClass)) {
+            metricValues.get(correspondingClass).setBidirectionalNumberOfPackageImports(metricValue);
+        } else {
+            MetricValue metricValueObject = new MetricValue();
+            metricValueObject.setBidirectionalNumberOfPackageImports(metricValue);
+            metricValues.put(correspondingClass, metricValueObject);
+        }
+    }
+
+    public void calculateBidirectionalNumberOfAttributeInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+        Float metricValue = 0F;
+        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
+                metricValue += classDependenceTree.getIncomingDependenceInfo().get(key).getAttributes().size();
+            }
+            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
+                metricValue += classDependenceTree.getOutgoingDependenceInfo().get(key).getAttributes().size();
+            }
+        }
+
+        if (metricValues.containsKey(correspondingClass)) {
+            metricValues.get(correspondingClass).setBidirectionalNumberOfAttributeInvocations(metricValue);
+        } else {
+            MetricValue metricValueObject = new MetricValue();
+            metricValueObject.setBidirectionalNumberOfAttributeInvocations(metricValue);
+            metricValues.put(correspondingClass, metricValueObject);
+        }
+    }
+
+    public void calculateBidirectionalNumberOfMethodInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+        Float metricValue = 0F;
+        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
+                metricValue += classDependenceTree.getIncomingDependenceInfo().get(key).getMethods().size();
+            }
+            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
+                metricValue += classDependenceTree.getOutgoingDependenceInfo().get(key).getMethods().size();
+            }
+        }
+
+        if (metricValues.containsKey(correspondingClass)) {
+            metricValues.get(correspondingClass).setBidirectionalNumberOfMethodInvocations(metricValue);
+        } else {
+            MetricValue metricValueObject = new MetricValue();
+            metricValueObject.setBidirectionalNumberOfMethodInvocations(metricValue);
+            metricValues.put(correspondingClass, metricValueObject);
+        }
+    }
+
+    public void calculateBidirectionalNumberOfConstructorInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+        Float metricValue = 0F;
+        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
+                metricValue += classDependenceTree.getIncomingDependenceInfo().get(key).getConstructors().size();
+            }
+            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
+                metricValue += classDependenceTree.getOutgoingDependenceInfo().get(key).getConstructors().size();
+            }
+        }
+
+        if (metricValues.containsKey(correspondingClass)) {
+            metricValues.get(correspondingClass).setBidirectionalNumberOfConstructorInvocations(metricValue);
+        } else {
+            MetricValue metricValueObject = new MetricValue();
+            metricValueObject.setBidirectionalNumberOfConstructorInvocations(metricValue);
             metricValues.put(correspondingClass, metricValueObject);
         }
     }
