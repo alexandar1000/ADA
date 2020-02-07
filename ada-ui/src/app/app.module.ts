@@ -15,7 +15,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RepoFormComponent } from './repo-form/repo-form.component';
-import { RepoService } from './repo.service';
+import { UserService } from './user.service';
 import { AcceptedUrlDirective } from './shared/accepted-url.directive';
 
 @NgModule({
@@ -40,7 +40,7 @@ import { AcceptedUrlDirective } from './shared/accepted-url.directive';
     FormsModule,
     HttpClientModule
   ],
-  providers: [RepoService],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

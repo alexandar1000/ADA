@@ -1,6 +1,6 @@
 import { RepoForm } from './repoform';
 
-describe('Repository', () => {
+describe('RepoForm', () => {
   it('should create an instance', () => {
     expect(new RepoForm()).toBeTruthy();
   });

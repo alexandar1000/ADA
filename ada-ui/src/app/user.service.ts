@@ -1,19 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { RepoForm } from './repoform';
+import { RepoForm } from './classes/repoform';
+import { User } from './classes/user';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class RepoService {
+export class UserService {
   private repoFormUrl: string;
 
   constructor(private http: HttpClient) { 
     this.repoFormUrl = 'http://localhost:8080/repo-metadata';
   }
 
-  public download(repository: RepoForm) {
-    return this.http.post<RepoForm>(this.repoFormUrl, repository);
+  public getUser(repoForm: RepoForm): Observable<User> {
+    return this.http.post<User>(this.repoFormUrl, repoForm);
   }
 }
