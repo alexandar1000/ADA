@@ -1,8 +1,14 @@
 package com.ucl.ADA.parser.model;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.util.Map;
 import java.util.Set;
 
+@Getter
+@NoArgsConstructor
 public class SourceFile {
 
     private String packageName;
@@ -13,7 +19,7 @@ public class SourceFile {
     private Map<String, String> publicFields;
     private Set<SourceMethod> methods;
 
-
+    @Builder
     public SourceFile(String packageName, String className, String parentClassName, Set<String> implementedInterface, Map<String, String> staticFields, Map<String, String> publicFields, Set<SourceMethod> methods) {
         this.packageName = packageName;
         this.className = className;
@@ -21,62 +27,6 @@ public class SourceFile {
         this.implementedInterfaces = implementedInterface;
         this.staticFields = staticFields;
         this.publicFields = publicFields;
-        this.methods = methods;
-    }
-
-    public String getPackageName() {
-        return packageName;
-    }
-
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
-    public String getParentClassName() {
-        return parentClassName;
-    }
-
-    public void setParentClassName(String parentClassName) {
-        this.parentClassName = parentClassName;
-    }
-
-    public Set<String> getImplementedInterfaces() {
-        return implementedInterfaces;
-    }
-
-    public void setImplementedInterfaces(Set<String> implementedInterfaces) {
-        this.implementedInterfaces = implementedInterfaces;
-    }
-
-    public Map<String, String> getStaticFields() {
-        return staticFields;
-    }
-
-    public void setStaticFields(Map<String, String> staticFields) {
-        this.staticFields = staticFields;
-    }
-
-    public Map<String, String> getPublicFields() {
-        return publicFields;
-    }
-
-    public void setPublicFields(Map<String, String> publicFields) {
-        this.publicFields = publicFields;
-    }
-
-    public Set<SourceMethod> getMethods() {
-        return methods;
-    }
-
-    public void setMethods(Set<SourceMethod> methods) {
         this.methods = methods;
     }
 
@@ -89,7 +39,7 @@ public class SourceFile {
         }
         SourceFile sourceClass = (SourceFile) sf;
         return sourceClass.packageName.equals(this.packageName)
-                &&sourceClass.className.equals(this.className)
+                && sourceClass.className.equals(this.className)
                 && sourceClass.parentClassName.equals(this.parentClassName)
                 && sourceClass.implementedInterfaces.equals(this.implementedInterfaces)
                 && sourceClass.staticFields.equals(this.staticFields)

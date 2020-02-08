@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,7 +24,7 @@ class ProjectDependenceTreeTest {
     }
 
     @Test
-    public void testAddModuleDeclaration() {
+    public void testAddPackageDeclaration() {
         String declaringClassName = "DeclaringTestClass";
         PackageDeclarationInformation packageDeclarationInformation = new PackageDeclarationInformation("com.ADA.example");
 
@@ -34,7 +36,12 @@ class ProjectDependenceTreeTest {
     @Test
     public void testAddAttributeDeclaration() {
         String declaringClassName = "DeclaringTestClass";
-        AttributeDeclarationInformation attributeDeclarationInformation = new AttributeDeclarationInformation(AccessModifierType.DEFAULT, "String", "attribute", "declaringAttributeName", true);
+
+        Set<KeywordType> keywordTypes = new HashSet<>();
+        keywordTypes.add(KeywordType.UNIDENTIFIABLE);
+        keywordTypes.add(KeywordType.FINAL);
+
+        AttributeDeclarationInformation attributeDeclarationInformation = new AttributeDeclarationInformation(AccessModifierType.DEFAULT, keywordTypes, "String", "attribute", "declaringAttributeName", true);
 
         pdt.addAttributeDeclaration(declaringClassName, attributeDeclarationInformation);
 

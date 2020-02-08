@@ -1,9 +1,15 @@
 package com.ucl.ADA.parser.model;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@Getter
+@NoArgsConstructor
 public class SourceMethod {
 
     private String name;
@@ -15,7 +21,7 @@ public class SourceMethod {
     // class name->method name
     private List<String> methodCalls;
 
-
+    @Builder
     public SourceMethod(String name, String returnType, Set<String> accessModifiers, Map<String, String> parameters,
                         List<String> methodCalls, Map<String, String> usedVariables) {
         this.name = name;
@@ -24,55 +30,6 @@ public class SourceMethod {
         this.parameters = parameters;
         this.methodCalls = methodCalls;
         this.usedVariables = usedVariables;
-
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getReturnType() {
-        return returnType;
-    }
-
-    public void setReturnType(String returnType) {
-        this.returnType = returnType;
-    }
-
-    public Set<String> getAccessModifiers() {
-        return accessModifiers;
-    }
-
-    public void setAccessModifiers(Set<String> accessModifiers) {
-        this.accessModifiers = accessModifiers;
-    }
-
-    public Map<String, String> getParameters() {
-        return parameters;
-    }
-
-    public void setParameters(Map<String, String> parameters) {
-        this.parameters = parameters;
-    }
-
-    public Map<String, String> getUsedVariables() {
-        return usedVariables;
-    }
-
-    public void setUsedVariables(Map<String, String> usedVariables) {
-        this.usedVariables = usedVariables;
-    }
-
-    public List<String> getMethodCalls() {
-        return methodCalls;
-    }
-
-    public void setMethodCalls(List<String> methodCalls) {
-        this.methodCalls = methodCalls;
     }
 
     @Override

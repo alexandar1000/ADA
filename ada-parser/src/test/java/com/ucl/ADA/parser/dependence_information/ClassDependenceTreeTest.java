@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,7 +30,11 @@ class ClassDependenceTreeTest {
 
     @Test
     void addDataDeclaration_addNewElement() {
-        AttributeDeclarationInformation attributeDeclarationInformation = new AttributeDeclarationInformation(AccessModifierType.DEFAULT, "String", "attribute", "declaringAttributeName", true);
+        Set<KeywordType> keywordTypes = new HashSet<>();
+        keywordTypes.add(KeywordType.UNIDENTIFIABLE);
+        keywordTypes.add(KeywordType.FINAL);
+
+        AttributeDeclarationInformation attributeDeclarationInformation = new AttributeDeclarationInformation(AccessModifierType.DEFAULT, keywordTypes, "String", "attribute", "declaringAttributeName", true);
 
         cdt.addAttributeDeclaration(attributeDeclarationInformation);
 
