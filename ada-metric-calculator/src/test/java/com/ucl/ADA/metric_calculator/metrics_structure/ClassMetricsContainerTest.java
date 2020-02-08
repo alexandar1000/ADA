@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ClassMetricsContainerTest {
     private ProjectDependenceTree pdt;
     private ClassMetricsContainer classMetricsContainer;
-    private ArrayList<String> classNames = new ArrayList<>(Arrays.asList("FirstClass", "SecondClass", "ThirdClass", "FourthClass", "FifthClass"));
+    private ArrayList<String> classNames = new ArrayList<>(Arrays.asList("FirstClass", "SecondClass", "ThirdClass", "FourthClass", "FifthClass", "SixthClass"));
 
     @BeforeEach
     void setUp() {
@@ -58,60 +58,81 @@ class ClassMetricsContainerTest {
             }
         }
 
-        // Add a package import to every class apart from the last one
-        for (int i = 0; i < classNames.size() - 1; i++) {
-            PackageInvocationInformation packageInvocationInformation = new PackageInvocationInformation("com.ADA.invocation_example." + classNames.get(i+1));
-            pdt.addPackageInvocation(classNames.get(i), classNames.get(i+1), packageInvocationInformation);
-        }
+        String className;
+        PackageInvocationInformation packageInvocationInformation = new PackageInvocationInformation("com.ADA.invocation_example");
+        AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("attributeExample");
+        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
-        // Add a package import of the remaining classes to the first class
-        for (int i = 2; i < classNames.size(); i++) {
-            PackageInvocationInformation packageInvocationInformation = new PackageInvocationInformation("com.ADA.invocation_example." + classNames.get(i));
-            pdt.addPackageInvocation(classNames.get(0), classNames.get(i), packageInvocationInformation);
-        }
+        // For FirstClass
+        className = classNames.get(0);
+        pdt.addPackageInvocation(className, classNames.get(1), packageInvocationInformation);
+        pdt.addPackageInvocation(className, classNames.get(4), packageInvocationInformation);
 
-        // Add an attribute import to every class apart from the last one
-        for (int i = 0; i < classNames.size() - 1; i++) {
-            AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("attributeExampleFromClass" + classNames.get(i+1));
-            pdt.addAttributeInvocation(classNames.get(i), classNames.get(i+1), attributeInvocationInformation);
-        }
+        pdt.addAttributeInvocation(className, classNames.get(1), attributeInvocationInformation);
+        pdt.addAttributeInvocation(className, classNames.get(4), attributeInvocationInformation);
 
-        // Add an attribute invocation to the remaining classes from the first class
-        for (int i = 2; i < classNames.size(); i++) {
-            AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("attributeExampleFromClass" + classNames.get(i));
-            pdt.addAttributeInvocation(classNames.get(0), classNames.get(i), attributeInvocationInformation);
-        }
+        pdt.addConstructorInvocation(className, classNames.get(1), constructorInvocationInformation);
+        pdt.addConstructorInvocation(className, classNames.get(4), constructorInvocationInformation);
 
-        // Add a constructor invocation to every class apart from the last one
-        for (int i = 0; i < classNames.size() - 1; i++) {
-            ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorExample" + classNames.get(i+1), new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
-            pdt.addConstructorInvocation(classNames.get(i), classNames.get(i+1), constructorInvocationInformation);
-        }
+        pdt.addMethodInvocation(className, classNames.get(1), methodInvocationInformation);
+        pdt.addMethodInvocation(className, classNames.get(4), methodInvocationInformation);
 
-        // Add a constructor invocation to the remaining classes from the first class
-        for (int i = 2; i < classNames.size(); i++) {
-            ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorExample" + classNames.get(i), new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
-            pdt.addConstructorInvocation(classNames.get(0), classNames.get(i), constructorInvocationInformation);
-        }
 
-        // Add a method invocation to every class apart from the last one
-        for (int i = 0; i < classNames.size() - 1; i++) {
-            MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodExampleIn" + classNames.get(i+1), new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
-            pdt.addMethodInvocation(classNames.get(i), classNames.get(i+1), methodInvocationInformation);
-        }
+        // For SecondClass
+        className = classNames.get(1);
+        pdt.addPackageInvocation(className, classNames.get(0), packageInvocationInformation);
 
-        // Add a method invocation to the remaining classes from the first class
-        for (int i = 2; i < classNames.size(); i++) {
-            MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodExampleIn" + classNames.get(i), new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
-            pdt.addMethodInvocation(classNames.get(0), classNames.get(i), methodInvocationInformation);
-        }
+        pdt.addAttributeInvocation(className, classNames.get(0), attributeInvocationInformation);
 
-        /*
-        At this point:
-        - the first class in the list depends on all other classes by all elements,
-        - all other classes apart from the last one depend by all elements on the subsequent class
-        - the last class does not depend on any other class by any element
-         */
+        pdt.addConstructorInvocation(className, classNames.get(0), constructorInvocationInformation);
+
+        pdt.addMethodInvocation(className, classNames.get(0), methodInvocationInformation);
+
+        // For ThirdClass
+        className = classNames.get(2);
+        pdt.addPackageInvocation(className, classNames.get(0), packageInvocationInformation);
+        pdt.addPackageInvocation(className, classNames.get(1), packageInvocationInformation);
+        pdt.addPackageInvocation(className, classNames.get(3), packageInvocationInformation);
+        pdt.addPackageInvocation(className, classNames.get(4), packageInvocationInformation);
+
+        pdt.addAttributeInvocation(className, classNames.get(0), attributeInvocationInformation);
+        pdt.addAttributeInvocation(className, classNames.get(1), attributeInvocationInformation);
+        pdt.addAttributeInvocation(className, classNames.get(3), attributeInvocationInformation);
+        pdt.addAttributeInvocation(className, classNames.get(4), attributeInvocationInformation);
+
+        pdt.addConstructorInvocation(className, classNames.get(0), constructorInvocationInformation);
+        pdt.addConstructorInvocation(className, classNames.get(1), constructorInvocationInformation);
+        pdt.addConstructorInvocation(className, classNames.get(3), constructorInvocationInformation);
+        pdt.addConstructorInvocation(className, classNames.get(4), constructorInvocationInformation);
+
+        pdt.addMethodInvocation(className, classNames.get(0), methodInvocationInformation);
+        pdt.addMethodInvocation(className, classNames.get(1), methodInvocationInformation);
+        pdt.addMethodInvocation(className, classNames.get(3), methodInvocationInformation);
+        pdt.addMethodInvocation(className, classNames.get(4), methodInvocationInformation);
+
+        // For FourthClass
+        className = classNames.get(3);
+
+        // For FifthClass
+        className = classNames.get(4);
+        pdt.addPackageInvocation(className, classNames.get(0), packageInvocationInformation);
+
+        pdt.addAttributeInvocation(className, classNames.get(0), attributeInvocationInformation);
+
+        pdt.addConstructorInvocation(className, classNames.get(0), constructorInvocationInformation);
+
+        pdt.addMethodInvocation(className, classNames.get(0), methodInvocationInformation);
+
+        // For SixthClass
+        className = classNames.get(5);
+        pdt.addPackageInvocation(className, classNames.get(2), packageInvocationInformation);
+
+        pdt.addAttributeInvocation(className, classNames.get(2), attributeInvocationInformation);
+
+        pdt.addConstructorInvocation(className, classNames.get(2), constructorInvocationInformation);
+
+        pdt.addMethodInvocation(className, classNames.get(2), methodInvocationInformation);
     }
 
     @Test
