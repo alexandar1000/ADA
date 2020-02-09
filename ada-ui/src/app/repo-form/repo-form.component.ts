@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { RepoForm } from '../classes/repoform';
 import { UserService } from '../user.service';
 import { User } from '../classes/user';
@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class RepoFormComponent implements OnInit {
   private repositoryForm: RepoForm;
+  @Output() receivedUser = new EventEmitter<User>();
 
   constructor(private userService: UserService, private _snackBar: MatSnackBar) { 
     this.repositoryForm = new RepoForm();
@@ -25,7 +26,9 @@ export class RepoFormComponent implements OnInit {
 
   checkUserResponse(user: User) {
     if (user) {
-      // all good
+      console.log(user);
+      this.receivedUser.emit(user);
+      this.userService.addUserToNavigation(user);
     }
     else { 
       this._snackBar.open('Error: Incorrect url or branch', 'Close', {
