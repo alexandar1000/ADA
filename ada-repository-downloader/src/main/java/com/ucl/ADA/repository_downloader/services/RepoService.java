@@ -39,7 +39,7 @@ public class RepoService {
      * @param repoInfoUI - instance of RepoDbPopulator which initially holds the git URL and branch name
      *
      * */
-    public void addEntry(RepoDbPopulator repoInfoUI) throws GitAPIException {
+    public User addEntry(RepoDbPopulator repoInfoUI) throws GitAPIException {
 
         LocalDateTime timestamp = LocalDateTime.now();
 
@@ -61,6 +61,8 @@ public class RepoService {
             Snapshot snapshot = initSnapshot(timestamp, branchEntity, file);
             snapshotRepository.save(snapshot);
         }
+
+        return user;
     }
 
     /**
