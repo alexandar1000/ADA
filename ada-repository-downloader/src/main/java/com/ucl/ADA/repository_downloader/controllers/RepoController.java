@@ -28,7 +28,8 @@ public class RepoController {
         User user;
         try {
             user = repoService.addEntry(repo);
-        } catch (Exception ex){
+        }
+        catch (Exception exception) {
             return null;
         }
         return user;
