@@ -11,9 +11,19 @@ import java.util.HashMap;
 @Getter @Setter @NoArgsConstructor
 public class ClassMetricsContainer {
 
-    private HashMap<String, MetricValue> metricValues = new HashMap<>();
+    private HashMap<String, RelationMetricValue> relationMetricValues = new HashMap<>();
 
-    public void calculateNumberOfPackageImportsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    private ClassMetricValue classMetricValues = new ClassMetricValue();
+
+//    if (relationMetricValues.containsKey(correspondingClass)) {
+//        relationMetricValues.get(correspondingClass).setNumberOfPackageImportsIncoming(metricValue);
+//    } else {
+//        ClassMetricValue classMetricValueObject = new ClassMetricValue();
+//        classMetricValueObject.setNumberOfPackageImportsIncoming(metricValue);
+//        relationMetricValues.put(correspondingClass, classMetricValueObject);
+//    }
+
+    public void calculateNumberOfClassPackageImportsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
         Float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
@@ -21,14 +31,7 @@ public class ClassMetricsContainer {
                 metricValue += classDependenceTree.getIncomingDependenceInfo().get(key).getPackages().size();
             }
         }
-
-        if (metricValues.containsKey(correspondingClass)) {
-            metricValues.get(correspondingClass).setNumberOfPackageImportsIncoming(metricValue);
-        } else {
-            MetricValue metricValueObject = new MetricValue();
-            metricValueObject.setNumberOfPackageImportsIncoming(metricValue);
-            metricValues.put(correspondingClass, metricValueObject);
-        }
+        this.classMetricValues.setNumberOfPackageImportsIncoming(metricValue);
     }
 
     public void calculateNumberOfPackageImportsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
@@ -40,13 +43,7 @@ public class ClassMetricsContainer {
             }
         }
 
-        if (metricValues.containsKey(correspondingClass)) {
-            metricValues.get(correspondingClass).setNumberOfPackageImportsOutgoing(metricValue);
-        } else {
-            MetricValue metricValueObject = new MetricValue();
-            metricValueObject.setNumberOfPackageImportsOutgoing(metricValue);
-            metricValues.put(correspondingClass, metricValueObject);
-        }
+        this.classMetricValues.setNumberOfPackageImportsOutgoing(metricValue);
     }
 
     public void calculateNumberOfAttributeInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
@@ -58,13 +55,7 @@ public class ClassMetricsContainer {
             }
         }
 
-        if (metricValues.containsKey(correspondingClass)) {
-            metricValues.get(correspondingClass).setNumberOfAttributeInvocationsIncoming(metricValue);
-        } else {
-            MetricValue metricValueObject = new MetricValue();
-            metricValueObject.setNumberOfAttributeInvocationsIncoming(metricValue);
-            metricValues.put(correspondingClass, metricValueObject);
-        }
+        this.classMetricValues.setNumberOfAttributeInvocationsIncoming(metricValue);
     }
 
     public void calculateNumberOfAttributeInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
@@ -76,13 +67,7 @@ public class ClassMetricsContainer {
             }
         }
 
-        if (metricValues.containsKey(correspondingClass)) {
-            metricValues.get(correspondingClass).setNumberOfAttributeInvocationsOutgoing(metricValue);
-        } else {
-            MetricValue metricValueObject = new MetricValue();
-            metricValueObject.setNumberOfAttributeInvocationsOutgoing(metricValue);
-            metricValues.put(correspondingClass, metricValueObject);
-        }
+        this.classMetricValues.setNumberOfAttributeInvocationsOutgoing(metricValue);
     }
 
     public void calculateNumberOfMethodInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
@@ -94,13 +79,7 @@ public class ClassMetricsContainer {
             }
         }
 
-        if (metricValues.containsKey(correspondingClass)) {
-            metricValues.get(correspondingClass).setNumberOfMethodInvocationsIncoming(metricValue);
-        } else {
-            MetricValue metricValueObject = new MetricValue();
-            metricValueObject.setNumberOfMethodInvocationsIncoming(metricValue);
-            metricValues.put(correspondingClass, metricValueObject);
-        }
+        this.classMetricValues.setNumberOfMethodInvocationsIncoming(metricValue);
     }
 
     public void calculateNumberOfMethodInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
@@ -112,13 +91,7 @@ public class ClassMetricsContainer {
             }
         }
 
-        if (metricValues.containsKey(correspondingClass)) {
-            metricValues.get(correspondingClass).setNumberOfMethodInvocationsOutgoing(metricValue);
-        } else {
-            MetricValue metricValueObject = new MetricValue();
-            metricValueObject.setNumberOfMethodInvocationsOutgoing(metricValue);
-            metricValues.put(correspondingClass, metricValueObject);
-        }
+        this.classMetricValues.setNumberOfMethodInvocationsOutgoing(metricValue);
     }
 
     public void calculateNumberOfConstructorInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
@@ -130,13 +103,7 @@ public class ClassMetricsContainer {
             }
         }
 
-        if (metricValues.containsKey(correspondingClass)) {
-            metricValues.get(correspondingClass).setNumberOfConstructorInvocationsIncoming(metricValue);
-        } else {
-            MetricValue metricValueObject = new MetricValue();
-            metricValueObject.setNumberOfConstructorInvocationsIncoming(metricValue);
-            metricValues.put(correspondingClass, metricValueObject);
-        }
+        this.classMetricValues.setNumberOfConstructorInvocationsIncoming(metricValue);
     }
 
     public void calculateNumberOfConstructorInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
@@ -148,13 +115,7 @@ public class ClassMetricsContainer {
             }
         }
 
-        if (metricValues.containsKey(correspondingClass)) {
-            metricValues.get(correspondingClass).setNumberOfConstructorInvocationsOutgoing(metricValue);
-        } else {
-            MetricValue metricValueObject = new MetricValue();
-            metricValueObject.setNumberOfConstructorInvocationsOutgoing(metricValue);
-            metricValues.put(correspondingClass, metricValueObject);
-        }
+        this.classMetricValues.setNumberOfConstructorInvocationsOutgoing(metricValue);
     }
 
     public void calculateBidirectionalNumberOfPackageImports(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
@@ -169,13 +130,7 @@ public class ClassMetricsContainer {
             }
         }
 
-        if (metricValues.containsKey(correspondingClass)) {
-            metricValues.get(correspondingClass).setBidirectionalNumberOfPackageImports(metricValue);
-        } else {
-            MetricValue metricValueObject = new MetricValue();
-            metricValueObject.setBidirectionalNumberOfPackageImports(metricValue);
-            metricValues.put(correspondingClass, metricValueObject);
-        }
+        this.classMetricValues.setBidirectionalNumberOfPackageImports(metricValue);
     }
 
     public void calculateBidirectionalNumberOfAttributeInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
@@ -190,13 +145,7 @@ public class ClassMetricsContainer {
             }
         }
 
-        if (metricValues.containsKey(correspondingClass)) {
-            metricValues.get(correspondingClass).setBidirectionalNumberOfAttributeInvocations(metricValue);
-        } else {
-            MetricValue metricValueObject = new MetricValue();
-            metricValueObject.setBidirectionalNumberOfAttributeInvocations(metricValue);
-            metricValues.put(correspondingClass, metricValueObject);
-        }
+        this.classMetricValues.setBidirectionalNumberOfAttributeInvocations(metricValue);
     }
 
     public void calculateBidirectionalNumberOfMethodInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
@@ -211,13 +160,7 @@ public class ClassMetricsContainer {
             }
         }
 
-        if (metricValues.containsKey(correspondingClass)) {
-            metricValues.get(correspondingClass).setBidirectionalNumberOfMethodInvocations(metricValue);
-        } else {
-            MetricValue metricValueObject = new MetricValue();
-            metricValueObject.setBidirectionalNumberOfMethodInvocations(metricValue);
-            metricValues.put(correspondingClass, metricValueObject);
-        }
+        this.classMetricValues.setBidirectionalNumberOfMethodInvocations(metricValue);
     }
 
     public void calculateBidirectionalNumberOfConstructorInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
@@ -232,12 +175,6 @@ public class ClassMetricsContainer {
             }
         }
 
-        if (metricValues.containsKey(correspondingClass)) {
-            metricValues.get(correspondingClass).setBidirectionalNumberOfConstructorInvocations(metricValue);
-        } else {
-            MetricValue metricValueObject = new MetricValue();
-            metricValueObject.setBidirectionalNumberOfConstructorInvocations(metricValue);
-            metricValues.put(correspondingClass, metricValueObject);
-        }
+        this.classMetricValues.setBidirectionalNumberOfConstructorInvocations(metricValue);
     }
 }

@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor
-public class MetricValue {
+public class ClassMetricValue {
     private Float numberOfPackageImportsIncoming;
     private Float numberOfPackageImportsOutgoing;
 
