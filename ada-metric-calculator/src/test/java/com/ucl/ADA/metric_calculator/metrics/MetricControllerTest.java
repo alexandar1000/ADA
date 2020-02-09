@@ -33,7 +33,7 @@ public class MetricControllerTest {
      */
     @Test
     void testGetUserById() {
-        Metric m = new Metric(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_ATTRIBUTE_INVOCATIONS, 8.07F);
+        Metric m = new Metric(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_CLASS_ATTRIBUTE_INVOCATIONS, 8.07F);
         m.setId(1L);
         when(metricService.getMetric(1L)).thenReturn(m);
         Metric metric = metricController.retrieveMetricById(1L);
@@ -41,7 +41,7 @@ public class MetricControllerTest {
         verify(metricService).getMetric(1L);
 
         assertThat(metric.getId()).isEqualTo(1L);
-        assertThat(metric.getType()).isEqualTo(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_ATTRIBUTE_INVOCATIONS);
+        assertThat(metric.getType()).isEqualTo(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_CLASS_ATTRIBUTE_INVOCATIONS);
         assertThat(metric.getValue()).isEqualTo(8.07F);
 
     }
@@ -61,9 +61,9 @@ public class MetricControllerTest {
      */
     @Test
     void testRetrieveAllMetrics() {
-        Metric m1 = new Metric(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_ATTRIBUTE_INVOCATIONS, 1.0123F);
-        Metric m2 = new Metric(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_CONSTRUCTOR_INVOCATIONS, 2.4567F);
-        Metric m3 = new Metric(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_METHOD_INVOCATIONS, 3.8910F);
+        Metric m1 = new Metric(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_CLASS_ATTRIBUTE_INVOCATIONS, 1.0123F);
+        Metric m2 = new Metric(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_CLASS_CONSTRUCTOR_INVOCATIONS, 2.4567F);
+        Metric m3 = new Metric(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_CLASS_METHOD_INVOCATIONS, 3.8910F);
 
         m1.setId(1L);
         m2.setId(2L);
@@ -83,15 +83,15 @@ public class MetricControllerTest {
         assertThat(retrievedMetrics).hasSize(3);
 
         assertThat(retrievedMetrics.get(0).getId()).isEqualTo(1L);
-        assertThat(retrievedMetrics.get(0).getType()).isEqualTo(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_ATTRIBUTE_INVOCATIONS);
+        assertThat(retrievedMetrics.get(0).getType()).isEqualTo(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_CLASS_ATTRIBUTE_INVOCATIONS);
         assertThat(retrievedMetrics.get(0).getValue()).isEqualTo(1.0123F);
 
         assertThat(retrievedMetrics.get(1).getId()).isEqualTo(2L);
-        assertThat(retrievedMetrics.get(1).getType()).isEqualTo(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_CONSTRUCTOR_INVOCATIONS);
+        assertThat(retrievedMetrics.get(1).getType()).isEqualTo(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_CLASS_CONSTRUCTOR_INVOCATIONS);
         assertThat(retrievedMetrics.get(1).getValue()).isEqualTo(2.4567F);
 
         assertThat(retrievedMetrics.get(2).getId()).isEqualTo(3L);
-        assertThat(retrievedMetrics.get(2).getType()).isEqualTo(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_METHOD_INVOCATIONS);
+        assertThat(retrievedMetrics.get(2).getType()).isEqualTo(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_CLASS_METHOD_INVOCATIONS);
         assertThat(retrievedMetrics.get(2).getValue()).isEqualTo(3.8910F);
     }
 
