@@ -67,8 +67,6 @@ public class RepoService {
 
             sourceFileRepository.save(sourceFile);
         }
-
-        return user;
     }
 
     /**
