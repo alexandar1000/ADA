@@ -1,17 +1,16 @@
-CREATE TABLE public.snapshot
+CREATE TABLE public.snapshots
 (
-    file_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    snapshot_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY (start 1),
+    fk_branch_id bigint NOT NULL,
     "timestamp" timestamp without time zone NOT NULL,
-    fk_branch_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
-    fk_b_repo_id bigint NOT NULL,
-    CONSTRAINT snapshot_pkey PRIMARY KEY (fk_branch_name, fk_b_repo_id, file_name, "timestamp"),
-    CONSTRAINT snapshot_fkey FOREIGN KEY (fk_b_repo_id, fk_branch_name)
-        REFERENCES public.branches (fk_repo_id, branch_name) MATCH SIMPLE
+    CONSTRAINT snapshot_pkey PRIMARY KEY (snapshot_id),
+    CONSTRAINT snapshot_fkey FOREIGN KEY (fk_branch_id)
+        REFERENCES public.branches (branch_id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE 
 )
 
 TABLESPACE pg_default;
 
-ALTER TABLE public.snapshot
+ALTER TABLE public.snapshots
     OWNER to "ada-team";

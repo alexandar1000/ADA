@@ -1,76 +1,58 @@
 package com.ucl.ADA.repository_downloader.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "SNAPSHOT")
+@Table(name = "SNAPSHOTS")
 public class Snapshot {
 
-    @EmbeddedId
-    private ID ID;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "snapshot_id")
+    private Long snapshotID;
 
-    public ID getID() {
-        return ID;
+    @ManyToOne
+    @JoinColumn(name = "fk_branch_id")
+    private Branch branch;
+
+    @OneToMany(mappedBy = "snapshot", targetEntity = SourceFile.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    private
+    Set<Branch> sourceFiles = new HashSet<>();
+
+    @Column(name = "timestamp")
+    private LocalDateTime timestamp;
+
+
+    public void setSnapshotID(Long snapshotID) {
+        this.snapshotID = snapshotID;
     }
 
-    public void setID(ID ID) {
-        this.ID = ID;
+    public void setBranch(Branch branch) {
+        this.branch = branch;
+    }
+
+    public void setSourceFiles(Set<Branch> sourceFiles) {
+        this.sourceFiles = sourceFiles;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Long getSnapshotID() {
+        return snapshotID;
+    }
+
+    public Set<Branch> getSourceFiles() {
+        return sourceFiles;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 
     public Snapshot(){}
-
-    @Embeddable
-    public static class ID implements Serializable {
-        @ManyToOne
-        @JoinColumns({
-                @JoinColumn(name = "fk_branch_name", referencedColumnName = "branch_name"),
-                @JoinColumn(name = "fk_b_repo_id", referencedColumnName = "fk_repo_id")
-        })
-        private Branch branch;
-
-        @Column(name = "timestamp")
-        private LocalDateTime timestamp;
-
-        @Column(name = "file_name")
-        private String fileName;
-
-        public ID(){}
-
-        public void setBranch(Branch branch) {
-            this.branch = branch;
-        }
-
-        public LocalDateTime getTimestamp() {
-            return timestamp;
-        }
-
-        public void setTimestamp(LocalDateTime timestamp) {
-            this.timestamp = timestamp;
-        }
-
-        public String getFileName() {
-            return fileName;
-        }
-
-        public void setFileName(String fileName) {
-            this.fileName = fileName;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            ID that = (ID) o;
-            return Objects.equals(branch, that.branch) &&
-                    Objects.equals(timestamp, that.timestamp);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(branch, timestamp);
-        }
-    }
 }
