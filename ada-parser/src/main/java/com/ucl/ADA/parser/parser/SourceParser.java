@@ -1,5 +1,4 @@
-package com.ucl.ADA.parser.extractor;
-
+package com.ucl.ADA.parser.parser;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
@@ -22,52 +21,55 @@ import java.util.*;
 public class SourceParser {
 
     private final String SRC_DIRECTORY_PATH;
-    private final String SRC_FILE_PATH;
-    private TypeSolver typeSolver;
-    private TypeSolver javaParserTypeSolver;
-    private CombinedTypeSolver combinedSolver;
     private JavaSymbolSolver symbolSolver;
 
-    public SourceParser(String SRC_DIRECTORY_PATH, String SRC_FILE_PATH) {
+    public SourceParser(String SRC_DIRECTORY_PATH) {
         this.SRC_DIRECTORY_PATH = SRC_DIRECTORY_PATH;
-        this.SRC_FILE_PATH = SRC_FILE_PATH;
-
-        this.typeSolver = new ReflectionTypeSolver();
-        this.javaParserTypeSolver = new JavaParserTypeSolver(new File(this.SRC_DIRECTORY_PATH));
-        this.combinedSolver = new CombinedTypeSolver();
-        this.combinedSolver.add(this.javaParserTypeSolver);
-        this.combinedSolver.add(this.typeSolver);
-        this.symbolSolver = new JavaSymbolSolver(this.combinedSolver);
+        this.symbolSolver = getConstructedJavaSymbolSolver(this.SRC_DIRECTORY_PATH);
     }
 
-    public Set<SourceFile> parseSource() {
+    public Set<SourceFile> parseSource(String sourceFilePath) {
 
         StaticJavaParser.getConfiguration().setSymbolResolver(this.symbolSolver);
 
         Set<SourceFile> sourceClasses = new HashSet<SourceFile>();
 
         try {
-            CompilationUnit cu = StaticJavaParser.parse(new File(this.SRC_FILE_PATH));
-
+            CompilationUnit cu = StaticJavaParser.parse(new File(sourceFilePath));
             cu.findAll(ClassOrInterfaceDeclaration.class).forEach(cl -> {
                 // class name
                 String className = cl.getNameAsString();
-                // all static variables
-                Map<String, String> staticVariables = new HashMap<String, String>();
-                cl.resolve().getAllStaticFields().forEach(x -> {
-                    staticVariables.put(x.getName(), x.getType().describe());
-                });
                 //  extract the parents class interfaces,
-                String parentClassName ="";
-                if (!cl.getExtendedTypes().isEmpty())
+                String parentClassName = "java.lang.Object";
+                if (!cl.getExtendedTypes().isEmpty()) {
                     parentClassName = cl.getExtendedTypes().get(0).toString();
+                }
 
                 // implemented interfaces
                 Set<String> implementedInterface = new HashSet<String>();
-                cl.resolve().getAncestors().forEach(a -> {
-                    implementedInterface.add(a.getQualifiedName());
+
+                cl.getImplementedTypes();
+                cl.getImplementedTypes().forEach(a -> {
+                    implementedInterface.add(a.toString());
                 });
                 implementedInterface.remove(parentClassName);
+
+                String packageName = "";
+                packageName = cl.resolve().getPackageName();
+
+                // all static fields
+                Map<String, String> staticFields = new HashMap<String, String>();
+                cl.resolve().getAllStaticFields().forEach(x -> {
+                    staticFields.put(x.getName(), x.getType().describe());
+                });
+
+                // all public fields
+                Map<String, String> publicFields = new HashMap<String, String>();
+                cl.resolve().getAllFields().forEach(f -> {
+                    if (f.accessSpecifier().name().equals("PUBLIC")) {
+                        publicFields.put(f.getName(), f.getType().describe());
+                    }
+                });
 
                 // extracted methods
                 Set<SourceMethod> methods = new HashSet<SourceMethod>();
@@ -75,6 +77,7 @@ public class SourceParser {
                     // name and return type
                     String methodName = n.getNameAsString();
                     String returnType = n.getType().toString();
+
                     // modifiers
                     Set<String> accessModifiers = new TreeSet<String>();
                     n.getModifiers().forEach(item -> accessModifiers.add(item.toString()));
@@ -89,20 +92,26 @@ public class SourceParser {
                     Map<String, String> usedVariables = new HashMap<String, String>();
 
                     n.findAll(MethodCallExpr.class).forEach(m -> {
-                        String callee = ((MethodCallExpr) m).resolve().getQualifiedName().toString();
-                        methodCallExpression.add(callee);
+                        try {
+                            String callee = m.resolve().getQualifiedName();
+
+                            // ignore java library methods
+                            if (!callee.substring(0, 4).equals("java"))
+                                methodCallExpression.add(callee);
+                        } catch (Exception e) {
+                            System.err.println(e.getMessage());
+                        }
                     });
 
                     n.findAll(VariableDeclarator.class).forEach(V -> {
-                        VariableDeclarator v = (VariableDeclarator) V;
-                        usedVariables.put(v.getNameAsString(), v.getTypeAsString());
+                        usedVariables.put(V.getNameAsString(), V.getTypeAsString());
                     });
 
                     SourceMethod sm = new SourceMethod(methodName, returnType, accessModifiers, parameters,
                             methodCallExpression, usedVariables);
                     methods.add(sm);
                 });
-                sourceClasses.add(new SourceFile(className, parentClassName, implementedInterface, staticVariables, methods));
+                sourceClasses.add(new SourceFile(packageName, className, parentClassName, implementedInterface, staticFields, publicFields, methods));
 
             });
 
@@ -110,6 +119,23 @@ public class SourceParser {
             e1.printStackTrace();
         }
         return sourceClasses;
+    }
+
+    private static JavaSymbolSolver getConstructedJavaSymbolSolver(String SRC_DIRECTORY_PATH) {
+        File[] directories = new File(SRC_DIRECTORY_PATH).listFiles(File::isDirectory);
+        //System.out.println(Arrays.asList(SRC_DIRECTORY_PATH));
+        //System.out.println(Arrays.asList(directories));
+        System.out.println("Path added to JavaParserTypeSolver");
+        CombinedTypeSolver combinedSolver = new CombinedTypeSolver();
+        TypeSolver javaParserTypeSolver = new JavaParserTypeSolver(new File(SRC_DIRECTORY_PATH));
+        combinedSolver.add(javaParserTypeSolver);
+        for (File directory : directories) {
+            TypeSolver jst = new JavaParserTypeSolver(new File(directory.getAbsolutePath()));
+            combinedSolver.add(jst);
+        }
+        TypeSolver typeSolver = new ReflectionTypeSolver();
+        combinedSolver.add(typeSolver);
+        return new JavaSymbolSolver(combinedSolver);
     }
 
 }

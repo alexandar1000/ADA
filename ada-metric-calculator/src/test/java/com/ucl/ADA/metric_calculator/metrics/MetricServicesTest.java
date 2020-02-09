@@ -1,5 +1,8 @@
 package com.ucl.ADA.metric_calculator.metrics;
 
+import com.ucl.ADA.metric_calculator.metrics_structure.ProjectMetricsContainer;
+import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -7,13 +10,20 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class MetricServicesTest {
+
+    ArrayList<String> classNames;
+    ProjectMetricsContainer projectMetricsContainer;
+    ProjectDependenceTree projectDependenceTree;
+
 
     @InjectMocks
     private MetricServices metricServices;
@@ -24,13 +34,23 @@ class MetricServicesTest {
     @BeforeEach
     void init() {
         MockitoAnnotations.initMocks(this);
+
+        classNames = new ArrayList<>(Arrays.asList("Aaa", "Bbb", "Ccc", "Ddd", "Eee", "Fff"));
+
+        projectDependenceTree = new ProjectDependenceTree();
+    }
+
+    @AfterEach
+    void tearDown() {
+        classNames = null;
+        projectMetricsContainer = null;
     }
 
     /**
      * Test the retrieval of all of the metrics.
      */
     @Test
-    void getAllMetrics() {
+    void testGetAllMetrics() {
         Metric m1 = new Metric(MetricTypes.SIMPLE_METRIC, 1.0123F);
         Metric m2 = new Metric(MetricTypes.MEDIUM_METRIC, 2.4567F);
         Metric m3 = new Metric(MetricTypes.COMPLEX_METRIC, 3.8910F);
@@ -69,7 +89,7 @@ class MetricServicesTest {
      * Test the retrieval of all of the present metrics when the source is empty.
      */
     @Test
-    void getAllMetricsFromEmptySource() {
+    void testGetAllMetricsFromEmptySource() {
         List<Metric> metricArrayList = new ArrayList<>();
         when(metricRepository.findAll()).thenReturn(metricArrayList);
 
@@ -85,7 +105,7 @@ class MetricServicesTest {
      * Test the retrieval of a specific metric (with a specific ID).
      */
     @Test
-    void getMetric() {
+    void testGetMetric() {
         Metric m = new Metric(MetricTypes.SIMPLE_METRIC, 8.07F);
         m.setId(1L);
         when(metricRepository.findById(1L)).thenReturn(java.util.Optional.of(m));
@@ -103,12 +123,24 @@ class MetricServicesTest {
      * Test the retrieval of a non-existing specific metric (with a specific ID).
      */
     @Test
-    void getMetricNotFound() {
+    void testGetMetricNotFound() {
         when(metricRepository.findById(1L)).thenReturn(java.util.Optional.empty());
         Metric metric = metricServices.getMetric(1L);
 
         verify(metricRepository).findById(1L);
 
         assertThat(metric).isNull();
+    }
+
+    @Test
+    void testComputeAllMetricsProducesCorrectClassesInHashMap() {
+        ProjectMetricsContainer projectMetricsContainer = metricServices.computeAllMetrics(projectDependenceTree);
+
+        assertThat(projectMetricsContainer.getClassMetrics().keySet()).containsExactlyInAnyOrderElementsOf(classNames);
+    }
+
+    @Test
+    void testComputeAllMetricsProducesACorrectMetric() {
+        fail("Not implemented yet");
     }
 }

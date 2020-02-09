@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor
-public class MetricValues {
+public class MetricValue {
 
     private Double simpleMetric;
     private Double mediumMetric;
