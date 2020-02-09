@@ -3,16 +3,16 @@
 		<mat-form-field class="full-width">
 				<input matInput placeholder="GitHub Url" 
                 name="url"
-				[(ngModel)]="repository.url"
+				[(ngModel)]="repositoryForm.url"
 				appAcceptedUrl=".git"
                 required #url="ngModel">	
 		</mat-form-field>
 		<mat-form-field class="full-width">
                 <input matInput placeholder="Branch" 
                 name="branch"
-                [(ngModel)]="repository.branch"
+                [(ngModel)]="repositoryForm.branch"
                 required #branch="ngModel">
 		</mat-form-field>
-		<button type="submit" [disabled]="!repoForm.form.valid" mat-raised-button color="primary" class="form-button">Download</button>
+		<button type="submit" [disabled]="!repoForm.form.valid" mat-raised-button color="primary" class="form-button">Analyse</button>
 	</form>
 </div>

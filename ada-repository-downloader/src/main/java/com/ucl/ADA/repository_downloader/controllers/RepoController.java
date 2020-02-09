@@ -1,5 +1,6 @@
 package com.ucl.ADA.repository_downloader.controllers;
 
+import com.ucl.ADA.repository_downloader.entities.User;
 import com.ucl.ADA.repository_downloader.helpers.RepoDbPopulator;
 import com.ucl.ADA.repository_downloader.services.RepoService;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -22,7 +23,14 @@ public class RepoController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/repo-metadata")
-    public void addEntry(@RequestBody RepoDbPopulator repo) throws GitAPIException {
-        repoService.addEntry(repo);
+    public User addEntry(@RequestBody RepoDbPopulator repo) {
+        User user;
+        try {
+            user = repoService.addEntry(repo);
+        }
+        catch (Exception exception) {
+            return null;
+        }
+        return user;
     }
 }
