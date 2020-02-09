@@ -1,6 +1,6 @@
-package com.ucl.ADA.metric_calculator.metrics;
+package com.ucl.ADA.metric_calculator.metrics_structure;
 
-public enum MetricTypes {
+public enum ClassMetricTypes {
     NUMBER_OF_ATTRIBUTE_INVOCATIONS_INCOMING,
     NUMBER_OF_ATTRIBUTE_INVOCATIONS_OUTGOING,
 

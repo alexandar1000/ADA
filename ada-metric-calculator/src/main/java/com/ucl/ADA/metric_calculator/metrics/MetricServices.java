@@ -1,5 +1,6 @@
 package com.ucl.ADA.metric_calculator.metrics;
 
+import com.ucl.ADA.metric_calculator.metrics_structure.ClassMetricTypes;
 import com.ucl.ADA.metric_calculator.metrics_structure.ProjectMetricsContainer;
 import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ public class MetricServices {
     @Autowired
     private MetricRepository metricRepository;
 
-    protected void saveMetric(MetricTypes metricType, float value) {
+    protected void saveMetric(ClassMetricTypes metricType, float value) {
         Metric m = new Metric(metricType, value);
         metricRepository.save(m);
     }

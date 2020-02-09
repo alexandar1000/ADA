@@ -34,7 +34,7 @@ public class ClassMetricsContainer {
         this.classMetricValues.setNumberOfPackageImportsIncoming(metricValue);
     }
 
-    public void calculateNumberOfPackageImportsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    public void calculateNumberOfClassPackageImportsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
         Float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
@@ -46,7 +46,7 @@ public class ClassMetricsContainer {
         this.classMetricValues.setNumberOfPackageImportsOutgoing(metricValue);
     }
 
-    public void calculateNumberOfAttributeInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    public void calculateNumberOfClassAttributeInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
         Float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
@@ -58,7 +58,7 @@ public class ClassMetricsContainer {
         this.classMetricValues.setNumberOfAttributeInvocationsIncoming(metricValue);
     }
 
-    public void calculateNumberOfAttributeInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    public void calculateNumberOfClassAttributeInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
         Float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
@@ -70,7 +70,7 @@ public class ClassMetricsContainer {
         this.classMetricValues.setNumberOfAttributeInvocationsOutgoing(metricValue);
     }
 
-    public void calculateNumberOfMethodInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    public void calculateNumberOfClassMethodInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
         Float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
@@ -82,7 +82,7 @@ public class ClassMetricsContainer {
         this.classMetricValues.setNumberOfMethodInvocationsIncoming(metricValue);
     }
 
-    public void calculateNumberOfMethodInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    public void calculateNumberOfClassMethodInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
         Float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
@@ -94,7 +94,7 @@ public class ClassMetricsContainer {
         this.classMetricValues.setNumberOfMethodInvocationsOutgoing(metricValue);
     }
 
-    public void calculateNumberOfConstructorInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    public void calculateNumberOfClassConstructorInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
         Float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
@@ -106,7 +106,7 @@ public class ClassMetricsContainer {
         this.classMetricValues.setNumberOfConstructorInvocationsIncoming(metricValue);
     }
 
-    public void calculateNumberOfConstructorInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    public void calculateNumberOfClassConstructorInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
         Float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
@@ -118,7 +118,7 @@ public class ClassMetricsContainer {
         this.classMetricValues.setNumberOfConstructorInvocationsOutgoing(metricValue);
     }
 
-    public void calculateBidirectionalNumberOfPackageImports(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    public void calculateBidirectionalNumberOfClassPackageImports(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
         Float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
@@ -133,7 +133,7 @@ public class ClassMetricsContainer {
         this.classMetricValues.setBidirectionalNumberOfPackageImports(metricValue);
     }
 
-    public void calculateBidirectionalNumberOfAttributeInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    public void calculateBidirectionalNumberOfClassAttributeInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
         Float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
@@ -148,7 +148,7 @@ public class ClassMetricsContainer {
         this.classMetricValues.setBidirectionalNumberOfAttributeInvocations(metricValue);
     }
 
-    public void calculateBidirectionalNumberOfMethodInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    public void calculateBidirectionalNumberOfClassMethodInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
         Float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
@@ -163,7 +163,7 @@ public class ClassMetricsContainer {
         this.classMetricValues.setBidirectionalNumberOfMethodInvocations(metricValue);
     }
 
-    public void calculateBidirectionalNumberOfConstructorInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    public void calculateBidirectionalNumberOfClassConstructorInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
         Float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);

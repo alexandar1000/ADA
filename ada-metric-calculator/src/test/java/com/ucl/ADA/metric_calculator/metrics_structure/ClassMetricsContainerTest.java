@@ -112,7 +112,6 @@ class ClassMetricsContainerTest {
         pdt.addMethodInvocation(className, classNames.get(4), methodInvocationInformation);
 
         // For FourthClass
-        className = classNames.get(3);
 
         // For FifthClass
         className = classNames.get(4);
@@ -136,7 +135,7 @@ class ClassMetricsContainerTest {
     }
 
     @Test
-    public void numberOfPackageImportsIncoming_testMetricCorrectness() {
+    public void numberOfClassPackageImportsIncoming_testMetricCorrectness() {
         String correspondingClass = classNames.get(0);
         classMetricsContainer.calculateNumberOfClassPackageImportsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfPackageImportsIncoming()).isEqualTo(3);
@@ -163,300 +162,300 @@ class ClassMetricsContainerTest {
     }
 
     @Test
-    public void numberOfPackageImportsOutgoing_testMetricCorrectness() {
+    public void numberOfClassPackageImportsOutgoing_testMetricCorrectness() {
         String correspondingClass = classNames.get(0);
-        classMetricsContainer.calculateNumberOfPackageImportsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassPackageImportsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfPackageImportsOutgoing()).isEqualTo(2);
 
         correspondingClass = classNames.get(1);
-        classMetricsContainer.calculateNumberOfPackageImportsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassPackageImportsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfPackageImportsOutgoing()).isEqualTo(1);
 
         correspondingClass = classNames.get(2);
-        classMetricsContainer.calculateNumberOfPackageImportsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassPackageImportsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfPackageImportsOutgoing()).isEqualTo(4);
 
         correspondingClass = classNames.get(3);
-        classMetricsContainer.calculateNumberOfPackageImportsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassPackageImportsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfPackageImportsOutgoing()).isEqualTo(0);
 
         correspondingClass = classNames.get(4);
-        classMetricsContainer.calculateNumberOfPackageImportsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassPackageImportsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfPackageImportsOutgoing()).isEqualTo(1);
 
         correspondingClass = classNames.get(5);
-        classMetricsContainer.calculateNumberOfPackageImportsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassPackageImportsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfPackageImportsOutgoing()).isEqualTo(1);
     }
 
     @Test
-    public void numberOfAttributeInvocationsIncoming_testMetricCorrectness() {
+    public void numberOfClassAttributeInvocationsIncoming_testMetricCorrectness() {
         String correspondingClass = classNames.get(0);
-        classMetricsContainer.calculateNumberOfAttributeInvocationsIncoming(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassAttributeInvocationsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfAttributeInvocationsIncoming()).isEqualTo(3);
 
         correspondingClass = classNames.get(1);
-        classMetricsContainer.calculateNumberOfAttributeInvocationsIncoming(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassAttributeInvocationsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfAttributeInvocationsIncoming()).isEqualTo(2);
 
         correspondingClass = classNames.get(2);
-        classMetricsContainer.calculateNumberOfAttributeInvocationsIncoming(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassAttributeInvocationsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
 
         correspondingClass = classNames.get(3);
-        classMetricsContainer.calculateNumberOfAttributeInvocationsIncoming(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassAttributeInvocationsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
 
         correspondingClass = classNames.get(4);
-        classMetricsContainer.calculateNumberOfAttributeInvocationsIncoming(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassAttributeInvocationsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfAttributeInvocationsIncoming()).isEqualTo(2);
 
         correspondingClass = classNames.get(5);
-        classMetricsContainer.calculateNumberOfAttributeInvocationsIncoming(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassAttributeInvocationsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfAttributeInvocationsIncoming()).isEqualTo(0);
     }
 
     @Test
-    public void numberOfAttributeInvocationsOutgoing_testMetricCorrectness() {
+    public void numberOfClassAttributeInvocationsOutgoing_testMetricCorrectness() {
         String correspondingClass = classNames.get(0);
-        classMetricsContainer.calculateNumberOfAttributeInvocationsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassAttributeInvocationsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfAttributeInvocationsOutgoing()).isEqualTo(2);
 
         correspondingClass = classNames.get(1);
-        classMetricsContainer.calculateNumberOfAttributeInvocationsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassAttributeInvocationsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
 
         correspondingClass = classNames.get(2);
-        classMetricsContainer.calculateNumberOfAttributeInvocationsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassAttributeInvocationsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfAttributeInvocationsOutgoing()).isEqualTo(4);
 
         correspondingClass = classNames.get(3);
-        classMetricsContainer.calculateNumberOfAttributeInvocationsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassAttributeInvocationsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfAttributeInvocationsOutgoing()).isEqualTo(0);
 
         correspondingClass = classNames.get(4);
-        classMetricsContainer.calculateNumberOfAttributeInvocationsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassAttributeInvocationsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
 
         correspondingClass = classNames.get(5);
-        classMetricsContainer.calculateNumberOfAttributeInvocationsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassAttributeInvocationsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
 
     }
 
     @Test
-    public void numberOfMethodInvocationsIncoming_testMetricCorrectness() {
+    public void numberOfClassMethodInvocationsIncoming_testMetricCorrectness() {
         String correspondingClass = classNames.get(0);
-        classMetricsContainer.calculateNumberOfMethodInvocationsIncoming(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassMethodInvocationsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfMethodInvocationsIncoming()).isEqualTo(3);
 
         correspondingClass = classNames.get(1);
-        classMetricsContainer.calculateNumberOfMethodInvocationsIncoming(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassMethodInvocationsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfMethodInvocationsIncoming()).isEqualTo(2);
 
         correspondingClass = classNames.get(2);
-        classMetricsContainer.calculateNumberOfMethodInvocationsIncoming(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassMethodInvocationsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
 
         correspondingClass = classNames.get(3);
-        classMetricsContainer.calculateNumberOfMethodInvocationsIncoming(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassMethodInvocationsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
 
         correspondingClass = classNames.get(4);
-        classMetricsContainer.calculateNumberOfMethodInvocationsIncoming(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassMethodInvocationsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfMethodInvocationsIncoming()).isEqualTo(2);
 
         correspondingClass = classNames.get(5);
-        classMetricsContainer.calculateNumberOfMethodInvocationsIncoming(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassMethodInvocationsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfMethodInvocationsIncoming()).isEqualTo(0);
     }
 
     @Test
-    public void numberOfMethodInvocationsOutgoing_testMetricCorrectness() {
+    public void numberOfClassMethodInvocationsOutgoing_testMetricCorrectness() {
         String correspondingClass = classNames.get(0);
-        classMetricsContainer.calculateNumberOfMethodInvocationsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassMethodInvocationsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfMethodInvocationsOutgoing()).isEqualTo(2);
 
         correspondingClass = classNames.get(1);
-        classMetricsContainer.calculateNumberOfMethodInvocationsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassMethodInvocationsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
 
         correspondingClass = classNames.get(2);
-        classMetricsContainer.calculateNumberOfMethodInvocationsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassMethodInvocationsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfMethodInvocationsOutgoing()).isEqualTo(4);
 
         correspondingClass = classNames.get(3);
-        classMetricsContainer.calculateNumberOfMethodInvocationsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassMethodInvocationsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfMethodInvocationsOutgoing()).isEqualTo(0);
 
         correspondingClass = classNames.get(4);
-        classMetricsContainer.calculateNumberOfMethodInvocationsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassMethodInvocationsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
 
         correspondingClass = classNames.get(5);
-        classMetricsContainer.calculateNumberOfMethodInvocationsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassMethodInvocationsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
     }
 
     @Test
-    public void numberOfConstructorInvocationsIncoming_testMetricCorrectness() {
+    public void numberOfClassConstructorInvocationsIncoming_testMetricCorrectness() {
         String correspondingClass = classNames.get(0);
-        classMetricsContainer.calculateNumberOfConstructorInvocationsIncoming(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassConstructorInvocationsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfConstructorInvocationsIncoming()).isEqualTo(3);
 
         correspondingClass = classNames.get(1);
-        classMetricsContainer.calculateNumberOfConstructorInvocationsIncoming(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassConstructorInvocationsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfConstructorInvocationsIncoming()).isEqualTo(2);
 
         correspondingClass = classNames.get(2);
-        classMetricsContainer.calculateNumberOfConstructorInvocationsIncoming(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassConstructorInvocationsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
 
         correspondingClass = classNames.get(3);
-        classMetricsContainer.calculateNumberOfConstructorInvocationsIncoming(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassConstructorInvocationsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
 
         correspondingClass = classNames.get(4);
-        classMetricsContainer.calculateNumberOfConstructorInvocationsIncoming(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassConstructorInvocationsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfConstructorInvocationsIncoming()).isEqualTo(2);
 
         correspondingClass = classNames.get(5);
-        classMetricsContainer.calculateNumberOfConstructorInvocationsIncoming(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassConstructorInvocationsIncoming(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfConstructorInvocationsIncoming()).isEqualTo(0);
     }
 
     @Test
-    public void numberOfConstructorInvocationsOutgoing_testMetricCorrectness() {
+    public void numberOfClassConstructorInvocationsOutgoing_testMetricCorrectness() {
         String correspondingClass = classNames.get(0);
-        classMetricsContainer.calculateNumberOfConstructorInvocationsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassConstructorInvocationsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfConstructorInvocationsOutgoing()).isEqualTo(2);
 
         correspondingClass = classNames.get(1);
-        classMetricsContainer.calculateNumberOfConstructorInvocationsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassConstructorInvocationsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
 
         correspondingClass = classNames.get(2);
-        classMetricsContainer.calculateNumberOfConstructorInvocationsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassConstructorInvocationsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfConstructorInvocationsOutgoing()).isEqualTo(4);
 
         correspondingClass = classNames.get(3);
-        classMetricsContainer.calculateNumberOfConstructorInvocationsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassConstructorInvocationsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfConstructorInvocationsOutgoing()).isEqualTo(0);
 
         correspondingClass = classNames.get(4);
-        classMetricsContainer.calculateNumberOfConstructorInvocationsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassConstructorInvocationsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
 
         correspondingClass = classNames.get(5);
-        classMetricsContainer.calculateNumberOfConstructorInvocationsOutgoing(correspondingClass, pdt);
+        classMetricsContainer.calculateNumberOfClassConstructorInvocationsOutgoing(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
     }
 
     @Test
-    public void bidirectionalNumberOfPackageImports_testMetricCorrectness() {
+    public void bidirectionalNumberOfClassPackageImports_testMetricCorrectness() {
         String correspondingClass = classNames.get(0);
-        classMetricsContainer.calculateBidirectionalNumberOfPackageImports(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassPackageImports(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfPackageImports()).isEqualTo(5);
 
         correspondingClass = classNames.get(1);
-        classMetricsContainer.calculateBidirectionalNumberOfPackageImports(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassPackageImports(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfPackageImports()).isEqualTo(3);
 
         correspondingClass = classNames.get(2);
-        classMetricsContainer.calculateBidirectionalNumberOfPackageImports(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassPackageImports(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfPackageImports()).isEqualTo(5);
 
         correspondingClass = classNames.get(3);
-        classMetricsContainer.calculateBidirectionalNumberOfPackageImports(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassPackageImports(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfPackageImports()).isEqualTo(1);
 
         correspondingClass = classNames.get(4);
-        classMetricsContainer.calculateBidirectionalNumberOfPackageImports(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassPackageImports(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfPackageImports()).isEqualTo(3);
 
         correspondingClass = classNames.get(5);
-        classMetricsContainer.calculateBidirectionalNumberOfPackageImports(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassPackageImports(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfPackageImports()).isEqualTo(1);
     }
 
     @Test
-    public void bidirectionalNumberOfAttributeInvocations_testMetricCorrectness() {
+    public void bidirectionalNumberOfClassAttributeInvocations_testMetricCorrectness() {
         String correspondingClass = classNames.get(0);
-        classMetricsContainer.calculateBidirectionalNumberOfAttributeInvocations(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassAttributeInvocations(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfAttributeInvocations()).isEqualTo(5);
 
         correspondingClass = classNames.get(1);
-        classMetricsContainer.calculateBidirectionalNumberOfAttributeInvocations(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassAttributeInvocations(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfAttributeInvocations()).isEqualTo(3);
 
         correspondingClass = classNames.get(2);
-        classMetricsContainer.calculateBidirectionalNumberOfAttributeInvocations(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassAttributeInvocations(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfAttributeInvocations()).isEqualTo(5);
 
         correspondingClass = classNames.get(3);
-        classMetricsContainer.calculateBidirectionalNumberOfAttributeInvocations(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassAttributeInvocations(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
 
         correspondingClass = classNames.get(4);
-        classMetricsContainer.calculateBidirectionalNumberOfAttributeInvocations(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassAttributeInvocations(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfAttributeInvocations()).isEqualTo(3);
 
         correspondingClass = classNames.get(5);
-        classMetricsContainer.calculateBidirectionalNumberOfAttributeInvocations(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassAttributeInvocations(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
     }
 
     @Test
-    public void bidirectionalNumberOfMethodInvocations_testMetricCorrectness() {
+    public void bidirectionalNumberOfClassMethodInvocations_testMetricCorrectness() {
         String correspondingClass = classNames.get(0);
-        classMetricsContainer.calculateBidirectionalNumberOfMethodInvocations(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassMethodInvocations(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfMethodInvocations()).isEqualTo(5);
 
         correspondingClass = classNames.get(1);
-        classMetricsContainer.calculateBidirectionalNumberOfMethodInvocations(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassMethodInvocations(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfMethodInvocations()).isEqualTo(3);
 
         correspondingClass = classNames.get(2);
-        classMetricsContainer.calculateBidirectionalNumberOfMethodInvocations(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassMethodInvocations(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfMethodInvocations()).isEqualTo(5);
 
         correspondingClass = classNames.get(3);
-        classMetricsContainer.calculateBidirectionalNumberOfMethodInvocations(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassMethodInvocations(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
 
         correspondingClass = classNames.get(4);
-        classMetricsContainer.calculateBidirectionalNumberOfMethodInvocations(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassMethodInvocations(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfMethodInvocations()).isEqualTo(3);
 
         correspondingClass = classNames.get(5);
-        classMetricsContainer.calculateBidirectionalNumberOfMethodInvocations(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassMethodInvocations(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
     }
 
     @Test
-    public void bidirectionalNumberOfConstructorInvocations_testMetricCorrectness() {
+    public void bidirectionalNumberOfClassConstructorInvocations_testMetricCorrectness() {
         String correspondingClass = classNames.get(0);
-        classMetricsContainer.calculateBidirectionalNumberOfConstructorInvocations(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassConstructorInvocations(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfConstructorInvocations()).isEqualTo(5);
 
         correspondingClass = classNames.get(1);
-        classMetricsContainer.calculateBidirectionalNumberOfConstructorInvocations(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassConstructorInvocations(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfConstructorInvocations()).isEqualTo(3);
 
         correspondingClass = classNames.get(2);
-        classMetricsContainer.calculateBidirectionalNumberOfConstructorInvocations(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassConstructorInvocations(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfConstructorInvocations()).isEqualTo(5);
 
         correspondingClass = classNames.get(3);
-        classMetricsContainer.calculateBidirectionalNumberOfConstructorInvocations(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassConstructorInvocations(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
 
         correspondingClass = classNames.get(4);
-        classMetricsContainer.calculateBidirectionalNumberOfConstructorInvocations(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassConstructorInvocations(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfConstructorInvocations()).isEqualTo(3);
 
         correspondingClass = classNames.get(5);
-        classMetricsContainer.calculateBidirectionalNumberOfConstructorInvocations(correspondingClass, pdt);
+        classMetricsContainer.calculateBidirectionalNumberOfClassConstructorInvocations(correspondingClass, pdt);
         assertThat(classMetricsContainer.getClassMetricValues().getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
     }
 }
