@@ -1,29 +1,67 @@
 package com.ucl.ADA.core;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.ucl.ADA.core.AdaApplication;
 import com.ucl.ADA.metric_calculator.metrics.MetricController;
+import com.ucl.ADA.repository_downloader.helpers.RepoDbPopulator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@AutoConfigureMockMvc
 class AdaApplicationTests {
 
 	@Autowired
 	private MetricController metricController;
+
+	@Autowired
+	private MockMvc mvc;
 
 	@Test
 	void contextLoads() {
 		assertThat(metricController).isNotNull();
 	}
 
+	private static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
+
+
 	@Test
 	void homeTest() {
 		AdaApplication adaApplication = new AdaApplication();
 		String result = adaApplication.home();
 		assertEquals(result, "Welcome to this wonderfully amazing webpage. Still a bit shy tho..");
+	}
+
+	@Test
+	 void getDownloadResponse() throws Exception {
+		String url = "https://github.com/sebastianvburlacu/Fitbit-JSON-Data-Generator.git";
+		String branch = "master";
+		RepoDbPopulator repoInfoUI = new RepoDbPopulator();
+		repoInfoUI.setUrl(url);
+		repoInfoUI.setBranch(branch);
+
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+		ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
+		String requestJson=writer.writeValueAsString(repoInfoUI);
+
+		mvc.perform(post("/repo-metadata")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(requestJson)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
 	}
 }
