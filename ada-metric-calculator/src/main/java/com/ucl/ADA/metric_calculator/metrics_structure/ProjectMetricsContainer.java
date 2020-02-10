@@ -10,8 +10,16 @@ import java.util.HashMap;
 @Getter @Setter @NoArgsConstructor
 public class ProjectMetricsContainer {
 
+    /**
+     * All of the class metrics for the given project
+     */
     private HashMap<String, ClassMetricsContainer> classMetrics = new HashMap<>();
 
+    /**
+     * Computes both the class and relation metrics when provided a ProjectDependenceTree of the corresponding parsed
+     * repo
+     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     */
     public void computeAllMetrics(ProjectDependenceTree projectDependenceTree) {
         for (String key : projectDependenceTree.getClassDependenceTrees().keySet()) {
             if (!classMetrics.containsKey(key)) {
