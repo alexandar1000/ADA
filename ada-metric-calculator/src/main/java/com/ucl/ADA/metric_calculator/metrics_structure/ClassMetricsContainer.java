@@ -332,4 +332,20 @@ public class ClassMetricsContainer {
             }
         }
     }
+
+    public void calculateBidirectionalNumberOfRelationPackageImports(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+
+    }
+
+    public void calculateBidirectionalNumberOfRelationAttributeInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+
+    }
+
+    public void calculateBidirectionalNumberOfRelationMethodInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+
+    }
+
+    public void calculateBidirectionalNumberOfRelationConstructorInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+
+    }
 }
