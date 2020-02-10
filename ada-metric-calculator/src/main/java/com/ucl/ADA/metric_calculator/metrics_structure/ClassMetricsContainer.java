@@ -15,13 +15,6 @@ public class ClassMetricsContainer {
 
     private ClassMetricValue classMetricValues = new ClassMetricValue();
 
-//    if (relationMetricValues.containsKey(correspondingClass)) {
-//        relationMetricValues.get(correspondingClass).setNumberOfPackageImportsIncoming(metricValue);
-//    } else {
-//        ClassMetricValue classMetricValueObject = new ClassMetricValue();
-//        classMetricValueObject.setNumberOfPackageImportsIncoming(metricValue);
-//        relationMetricValues.put(correspondingClass, classMetricValueObject);
-//    }
 
     public void calculateNumberOfClassPackageImportsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
         Float metricValue = 0F;
@@ -176,5 +169,26 @@ public class ClassMetricsContainer {
         }
 
         this.classMetricValues.setBidirectionalNumberOfConstructorInvocations(metricValue);
+    }
+
+    public void calculateNumberOfRelationPackageImportsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+        Float metricValue = 0F;
+        // Check if the corresponding class is present in the project dependence tree
+        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+            // Get corresponding class from the ProjectDependenceTree
+            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            // For all of the relating classes get the corresponding metrics
+            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
+                metricValue = (float) classDependenceTree.getIncomingDependenceInfo().get(key).getPackages().size();
+
+
+                // Check if the relation metrics for the class have already been computed
+                if (!relationMetricValues.containsKey(key)) {
+                    RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                    relationMetricValues.put(key, relationMetricValueObject);
+                }
+                relationMetricValues.get(key).setNumberOfPackageImportsIncoming(metricValue);
+            }
+        }
     }
 }
