@@ -1,5 +1,6 @@
 package com.ucl.ADA.metric_calculator.metrics_structure;
 
+import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +15,8 @@ public class ProjectMetricsContainer {
 
     private ArrayList<String> classNames = new ArrayList<>();
 
-    public ProjectMetricsContainer(ArrayList<String> classNames) {
-        this.classNames.addAll(classNames);
+    public void computeAllMetrics(ProjectDependenceTree projectDependenceTree) {
+        for (String key : projectDependenceTree.getClassDependenceTrees().keySet()) {
+        }
     }
 }

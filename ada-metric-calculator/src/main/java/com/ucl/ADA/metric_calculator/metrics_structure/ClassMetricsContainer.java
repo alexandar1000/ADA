@@ -17,7 +17,7 @@ public class ClassMetricsContainer {
 
 
     public void calculateNumberOfClassPackageImportsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
             for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
@@ -28,7 +28,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateNumberOfClassPackageImportsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
             for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
@@ -40,7 +40,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateNumberOfClassAttributeInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
             for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
@@ -52,7 +52,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateNumberOfClassAttributeInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
             for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
@@ -64,7 +64,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateNumberOfClassMethodInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
             for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
@@ -76,7 +76,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateNumberOfClassMethodInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
             for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
@@ -88,7 +88,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateNumberOfClassConstructorInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
             for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
@@ -100,7 +100,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateNumberOfClassConstructorInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
             for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
@@ -112,7 +112,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateBidirectionalNumberOfClassPackageImports(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
             for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
@@ -127,7 +127,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateBidirectionalNumberOfClassAttributeInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
             for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
@@ -142,7 +142,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateBidirectionalNumberOfClassMethodInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
             for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
@@ -157,7 +157,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateBidirectionalNumberOfClassConstructorInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue = 0F;
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
             for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
@@ -172,7 +172,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateNumberOfRelationPackageImportsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue;
         // Check if the corresponding class is present in the project dependence tree
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
@@ -192,7 +192,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateNumberOfRelationPackageImportsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue;
         // Check if the corresponding class is present in the project dependence tree
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
@@ -212,7 +212,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateNumberOfRelationAttributeInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue;
         // Check if the corresponding class is present in the project dependence tree
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
@@ -232,7 +232,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateNumberOfRelationAttributeInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue;
         // Check if the corresponding class is present in the project dependence tree
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
@@ -252,7 +252,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateNumberOfRelationMethodInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue;
         // Check if the corresponding class is present in the project dependence tree
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
@@ -273,7 +273,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateNumberOfRelationMethodInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue;
         // Check if the corresponding class is present in the project dependence tree
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
@@ -293,7 +293,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateNumberOfRelationConstructorInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue;
         // Check if the corresponding class is present in the project dependence tree
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
@@ -314,7 +314,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateNumberOfRelationConstructorInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue;
         // Check if the corresponding class is present in the project dependence tree
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
@@ -334,7 +334,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateBidirectionalNumberOfRelationPackageImports(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue;
         // Check if the corresponding class is present in the project dependence tree
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
@@ -364,7 +364,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateBidirectionalNumberOfRelationAttributeInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue;
         // Check if the corresponding class is present in the project dependence tree
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
@@ -394,7 +394,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateBidirectionalNumberOfRelationMethodInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue;
         // Check if the corresponding class is present in the project dependence tree
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
@@ -424,7 +424,7 @@ public class ClassMetricsContainer {
     }
 
     public void calculateBidirectionalNumberOfRelationConstructorInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        Float metricValue = 0F;
+        float metricValue;
         // Check if the corresponding class is present in the project dependence tree
         if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
@@ -451,5 +451,39 @@ public class ClassMetricsContainer {
                 relationMetricValues.get(key).setBidirectionalNumberOfConstructorInvocations(currentMetricValue + metricValue);
             }
         }
+    }
+
+    public void computeAllClassMetrics(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+        this.calculateBidirectionalNumberOfClassPackageImports(correspondingClass, projectDependenceTree);
+        this.calculateBidirectionalNumberOfClassAttributeInvocations(correspondingClass, projectDependenceTree);
+        this.calculateBidirectionalNumberOfClassConstructorInvocations(correspondingClass, projectDependenceTree);
+        this.calculateBidirectionalNumberOfClassMethodInvocations(correspondingClass, projectDependenceTree);
+
+        this.calculateNumberOfClassPackageImportsOutgoing(correspondingClass, projectDependenceTree);
+        this.calculateNumberOfClassAttributeInvocationsOutgoing(correspondingClass, projectDependenceTree);
+        this.calculateNumberOfClassConstructorInvocationsOutgoing(correspondingClass, projectDependenceTree);
+        this.calculateNumberOfClassMethodInvocationsOutgoing(correspondingClass, projectDependenceTree);
+
+        this.calculateNumberOfClassPackageImportsIncoming(correspondingClass, projectDependenceTree);
+        this.calculateNumberOfClassAttributeInvocationsIncoming(correspondingClass, projectDependenceTree);
+        this.calculateNumberOfClassConstructorInvocationsIncoming(correspondingClass, projectDependenceTree);
+        this.calculateNumberOfClassMethodInvocationsIncoming(correspondingClass, projectDependenceTree);
+    }
+
+    public void computeAllRelationMetrics(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+        this.calculateBidirectionalNumberOfRelationPackageImports(correspondingClass, projectDependenceTree);
+        this.calculateBidirectionalNumberOfRelationAttributeInvocations(correspondingClass, projectDependenceTree);
+        this.calculateBidirectionalNumberOfRelationConstructorInvocations(correspondingClass, projectDependenceTree);
+        this.calculateBidirectionalNumberOfRelationMethodInvocations(correspondingClass, projectDependenceTree);
+
+        this.calculateNumberOfRelationPackageImportsOutgoing(correspondingClass, projectDependenceTree);
+        this.calculateNumberOfRelationAttributeInvocationsOutgoing(correspondingClass, projectDependenceTree);
+        this.calculateNumberOfRelationConstructorInvocationsOutgoing(correspondingClass, projectDependenceTree);
+        this.calculateNumberOfRelationMethodInvocationsOutgoing(correspondingClass, projectDependenceTree);
+
+        this.calculateNumberOfRelationPackageImportsIncoming(correspondingClass, projectDependenceTree);
+        this.calculateNumberOfRelationAttributeInvocationsIncoming(correspondingClass, projectDependenceTree);
+        this.calculateNumberOfRelationConstructorInvocationsIncoming(correspondingClass, projectDependenceTree);
+        this.calculateNumberOfRelationMethodInvocationsIncoming(correspondingClass, projectDependenceTree);
     }
 }
