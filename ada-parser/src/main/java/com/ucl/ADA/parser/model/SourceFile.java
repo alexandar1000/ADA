@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,19 +16,21 @@ public class SourceFile {
     private String className;
     private String parentClassName;
     private Set<String> implementedInterfaces;
-    private Map<String, String> staticFields;
-    private Map<String, String> publicFields;
+    private List<SourceAttribute> classAttributes;
     private Set<SourceMethod> methods;
+    private Set<String> importedPackages;
+    private List<SourceConstructor> declaredSourceConstructors;
 
     @Builder
-    public SourceFile(String packageName, String className, String parentClassName, Set<String> implementedInterface, Map<String, String> staticFields, Map<String, String> publicFields, Set<SourceMethod> methods) {
+    public SourceFile(Set<String> importedPackages, String packageName, String className, String parentClassName, Set<String> implementedInterface, Set<SourceMethod> methods, List<SourceConstructor> declaredSourceConstructors, List<SourceAttribute> classAttributes) {
+        this.importedPackages = importedPackages;
         this.packageName = packageName;
         this.className = className;
         this.parentClassName = parentClassName;
         this.implementedInterfaces = implementedInterface;
-        this.staticFields = staticFields;
-        this.publicFields = publicFields;
         this.methods = methods;
+        this.declaredSourceConstructors = declaredSourceConstructors;
+        this.classAttributes = classAttributes;
     }
 
     @Override
@@ -38,25 +41,30 @@ public class SourceFile {
             return false;
         }
         SourceFile sourceClass = (SourceFile) sf;
-        return sourceClass.packageName.equals(this.packageName)
+        return sourceClass.importedPackages.equals(this.importedPackages)
+                && sourceClass.packageName.equals(this.packageName)
                 && sourceClass.className.equals(this.className)
                 && sourceClass.parentClassName.equals(this.parentClassName)
                 && sourceClass.implementedInterfaces.equals(this.implementedInterfaces)
-                && sourceClass.staticFields.equals(this.staticFields)
-                && sourceClass.publicFields.equals(this.publicFields)
-                && sourceClass.methods.equals(this.methods);
+                && sourceClass.methods.equals(this.methods)
+                && sourceClass.declaredSourceConstructors.equals(this.declaredSourceConstructors)
+                && sourceClass.classAttributes.equals(this.classAttributes);
+
     }
 
     @Override
     public int hashCode() {
         int result = 31;
+        result = 31 * result + importedPackages.hashCode();
         result = 31 * result + packageName.hashCode();
         result = 31 * result + className.hashCode();
         result = 31 * result + parentClassName.hashCode();
         result = 31 * result + implementedInterfaces.hashCode();
-        result = 31 * result + staticFields.hashCode();
-        result = 31 * result + publicFields.hashCode();
         result = 31 * result + methods.hashCode();
+        result = 31 * result + declaredSourceConstructors.hashCode();
+        result = 31 * result + classAttributes.hashCode();
+
+
         return result;
     }
 
