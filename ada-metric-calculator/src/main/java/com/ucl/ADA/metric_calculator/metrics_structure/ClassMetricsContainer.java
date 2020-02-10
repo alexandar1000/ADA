@@ -181,13 +181,154 @@ public class ClassMetricsContainer {
             for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
                 metricValue = (float) classDependenceTree.getIncomingDependenceInfo().get(key).getPackages().size();
 
-
                 // Check if the relation metrics for the class have already been computed
                 if (!relationMetricValues.containsKey(key)) {
                     RelationMetricValue relationMetricValueObject = new RelationMetricValue();
                     relationMetricValues.put(key, relationMetricValueObject);
                 }
                 relationMetricValues.get(key).setNumberOfPackageImportsIncoming(metricValue);
+            }
+        }
+    }
+
+    public void calculateNumberOfRelationPackageImportsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+        Float metricValue = 0F;
+        // Check if the corresponding class is present in the project dependence tree
+        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+            // Get corresponding class from the ProjectDependenceTree
+            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            // For all of the relating classes get the corresponding metrics
+            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
+                metricValue = (float) classDependenceTree.getOutgoingDependenceInfo().get(key).getPackages().size();
+
+                // Check if the relation metrics for the class have already been computed
+                if (!relationMetricValues.containsKey(key)) {
+                    RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                    relationMetricValues.put(key, relationMetricValueObject);
+                }
+                relationMetricValues.get(key).setNumberOfPackageImportsOutgoing(metricValue);
+            }
+        }
+    }
+
+    public void calculateNumberOfRelationAttributeInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+        Float metricValue = 0F;
+        // Check if the corresponding class is present in the project dependence tree
+        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+            // Get corresponding class from the ProjectDependenceTree
+            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            // For all of the relating classes get the corresponding metrics
+            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
+                metricValue = (float) classDependenceTree.getIncomingDependenceInfo().get(key).getAttributes().size();
+
+                // Check if the relation metrics for the class have already been computed
+                if (!relationMetricValues.containsKey(key)) {
+                    RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                    relationMetricValues.put(key, relationMetricValueObject);
+                }
+                relationMetricValues.get(key).setNumberOfAttributeInvocationsIncoming(metricValue);
+            }
+        }
+    }
+
+    public void calculateNumberOfRelationAttributeInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+        Float metricValue = 0F;
+        // Check if the corresponding class is present in the project dependence tree
+        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+            // Get corresponding class from the ProjectDependenceTree
+            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            // For all of the relating classes get the corresponding metrics
+            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
+                metricValue = (float) classDependenceTree.getOutgoingDependenceInfo().get(key).getAttributes().size();
+
+                // Check if the relation metrics for the class have already been computed
+                if (!relationMetricValues.containsKey(key)) {
+                    RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                    relationMetricValues.put(key, relationMetricValueObject);
+                }
+                relationMetricValues.get(key).setNumberOfAttributeInvocationsOutgoing(metricValue);
+            }
+        }
+    }
+
+    public void calculateNumberOfRelationMethodInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+        Float metricValue = 0F;
+        // Check if the corresponding class is present in the project dependence tree
+        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+            // Get corresponding class from the ProjectDependenceTree
+            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            // For all of the relating classes get the corresponding metrics
+            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
+                metricValue = (float) classDependenceTree.getIncomingDependenceInfo().get(key).getMethods().size();
+
+
+                // Check if the relation metrics for the class have already been computed
+                if (!relationMetricValues.containsKey(key)) {
+                    RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                    relationMetricValues.put(key, relationMetricValueObject);
+                }
+                relationMetricValues.get(key).setNumberOfMethodInvocationsIncoming(metricValue);
+            }
+        }
+    }
+
+    public void calculateNumberOfRelationMethodInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+        Float metricValue = 0F;
+        // Check if the corresponding class is present in the project dependence tree
+        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+            // Get corresponding class from the ProjectDependenceTree
+            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            // For all of the relating classes get the corresponding metrics
+            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
+                metricValue = (float) classDependenceTree.getOutgoingDependenceInfo().get(key).getMethods().size();
+
+                // Check if the relation metrics for the class have already been computed
+                if (!relationMetricValues.containsKey(key)) {
+                    RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                    relationMetricValues.put(key, relationMetricValueObject);
+                }
+                relationMetricValues.get(key).setNumberOfMethodInvocationsOutgoing(metricValue);
+            }
+        }
+    }
+
+    public void calculateNumberOfRelationConstructorInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+        Float metricValue = 0F;
+        // Check if the corresponding class is present in the project dependence tree
+        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+            // Get corresponding class from the ProjectDependenceTree
+            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            // For all of the relating classes get the corresponding metrics
+            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
+                metricValue = (float) classDependenceTree.getIncomingDependenceInfo().get(key).getConstructors().size();
+
+
+                // Check if the relation metrics for the class have already been computed
+                if (!relationMetricValues.containsKey(key)) {
+                    RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                    relationMetricValues.put(key, relationMetricValueObject);
+                }
+                relationMetricValues.get(key).setNumberOfConstructorInvocationsIncoming(metricValue);
+            }
+        }
+    }
+
+    public void calculateNumberOfRelationConstructorInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+        Float metricValue = 0F;
+        // Check if the corresponding class is present in the project dependence tree
+        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+            // Get corresponding class from the ProjectDependenceTree
+            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            // For all of the relating classes get the corresponding metrics
+            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
+                metricValue = (float) classDependenceTree.getOutgoingDependenceInfo().get(key).getConstructors().size();
+
+                // Check if the relation metrics for the class have already been computed
+                if (!relationMetricValues.containsKey(key)) {
+                    RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                    relationMetricValues.put(key, relationMetricValueObject);
+                }
+                relationMetricValues.get(key).setNumberOfConstructorInvocationsOutgoing(metricValue);
             }
         }
     }
