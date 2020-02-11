@@ -1,6 +1,6 @@
-# com.ucl.metricCalculator - Architectural Design Advisor
+# ADA - Architectural Design Advisor
 
-### The repository of com.ucl.metricCalculator, the Architectural Design Advisor
+### The repository of ADA, the Architectural Design Advisor
 
 ## General Information
 

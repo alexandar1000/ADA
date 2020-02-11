@@ -1,5 +1,6 @@
 package com.ucl.ADA.metric_calculator.metrics;
 
+import com.ucl.ADA.metric_calculator.metrics_structure.ClassMetricTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -32,7 +33,7 @@ public class MetricControllerTest {
      */
     @Test
     void testGetUserById() {
-        Metric m = new Metric(MetricTypes.SIMPLE_METRIC, 8.07F);
+        Metric m = new Metric(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_CLASS_ATTRIBUTE_INVOCATIONS, 8.07F);
         m.setId(1L);
         when(metricService.getMetric(1L)).thenReturn(m);
         Metric metric = metricController.retrieveMetricById(1L);
@@ -40,7 +41,7 @@ public class MetricControllerTest {
         verify(metricService).getMetric(1L);
 
         assertThat(metric.getId()).isEqualTo(1L);
-        assertThat(metric.getType()).isEqualTo(MetricTypes.SIMPLE_METRIC);
+        assertThat(metric.getType()).isEqualTo(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_CLASS_ATTRIBUTE_INVOCATIONS);
         assertThat(metric.getValue()).isEqualTo(8.07F);
 
     }
@@ -60,9 +61,9 @@ public class MetricControllerTest {
      */
     @Test
     void testRetrieveAllMetrics() {
-        Metric m1 = new Metric(MetricTypes.SIMPLE_METRIC, 1.0123F);
-        Metric m2 = new Metric(MetricTypes.MEDIUM_METRIC, 2.4567F);
-        Metric m3 = new Metric(MetricTypes.COMPLEX_METRIC, 3.8910F);
+        Metric m1 = new Metric(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_CLASS_ATTRIBUTE_INVOCATIONS, 1.0123F);
+        Metric m2 = new Metric(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_CLASS_CONSTRUCTOR_INVOCATIONS, 2.4567F);
+        Metric m3 = new Metric(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_CLASS_METHOD_INVOCATIONS, 3.8910F);
 
         m1.setId(1L);
         m2.setId(2L);
@@ -82,15 +83,15 @@ public class MetricControllerTest {
         assertThat(retrievedMetrics).hasSize(3);
 
         assertThat(retrievedMetrics.get(0).getId()).isEqualTo(1L);
-        assertThat(retrievedMetrics.get(0).getType()).isEqualTo(MetricTypes.SIMPLE_METRIC);
+        assertThat(retrievedMetrics.get(0).getType()).isEqualTo(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_CLASS_ATTRIBUTE_INVOCATIONS);
         assertThat(retrievedMetrics.get(0).getValue()).isEqualTo(1.0123F);
 
         assertThat(retrievedMetrics.get(1).getId()).isEqualTo(2L);
-        assertThat(retrievedMetrics.get(1).getType()).isEqualTo(MetricTypes.MEDIUM_METRIC);
+        assertThat(retrievedMetrics.get(1).getType()).isEqualTo(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_CLASS_CONSTRUCTOR_INVOCATIONS);
         assertThat(retrievedMetrics.get(1).getValue()).isEqualTo(2.4567F);
 
         assertThat(retrievedMetrics.get(2).getId()).isEqualTo(3L);
-        assertThat(retrievedMetrics.get(2).getType()).isEqualTo(MetricTypes.COMPLEX_METRIC);
+        assertThat(retrievedMetrics.get(2).getType()).isEqualTo(ClassMetricTypes.BIDIRECTIONAL_NUMBER_OF_CLASS_METHOD_INVOCATIONS);
         assertThat(retrievedMetrics.get(2).getValue()).isEqualTo(3.8910F);
     }
 
