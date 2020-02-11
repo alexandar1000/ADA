@@ -34,9 +34,9 @@ public class SourceParser {
 
         try {
             CompilationUnit cu = StaticJavaParser.parse(new File(sourceFilePath));
-            Set<String> importPacakages = new HashSet<String>();
+            Set<String> importPackages = new HashSet<String>();
             cu.findAll(ImportDeclaration.class).forEach(p -> {
-                importPacakages.add(p.toString().trim());
+                importPackages.add(p.toString().trim());
             });
 
             cu.findAll(ClassOrInterfaceDeclaration.class).forEach(cl -> {
@@ -67,7 +67,6 @@ public class SourceParser {
                     vv.getModifiers().forEach(m -> {
                         modifiers.add(m.toString().trim().toLowerCase());
                     });
-
 
                     String type = vv.getCommonType().toString();
                     vv.getVariables().forEach(vk -> {
@@ -141,6 +140,7 @@ public class SourceParser {
                     methods.add(sm);
                 });
 
+                // constructor declaration
                 List<SourceConstructor> sourceConstructor = new ArrayList<>();
                 cl.findAll(ConstructorDeclaration.class).forEach(cd -> {
                     Map<String, String> constructorParameters = new HashMap<>();
@@ -152,7 +152,7 @@ public class SourceParser {
                     sourceConstructor.add(new SourceConstructor(name, modifiers, constructorParameters));
                 });
 
-                sourceClasses.add(new SourceFile(importPacakages, packageName, className, parentClassName, implementedInterface, methods, sourceConstructor, sourceAttributes));
+                sourceClasses.add(new SourceFile(importPackages, packageName, className, parentClassName, implementedInterface, methods, sourceConstructor, sourceAttributes));
 
             });
 

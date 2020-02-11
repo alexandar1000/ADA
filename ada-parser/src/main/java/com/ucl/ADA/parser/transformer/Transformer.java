@@ -32,7 +32,7 @@ public class Transformer {
     }
 
     public static void main(String[] args) {
-        String src_dir = "/home/mrhmisu/UCL-MS/ADA-test-simple-JAVA-project-0";
+        String src_dir = "ada-parser/src/main/resources/source_to_parse";
         new ADAParser().printParsedSourceFileInJSON(src_dir);
     }
 

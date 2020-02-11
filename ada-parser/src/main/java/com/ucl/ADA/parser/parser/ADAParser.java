@@ -37,7 +37,7 @@ public class ADAParser {
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-            //System.out.println(jsonStr);
+            System.out.println(jsonStr);
         });
     }
 }

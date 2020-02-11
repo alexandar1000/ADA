@@ -4,5 +4,6 @@ public enum AccessModifierType {
     PUBLIC,
     PROTECTED,
     DEFAULT,
-    PRIVATE
+    PRIVATE,
+    LOCAL
 }

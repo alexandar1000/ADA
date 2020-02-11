@@ -49,7 +49,6 @@ public class SourceFile {
                 && sourceClass.methods.equals(this.methods)
                 && sourceClass.declaredSourceConstructors.equals(this.declaredSourceConstructors)
                 && sourceClass.classAttributes.equals(this.classAttributes);
-
     }
 
     @Override
@@ -63,7 +62,6 @@ public class SourceFile {
         result = 31 * result + methods.hashCode();
         result = 31 * result + declaredSourceConstructors.hashCode();
         result = 31 * result + classAttributes.hashCode();
-
 
         return result;
     }

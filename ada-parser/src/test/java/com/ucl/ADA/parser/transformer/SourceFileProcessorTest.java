@@ -17,18 +17,18 @@ class SourceFileProcessorTest {
     private SourceFile sourceFile;
 
     @BeforeAll
-    void setUpProcessor() {
-        sourceFileProcessor = new SourceFileProcessor();
-
-        String packageName = "";
-        String className = "";
-        String parentClassName = "";
-        Set<String> implementedInterfaces;
-        Map<String, String> staticFields;
-        Map<String, String> publicFields;
-        Set<SourceMethod> methods;
-
-        sourceFile = SourceFile.builder().build();
+    static void setUpProcessor() {
+//        sourceFileProcessor = new SourceFileProcessor();
+//
+//        String packageName = "";
+//        String className = "";
+//        String parentClassName = "";
+//        Set<String> implementedInterfaces;
+//        Map<String, String> staticFields;
+//        Map<String, String> publicFields;
+//        Set<SourceMethod> methods;
+//
+//        sourceFile = SourceFile.builder().build();
     }
 
     @BeforeEach

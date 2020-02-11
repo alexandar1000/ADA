@@ -30,11 +30,7 @@ class ClassDependenceTreeTest {
 
     @Test
     void addDataDeclaration_addNewElement() {
-        Set<KeywordType> keywordTypes = new HashSet<>();
-        keywordTypes.add(KeywordType.UNIDENTIFIABLE);
-        keywordTypes.add(KeywordType.FINAL);
-
-        AttributeDeclarationInformation attributeDeclarationInformation = new AttributeDeclarationInformation(AccessModifierType.DEFAULT, keywordTypes, "String", "attribute", "declaringAttributeName", true);
+        AttributeDeclarationInformation attributeDeclarationInformation = new AttributeDeclarationInformation(AccessModifierType.DEFAULT, "String", "attribute", "declaringAttributeName", true);
 
         cdt.addAttributeDeclaration(attributeDeclarationInformation);
 
