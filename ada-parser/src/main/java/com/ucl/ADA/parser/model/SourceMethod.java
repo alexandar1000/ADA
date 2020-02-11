@@ -20,16 +20,18 @@ public class SourceMethod {
     private Map<String, String> localVariables;
     // class name->method name
     private List<MethodCall> methodCalls;
+    private List<ConstructorInvocation> constructorInvocations;
 
     @Builder
     public SourceMethod(String name, String returnType, Set<String> accessModifiers, Map<String, String> parameters,
-                        List<MethodCall> methodCalls, Map<String, String> localVariables) {
+                        List<MethodCall> methodCalls, Map<String, String> localVariables,List<ConstructorInvocation> constructorInvocations) {
         this.name = name;
         this.returnType = returnType;
         this.accessModifiers = accessModifiers;
         this.parameters = parameters;
         this.methodCalls = methodCalls;
         this.localVariables = localVariables;
+        this.constructorInvocations=constructorInvocations;
     }
 
     @Override
@@ -45,7 +47,8 @@ public class SourceMethod {
                 && method.accessModifiers.equals(this.accessModifiers)
                 && method.parameters.equals(this.parameters)
                 && method.localVariables.equals(this.localVariables)
-                && method.methodCalls.equals(this.methodCalls);
+                && method.methodCalls.equals(this.methodCalls)
+                && method.constructorInvocations.equals(this.constructorInvocations);
     }
 
     @Override
@@ -57,6 +60,7 @@ public class SourceMethod {
         result = 31 * result + this.parameters.hashCode();
         result = 31 * result + this.localVariables.hashCode();
         result = 31 * result + this.methodCalls.hashCode();
+        result = 31 * result + this.constructorInvocations.hashCode();
         return result;
     }
 

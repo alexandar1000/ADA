@@ -3,18 +3,14 @@ package com.ucl.ADA.parser.parser;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
-import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.*;
-import com.github.javaparser.ast.expr.AssignExpr;
-import com.github.javaparser.ast.expr.MethodCallExpr;
-import com.github.javaparser.ast.expr.VariableDeclarationExpr;
+import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 import com.github.javaparser.symbolsolver.model.resolution.TypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import com.ucl.ADA.parser.model.*;
-import org.codehaus.groovy.ast.expr.ConstructorCallExpression;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -44,8 +40,6 @@ public class SourceParser {
             });
 
             cu.findAll(ClassOrInterfaceDeclaration.class).forEach(cl -> {
-
-
                 // class name
                 String className = cl.getNameAsString().trim();
                 //  extract the parents class interfaces,
@@ -56,7 +50,6 @@ public class SourceParser {
 
                 // implemented interfaces
                 Set<String> implementedInterface = new HashSet<String>();
-
                 cl.getImplementedTypes();
                 cl.getImplementedTypes().forEach(a -> {
                     implementedInterface.add(a.toString().trim());
@@ -91,6 +84,7 @@ public class SourceParser {
                 // extracted methods
                 Set<SourceMethod> methods = new HashSet<SourceMethod>();
                 cl.findAll(MethodDeclaration.class).forEach(n -> {
+
                     // name and return type
                     String methodName = n.getNameAsString();
                     String returnType = n.getType().toString();
@@ -128,8 +122,22 @@ public class SourceParser {
                     n.findAll(VariableDeclarator.class).forEach(V -> {
                         usedVariables.put(V.getNameAsString(), V.getTypeAsString());
                     });
+
+                    // find all the constructor invocation
+                    List<ConstructorInvocation> consInvocatino = new ArrayList<>();
+                    n.findAll(ObjectCreationExpr.class).forEach(o -> {
+                        String pakgName = o.resolve().getPackageName().trim();
+                        String constructorClassName = pakgName + "." + o.resolve().getClassName().trim();
+                        List<String> arguments = new ArrayList<>();
+                        o.getArguments().forEach(ar -> {
+                            arguments.add(ar.toString().trim());
+                        });
+                        consInvocatino.add(new ConstructorInvocation(constructorClassName, arguments));
+                    });
+
+
                     SourceMethod sm = new SourceMethod(methodName, returnType, accessModifiers, parameters,
-                            methodCallExpression, usedVariables);
+                            methodCallExpression, usedVariables, consInvocatino);
                     methods.add(sm);
                 });
 
