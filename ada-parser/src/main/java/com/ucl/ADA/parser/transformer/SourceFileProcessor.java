@@ -11,7 +11,6 @@ import com.ucl.ADA.parser.dependence_information.invocation_information.PackageI
 import com.ucl.ADA.parser.model.SourceFile;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class SourceFileProcessor {
@@ -82,12 +81,13 @@ public class SourceFileProcessor {
         });
     }
 
-    // OK
+    // TODO: What if import end up with '*' or import lombok
     public void processPackageInvocation(ProjectDependenceTree projectDependenceTree, SourceFile sourceFile) {
         sourceFile.getImportedPackages().forEach(im -> {
-            PackageInvocationInformation packageInvocationInformation = new PackageInvocationInformation(im);
-            String[] names = sourceFile.getClassName().split(".");
-            projectDependenceTree.addPackageInvocation(sourceFile.getClassName(), names[names.length - 1], packageInvocationInformation);
+            String[] import_arr = im.split(" ");
+            PackageInvocationInformation packageInvocationInformation = new PackageInvocationInformation(import_arr[1]);
+            String[] package_arr = import_arr[1].split("\\.");
+            projectDependenceTree.addPackageInvocation(sourceFile.getClassName(), package_arr[package_arr.length-1], packageInvocationInformation);
         });
     }
 
@@ -112,7 +112,7 @@ public class SourceFileProcessor {
         String className = sourceFile.getClassName();
         sourceFile.getMethods().forEach(m -> {
             m.getMethodCalls().forEach(mc -> {
-                String[] calleeNames = mc.getCalleeName().split(".");
+                String[] calleeNames = mc.getCalleeName().split("\\.");
                 MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation(calleeNames[calleeNames.length - 1], new ArrayList<>(mc.getArguments()));
                 projectDependenceTree.addMethodInvocation(sourceFile.getClassName(), calleeNames[calleeNames.length - 2], methodInvocationInformation);
             });

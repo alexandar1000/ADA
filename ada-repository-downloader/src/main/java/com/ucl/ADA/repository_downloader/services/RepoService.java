@@ -23,11 +23,20 @@ public class RepoService {
 
     //TODO: refactor this class.
 
-    @Autowired private UserRepository userRepository;
-    @Autowired private RepoEntityRepository repoEntityRepository;
-    @Autowired private BranchRepository branchRepository;
-    @Autowired private SnapshotRepository snapshotRepository;
-    @Autowired private SourceFileRepository sourceFileRepository;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RepoEntityRepository repoEntityRepository;
+
+    @Autowired
+    private BranchRepository branchRepository;
+
+    @Autowired
+    private SnapshotRepository snapshotRepository;
+
+    @Autowired
+    private SourceFileRepository sourceFileRepository;
 
     /**
      * Download Git repository and populate database, following the hierarchical database model of User -*> GitRepo -*> Branch -*> Snapshot

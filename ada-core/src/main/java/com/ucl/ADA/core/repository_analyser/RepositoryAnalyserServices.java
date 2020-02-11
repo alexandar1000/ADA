@@ -30,7 +30,7 @@ public class RepositoryAnalyserServices {
      * @return ProjectMetrics object containing the resulting metric values between the objects, or null if there was
      * an error
      */
-    public ProjectMetricsContainer analyseRepositoryService(String branchName, String url) {
+    public ProjectMetricsContainer analyseRepositoryService(String url, String branchName) {
 
         RepoDbPopulator populator = new RepoDbPopulator();
 //        String branch = "";
