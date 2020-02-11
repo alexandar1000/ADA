@@ -17,7 +17,7 @@ public class ADAParser {
         SourceParser sourceParser = new SourceParser(src_dir);
         List<String> filePaths = SourceFileCollector.getJavaFilesFromSourceDirectory(new File(src_dir));
         filePaths.forEach(f -> {
-            System.out.println(f.toString());
+            //System.out.println(f.toString());
             Set<SourceFile> sourceSet = sourceParser.parseSource(f);
             allParsedFile.addAll(sourceSet);
         });
@@ -28,7 +28,7 @@ public class ADAParser {
         SourceParser sourceParser = new SourceParser(src_dir);
         List<String> filePaths = SourceFileCollector.getJavaFilesFromSourceDirectory(new File(src_dir));
         filePaths.forEach(f -> {
-            System.out.println(f.toString());
+           // System.out.println(f.toString());
             Set<SourceFile> sourceSet = sourceParser.parseSource(f);
             ObjectMapper objMapper = new ObjectMapper();
             String jsonStr = "[]";
@@ -37,7 +37,7 @@ public class ADAParser {
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-            System.out.println(jsonStr);
+            //System.out.println(jsonStr);
         });
     }
 }

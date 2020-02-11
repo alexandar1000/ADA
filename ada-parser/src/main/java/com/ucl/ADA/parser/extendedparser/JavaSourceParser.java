@@ -4,21 +4,25 @@ import com.github.javaparser.ParseResult;
 import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.InitializerDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 import com.github.javaparser.symbolsolver.model.resolution.TypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import com.github.javaparser.utils.SourceRoot;
+import com.sun.xml.bind.v2.runtime.output.SAXOutput;
 import com.ucl.ADA.parser.model.SourceFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class JavaSourceParser {
@@ -27,8 +31,8 @@ public class JavaSourceParser {
     public static void main(String[] args) throws IOException {
 
         final String src_dir = "/home/mrhmisu/UCL-MS/Test-Project/src";
-       //final String src_dir = "/home/mrhmisu/Downloads/Egami-master/src";
-        List<CompilationUnit> cul= getAllCompilationUnits(src_dir);
+        //final String src_dir = "/home/mrhmisu/Downloads/Egami-master/src";
+        List<CompilationUnit> cul = getAllCompilationUnits(src_dir);
         getParsedSource(cul);
     }
 
@@ -57,12 +61,17 @@ public class JavaSourceParser {
 
         Set<SourceFile> sourceClasses = new HashSet<SourceFile>();
 
-        allCus.forEach(cu->{
-            cu.findAll(ClassOrInterfaceDeclaration.class).forEach(cl->{
+        allCus.forEach(cu -> {
+            cu.findAll(ClassOrInterfaceDeclaration.class).forEach(cl -> {
 
+                ResolvedReferenceTypeDeclaration resolvedTypeForClass = cl.resolve();
+                String packageName = "";
+                packageName = resolvedTypeForClass.getPackageName();
+                //System.out.println(packageName);
                 // class name
-                String className = cl.getNameAsString();
-                System.out.println(className);
+                String className = resolvedTypeForClass.getQualifiedName();
+                //System.out.println(className);
+
                 //  extract the parents class interfaces,
                 String parentClassName = "java.lang.Object";
                 if (!cl.getExtendedTypes().isEmpty()) {
@@ -71,26 +80,29 @@ public class JavaSourceParser {
 
                 // implemented interfaces
                 Set<String> implementedInterface = new HashSet<String>();
-                cl.getImplementedTypes();
                 cl.getImplementedTypes().forEach(a -> {
                     implementedInterface.add(a.toString());
                 });
-                implementedInterface.remove(parentClassName);
+
+
+                // all decalared static fields
+                Map<String, String> staticFields = new HashMap<String, String>();
+                resolvedTypeForClass.getAllStaticFields().forEach(x -> {
+                    staticFields.put(x.getName(), x.getType().describe());
+                });
 
 
 
 
-                cl.findAll(VariableDeclarationExpr.class).forEach(v->{
-                    v.findAll(MethodCallExpr.class).forEach(mm->{
-                        System.out.println(mm.resolve().getReturnType().toString());
-                        System.out.println(mm.toString());
+
+
+                // variables that have called methods.
+                cl.findAll(VariableDeclarationExpr.class).forEach(v -> {
+                    v.findAll(MethodCallExpr.class).forEach(mm -> {
+                       // System.out.println(mm.resolve().getQualifiedName());
+
                     });
 
-                    cl.findAll(VariableDeclarationExpr.class).forEach(ll->{
-
-
-
-                    });
 
                   /*v.getVariables().forEach(K->{
                       System.out.print(K.getType()+" ");
@@ -102,11 +114,6 @@ public class JavaSourceParser {
                     });*/
 
                     //System.out.println(v.getElementType());
-
-                    /*v.findAll(AssignExpr.class).forEach(a->{
-                        System.out.println(a.getValue());
-                        System.out.println(a.getTarget());
-                    });*/
 
                 });
 
@@ -134,7 +141,6 @@ public class JavaSourceParser {
                /* cl.findAll(VariableDeclarationExpr.class).forEach(v->{
                     System.out.println(.toString());
                 });*/
-
 
 
             });
