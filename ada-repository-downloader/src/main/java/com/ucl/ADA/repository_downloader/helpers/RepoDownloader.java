@@ -30,6 +30,10 @@ public class RepoDownloader {
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
         String clone_path = System.getProperty("user.dir") + "/temp/"
                 + repo.getOwner() + "/" + repo.getName() + "/" + repo.getBranch() + "/" + timeStamp;
+
+        repo.setDirectoryPath(clone_path);
+
+
         File file = new File(clone_path);
 
         Git git = Git.cloneRepository()
