@@ -16,7 +16,7 @@ public class GitRepository {
     @Column(name = "repo_name", nullable = false)
     private String repoName;
 
-    @OneToMany(mappedBy = "ID.repository",targetEntity = Branch.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "repository",targetEntity = Branch.class, cascade = CascadeType.ALL, orphanRemoval = true)
     Set<Branch> branches = new HashSet<>();
 
     @ManyToOne
