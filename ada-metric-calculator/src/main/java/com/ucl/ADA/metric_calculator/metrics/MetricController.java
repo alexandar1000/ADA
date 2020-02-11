@@ -13,14 +13,6 @@ public class MetricController {
     MetricServices metricServices;
 
     /**
-     * Saves a new random metric into the database
-     * */
-    @PostMapping
-    public void saveNewRandomMetric() {
-        metricServices.saveRandomMetric();
-    }
-
-    /**
      * Retrieves all metrics stored in the database.
      * @return a list of all of the metrics present in the database.
      */
