@@ -1,6 +1,5 @@
-import { Injectable, Output, EventEmitter } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { RepoForm } from './classes/repoform';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { User } from './classes/user';
 import { Observable, BehaviorSubject } from 'rxjs';
 
@@ -15,12 +14,15 @@ export class UserService {
   currentUser = this.user.asObservable();
 
   constructor(private http: HttpClient) { 
-    this.repoFormUrl = 'http://localhost:8080/repo-metadata';
+    this.repoFormUrl = 'http://localhost:8080/analyser';
     this.userListUrl = 'http://localhost:8080/users'
   }
 
-  public getUser(repoForm: RepoForm): Observable<User> {
-    return this.http.post<User>(this.repoFormUrl, repoForm);
+  public getUser(urlForm: string, branchName: string): Observable<any> {
+    let params = new HttpParams()
+      .set('url', urlForm)
+      .set('branch', branchName);
+    return this.http.post<any>(this.repoFormUrl, params);
   }
 
   public getUserList(): Observable<User[]> {
