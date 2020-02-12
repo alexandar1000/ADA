@@ -30,6 +30,10 @@ public class RepoDownloader {
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
         String clone_path = System.getProperty("user.dir") + "/temp/"
                 + repo.getOwner() + "/" + repo.getName() + "/" + repo.getBranch() + "/" + timeStamp;
+
+        repo.setDirectoryPath(clone_path);
+
+
         File file = new File(clone_path);
 
         Git git = Git.cloneRepository()
@@ -57,7 +61,12 @@ public class RepoDownloader {
     private static RepoDbPopulator setup(RepoDbPopulator repo) {
         String[] data = repo.getUrl().split("/|//");
         String owner = data[3];
-        String name = data[4].substring(0, data[4].indexOf("."));
+        String name;
+        if (data[4].indexOf(".") > 0) {
+            name = data[4].substring(0, data[4].indexOf("."));
+        } else {
+            name = data[4];
+        }
         repo.setName(name);
         repo.setOwner(owner);
         return repo;

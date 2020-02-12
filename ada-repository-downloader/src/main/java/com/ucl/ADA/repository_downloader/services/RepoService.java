@@ -1,15 +1,9 @@
 package com.ucl.ADA.repository_downloader.services;
 
+import com.ucl.ADA.repository_downloader.entities.*;
 import com.ucl.ADA.repository_downloader.helpers.RepoDownloader;
-import com.ucl.ADA.repository_downloader.entities.Branch;
-import com.ucl.ADA.repository_downloader.entities.GitRepository;
-import com.ucl.ADA.repository_downloader.entities.Snapshot;
-import com.ucl.ADA.repository_downloader.entities.User;
 import com.ucl.ADA.repository_downloader.helpers.RepoDbPopulator;
-import com.ucl.ADA.repository_downloader.repositories.BranchRepository;
-import com.ucl.ADA.repository_downloader.repositories.RepoEntityRepository;
-import com.ucl.ADA.repository_downloader.repositories.SnapshotRepository;
-import com.ucl.ADA.repository_downloader.repositories.UserRepository;
+import com.ucl.ADA.repository_downloader.repositories.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,17 +23,27 @@ public class RepoService {
 
     //TODO: refactor this class.
 
-    @Autowired private UserRepository userRepository;
-    @Autowired private RepoEntityRepository repoEntityRepository;
-    @Autowired private BranchRepository branchRepository;
-    @Autowired private SnapshotRepository snapshotRepository;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RepoEntityRepository repoEntityRepository;
+
+    @Autowired
+    private BranchRepository branchRepository;
+
+    @Autowired
+    private SnapshotRepository snapshotRepository;
+
+    @Autowired
+    private SourceFileRepository sourceFileRepository;
 
     /**
      * Download Git repository and populate database, following the hierarchical database model of User -*> GitRepo -*> Branch -*> Snapshot
      * @param repoInfoUI - instance of RepoDbPopulator which initially holds the git URL and branch name
      *
      * */
-    public void addEntry(RepoDbPopulator repoInfoUI) throws GitAPIException {
+    public User addEntry(RepoDbPopulator repoInfoUI) throws GitAPIException {
 
         LocalDateTime timestamp = LocalDateTime.now();
 
@@ -51,42 +55,49 @@ public class RepoService {
 
         Branch branchEntity = initBranch(repo, repoDbPopulator);
 
+        Snapshot snapshot = initSnapshot(timestamp, branchEntity);
+
+        initSourceFiles(repoDbPopulator, snapshot);
+
+        return user;
+    }
+
+    private void initSourceFiles(RepoDbPopulator repoDbPopulator, Snapshot snapshot) {
         List<String> fileNames = repoDbPopulator.getFileNames();
 
-        userRepository.save(user);
-        repoEntityRepository.save(repo);
-        branchRepository.save(branchEntity);
-
         for(String file : fileNames){
-            Snapshot snapshot = initSnapshot(timestamp, branchEntity, file);
-            snapshotRepository.save(snapshot);
+
+            SourceFile sourceFile = new SourceFile();
+            sourceFile.setSnapshot(snapshot);
+            sourceFile.setFileName(file);
+
+            // Not sure if this is the right way to hash file names!
+            sourceFile.setFileHash(sourceFile.hashCode());
+
+            sourceFileRepository.save(sourceFile);
         }
     }
 
     /**
      * Create and initialize a new Snapshot entity.
-     * @param timestamp
-     * @param branchEntity
-     * @param file
-     * @return
+     * @param timestamp timestamp of request
+     * @param branchEntity corresponding branch
+     * @return saved Snapshot entity
      */
-    private Snapshot initSnapshot(LocalDateTime timestamp, Branch branchEntity, String file) {
+    private Snapshot initSnapshot(LocalDateTime timestamp, Branch branchEntity) {
         Snapshot snapshot = new Snapshot();
-        Snapshot.ID snapshotID = new Snapshot.ID();
 
-        snapshot.setID(snapshotID);
+        snapshot.setBranch(branchEntity);
+        snapshot.setTimestamp(timestamp);
 
-        snapshot.getID().setBranch(branchEntity);
-        snapshot.getID().setTimestamp(timestamp);
-        snapshot.getID().setFileName(file);
-        return snapshot;
+        return snapshotRepository.save(snapshot);
     }
 
     /**
      * Initialize a Branch entity by searching for existing branch within a repository, and returning it if found.
      * Otherwise, create, initialize and return a new Branch entity.
-     * @param repo
-     * @param downloadedRepo
+     * @param repo corresponding Git repository
+     * @param downloadedRepo object containing metadata of Git repository
      * @return an existing (or new) Branch entity.
      */
     private Branch initBranch(GitRepository repo, RepoDbPopulator downloadedRepo) {
@@ -95,27 +106,23 @@ public class RepoService {
 
         for(Branch b : branches){
 
-            if(b.getID().getBranchName().equals(branchName)){
+            if(b.getBranchName().equals(branchName)){
                 return b;
             }
         }
 
         Branch branchEntity = new Branch();
-        Branch.ID ID = new Branch.ID();
+        branchEntity.setRepository(repo);
+        branchEntity.setBranchName(branchName);
 
-        branchEntity.setID(ID);
-
-        branchEntity.getID().setRepository(repo);
-        branchEntity.getID().setBranchName(branchName);
-
-        return branchEntity;
+        return branchRepository.save(branchEntity);
     }
 
     /**
      * Initialize a GitRepository entity by searching for existing repo associated with a given user, and returning it if found.
      * Otherwise, create, initialize and return a new GitRepository entity.
-     * @param user
-     * @param downloadedRepo
+     * @param user corresponding user
+     * @param downloadedRepo object containing metadata of Git repository
      * @return an existing (or new) GitRepository
      */
     private GitRepository initRepo(User user, RepoDbPopulator downloadedRepo) {
@@ -130,19 +137,19 @@ public class RepoService {
         GitRepository repo = new GitRepository();
         repo.setUser(user);
         repo.setRepoName(repoName);
-        return repo;
+        return repoEntityRepository.save(repo);
     }
 
     /**
      * Initialize a User entity by searching for existing User in the database, and returning it if found.
      * Otherwise, create, initialize and return a new User entity.
-     * @param repo
+     * @param downloadedRepo object containining metadata of Git repository
      * @return an existing (or new) User
      */
-    private User initUser(RepoDbPopulator repo) {
+    private User initUser(RepoDbPopulator downloadedRepo) {
 
         List<User> users = (List<User>) userRepository.findAll();
-        String testUserName = repo.getOwner();
+        String testUserName = downloadedRepo.getOwner();
 
         // Search and return existing user, if found
         for(User u : users){
@@ -153,7 +160,7 @@ public class RepoService {
 
         // If not found, create and return a new user
         User user = new User();
-        user.setUserName(repo.getOwner());
-        return user;
+        user.setUserName(downloadedRepo.getOwner());
+        return userRepository.save(user);
     }
 }

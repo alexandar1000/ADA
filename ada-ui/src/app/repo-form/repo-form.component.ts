@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { RepoForm } from '../repoform';
-import { RepoService } from '../repo.service';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { RepoForm } from '../classes/repoform';
+import { UserService } from '../user.service';
+import { User } from '../classes/user';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-repo-form',
@@ -8,21 +10,30 @@ import { RepoService } from '../repo.service';
   styleUrls: ['./repo-form.component.css']
 })
 export class RepoFormComponent implements OnInit {
-  private repository: RepoForm;
+  private repositoryForm: RepoForm;
+  @Output() receivedUser = new EventEmitter<User>();
 
-  constructor(private repoService: RepoService) { 
-    this.repository = new RepoForm();
+  constructor(private userService: UserService, private _snackBar: MatSnackBar) { 
+    this.repositoryForm = new RepoForm();
   }
 
   ngOnInit() {
   }
 
   onSubmit() {
-    this.repoService.download(this.repository).subscribe(result => this.goToRepoMetadata());
+    this.userService.getUser(this.repositoryForm).subscribe(user => this.checkUserResponse(user));
   }
 
-  goToRepoMetadata() {
-    
+  checkUserResponse(user: User) {
+    if (user) {
+      console.log(user);
+      this.receivedUser.emit(user);
+      this.userService.addUserToNavigation(user);
+    }
+    else { 
+      this._snackBar.open('Error: Incorrect url or branch', 'Close', {
+        duration: 10000,
+      });
+    }
   }
-
 }

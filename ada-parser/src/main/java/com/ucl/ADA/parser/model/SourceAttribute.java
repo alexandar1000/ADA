@@ -11,14 +11,12 @@ public class SourceAttribute {
     private String type;
     private String assignedValue;
 
-
     @Builder
     public SourceAttribute(Set<String> modifiers, String name, String type, String value) {
         this.modifiers = modifiers;
         this.name = name;
         this.type = type;
         this.assignedValue = value;
-
     }
 
     public String getName() {

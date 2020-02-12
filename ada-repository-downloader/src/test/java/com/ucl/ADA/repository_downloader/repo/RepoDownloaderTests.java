@@ -1,31 +1,46 @@
 package com.ucl.ADA.repository_downloader.repo;
 
 
-import com.ucl.ADA.repository_downloader.helpers.RepoDownloader;
 import com.ucl.ADA.repository_downloader.helpers.RepoDbPopulator;
+import com.ucl.ADA.repository_downloader.helpers.RepoDownloader;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class RepoDownloaderTests {
-    private RepoDbPopulator repository;
 
-    @BeforeEach
-    void initUseCase() throws GitAPIException {
+    @Test
+    void testDownloadingRepositoryWithCorrectGitURL() throws GitAPIException {
+        RepoDbPopulator populator = new RepoDbPopulator();
         String branch = "";
         String url = "https://github.com/sebastianvburlacu/Fitbit-JSON-Data-Generator.git";
-        RepoDbPopulator repo = new RepoDbPopulator();
-        repo.setUrl(url);
-        repo.setBranch(branch);
-        repository = RepoDownloader.downloadRepository(repo);
+        populator.setUrl(url);
+        populator.setBranch(branch);
+
+        populator = RepoDownloader.downloadRepository(populator);
+
+        ArrayList<String> list = new ArrayList<>();
+        assertEquals("sebastianvburlacu",populator.getOwner());
+        assertEquals("master",populator.getBranch());
+        assertEquals("Fitbit-JSON-Data-Generator",populator.getName());
     }
 
     @Test
-    void setupInitialisesRepository() {
-        assert (repository.getUrl()).equals("https://github.com/sebastianvburlacu/Fitbit-JSON-Data-Generator.git");
-        assert (repository.getName().equals("Fitbit-JSON-Data-Generator"));
-        assert (repository.getOwner().equals("sebastianvburlacu"));
-        assert (repository.getBranch().equals("master"));
+    void testGitAPIExceptionThrownIfUrlIsNotGit(){
+
+        Exception exception = assertThrows(GitAPIException.class,()->{
+            RepoDbPopulator repoDbPopulator = new RepoDbPopulator();
+            String branch = "";
+            String url = "https://github.com/sebastianvburlacu/Fitbit-JSON-Data-Gfsafsaenerator.git";
+            repoDbPopulator.setUrl(url);
+            repoDbPopulator.setBranch(branch);
+            RepoDownloader.downloadRepository(repoDbPopulator);
+        });
+
     }
 }

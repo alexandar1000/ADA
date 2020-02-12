@@ -2,10 +2,7 @@ package com.ucl.ADA.core.repository_analyser;
 
 import com.ucl.ADA.metric_calculator.metrics_structure.ProjectMetricsContainer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/analyser")
@@ -18,10 +15,10 @@ public class RepositoryAnalyserController {
      * point. Currently awaiting other modules to be developed.
      * @return Currently only a string, but in the future something which links to the resulting data.
      */
-    @GetMapping(produces = {"application/json"})
+    @PostMapping(produces = "application/json")
     @ResponseBody
-    public ProjectMetricsContainer analyseRepository() {
-        return repositoryAnalyserServices.analyseRepositoryService();
+    public ProjectMetricsContainer analyseRepository(@RequestParam(value = "url", defaultValue = "") String url, @RequestParam(value = "branch", defaultValue = "") String branchName) {
+        return repositoryAnalyserServices.analyseRepositoryService(url, branchName);
     }
 }
 
