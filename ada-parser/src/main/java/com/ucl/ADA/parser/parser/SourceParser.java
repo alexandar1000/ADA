@@ -5,6 +5,8 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.expr.*;
+import com.github.javaparser.resolution.UnsolvedSymbolException;
+import com.github.javaparser.resolution.declarations.ResolvedConstructorDeclaration;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 import com.github.javaparser.symbolsolver.model.resolution.TypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
@@ -57,8 +59,11 @@ public class SourceParser {
                 implementedInterface.remove(parentClassName);
 
                 String packageName = "";
-                packageName = cl.resolve().getPackageName();
-
+                try {
+                    packageName = cl.resolve().getPackageName();
+                } catch (UnsolvedSymbolException un) {
+                    System.out.println(un.getName());
+                }
 
                 // all attributes
                 List<SourceAttribute> sourceAttributes = new ArrayList<>();
@@ -115,8 +120,8 @@ public class SourceParser {
                                 methodCallExpression.add(new MethodCall(calleeName, arguments));
                             }
 
-                        } catch (Exception e) {
-                            System.err.println(e.getMessage());
+                        } catch (UnsolvedSymbolException un) {
+                            System.out.println(un.getName());
                         }
                     });
                     n.findAll(VariableDeclarator.class).forEach(V -> {
@@ -125,14 +130,20 @@ public class SourceParser {
 
                     // find all the constructor invocation
                     List<ConstructorInvocation> consInvocatino = new ArrayList<>();
-                    n.findAll(ObjectCreationExpr.class).forEach(o -> {
-                        String pakgName = o.resolve().getPackageName().trim();
-                        String constructorClassName = pakgName + "." + o.resolve().getClassName().trim();
-                        List<String> arguments = new ArrayList<>();
-                        o.getArguments().forEach(ar -> {
-                            arguments.add(ar.toString().trim());
-                        });
-                        consInvocatino.add(new ConstructorInvocation(constructorClassName, arguments));
+                    n.findAll(ObjectCreationExpr.class).forEach(obc -> {
+                        try {
+                            ResolvedConstructorDeclaration rCD = obc.resolve();
+                            String pakgName = rCD.getPackageName().trim();
+                            String constructorClassName = pakgName + "." + rCD.getClassName().trim();
+                            List<String> arguments = new ArrayList<>();
+                            obc.getArguments().forEach(ar -> {
+                                arguments.add(ar.toString().trim());
+                            });
+                            consInvocatino.add(new ConstructorInvocation(constructorClassName, arguments));
+                        } catch (UnsolvedSymbolException un) {
+                            System.out.println(un.getName());
+                        }
+
                     });
 
 
@@ -153,7 +164,6 @@ public class SourceParser {
                 });
 
                 sourceClasses.add(new SourceFile(importPacakages, packageName, className, parentClassName, implementedInterface, methods, sourceConstructor, sourceAttributes));
-
             });
 
         } catch (FileNotFoundException e1) {
@@ -164,9 +174,6 @@ public class SourceParser {
 
     private static JavaSymbolSolver getConstructedJavaSymbolSolver(String SRC_DIRECTORY_PATH) {
         File[] directories = new File(SRC_DIRECTORY_PATH).listFiles(File::isDirectory);
-        //System.out.println(Arrays.asList(SRC_DIRECTORY_PATH));
-        //System.out.println(Arrays.asList(directories));
-        //System.out.println("Path added to JavaParserTypeSolver");
         CombinedTypeSolver combinedSolver = new CombinedTypeSolver();
         TypeSolver javaParserTypeSolver = new JavaParserTypeSolver(new File(SRC_DIRECTORY_PATH));
         combinedSolver.add(javaParserTypeSolver);
