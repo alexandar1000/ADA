@@ -21,13 +21,21 @@
             "aot": false,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input":"./node_modules/sigma/build",
+                "output": "/assets/lib"
+              }
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/lib/sigma/sigma.conf.js",
+              "node_modules/sigma/build/sigma.min.js"
+            ]
           },
           "configurations": {
             "production": {

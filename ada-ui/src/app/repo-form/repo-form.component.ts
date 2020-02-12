@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UserService } from '../user.service';
 import { User } from '../classes/user';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { sigma } from 'sigma';
 
 @Component({
   selector: 'app-repo-form',
@@ -13,7 +14,7 @@ export class RepoFormComponent implements OnInit {
   private branchName: string;
   @Output() receivedUser = new EventEmitter<User>();
 
-  constructor(private userService: UserService, private _snackBar: MatSnackBar) { 
+  constructor(private userService: UserService, private _snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
@@ -21,6 +22,7 @@ export class RepoFormComponent implements OnInit {
 
   onSubmit() {
     this.userService.getUser(this.urlForm, this.branchName).subscribe(user => this.checkUserResponse(user));
+    var sigmaJs = new sigma();
   }
 
   checkUserResponse(user: User) {
@@ -29,7 +31,7 @@ export class RepoFormComponent implements OnInit {
       this.receivedUser.emit(user);
       this.userService.addUserToNavigation(user);
     }
-    else { 
+    else {
       this._snackBar.open('Error: Incorrect url or branch', 'Close', {
         duration: 10000,
       });
