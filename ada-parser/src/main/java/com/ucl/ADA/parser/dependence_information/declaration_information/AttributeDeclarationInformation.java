@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter @Setter @NoArgsConstructor
 public class AttributeDeclarationInformation extends ElementDeclarationInformation  {
     /**
@@ -19,13 +21,14 @@ public class AttributeDeclarationInformation extends ElementDeclarationInformati
     /**
      * The access modifier assigned to the attribute.
      */
-    private AccessModifierType accessModifierType ;
+    private AccessModifierType accessModifierType;
 
     /**
      * Defines whether the attribute declaration is for the entire class (isLocalDeclaration == false), or if it is
      * a local declaration (isLocalDeclaration == true)
      */
     private boolean isLocalDeclaration;
+
 
     /**
      * The constructor of the attribute declaration object.

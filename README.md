@@ -1,4 +1,4 @@
-# ADA - Architectural Design Advisor
+# ADA - The Architectural Design Advisor
 
 ### The repository of ADA, the Architectural Design Advisor
 
@@ -13,11 +13,11 @@ The project uses [a simple Java Android application](https://github.com/alexanda
 
 ### Prerequisites
 
-In order to get the project started you will need to install [docker](https://www.docker.com/) 19+ installed, along with [compose](https://docs.docker.com/compose/install/). 
+In order to get the project started you will need to have [docker](https://www.docker.com/) 19+ installed, along with [compose](https://docs.docker.com/compose/install/). 
 
 Furthermore, this project uses [java 11](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html), so please make sure that you have it installed prior to development.
 
-Finally, depending on your environment, you might need to install [maven](https://maven.apache.org/)
+Finally, depending on your environment, you might need to install [maven](https://maven.apache.org/).
 
 ### Setting up the project
 
@@ -57,6 +57,14 @@ use the ports `15432` and `25432` respectively. This is due to the connection no
 
 Also, using Maven is a lot easier through IntelliJ.
 
+## Project structure
+
+The project consists out of four modules:
+- ada-core - the main part of the application, invoking and connecting all other components
+- ada-repository-downloader - downloads the git repository and stores the metadata
+- ada-parser - parses different languages and exposes the parsed data
+- ada-metric-calculator - calculation of the metrics based on the output from the parser component
+
 ## Deployment
 
 Deployment has not yet been dockerized, but will come soon.
@@ -85,9 +93,19 @@ Keep in mind that the naming convention for the migrations should be as state on
 This must be done in order to populate the database once the server is deployed, and to be able to restore the database schema in an event of a failure.
 
 The unexecuted migrations will be ran automatically upon the start of spring project.
+
+## Dependencies
+
+- Spring
+- Spring Boot
+- Hibernate
+- FlyWay
+- Lombok
  
 ## Helpful Docker Commands
 
+- List all of the running containers `docker ps`
+- List all containers `docker ps -a`
 - Starting the database containers: `docker-compose up -d`
 - Stopping the database containers: `docker-compose stop`
 - Removing the database containers: `docker-compose down`
