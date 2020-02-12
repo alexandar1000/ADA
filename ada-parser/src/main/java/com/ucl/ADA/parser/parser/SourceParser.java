@@ -22,10 +22,13 @@ public class SourceParser {
 
     private final String SRC_DIRECTORY_PATH;
     private final JavaSymbolSolver SYMBOL_SOLVER;
+    private final ExternalInvocationInfo externalInvocationInfo;
 
     public SourceParser(String SRC_DIRECTORY_PATH) {
         this.SRC_DIRECTORY_PATH = SRC_DIRECTORY_PATH;
         this.SYMBOL_SOLVER = getConstructedJavaSymbolSolver(this.SRC_DIRECTORY_PATH);
+        this.externalInvocationInfo = new ExternalInvocationInfo();
+
     }
 
     public Set<SourceFile> getParsedSourceClassesForGivenSourceFile(String sourceFilePath) {
@@ -36,6 +39,8 @@ public class SourceParser {
             sourceClasses.addAll(getAllParsedSourceClasses(cu));
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
+        } catch (Exception e) {
+            System.out.println(sourceFilePath + " failed to parse.---------------------------------------------------------------------------");
         }
         return sourceClasses;
     }
@@ -51,6 +56,7 @@ public class SourceParser {
     }
 
     private SourceFile getParsedSourceClass(ClassOrInterfaceDeclaration cl, Set<String> importedPackages) {
+        ExternalInvocationInfo externalInvocationInfo = new ExternalInvocationInfo();
         String packageName = getPackageName(cl);
         String className = getClassName(cl);
         String parentClassName = getParentClassName(cl);
@@ -58,7 +64,18 @@ public class SourceParser {
         List<SourceAttribute> sourceAttributes = getAllSourceAttributes(cl);
         List<SourceConstructor> constructorDeclarations = getAllConstructorDeclaration(cl);
         Set<SourceMethod> declaredMethods = getAllDeclaredMethods(cl);
-        SourceFile sf = new SourceFile(importedPackages, packageName, className, parentClassName, implementedInterfaces, declaredMethods, constructorDeclarations, sourceAttributes);
+
+        SourceFile sf = SourceFile.builder()
+                .classAttributes(sourceAttributes)
+                .className(className)
+                .declaredSourceConstructors(constructorDeclarations)
+                .implementedInterfaces(implementedInterfaces)
+                .importedPackages(importedPackages)
+                .methods(declaredMethods)
+                .packageName(packageName)
+                .parentClassName(parentClassName)
+                .build();
+        sf.setExternalInvocationInfo(this.externalInvocationInfo);
         return sf;
     }
 
@@ -141,7 +158,9 @@ public class SourceParser {
                     sourceAttributes.add(sb);
                 });
             } catch (UnsolvedSymbolException un) {
-                System.err.println("Occurred in FieldDeclaration:-> " + un.getName());
+                externalInvocationInfo.addExFieldInvocation(un.getName());
+                externalInvocationInfo.getExMethodCalls().size();
+//                System.err.println("Occurred in FieldDeclaration:-> " + un.getName());
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -257,7 +276,8 @@ public class SourceParser {
                     methodCallExpression.add(new MethodCall(calleeName, arguments));
                 }
             } catch (UnsolvedSymbolException un) {
-                System.err.println("Occurred in MethodCallExpr:-> " + un.getName());
+                externalInvocationInfo.addExMethodCall(un.getName());
+//                System.err.println("Occurred in MethodCallExpr:-> " + un.getName());
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -278,6 +298,7 @@ public class SourceParser {
                 });
                 consInvocatino.add(new ConstructorInvocation(constructorClassName, arguments));
             } catch (UnsolvedSymbolException un) {
+                externalInvocationInfo.addExConstructorInvocations(un.getName());
                 System.err.println("Occurred in ObjectCreationExpr:-> " + un.getName());
             } catch (Exception e) {
                 System.out.println(e.getMessage());

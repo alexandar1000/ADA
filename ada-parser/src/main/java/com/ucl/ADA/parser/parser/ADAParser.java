@@ -25,10 +25,11 @@ public class ADAParser {
     }
 
     public void printParsedSourceFileInJSON(String src_dir) {
-        SourceParser sourceParser = new SourceParser(src_dir);
+
         List<String> filePaths = SourceFileCollector.getJavaFilesFromSourceDirectory(new File(src_dir));
         filePaths.forEach(f -> {
             // System.out.println(f.toString());
+            SourceParser sourceParser = new SourceParser(src_dir);
             Set<SourceFile> sourceSet = sourceParser.getParsedSourceClassesForGivenSourceFile(f);
             ObjectMapper objMapper = new ObjectMapper();
             String jsonStr = "[]";

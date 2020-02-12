@@ -3,12 +3,14 @@ package com.ucl.ADA.parser.model;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class SourceFile {
 
@@ -20,17 +22,19 @@ public class SourceFile {
     private Set<SourceMethod> methods;
     private Set<String> importedPackages;
     private List<SourceConstructor> declaredSourceConstructors;
+    private ExternalInvocationInfo externalInvocationInfo;
 
     @Builder
-    public SourceFile(Set<String> importedPackages, String packageName, String className, String parentClassName, Set<String> implementedInterface, Set<SourceMethod> methods, List<SourceConstructor> declaredSourceConstructors, List<SourceAttribute> classAttributes) {
-        this.importedPackages = importedPackages;
+    public SourceFile(String packageName, String className, String parentClassName, Set<String> implementedInterfaces, List<SourceAttribute> classAttributes, Set<SourceMethod> methods, Set<String> importedPackages, List<SourceConstructor> declaredSourceConstructors, ExternalInvocationInfo externalInvocationInfo) {
         this.packageName = packageName;
         this.className = className;
         this.parentClassName = parentClassName;
-        this.implementedInterfaces = implementedInterface;
-        this.methods = methods;
-        this.declaredSourceConstructors = declaredSourceConstructors;
+        this.implementedInterfaces = implementedInterfaces;
         this.classAttributes = classAttributes;
+        this.methods = methods;
+        this.importedPackages = importedPackages;
+        this.declaredSourceConstructors = declaredSourceConstructors;
+        this.externalInvocationInfo = externalInvocationInfo;
     }
 
     @Override
@@ -48,7 +52,8 @@ public class SourceFile {
                 && sourceClass.implementedInterfaces.equals(this.implementedInterfaces)
                 && sourceClass.methods.equals(this.methods)
                 && sourceClass.declaredSourceConstructors.equals(this.declaredSourceConstructors)
-                && sourceClass.classAttributes.equals(this.classAttributes);
+                && sourceClass.classAttributes.equals(this.classAttributes)
+                && sourceClass.externalInvocationInfo.equals(this.externalInvocationInfo);
     }
 
     @Override
@@ -62,9 +67,11 @@ public class SourceFile {
         result = 31 * result + methods.hashCode();
         result = 31 * result + declaredSourceConstructors.hashCode();
         result = 31 * result + classAttributes.hashCode();
+        result = 31 * result + externalInvocationInfo.hashCode();
 
         return result;
     }
+
 
     @Override
     public String toString() {

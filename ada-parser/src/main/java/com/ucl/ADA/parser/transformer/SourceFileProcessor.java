@@ -8,6 +8,7 @@ import com.ucl.ADA.parser.dependence_information.declaration_information.Package
 import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocationInformation;
+import com.ucl.ADA.parser.model.ExternalInvocationInfo;
 import com.ucl.ADA.parser.model.SourceFile;
 
 import java.util.ArrayList;
@@ -117,6 +118,14 @@ public class SourceFileProcessor {
                 projectDependenceTree.addMethodInvocation(sourceFile.getClassName(), calleeNames[calleeNames.length - 2], methodInvocationInformation);
             });
         });
+    }
+
+    public void processExternalInvocation(ProjectDependenceTree projectDependenceTree, SourceFile sourceFile) {
+        ExternalInvocationInfo externalInvocationInfo = sourceFile.getExternalInvocationInfo();
+
+        projectDependenceTree.addExternalMethodInvocations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExMethodCalls());
+        projectDependenceTree.addExternalConstructorInvocations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExConstructorInvocations());
+        projectDependenceTree.addExternalFieldDeclarations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExFieldInvocation());
     }
 
 }
