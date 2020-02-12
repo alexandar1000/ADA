@@ -1,6 +1,8 @@
 package com.ucl.ADA.metric_calculator.metrics;
 
-import com.github.javafaker.Faker;
+import com.ucl.ADA.metric_calculator.metrics_structure.ClassMetricTypes;
+import com.ucl.ADA.metric_calculator.metrics_structure.ProjectMetricsContainer;
+import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +13,17 @@ public class MetricServices {
     @Autowired
     private MetricRepository metricRepository;
 
-    private Faker faker = new Faker();
-
-    protected void saveRandomMetric() {
-        Metric m = new Metric(MetricTypes.SIMPLE_METRIC, (float) faker.number().randomDouble(6, -100000000, 10000000));
+    protected void saveMetric(ClassMetricTypes metricType, float value) {
+        Metric m = new Metric(metricType, value);
         metricRepository.save(m);
     }
+
+    public ProjectMetricsContainer computeAllMetrics(ProjectDependenceTree projectDependenceTree) {
+        ProjectMetricsContainer projectMetricsContainer = new ProjectMetricsContainer();
+        projectMetricsContainer.computeAllMetrics(projectDependenceTree);
+        return projectMetricsContainer;
+    }
+
 
     public List<Metric> getAllMetrics() {
         return metricRepository.findAll();

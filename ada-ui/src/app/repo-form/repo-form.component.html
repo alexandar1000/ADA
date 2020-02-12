@@ -1,0 +1,18 @@
+<div class="form-container">
+	<form (ngSubmit)="onSubmit()" #repoForm="ngForm" class="form" >
+		<mat-form-field class="full-width">
+				<input matInput placeholder="GitHub Url" 
+                name="url"
+				[(ngModel)]="urlForm"
+				appAcceptedUrl=".git"
+                required #url="ngModel">	
+		</mat-form-field>
+		<mat-form-field class="full-width">
+                <input matInput placeholder="Branch" 
+                name="branch"
+                [(ngModel)]="branchName"
+                required #branch="ngModel">
+		</mat-form-field>
+		<button type="submit" [disabled]="!repoForm.form.valid" mat-raised-button color="primary" class="form-button">Analyse</button>
+	</form>
+</div>
