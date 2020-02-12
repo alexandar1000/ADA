@@ -15,6 +15,7 @@ public class RepoDbPopulator {
     private String owner;
     private String branch;
     private List<String> fileNames = new ArrayList<>();
+    private String directoryPath;
 
 
     public List<String> getFileNames() {
@@ -56,6 +57,15 @@ public class RepoDbPopulator {
     public void setBranch(String branch) {
         this.branch = branch;
     }
+
+    public String getDirectoryPath() {
+        return directoryPath;
+    }
+
+    public void setDirectoryPath(String directoryPath) {
+        this.directoryPath = directoryPath;
+    }
+
 
     @Override
     public String toString() {

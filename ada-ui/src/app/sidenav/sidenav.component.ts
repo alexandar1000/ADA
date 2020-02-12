@@ -1,27 +1,21 @@
 import {MediaMatcher} from '@angular/cdk/layout';
-import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { UserService } from '../user.service';
+import { User } from '../classes/user';
 
-/** @title Responsive sidenav */
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.css']
 })
-export class SidenavComponent implements OnDestroy {
+export class SidenavComponent implements OnInit, OnDestroy {
   mobileQuery: MediaQueryList;
 
-  fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
-
-  fillerContent = Array.from({length: 50}, () =>
-      `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-       labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-       laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-       voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-       cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`);
+  userList: User[];
 
   private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private userService: UserService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -31,7 +25,42 @@ export class SidenavComponent implements OnDestroy {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
+  ngOnInit(): void {
+    this.userList = [];
+    this.getUserList();
+    this.userService.currentUser.subscribe(user => this.addUser(user));
+  }
+
   shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));
+
+  getUserList(): void {
+    this.userService.getUserList().subscribe(users => this.addUsers(users));
+  }
+
+  addUsers(users): void {
+    users.forEach(user => {
+      this.userList.push(user);
+    });
+  }
+
+  addUser(user: User) {
+    if (user.userName) {
+      if (!this.checkExistingUsers(user)) {
+        this.userList.push(user);
+      }
+    }
+  }
+
+  checkExistingUsers(user: User): boolean {
+    for (let index = 0; index < this.userList.length; index++) {
+      const element = this.userList[index];
+      if (user.userName === element.userName) {
+        this.userList.splice(index, 1, user);
+        return true;
+      }
+    }
+    return false
+  }
 }
 
 

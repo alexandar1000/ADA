@@ -1,7 +1,5 @@
 package com.ucl.ADA.parser.util;
 
-import com.ucl.ADA.parser.util.DirectoryExplorer;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.io.File;

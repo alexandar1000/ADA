@@ -25,6 +25,7 @@ public class UserController {
     @DeleteMapping(value = "/{id}")
     public void deleteUser(@PathVariable Long id){ userService.deleteUser(id);}
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping
     public List<User> listAllUsers() {
         return userService.listUsers();
