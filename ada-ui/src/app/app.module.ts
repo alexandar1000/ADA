@@ -17,6 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RepoFormComponent } from './repo-form/repo-form.component';
 import { UserService } from './user.service';
 import { AcceptedUrlDirective } from './shared/accepted-url.directive';
+import { RepositoryGraphComponent } from './repository-graph/repository-graph.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { AcceptedUrlDirective } from './shared/accepted-url.directive';
     SidenavComponent,
     RepoFormComponent,
     AcceptedUrlDirective,
+    RepositoryGraphComponent,
   ],
   imports: [
     BrowserModule,
