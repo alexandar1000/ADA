@@ -9,11 +9,42 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @Getter @Setter @NoArgsConstructor
 public class ProjectDependenceTree {
     private HashMap<String, ClassDependenceTree> classDependenceTrees = new HashMap<>();
+
+    public void addExternalMethodInvocations(String declaringClass, ArrayList<String> externalMethodInvocations) {
+        if (this.classDependenceTrees.containsKey(declaringClass)) {
+            this.classDependenceTrees.get(declaringClass).setExternalMethodCalls(externalMethodInvocations);
+        } else {
+            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
+            classDependenceTree.setExternalMethodCalls(externalMethodInvocations);
+            this.classDependenceTrees.put(declaringClass, classDependenceTree);
+        }
+    }
+
+    public void addExternalConstructorInvocations(String declaringClass, ArrayList<String> externalConstructorInvocations) {
+        if (this.classDependenceTrees.containsKey(declaringClass)) {
+            this.classDependenceTrees.get(declaringClass).setExternalConstructorInvocations(externalConstructorInvocations);
+        } else {
+            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
+            classDependenceTree.setExternalConstructorInvocations(externalConstructorInvocations);
+            this.classDependenceTrees.put(declaringClass, classDependenceTree);
+        }
+    }
+
+    public void addExternalFieldDeclarations(String declaringClass, ArrayList<String> externalFieldDeclarations) {
+        if (this.classDependenceTrees.containsKey(declaringClass)) {
+            this.classDependenceTrees.get(declaringClass).setExternalFieldInvocations(externalFieldDeclarations);
+        } else {
+            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
+            classDependenceTree.setExternalFieldInvocations(externalFieldDeclarations);
+            this.classDependenceTrees.put(declaringClass, classDependenceTree);
+        }
+    }
 
     /**
      * Adds package declaration for the corresponding declaring class where it is declared.
