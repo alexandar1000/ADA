@@ -19,15 +19,9 @@ public class MetricServices {
     }
 
     public ProjectMetricsContainer computeAllMetrics(ProjectDependenceTree projectDependenceTree) {
-//
-//        // TODO: Implement proper metrics calculation
-//        ProjectMetricsContainer projectMetricsContainer = new ProjectMetricsContainer(projectDependenceTree.getClassNames());
-//
-//        for (String className : projectDependenceTree.getClassNames()) {
-//            projectMetricsContainer.getClassMetrics().put(className, new ClassMetricsContainer());
-//        }
-
-        return null;
+        ProjectMetricsContainer projectMetricsContainer = new ProjectMetricsContainer();
+        projectMetricsContainer.computeAllMetrics(projectDependenceTree);
+        return projectMetricsContainer;
     }
 
 
