@@ -13,6 +13,7 @@ import com.ucl.ADA.parser.model.SourceFile;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
 public class SourceFileProcessor {
 
@@ -84,12 +85,15 @@ public class SourceFileProcessor {
 
     // TODO: What if import end up with '*' or import lombok
     public void processPackageInvocation(ProjectDependenceTree projectDependenceTree, SourceFile sourceFile) {
-        sourceFile.getImportedPackages().forEach(im -> {
-            String[] import_arr = im.split(" ");
-            PackageInvocationInformation packageInvocationInformation = new PackageInvocationInformation(import_arr[1]);
-            String[] package_arr = import_arr[1].split("\\.");
-            projectDependenceTree.addPackageInvocation(sourceFile.getClassName(), package_arr[package_arr.length-1], packageInvocationInformation);
-        });
+        Set<String> importPackages = sourceFile.getImportedPackages();
+        if (importPackages.isEmpty())
+            return;
+
+        for (String im : importPackages) {
+            PackageInvocationInformation packageInvocationInformation = new PackageInvocationInformation(im);
+            String[] package_arr = im.split("\\.");
+            projectDependenceTree.addPackageInvocation(sourceFile.getClassName(), package_arr[package_arr.length - 1], packageInvocationInformation);
+        }
     }
 
     // TODO: ...

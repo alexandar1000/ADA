@@ -40,7 +40,7 @@ public class SourceParser {
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
         } catch (Exception e) {
-            System.out.println(sourceFilePath + " failed to parse.---------------------------------------------------------------------------");
+//            System.out.println(sourceFilePath + " failed to parse.---------------------------------------------------------------------------");
         }
         return sourceClasses;
     }
@@ -85,9 +85,9 @@ public class SourceParser {
             try {
                 importedPackages.add(p.getName().toString().trim());
             } catch (UnsolvedSymbolException un) {
-                System.err.println("Occurred in  ImportDeclaration:->" + un.getName());
+//                System.err.println("Occurred in  ImportDeclaration:->" + un.getName());
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+//                System.out.println(e.getMessage());
             }
         });
         return importedPackages;
@@ -98,9 +98,9 @@ public class SourceParser {
         try {
             packageName = cl.resolve().getPackageName();
         } catch (UnsolvedSymbolException un) {
-            System.err.println("Occurred in  Package Name extraction:->" + un.getName());
+//            System.err.println("Occurred in  Package Name extraction:->" + un.getName());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
         }
         return packageName;
     }
@@ -116,9 +116,9 @@ public class SourceParser {
                 parentClassName = cl.getExtendedTypes().get(0).toString().trim();
             }
         } catch (UnsolvedSymbolException un) {
-            System.err.println("Occurred in  Parent Class Name extraction:->" + un.getName());
+//            System.err.println("Occurred in  Parent Class Name extraction:->" + un.getName());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
         }
         return parentClassName;
     }
@@ -132,9 +132,9 @@ public class SourceParser {
             });
             implementedInterface.remove(parentClassName);
         } catch (UnsolvedSymbolException un) {
-            System.err.println("Occurred in  Implemented Interfaces Name extraction:->" + un.getName());
+//            System.err.println("Occurred in  Implemented Interfaces Name extraction:->" + un.getName());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
         }
         return implementedInterface;
     }
@@ -162,7 +162,7 @@ public class SourceParser {
                 externalInvocationInfo.getExMethodCalls().size();
 //                System.err.println("Occurred in FieldDeclaration:-> " + un.getName());
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+//                System.out.println(e.getMessage());
             }
         });
         return sourceAttributes;
@@ -180,9 +180,9 @@ public class SourceParser {
                 });
                 sourceConstructors.add(new SourceConstructor(name, modifiers, constructorParameters));
             } catch (UnsolvedSymbolException un) {
-                System.err.println("Occurred in ConstructorDeclaration:-> " + un.getName());
+//                System.err.println("Occurred in ConstructorDeclaration:-> " + un.getName());
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+//                System.out.println(e.getMessage());
             }
         });
         return sourceConstructors;
@@ -226,9 +226,9 @@ public class SourceParser {
             try {
                 accessModifiers.add(item.toString().trim());
             } catch (UnsolvedSymbolException un) {
-                System.err.println("Occurred in MethodDeclaration to getModifiers():->" + un.getName());
+//                System.err.println("Occurred in MethodDeclaration to getModifiers():->" + un.getName());
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+//                System.out.println(e.getMessage());
             }
         });
         return accessModifiers;
@@ -240,9 +240,9 @@ public class SourceParser {
             try {
                 parameters.put(param.getName().toString(), param.getType().toString());
             } catch (UnsolvedSymbolException un) {
-                System.err.println("Occurred in MethodDeclaration to getParameters():->" + un.getName());
+//                System.err.println("Occurred in MethodDeclaration to getParameters():->" + un.getName());
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+//                System.out.println(e.getMessage());
             }
         });
         return parameters;
@@ -254,9 +254,9 @@ public class SourceParser {
             try {
                 usedVariables.put(V.getNameAsString(), V.getTypeAsString());
             } catch (UnsolvedSymbolException un) {
-                System.err.println("Occurred in  VariableDeclarator:->" + un.getName());
+//                System.err.println("Occurred in  VariableDeclarator:->" + un.getName());
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+//                System.out.println(e.getMessage());
             }
         });
         return usedVariables;
@@ -279,7 +279,7 @@ public class SourceParser {
                 externalInvocationInfo.addExMethodCall(un.getName());
 //                System.err.println("Occurred in MethodCallExpr:-> " + un.getName());
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+//                System.out.println(e.getMessage());
             }
         });
         return methodCallExpression;
@@ -299,9 +299,9 @@ public class SourceParser {
                 consInvocatino.add(new ConstructorInvocation(constructorClassName, arguments));
             } catch (UnsolvedSymbolException un) {
                 externalInvocationInfo.addExConstructorInvocations(un.getName());
-                System.err.println("Occurred in ObjectCreationExpr:-> " + un.getName());
+//                System.err.println("Occurred in ObjectCreationExpr:-> " + un.getName());
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+//                System.out.println(e.getMessage());
             }
         });
         return consInvocatino;
