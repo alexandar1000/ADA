@@ -8,10 +8,11 @@ public class Fish {
     Cat killer;
     Dog protector = new Dog();
 
-    public void swim() {}
+    public void swim() {
+    }
 
     public int getSpeed() {
-        Dog d=new Dog(3,"perk");
+        Dog d = new Dog(3, "perk");
         return SPEED;
     }
 }

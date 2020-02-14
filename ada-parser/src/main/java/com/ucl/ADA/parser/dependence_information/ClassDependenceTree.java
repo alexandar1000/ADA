@@ -45,6 +45,15 @@ public class ClassDependenceTree {
      */
     private HashMap<String, ClassDependenceInformation> incomingDependenceInfo = new HashMap<>();
 
+    /**
+     * External Invocation Information, Setter is called
+     */
+    private ArrayList<String> ExternalMethodCalls = new ArrayList<>();
+
+    private ArrayList<String> ExternalConstructorInvocations = new ArrayList<>();
+
+    private ArrayList<String> ExternalFieldInvocations = new ArrayList<>();
+
 
     /**
      * Creates a new instance using the package name.
