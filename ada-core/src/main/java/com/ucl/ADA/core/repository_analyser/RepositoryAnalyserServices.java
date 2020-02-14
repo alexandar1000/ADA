@@ -5,7 +5,6 @@ import com.ucl.ADA.metric_calculator.metrics_structure.ProjectMetricsContainer;
 import com.ucl.ADA.parser.ParserServices;
 import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
 import com.ucl.ADA.repository_downloader.helpers.RepoDbPopulator;
-import com.ucl.ADA.repository_downloader.helpers.RepoDownloader;
 import com.ucl.ADA.repository_downloader.services.RepoService;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +29,7 @@ public class RepositoryAnalyserServices {
      * @return ProjectMetrics object containing the resulting metric values between the objects, or null if there was
      * an error
      */
+
     public ProjectMetricsContainer analyseRepositoryService(String url, String branchName) {
 
         RepoDbPopulator populator = new RepoDbPopulator();
@@ -38,8 +38,9 @@ public class RepositoryAnalyserServices {
         populator.setUrl(url);
         populator.setBranch(branchName);
 
+        // Download repository and store metadata in DB
         try {
-            populator = RepoDownloader.downloadRepository(populator);
+            repoService.downloadAndStoreRepo(populator);
         } catch (GitAPIException e) {
             e.printStackTrace();
         }
