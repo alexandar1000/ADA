@@ -8,7 +8,8 @@
 		<module>ada-metric-calculator</module>
 		<module>ada-repository-downloader</module>
 		<module>ada-core</module>
-	</modules>
+        <module>ada-model</module>
+    </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
