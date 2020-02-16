@@ -18,10 +18,10 @@ export class AnalyserService {
       .set('url', urlForm)
       .set('branch', branchName);
 
-   this.analysis = this.http.post<any>(this.repoFormUrl, params)
-      .pipe(
-        tap(_ => console.log('fetched analysis')),
-        catchError(this.handleError<any>('doAnalysis', []))
+  this.analysis = this.http.post<any>(this.repoFormUrl, params)
+    .pipe(
+      tap(_ => console.log('fetched analysis')),
+          catchError(this.handleError<any>('doAnalysis', []))
       )
   }
 
