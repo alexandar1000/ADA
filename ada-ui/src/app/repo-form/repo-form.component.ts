@@ -1,5 +1,4 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { UserService } from '../user.service';
 import { User } from '../classes/user';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {AnalyserService} from "../analyser.service";
@@ -14,7 +13,6 @@ import {Observable} from "rxjs";
 export class RepoFormComponent implements OnInit {
   private urlForm: string;
   private branchName: string;
-  private  graphPromise: Observable<any>;
   @Output() receivedUser = new EventEmitter<User>();
 
   constructor(private analyserService: AnalyserService, private _snackBar: MatSnackBar, private router: Router) {
@@ -24,7 +22,7 @@ export class RepoFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.analyserService.doAnalysis(this.urlForm, this.branchName).subscribe(graph => this.graphPromise = graph);
+    this.analyserService.doAnalysis(this.urlForm, this.branchName);
     this.router.navigate(['/repository-graph']);
   }
 }

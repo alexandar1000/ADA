@@ -13,8 +13,14 @@
                 [(ngModel)]="branchName"
                 required #branch="ngModel">
 		</mat-form-field>
-    <a href="localhost:4200/repository-graph">
-      <button type="submit" [disabled]="!repoForm.form.valid" mat-raised-button color="primary" class="form-button">Analyse</button>
+    <a>
+      <button
+        type="submit"
+        [disabled]="!repoForm.form.valid"
+        mat-raised-button
+        color="primary"
+        class="form-button"
+      >Analyse</button>
     </a>
 
 	</form>
