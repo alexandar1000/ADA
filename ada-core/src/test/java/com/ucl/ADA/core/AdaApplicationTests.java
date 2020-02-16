@@ -45,23 +45,23 @@ class AdaApplicationTests {
 		assertEquals(result, "Welcome to this wonderfully amazing webpage. Still a bit shy tho..");
 	}
 
-	@Test
-	 void getDownloadResponse() throws Exception {
-		String url = "https://github.com/sebastianvburlacu/Fitbit-JSON-Data-Generator.git";
-		String branch = "master";
-		RepoDbPopulator repoInfoUI = new RepoDbPopulator();
-		repoInfoUI.setUrl(url);
-		repoInfoUI.setBranch(branch);
-
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-		ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
-		String requestJson=writer.writeValueAsString(repoInfoUI);
-
-		mvc.perform(post("/repo-metadata")
-				.contentType(APPLICATION_JSON_UTF8)
-				.content(requestJson)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-	}
+//	@Test
+//	 void getDownloadResponse() throws Exception {
+//		String url = "https://github.com/alexandar1000/ADA-test-simple-JAVA-project-0.git";
+//		String branch = "master";
+//		RepoDbPopulator repoInfoUI = new RepoDbPopulator();
+//		repoInfoUI.setUrl(url);
+//		repoInfoUI.setBranch(branch);
+//
+//		ObjectMapper mapper = new ObjectMapper();
+//		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+//		ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
+//		String requestJson=writer.writeValueAsString(repoInfoUI);
+//
+//		mvc.perform(post("/repo-metadata")
+//				.contentType(APPLICATION_JSON_UTF8)
+//				.content(requestJson)
+//				.accept(MediaType.APPLICATION_JSON))
+//				.andExpect(status().isOk());
+//	}
 }

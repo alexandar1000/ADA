@@ -23,7 +23,7 @@ public class Branch {
 
     @OneToMany(mappedBy = "branch", targetEntity = Snapshot.class, cascade = CascadeType.ALL, orphanRemoval = true)
     private
-    Set<Branch> snapshots = new HashSet<>();
+    Set<Snapshot> snapshots = new HashSet<>();
 
     public Branch(){}
 
@@ -47,11 +47,11 @@ public class Branch {
         this.branchName = branchName;
     }
 
-    public Set<Branch> getSnapshots() {
+    public Set<Snapshot> getSnapshots() {
         return snapshots;
     }
 
-    public void setSnapshots(Set<Branch> snapshots) {
+    public void setSnapshots(Set<Snapshot> snapshots) {
         this.snapshots = snapshots;
     }
 

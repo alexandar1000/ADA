@@ -16,8 +16,20 @@ public class UserService {
 
     @Autowired private UserRepository userRepository;
 
+    /**
+     * List all users as User entities, including their Repositories, Branches, Snapshots and ClassNames.
+     * @return a list of Users
+     */
     public List<User> listUsers(){
         return (List<User>) userRepository.findAll();
+    }
+
+    /**
+     * List only the usernames of each User in the database.
+     * @return list of strings containing the usernames of each user
+     */
+    public List<String> listUserNames(){
+        return userRepository.fetchUserNames();
     }
 
     public User getUser(Long id){
@@ -36,4 +48,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public User getUserByName(String name) {
+        return userRepository.findByUserName(name);
+    }
 }
