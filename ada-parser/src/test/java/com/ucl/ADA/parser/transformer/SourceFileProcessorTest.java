@@ -1,18 +1,14 @@
 package com.ucl.ADA.parser.transformer;
 
-import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
+import com.ucl.ADA.parser.dependence_information.ProjectStructure;
 import com.ucl.ADA.parser.model.SourceFile;
-import com.ucl.ADA.parser.model.SourceMethod;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
-import java.util.Set;
-
 class SourceFileProcessorTest {
 
-    private ProjectDependenceTree projectDependenceTree;
+    private ProjectStructure projectStructure;
     private SourceFileProcessor sourceFileProcessor;
     private SourceFile sourceFile;
 
@@ -33,7 +29,7 @@ class SourceFileProcessorTest {
 
     @BeforeEach
     void setUpDependenceTree() {
-        projectDependenceTree = new ProjectDependenceTree();
+        projectStructure = new ProjectStructure();
     }
 
     @Test

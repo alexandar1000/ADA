@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 @Getter @Setter @NoArgsConstructor
-public class ClassDependenceTree {
+public class ClassStructure {
 
     /**
      * Class package
@@ -38,12 +38,12 @@ public class ClassDependenceTree {
     /**
      * Information about the invocations of the elements from the other classes from this class.
      */
-    private HashMap<String, ClassDependenceInformation> outgoingDependenceInfo = new HashMap<>();
+    private HashMap<String, DependenceInfo> outgoingDependenceInfo = new HashMap<>();
 
     /**
      * Information about the invocations of elements from this class by the other classes.
      */
-    private HashMap<String, ClassDependenceInformation> incomingDependenceInfo = new HashMap<>();
+    private HashMap<String, DependenceInfo> incomingDependenceInfo = new HashMap<>();
 
     /**
      * External Invocation Information, Setter is called
@@ -59,7 +59,7 @@ public class ClassDependenceTree {
      * Creates a new instance using the package name.
      * @param packageDeclarationInformation the name of the package corresponding to the current class
      */
-    protected ClassDependenceTree(PackageDeclaration packageDeclarationInformation) {
+    protected ClassStructure(PackageDeclaration packageDeclarationInformation) {
         this.currentPackage = packageDeclarationInformation;
     }
 
@@ -101,17 +101,17 @@ public class ClassDependenceTree {
             if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
                 this.outgoingDependenceInfo.get(relatingClass).addNewPackage(packageInvocationInformation);
             } else {
-                ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
-                classDependenceInformation.addNewPackage(packageInvocationInformation);
-                this.outgoingDependenceInfo.put(relatingClass, classDependenceInformation);
+                DependenceInfo dependenceInfo = new DependenceInfo();
+                dependenceInfo.addNewPackage(packageInvocationInformation);
+                this.outgoingDependenceInfo.put(relatingClass, dependenceInfo);
             }
         } else {
             if (this.incomingDependenceInfo.containsKey(relatingClass)) {
                 this.incomingDependenceInfo.get(relatingClass).addNewPackage(packageInvocationInformation);
             } else {
-                ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
-                classDependenceInformation.addNewPackage(packageInvocationInformation);
-                this.incomingDependenceInfo.put(relatingClass, classDependenceInformation);
+                DependenceInfo dependenceInfo = new DependenceInfo();
+                dependenceInfo.addNewPackage(packageInvocationInformation);
+                this.incomingDependenceInfo.put(relatingClass, dependenceInfo);
             }
         }
     }
@@ -130,17 +130,17 @@ public class ClassDependenceTree {
             if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
                 this.outgoingDependenceInfo.get(relatingClass).addNewAttribute(attributeInvocationInformation);
             } else {
-                ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
-                classDependenceInformation.addNewAttribute(attributeInvocationInformation);
-                this.outgoingDependenceInfo.put(relatingClass, classDependenceInformation);
+                DependenceInfo dependenceInfo = new DependenceInfo();
+                dependenceInfo.addNewAttribute(attributeInvocationInformation);
+                this.outgoingDependenceInfo.put(relatingClass, dependenceInfo);
             }
         } else {
             if (this.incomingDependenceInfo.containsKey(relatingClass)) {
                 this.incomingDependenceInfo.get(relatingClass).addNewAttribute(attributeInvocationInformation);
             } else {
-                ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
-                classDependenceInformation.addNewAttribute(attributeInvocationInformation);
-                this.incomingDependenceInfo.put(relatingClass, classDependenceInformation);
+                DependenceInfo dependenceInfo = new DependenceInfo();
+                dependenceInfo.addNewAttribute(attributeInvocationInformation);
+                this.incomingDependenceInfo.put(relatingClass, dependenceInfo);
             }
         }
     }
@@ -159,17 +159,17 @@ public class ClassDependenceTree {
             if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
                 this.outgoingDependenceInfo.get(relatingClass).addNewConstructor(constructorInvocationInformation);
             } else {
-                ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
-                classDependenceInformation.addNewConstructor(constructorInvocationInformation);
-                this.outgoingDependenceInfo.put(relatingClass, classDependenceInformation);
+                DependenceInfo dependenceInfo = new DependenceInfo();
+                dependenceInfo.addNewConstructor(constructorInvocationInformation);
+                this.outgoingDependenceInfo.put(relatingClass, dependenceInfo);
             }
         } else {
             if (this.incomingDependenceInfo.containsKey(relatingClass)) {
                 this.incomingDependenceInfo.get(relatingClass).addNewConstructor(constructorInvocationInformation);
             } else {
-                ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
-                classDependenceInformation.addNewConstructor(constructorInvocationInformation);
-                this.incomingDependenceInfo.put(relatingClass, classDependenceInformation);
+                DependenceInfo dependenceInfo = new DependenceInfo();
+                dependenceInfo.addNewConstructor(constructorInvocationInformation);
+                this.incomingDependenceInfo.put(relatingClass, dependenceInfo);
             }
         }
     }
@@ -188,17 +188,17 @@ public class ClassDependenceTree {
             if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
                 this.outgoingDependenceInfo.get(relatingClass).addNewMethod(methodInvocationInformation);
             } else {
-                ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
-                classDependenceInformation.addNewMethod(methodInvocationInformation);
-                this.outgoingDependenceInfo.put(relatingClass, classDependenceInformation);
+                DependenceInfo dependenceInfo = new DependenceInfo();
+                dependenceInfo.addNewMethod(methodInvocationInformation);
+                this.outgoingDependenceInfo.put(relatingClass, dependenceInfo);
             }
         } else {
             if (this.incomingDependenceInfo.containsKey(relatingClass)) {
                 this.incomingDependenceInfo.get(relatingClass).addNewMethod(methodInvocationInformation);
             } else {
-                ClassDependenceInformation classDependenceInformation = new ClassDependenceInformation();
-                classDependenceInformation.addNewMethod(methodInvocationInformation);
-                this.incomingDependenceInfo.put(relatingClass, classDependenceInformation);
+                DependenceInfo dependenceInfo = new DependenceInfo();
+                dependenceInfo.addNewMethod(methodInvocationInformation);
+                this.incomingDependenceInfo.put(relatingClass, dependenceInfo);
             }
         }
     }

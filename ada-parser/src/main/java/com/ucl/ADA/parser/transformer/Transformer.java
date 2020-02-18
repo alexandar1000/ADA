@@ -1,6 +1,6 @@
 package com.ucl.ADA.parser.transformer;
 
-import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
+import com.ucl.ADA.parser.dependence_information.ProjectStructure;
 import com.ucl.ADA.parser.model.SourceFile;
 import com.ucl.ADA.parser.parser.ADAParser;
 
@@ -8,27 +8,27 @@ import java.util.Set;
 
 public class Transformer {
 
-    public ProjectDependenceTree transform(String src_dir) {
+    public ProjectStructure transform(String src_dir) {
 
-        ProjectDependenceTree projectDependenceTree = new ProjectDependenceTree();
+        ProjectStructure projectStructure = new ProjectStructure();
 
         SourceFileProcessor sourceFileProcessor = new SourceFileProcessor();
 
         Set<SourceFile> sourceFiles = new ADAParser().getParsedSourceFile(src_dir);
 
         sourceFiles.forEach(f -> {
-            sourceFileProcessor.processPackageDeclaration(projectDependenceTree, f);
-            sourceFileProcessor.processAttributeDeclaration(projectDependenceTree, f);
-            sourceFileProcessor.processConstructorDeclaration(projectDependenceTree, f);
-            sourceFileProcessor.processMethodDeclaration(projectDependenceTree, f);
-            sourceFileProcessor.processPackageInvocation(projectDependenceTree, f);
-            sourceFileProcessor.processAttributeInvocation(projectDependenceTree, f);
-            sourceFileProcessor.processConstructorInvocation(projectDependenceTree, f);
-            sourceFileProcessor.processMethodInvocation(projectDependenceTree, f);
-            sourceFileProcessor.processExternalInvocation(projectDependenceTree, f);
+            sourceFileProcessor.processPackageDeclaration(projectStructure, f);
+            sourceFileProcessor.processAttributeDeclaration(projectStructure, f);
+            sourceFileProcessor.processConstructorDeclaration(projectStructure, f);
+            sourceFileProcessor.processMethodDeclaration(projectStructure, f);
+            sourceFileProcessor.processPackageInvocation(projectStructure, f);
+            sourceFileProcessor.processAttributeInvocation(projectStructure, f);
+            sourceFileProcessor.processConstructorInvocation(projectStructure, f);
+            sourceFileProcessor.processMethodInvocation(projectStructure, f);
+            sourceFileProcessor.processExternalInvocation(projectStructure, f);
         });
 
-        return projectDependenceTree;
+        return projectStructure;
     }
 
     public static void main(String[] args) {

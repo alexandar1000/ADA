@@ -1,7 +1,7 @@
 package com.ucl.ADA.metric_calculator.metrics_structure;
 
-import com.ucl.ADA.parser.dependence_information.ClassDependenceTree;
-import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
+import com.ucl.ADA.parser.dependence_information.ClassStructure;
+import com.ucl.ADA.parser.dependence_information.ProjectStructure;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,14 +25,14 @@ public class ClassMetricsContainer {
     /**
      * Calculates the number of class package imports invoked by other classes from the current class.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateNumberOfClassPackageImportsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateNumberOfClassPackageImportsIncoming(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
-            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getIncomingDependenceInfo().get(key).getPackages().size();
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
+                metricValue += classStructure.getIncomingDependenceInfo().get(key).getPackages().size();
             }
         }
         this.classMetricValues.setNumberOfPackageImportsIncoming(metricValue);
@@ -41,14 +41,14 @@ public class ClassMetricsContainer {
     /**
      * Calculates the number of class package imports invoked by the current class from other classes.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateNumberOfClassPackageImportsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateNumberOfClassPackageImportsOutgoing(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
-            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getOutgoingDependenceInfo().get(key).getPackages().size();
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
+                metricValue += classStructure.getOutgoingDependenceInfo().get(key).getPackages().size();
             }
         }
 
@@ -58,14 +58,14 @@ public class ClassMetricsContainer {
     /**
      * Calculates the number of class attribute invocations invoked by other classes from the current class.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateNumberOfClassAttributeInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateNumberOfClassAttributeInvocationsIncoming(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
-            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getIncomingDependenceInfo().get(key).getAttributes().size();
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
+                metricValue += classStructure.getIncomingDependenceInfo().get(key).getAttributes().size();
             }
         }
 
@@ -75,14 +75,14 @@ public class ClassMetricsContainer {
     /**
      * Calculates the number of class attribute invocations invoked by the current class from other classes.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateNumberOfClassAttributeInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateNumberOfClassAttributeInvocationsOutgoing(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
-            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getOutgoingDependenceInfo().get(key).getAttributes().size();
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
+                metricValue += classStructure.getOutgoingDependenceInfo().get(key).getAttributes().size();
             }
         }
 
@@ -92,14 +92,14 @@ public class ClassMetricsContainer {
     /**
      * Calculates the number of class methods invocations invoked by other classes from the current class.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateNumberOfClassMethodInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateNumberOfClassMethodInvocationsIncoming(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
-            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getIncomingDependenceInfo().get(key).getMethods().size();
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
+                metricValue += classStructure.getIncomingDependenceInfo().get(key).getMethods().size();
             }
         }
 
@@ -109,14 +109,14 @@ public class ClassMetricsContainer {
     /**
      * Calculates the number of class method invocations invoked by the current class from other classes.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateNumberOfClassMethodInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateNumberOfClassMethodInvocationsOutgoing(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
-            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getOutgoingDependenceInfo().get(key).getMethods().size();
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
+                metricValue += classStructure.getOutgoingDependenceInfo().get(key).getMethods().size();
             }
         }
 
@@ -126,14 +126,14 @@ public class ClassMetricsContainer {
     /**
      * Calculates the number of class constructors invocations invoked by other classes from the current class.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateNumberOfClassConstructorInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateNumberOfClassConstructorInvocationsIncoming(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
-            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getIncomingDependenceInfo().get(key).getConstructors().size();
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
+                metricValue += classStructure.getIncomingDependenceInfo().get(key).getConstructors().size();
             }
         }
 
@@ -143,14 +143,14 @@ public class ClassMetricsContainer {
     /**
      * Calculates the number of class constructor invocations invoked by the current class from other classes.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateNumberOfClassConstructorInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateNumberOfClassConstructorInvocationsOutgoing(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
-            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getOutgoingDependenceInfo().get(key).getConstructors().size();
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
+                metricValue += classStructure.getOutgoingDependenceInfo().get(key).getConstructors().size();
             }
         }
 
@@ -161,17 +161,17 @@ public class ClassMetricsContainer {
      * Calculates the number of class package imports both invoked by the current class from other classes, and invoked
      * by other classes from the current class.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateBidirectionalNumberOfClassPackageImports(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateBidirectionalNumberOfClassPackageImports(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
-            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getIncomingDependenceInfo().get(key).getPackages().size();
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
+                metricValue += classStructure.getIncomingDependenceInfo().get(key).getPackages().size();
             }
-            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getOutgoingDependenceInfo().get(key).getPackages().size();
+            for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
+                metricValue += classStructure.getOutgoingDependenceInfo().get(key).getPackages().size();
             }
         }
 
@@ -182,17 +182,17 @@ public class ClassMetricsContainer {
      * Calculates the number of class attribute invocations both invoked by the current class from other classes, and invoked
      * by other classes from the current class.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateBidirectionalNumberOfClassAttributeInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateBidirectionalNumberOfClassAttributeInvocations(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
-            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getIncomingDependenceInfo().get(key).getAttributes().size();
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
+                metricValue += classStructure.getIncomingDependenceInfo().get(key).getAttributes().size();
             }
-            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getOutgoingDependenceInfo().get(key).getAttributes().size();
+            for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
+                metricValue += classStructure.getOutgoingDependenceInfo().get(key).getAttributes().size();
             }
         }
 
@@ -203,17 +203,17 @@ public class ClassMetricsContainer {
      * Calculates the number of class attribute invocations both invoked by the current class from other classes, and invoked
      * by other classes from the current class.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateBidirectionalNumberOfClassMethodInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateBidirectionalNumberOfClassMethodInvocations(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
-            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getIncomingDependenceInfo().get(key).getMethods().size();
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
+                metricValue += classStructure.getIncomingDependenceInfo().get(key).getMethods().size();
             }
-            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getOutgoingDependenceInfo().get(key).getMethods().size();
+            for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
+                metricValue += classStructure.getOutgoingDependenceInfo().get(key).getMethods().size();
             }
         }
 
@@ -224,17 +224,17 @@ public class ClassMetricsContainer {
      * Calculates the number of class attribute invocations both invoked by the current class from other classes, and invoked
      * by other classes from the current class.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateBidirectionalNumberOfClassConstructorInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateBidirectionalNumberOfClassConstructorInvocations(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
-            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getIncomingDependenceInfo().get(key).getConstructors().size();
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
+                metricValue += classStructure.getIncomingDependenceInfo().get(key).getConstructors().size();
             }
-            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
-                metricValue += classDependenceTree.getOutgoingDependenceInfo().get(key).getConstructors().size();
+            for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
+                metricValue += classStructure.getOutgoingDependenceInfo().get(key).getConstructors().size();
             }
         }
 
@@ -245,17 +245,17 @@ public class ClassMetricsContainer {
      * Calculates the number of package imports for all of the linking classes, which are invoked by other classes from
      * the current class.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateNumberOfRelationPackageImportsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateNumberOfRelationPackageImportsIncoming(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
-            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
-                metricValue = (float) classDependenceTree.getIncomingDependenceInfo().get(key).getPackages().size();
+            for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
+                metricValue = (float) classStructure.getIncomingDependenceInfo().get(key).getPackages().size();
 
                 // Check if the relation metrics for the class have already been computed
                 if (!relationMetricValues.containsKey(key)) {
@@ -271,17 +271,17 @@ public class ClassMetricsContainer {
      * Calculates the number of package imports for all of the linking classes, which are invoked by the current
      * class from the other classes.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateNumberOfRelationPackageImportsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateNumberOfRelationPackageImportsOutgoing(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
-            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
-                metricValue = (float) classDependenceTree.getOutgoingDependenceInfo().get(key).getPackages().size();
+            for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
+                metricValue = (float) classStructure.getOutgoingDependenceInfo().get(key).getPackages().size();
 
                 // Check if the relation metrics for the class have already been computed
                 if (!relationMetricValues.containsKey(key)) {
@@ -297,17 +297,17 @@ public class ClassMetricsContainer {
      * Calculates the number of attribute invocations for all of the linking classes, which are invoked by other classes
      * from the current class.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateNumberOfRelationAttributeInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateNumberOfRelationAttributeInvocationsIncoming(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
-            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
-                metricValue = (float) classDependenceTree.getIncomingDependenceInfo().get(key).getAttributes().size();
+            for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
+                metricValue = (float) classStructure.getIncomingDependenceInfo().get(key).getAttributes().size();
 
                 // Check if the relation metrics for the class have already been computed
                 if (!relationMetricValues.containsKey(key)) {
@@ -323,17 +323,17 @@ public class ClassMetricsContainer {
      * Calculates the number of attribute invocations for all of the linking classes, which are invoked by the current
      * class from the other classes.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateNumberOfRelationAttributeInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateNumberOfRelationAttributeInvocationsOutgoing(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
-            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
-                metricValue = (float) classDependenceTree.getOutgoingDependenceInfo().get(key).getAttributes().size();
+            for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
+                metricValue = (float) classStructure.getOutgoingDependenceInfo().get(key).getAttributes().size();
 
                 // Check if the relation metrics for the class have already been computed
                 if (!relationMetricValues.containsKey(key)) {
@@ -349,17 +349,17 @@ public class ClassMetricsContainer {
      * Calculates the number of method invocations for all of the linking classes, which are invoked by other classes
      * from the current class.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateNumberOfRelationMethodInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateNumberOfRelationMethodInvocationsIncoming(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
-            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
-                metricValue = (float) classDependenceTree.getIncomingDependenceInfo().get(key).getMethods().size();
+            for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
+                metricValue = (float) classStructure.getIncomingDependenceInfo().get(key).getMethods().size();
 
 
                 // Check if the relation metrics for the class have already been computed
@@ -376,17 +376,17 @@ public class ClassMetricsContainer {
      * Calculates the number of method invocations for all of the linking classes, which are invoked by the current
      * class from the other classes.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateNumberOfRelationMethodInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateNumberOfRelationMethodInvocationsOutgoing(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
-            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
-                metricValue = (float) classDependenceTree.getOutgoingDependenceInfo().get(key).getMethods().size();
+            for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
+                metricValue = (float) classStructure.getOutgoingDependenceInfo().get(key).getMethods().size();
 
                 // Check if the relation metrics for the class have already been computed
                 if (!relationMetricValues.containsKey(key)) {
@@ -402,17 +402,17 @@ public class ClassMetricsContainer {
      * Calculates the number of constructor invocations for all of the linking classes, which are invoked by other classes
      * from the current class.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateNumberOfRelationConstructorInvocationsIncoming(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateNumberOfRelationConstructorInvocationsIncoming(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
-            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
-                metricValue = (float) classDependenceTree.getIncomingDependenceInfo().get(key).getConstructors().size();
+            for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
+                metricValue = (float) classStructure.getIncomingDependenceInfo().get(key).getConstructors().size();
 
 
                 // Check if the relation metrics for the class have already been computed
@@ -429,17 +429,17 @@ public class ClassMetricsContainer {
      * Calculates the number of constructors invocations for all of the linking classes, which are invoked by the current
      * class from the other classes.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateNumberOfRelationConstructorInvocationsOutgoing(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateNumberOfRelationConstructorInvocationsOutgoing(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
-            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
-                metricValue = (float) classDependenceTree.getOutgoingDependenceInfo().get(key).getConstructors().size();
+            for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
+                metricValue = (float) classStructure.getOutgoingDependenceInfo().get(key).getConstructors().size();
 
                 // Check if the relation metrics for the class have already been computed
                 if (!relationMetricValues.containsKey(key)) {
@@ -455,17 +455,17 @@ public class ClassMetricsContainer {
      * Calculates the number of package imports for all of the linking classes, both invoked by the current class from
      * other classes, and invoked by other classes from the current class.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateBidirectionalNumberOfRelationPackageImports(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateBidirectionalNumberOfRelationPackageImports(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
-            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
-                metricValue = (float) classDependenceTree.getOutgoingDependenceInfo().get(key).getPackages().size();
+            for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
+                metricValue = (float) classStructure.getOutgoingDependenceInfo().get(key).getPackages().size();
                 // Check if the relation metrics for the class have already been computed
                 if (!relationMetricValues.containsKey(key)) {
                     RelationMetricValue relationMetricValueObject = new RelationMetricValue();
@@ -474,8 +474,8 @@ public class ClassMetricsContainer {
                 float previousMetricValue = relationMetricValues.get(key).getBidirectionalNumberOfPackageImports();
                 relationMetricValues.get(key).setBidirectionalNumberOfPackageImports(previousMetricValue + metricValue);
             }
-            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
-                metricValue = (float) classDependenceTree.getIncomingDependenceInfo().get(key).getPackages().size();
+            for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
+                metricValue = (float) classStructure.getIncomingDependenceInfo().get(key).getPackages().size();
                 // Check if the relation metrics for the class have already been computed
                 if (!relationMetricValues.containsKey(key)) {
                     RelationMetricValue relationMetricValueObject = new RelationMetricValue();
@@ -491,17 +491,17 @@ public class ClassMetricsContainer {
      * Calculates the number of class attribute invocations for all of the linking classes, both invoked by the current
      * class from other classes, and invoked by other classes from the current class.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateBidirectionalNumberOfRelationAttributeInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateBidirectionalNumberOfRelationAttributeInvocations(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
-            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
-                metricValue = (float) classDependenceTree.getOutgoingDependenceInfo().get(key).getAttributes().size();
+            for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
+                metricValue = (float) classStructure.getOutgoingDependenceInfo().get(key).getAttributes().size();
                 // Check if the relation metrics for the class have already been computed
                 if (!relationMetricValues.containsKey(key)) {
                     RelationMetricValue relationMetricValueObject = new RelationMetricValue();
@@ -510,8 +510,8 @@ public class ClassMetricsContainer {
                 float currentMetricValue = relationMetricValues.get(key).getBidirectionalNumberOfAttributeInvocations();
                 relationMetricValues.get(key).setBidirectionalNumberOfAttributeInvocations(currentMetricValue + metricValue);
             }
-            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
-                metricValue = (float) classDependenceTree.getIncomingDependenceInfo().get(key).getAttributes().size();
+            for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
+                metricValue = (float) classStructure.getIncomingDependenceInfo().get(key).getAttributes().size();
                 // Check if the relation metrics for the class have already been computed
                 if (!relationMetricValues.containsKey(key)) {
                     RelationMetricValue relationMetricValueObject = new RelationMetricValue();
@@ -527,17 +527,17 @@ public class ClassMetricsContainer {
      * Calculates the number of class method invocations for all of the linking classes, both invoked by the current
      * class from other classes, and invoked by other classes from the current class.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateBidirectionalNumberOfRelationMethodInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateBidirectionalNumberOfRelationMethodInvocations(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
-            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
-                metricValue = (float) classDependenceTree.getOutgoingDependenceInfo().get(key).getMethods().size();
+            for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
+                metricValue = (float) classStructure.getOutgoingDependenceInfo().get(key).getMethods().size();
                 // Check if the relation metrics for the class have already been computed
                 if (!relationMetricValues.containsKey(key)) {
                     RelationMetricValue relationMetricValueObject = new RelationMetricValue();
@@ -546,8 +546,8 @@ public class ClassMetricsContainer {
                 float currentMetricValue = relationMetricValues.get(key).getBidirectionalNumberOfMethodInvocations();
                 relationMetricValues.get(key).setBidirectionalNumberOfMethodInvocations( currentMetricValue + metricValue);
             }
-            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
-                metricValue = (float) classDependenceTree.getIncomingDependenceInfo().get(key).getMethods().size();
+            for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
+                metricValue = (float) classStructure.getIncomingDependenceInfo().get(key).getMethods().size();
                 // Check if the relation metrics for the class have already been computed
                 if (!relationMetricValues.containsKey(key)) {
                     RelationMetricValue relationMetricValueObject = new RelationMetricValue();
@@ -563,17 +563,17 @@ public class ClassMetricsContainer {
      * Calculates the number of class constructor invocations for all of the linking classes, both invoked by the current
      * class from other classes, and invoked by other classes from the current class.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void calculateBidirectionalNumberOfRelationConstructorInvocations(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
+    protected void calculateBidirectionalNumberOfRelationConstructorInvocations(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectDependenceTree.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassDependenceTree classDependenceTree = projectDependenceTree.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
-            for (String key : classDependenceTree.getOutgoingDependenceInfo().keySet()) {
-                metricValue = (float) classDependenceTree.getOutgoingDependenceInfo().get(key).getConstructors().size();
+            for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
+                metricValue = (float) classStructure.getOutgoingDependenceInfo().get(key).getConstructors().size();
                 // Check if the relation metrics for the class have already been computed
                 if (!relationMetricValues.containsKey(key)) {
                     RelationMetricValue relationMetricValueObject = new RelationMetricValue();
@@ -582,8 +582,8 @@ public class ClassMetricsContainer {
                 float currentMetricValue = relationMetricValues.get(key).getBidirectionalNumberOfConstructorInvocations();
                 relationMetricValues.get(key).setBidirectionalNumberOfConstructorInvocations(currentMetricValue + metricValue);
             }
-            for (String key : classDependenceTree.getIncomingDependenceInfo().keySet()) {
-                metricValue = (float) classDependenceTree.getIncomingDependenceInfo().get(key).getConstructors().size();
+            for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
+                metricValue = (float) classStructure.getIncomingDependenceInfo().get(key).getConstructors().size();
                 // Check if the relation metrics for the class have already been computed
                 if (!relationMetricValues.containsKey(key)) {
                     RelationMetricValue relationMetricValueObject = new RelationMetricValue();
@@ -598,44 +598,44 @@ public class ClassMetricsContainer {
     /**
      * Computes all of the metrics for a class.
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void computeAllClassMetrics(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        this.calculateBidirectionalNumberOfClassPackageImports(correspondingClass, projectDependenceTree);
-        this.calculateBidirectionalNumberOfClassAttributeInvocations(correspondingClass, projectDependenceTree);
-        this.calculateBidirectionalNumberOfClassConstructorInvocations(correspondingClass, projectDependenceTree);
-        this.calculateBidirectionalNumberOfClassMethodInvocations(correspondingClass, projectDependenceTree);
+    protected void computeAllClassMetrics(String correspondingClass, ProjectStructure projectStructure) {
+        this.calculateBidirectionalNumberOfClassPackageImports(correspondingClass, projectStructure);
+        this.calculateBidirectionalNumberOfClassAttributeInvocations(correspondingClass, projectStructure);
+        this.calculateBidirectionalNumberOfClassConstructorInvocations(correspondingClass, projectStructure);
+        this.calculateBidirectionalNumberOfClassMethodInvocations(correspondingClass, projectStructure);
 
-        this.calculateNumberOfClassPackageImportsOutgoing(correspondingClass, projectDependenceTree);
-        this.calculateNumberOfClassAttributeInvocationsOutgoing(correspondingClass, projectDependenceTree);
-        this.calculateNumberOfClassConstructorInvocationsOutgoing(correspondingClass, projectDependenceTree);
-        this.calculateNumberOfClassMethodInvocationsOutgoing(correspondingClass, projectDependenceTree);
+        this.calculateNumberOfClassPackageImportsOutgoing(correspondingClass, projectStructure);
+        this.calculateNumberOfClassAttributeInvocationsOutgoing(correspondingClass, projectStructure);
+        this.calculateNumberOfClassConstructorInvocationsOutgoing(correspondingClass, projectStructure);
+        this.calculateNumberOfClassMethodInvocationsOutgoing(correspondingClass, projectStructure);
 
-        this.calculateNumberOfClassPackageImportsIncoming(correspondingClass, projectDependenceTree);
-        this.calculateNumberOfClassAttributeInvocationsIncoming(correspondingClass, projectDependenceTree);
-        this.calculateNumberOfClassConstructorInvocationsIncoming(correspondingClass, projectDependenceTree);
-        this.calculateNumberOfClassMethodInvocationsIncoming(correspondingClass, projectDependenceTree);
+        this.calculateNumberOfClassPackageImportsIncoming(correspondingClass, projectStructure);
+        this.calculateNumberOfClassAttributeInvocationsIncoming(correspondingClass, projectStructure);
+        this.calculateNumberOfClassConstructorInvocationsIncoming(correspondingClass, projectStructure);
+        this.calculateNumberOfClassMethodInvocationsIncoming(correspondingClass, projectStructure);
     }
 
     /**
      * Computes all of the metrics for the relation between the current class and all of the relating classes..
      * @param correspondingClass the class in question
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    protected void computeAllRelationMetrics(String correspondingClass, ProjectDependenceTree projectDependenceTree) {
-        this.calculateBidirectionalNumberOfRelationPackageImports(correspondingClass, projectDependenceTree);
-        this.calculateBidirectionalNumberOfRelationAttributeInvocations(correspondingClass, projectDependenceTree);
-        this.calculateBidirectionalNumberOfRelationConstructorInvocations(correspondingClass, projectDependenceTree);
-        this.calculateBidirectionalNumberOfRelationMethodInvocations(correspondingClass, projectDependenceTree);
+    protected void computeAllRelationMetrics(String correspondingClass, ProjectStructure projectStructure) {
+        this.calculateBidirectionalNumberOfRelationPackageImports(correspondingClass, projectStructure);
+        this.calculateBidirectionalNumberOfRelationAttributeInvocations(correspondingClass, projectStructure);
+        this.calculateBidirectionalNumberOfRelationConstructorInvocations(correspondingClass, projectStructure);
+        this.calculateBidirectionalNumberOfRelationMethodInvocations(correspondingClass, projectStructure);
 
-        this.calculateNumberOfRelationPackageImportsOutgoing(correspondingClass, projectDependenceTree);
-        this.calculateNumberOfRelationAttributeInvocationsOutgoing(correspondingClass, projectDependenceTree);
-        this.calculateNumberOfRelationConstructorInvocationsOutgoing(correspondingClass, projectDependenceTree);
-        this.calculateNumberOfRelationMethodInvocationsOutgoing(correspondingClass, projectDependenceTree);
+        this.calculateNumberOfRelationPackageImportsOutgoing(correspondingClass, projectStructure);
+        this.calculateNumberOfRelationAttributeInvocationsOutgoing(correspondingClass, projectStructure);
+        this.calculateNumberOfRelationConstructorInvocationsOutgoing(correspondingClass, projectStructure);
+        this.calculateNumberOfRelationMethodInvocationsOutgoing(correspondingClass, projectStructure);
 
-        this.calculateNumberOfRelationPackageImportsIncoming(correspondingClass, projectDependenceTree);
-        this.calculateNumberOfRelationAttributeInvocationsIncoming(correspondingClass, projectDependenceTree);
-        this.calculateNumberOfRelationConstructorInvocationsIncoming(correspondingClass, projectDependenceTree);
-        this.calculateNumberOfRelationMethodInvocationsIncoming(correspondingClass, projectDependenceTree);
+        this.calculateNumberOfRelationPackageImportsIncoming(correspondingClass, projectStructure);
+        this.calculateNumberOfRelationAttributeInvocationsIncoming(correspondingClass, projectStructure);
+        this.calculateNumberOfRelationConstructorInvocationsIncoming(correspondingClass, projectStructure);
+        this.calculateNumberOfRelationMethodInvocationsIncoming(correspondingClass, projectStructure);
     }
 }

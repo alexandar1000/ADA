@@ -12,13 +12,13 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ClassDependenceInformationTest {
+class DependenceInfoTest {
 
-    private ClassDependenceInformation cdi;
+    private DependenceInfo cdi;
 
     @BeforeEach
     void setUp() {
-        cdi = new ClassDependenceInformation();
+        cdi = new DependenceInfo();
     }
 
     @Test

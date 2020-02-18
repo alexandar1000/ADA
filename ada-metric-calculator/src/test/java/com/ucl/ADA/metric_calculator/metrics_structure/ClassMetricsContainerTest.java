@@ -1,6 +1,6 @@
 package com.ucl.ADA.metric_calculator.metrics_structure;
 
-import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
+import com.ucl.ADA.parser.dependence_information.ProjectStructure;
 import com.ucl.ADA.parser.dependence_information.declaration_information.*;
 import com.ucl.ADA.parser.dependence_information.invocation_information.AttributeInvocation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocation;
@@ -15,7 +15,7 @@ import java.util.Arrays;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ClassMetricsContainerTest {
-    private ProjectDependenceTree pdt;
+    private ProjectStructure pdt;
     private ClassMetricsContainer classMetricsContainer;
     private ArrayList<String> classNames = new ArrayList<>(Arrays.asList("FirstClass", "SecondClass", "ThirdClass", "FourthClass", "FifthClass", "SixthClass"));
 
@@ -32,7 +32,7 @@ class ClassMetricsContainerTest {
 
     @BeforeEach
     void setUp() {
-        pdt = new ProjectDependenceTree();
+        pdt = new ProjectStructure();
         classMetricsContainer = new ClassMetricsContainer();
 
         // Add the package declaration to every class

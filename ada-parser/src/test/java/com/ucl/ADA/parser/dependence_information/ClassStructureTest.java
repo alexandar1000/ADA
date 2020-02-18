@@ -10,12 +10,12 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ClassDependenceTreeTest {
+class ClassStructureTest {
 
-    private ClassDependenceTree cdt;
+    private ClassStructure cdt;
     @BeforeEach
     void setUp() {
-        cdt = new ClassDependenceTree();
+        cdt = new ClassStructure();
     }
 
     @Test

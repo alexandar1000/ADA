@@ -13,12 +13,12 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ProjectDependenceTreeTest {
-    private ProjectDependenceTree pdt;
+class ProjectStructureTest {
+    private ProjectStructure pdt;
 
     @BeforeEach
     void setUp() {
-        pdt = new ProjectDependenceTree();
+        pdt = new ProjectStructure();
     }
 
     @Test

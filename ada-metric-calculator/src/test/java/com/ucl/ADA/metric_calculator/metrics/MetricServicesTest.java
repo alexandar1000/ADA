@@ -1,7 +1,7 @@
 package com.ucl.ADA.metric_calculator.metrics;
 
 import com.ucl.ADA.metric_calculator.metrics_structure.ProjectMetricsContainer;
-import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
+import com.ucl.ADA.parser.dependence_information.ProjectStructure;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
@@ -15,7 +15,7 @@ class MetricServicesTest {
 
     ArrayList<String> classNames;
     ProjectMetricsContainer projectMetricsContainer;
-    ProjectDependenceTree projectDependenceTree;
+    ProjectStructure projectStructure;
 
 
     @InjectMocks
@@ -30,7 +30,7 @@ class MetricServicesTest {
 
         classNames = new ArrayList<>(Arrays.asList("Aaa", "Bbb", "Ccc", "Ddd", "Eee", "Fff"));
 
-        projectDependenceTree = new ProjectDependenceTree();
+        projectStructure = new ProjectStructure();
     }
 
     @AfterEach

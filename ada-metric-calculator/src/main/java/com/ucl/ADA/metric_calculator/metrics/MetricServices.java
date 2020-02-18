@@ -2,7 +2,7 @@ package com.ucl.ADA.metric_calculator.metrics;
 
 import com.ucl.ADA.metric_calculator.metrics_structure.ClassMetricTypes;
 import com.ucl.ADA.metric_calculator.metrics_structure.ProjectMetricsContainer;
-import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
+import com.ucl.ADA.parser.dependence_information.ProjectStructure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +18,9 @@ public class MetricServices {
         metricRepository.save(m);
     }
 
-    public ProjectMetricsContainer computeAllMetrics(ProjectDependenceTree projectDependenceTree) {
+    public ProjectMetricsContainer computeAllMetrics(ProjectStructure projectStructure) {
         ProjectMetricsContainer projectMetricsContainer = new ProjectMetricsContainer();
-        projectMetricsContainer.computeAllMetrics(projectDependenceTree);
+        projectMetricsContainer.computeAllMetrics(projectStructure);
         return projectMetricsContainer;
     }
 

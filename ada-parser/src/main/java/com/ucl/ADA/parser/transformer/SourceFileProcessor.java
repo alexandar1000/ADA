@@ -1,6 +1,6 @@
 package com.ucl.ADA.parser.transformer;
 
-import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
+import com.ucl.ADA.parser.dependence_information.ProjectStructure;
 import com.ucl.ADA.parser.dependence_information.declaration_information.ModifierType;
 import com.ucl.ADA.parser.dependence_information.declaration_information.AttributeDeclaration;
 import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclaration;
@@ -18,13 +18,13 @@ import java.util.Set;
 public class SourceFileProcessor {
 
     // OK
-    public void processPackageDeclaration(ProjectDependenceTree projectDependenceTree, SourceFile sourceFile) {
+    public void processPackageDeclaration(ProjectStructure projectStructure, SourceFile sourceFile) {
         PackageDeclaration packageDeclarationInformation = new PackageDeclaration(sourceFile.getPackageName());
-        projectDependenceTree.addPackageDeclaration(sourceFile.getClassName(), packageDeclarationInformation);
+        projectStructure.addPackageDeclaration(sourceFile.getClassName(), packageDeclarationInformation);
     }
 
     // OK
-    public void processAttributeDeclaration(ProjectDependenceTree projectDependenceTree, SourceFile sourceFile) {
+    public void processAttributeDeclaration(ProjectStructure projectStructure, SourceFile sourceFile) {
         sourceFile.getClassAttributes().forEach(a -> {
             ModifierType modifierType = null;
             if (a.getModifiers().contains("public")) {
@@ -37,7 +37,7 @@ public class SourceFileProcessor {
                 modifierType = ModifierType.DEFAULT;
             }
             AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(modifierType, a.getType(), a.getName(), a.getAssignedValue());
-            projectDependenceTree.addAttributeDeclaration(sourceFile.getClassName(), attributeDeclarationInformation);
+            projectStructure.addAttributeDeclaration(sourceFile.getClassName(), attributeDeclarationInformation);
         });
 
         sourceFile.getMethods().forEach(m -> {
@@ -47,13 +47,13 @@ public class SourceFileProcessor {
                 // TODO: local variable no value
                 // TODO: check at the ModifierType.DEFAULT in the line below
                 AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(ModifierType.DEFAULT, type, name, null);
-                projectDependenceTree.addAttributeDeclaration(sourceFile.getClassName(), attributeDeclarationInformation);
+                projectStructure.addAttributeDeclaration(sourceFile.getClassName(), attributeDeclarationInformation);
             }
         });
     }
 
     // OK
-    public void processConstructorDeclaration(ProjectDependenceTree projectDependenceTree, SourceFile sourceFile) {
+    public void processConstructorDeclaration(ProjectStructure projectStructure, SourceFile sourceFile) {
         sourceFile.getDeclaredSourceConstructors().forEach(c -> {
             String modifier = c.getAccessModifier();
             ModifierType modifierType = null;
@@ -71,21 +71,21 @@ public class SourceFileProcessor {
                 parameters.add(type + " " + name);
             });
             ConstructorDeclaration constructorDeclarationInformation = new ConstructorDeclaration(modifierType, c.getName(), parameters);
-            projectDependenceTree.addConstructorDeclaration(sourceFile.getClassName(), constructorDeclarationInformation);
+            projectStructure.addConstructorDeclaration(sourceFile.getClassName(), constructorDeclarationInformation);
         });
     }
 
     // OK
-    public void processMethodDeclaration(ProjectDependenceTree projectDependenceTree, SourceFile sourceFile) {
+    public void processMethodDeclaration(ProjectStructure projectStructure, SourceFile sourceFile) {
         SourceMethodProcessor sourceMethodProcessor = new SourceMethodProcessor();
         String className = sourceFile.getClassName();
         sourceFile.getMethods().forEach(m -> {
-            sourceMethodProcessor.processMethodDeclaration(projectDependenceTree, className, m);
+            sourceMethodProcessor.processMethodDeclaration(projectStructure, className, m);
         });
     }
 
     // TODO: What if import end up with '*' or import lombok
-    public void processPackageInvocation(ProjectDependenceTree projectDependenceTree, SourceFile sourceFile) {
+    public void processPackageInvocation(ProjectStructure projectStructure, SourceFile sourceFile) {
         Set<String> importPackages = sourceFile.getImportedPackages();
         if (importPackages.isEmpty())
             return;
@@ -93,44 +93,44 @@ public class SourceFileProcessor {
         for (String im : importPackages) {
             PackageInvocation packageInvocationInformation = new PackageInvocation(im);
             String[] package_arr = im.split("\\.");
-            projectDependenceTree.addPackageInvocation(sourceFile.getClassName(), package_arr[package_arr.length - 1], packageInvocationInformation);
+            projectStructure.addPackageInvocation(sourceFile.getClassName(), package_arr[package_arr.length - 1], packageInvocationInformation);
         }
     }
 
     // TODO: ...
-    public void processAttributeInvocation(ProjectDependenceTree projectDependenceTree, SourceFile sourceFile) {
+    public void processAttributeInvocation(ProjectStructure projectStructure, SourceFile sourceFile) {
 
     }
 
     // OK
-    public void processConstructorInvocation(ProjectDependenceTree projectDependenceTree, SourceFile sourceFile) {
+    public void processConstructorInvocation(ProjectStructure projectStructure, SourceFile sourceFile) {
         sourceFile.getMethods().forEach(m -> {
             m.getConstructorInvocations().forEach(ci -> {
                 ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation(sourceFile.getClassName(), (ArrayList<String>) ci.getArgumentsValues());
-                projectDependenceTree.addConstructorInvocation(sourceFile.getClassName(), ci.getConstructorClassName(), constructorInvocationInformation);
+                projectStructure.addConstructorInvocation(sourceFile.getClassName(), ci.getConstructorClassName(), constructorInvocationInformation);
             });
         });
     }
 
     // OK
-    public void processMethodInvocation(ProjectDependenceTree projectDependenceTree, SourceFile sourceFile) {
+    public void processMethodInvocation(ProjectStructure projectStructure, SourceFile sourceFile) {
         SourceMethodProcessor sourceMethodProcessor = new SourceMethodProcessor();
         String className = sourceFile.getClassName();
         sourceFile.getMethods().forEach(m -> {
             m.getMethodCalls().forEach(mc -> {
                 String[] calleeNames = mc.getCalleeName().split("\\.");
                 MethodInvocation methodInvocationInformation = new MethodInvocation(calleeNames[calleeNames.length - 1], new ArrayList<>(mc.getArguments()));
-                projectDependenceTree.addMethodInvocation(sourceFile.getClassName(), calleeNames[calleeNames.length - 2], methodInvocationInformation);
+                projectStructure.addMethodInvocation(sourceFile.getClassName(), calleeNames[calleeNames.length - 2], methodInvocationInformation);
             });
         });
     }
 
-    public void processExternalInvocation(ProjectDependenceTree projectDependenceTree, SourceFile sourceFile) {
+    public void processExternalInvocation(ProjectStructure projectStructure, SourceFile sourceFile) {
         ExternalInvocationInfo externalInvocationInfo = sourceFile.getExternalInvocationInfo();
 
-        projectDependenceTree.addExternalMethodInvocations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExMethodCalls());
-        projectDependenceTree.addExternalConstructorInvocations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExConstructorInvocations());
-        projectDependenceTree.addExternalFieldDeclarations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExFieldInvocation());
+        projectStructure.addExternalMethodInvocations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExMethodCalls());
+        projectStructure.addExternalConstructorInvocations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExConstructorInvocations());
+        projectStructure.addExternalFieldDeclarations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExFieldInvocation());
     }
 
 }

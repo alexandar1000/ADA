@@ -1,6 +1,6 @@
 package com.ucl.ADA.metric_calculator.metrics_structure;
 
-import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
+import com.ucl.ADA.parser.dependence_information.ProjectStructure;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,16 +18,16 @@ public class ProjectMetricsContainer {
     /**
      * Computes both the class and relation metrics when provided a ProjectDependenceTree of the corresponding parsed
      * repo
-     * @param projectDependenceTree corresponding parsed repository stored in the ProjectDependenceTree
+     * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
-    public void computeAllMetrics(ProjectDependenceTree projectDependenceTree) {
-        for (String key : projectDependenceTree.getClassDependenceTrees().keySet()) {
+    public void computeAllMetrics(ProjectStructure projectStructure) {
+        for (String key : projectStructure.getClassDependenceTrees().keySet()) {
             if (!classMetrics.containsKey(key)) {
                 ClassMetricsContainer classMetricsContainer = new ClassMetricsContainer();
                 classMetrics.put(key, classMetricsContainer);
             }
-            classMetrics.get(key).computeAllClassMetrics(key, projectDependenceTree);
-            classMetrics.get(key).computeAllRelationMetrics(key, projectDependenceTree);
+            classMetrics.get(key).computeAllClassMetrics(key, projectStructure);
+            classMetrics.get(key).computeAllRelationMetrics(key, projectStructure);
         }
     }
 }

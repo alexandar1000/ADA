@@ -1,54 +1,54 @@
 package com.ucl.ADA.parser.dependence_information;
 
-import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.AttributeInvocation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocation;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.List;
 
-@Getter @Setter
-public class ClassDependenceInformation {
-
-    // For data and control flow coupling:
-    /**
-     * Attributes present in the class. They can be either declared or invoked.
-     */
-    private ArrayList<AttributeInvocation> attributes = new ArrayList<>();
-
-    /**
-     * Constructors present in the class. They can be either declared or invoked.
-     */
-    private ArrayList<ConstructorInvocation> constructors = new ArrayList<>();
-
-    /**
-     * Methods present in the class. They can be either declared or invoked.
-     */
-    private ArrayList<MethodInvocation> methods = new ArrayList<>();
-
-
-    // For global coupling:
-    /**
-     * Global Data present in the class. It can be either declared or invoked.
-     */
-    private ArrayList<AttributeInvocation> globalData = new ArrayList<>();
-
-    /**
-     * Global Methods present in the class. They can be either declared or invoked.
-     */
-    private ArrayList<MethodInvocation> globalMethods = new ArrayList<>();
-
+@Getter
+public class DependenceInfo {
 
     // For environmental coupling:
     /**
      * Packages present in the class. They can be either declared or imported.
      */
-    private ArrayList<PackageInvocation> packages = new ArrayList<>();
+    private List<PackageInvocation> packages = new ArrayList<>();
 
 
-    protected ClassDependenceInformation() {
+    // For data and control flow coupling:
+    /**
+     * Attributes present in the class. They can be either declared or invoked.
+     */
+    private List<AttributeInvocation> attributes = new ArrayList<>();
+
+    /**
+     * Constructors present in the class. They can be either declared or invoked.
+     */
+    private List<ConstructorInvocation> constructors = new ArrayList<>();
+
+    /**
+     * Methods present in the class. They can be either declared or invoked.
+     */
+    private List<MethodInvocation> methods = new ArrayList<>();
+
+
+    // For global coupling:
+    /**
+     * Global Data present in the class. It can be either declared or invoked. Not really possible in Java.
+     */
+    private List<AttributeInvocation> globalData = new ArrayList<>();
+
+    /**
+     * Global Methods present in the class. They can be either declared or invoked. Not really possible in Java.
+     */
+    private List<MethodInvocation> globalMethods = new ArrayList<>();
+
+
+    protected DependenceInfo() {
     }
 
     /**

@@ -13,16 +13,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 @Getter @Setter @NoArgsConstructor
-public class ProjectDependenceTree {
-    private HashMap<String, ClassDependenceTree> classDependenceTrees = new HashMap<>();
+public class ProjectStructure {
+    private HashMap<String, ClassStructure> classDependenceTrees = new HashMap<>();
 
     public void addExternalMethodInvocations(String declaringClass, ArrayList<String> externalMethodInvocations) {
         if (this.classDependenceTrees.containsKey(declaringClass)) {
             this.classDependenceTrees.get(declaringClass).setExternalMethodCalls(externalMethodInvocations);
         } else {
-            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.setExternalMethodCalls(externalMethodInvocations);
-            this.classDependenceTrees.put(declaringClass, classDependenceTree);
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.setExternalMethodCalls(externalMethodInvocations);
+            this.classDependenceTrees.put(declaringClass, classStructure);
         }
     }
 
@@ -30,9 +30,9 @@ public class ProjectDependenceTree {
         if (this.classDependenceTrees.containsKey(declaringClass)) {
             this.classDependenceTrees.get(declaringClass).setExternalConstructorInvocations(externalConstructorInvocations);
         } else {
-            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.setExternalConstructorInvocations(externalConstructorInvocations);
-            this.classDependenceTrees.put(declaringClass, classDependenceTree);
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.setExternalConstructorInvocations(externalConstructorInvocations);
+            this.classDependenceTrees.put(declaringClass, classStructure);
         }
     }
 
@@ -40,9 +40,9 @@ public class ProjectDependenceTree {
         if (this.classDependenceTrees.containsKey(declaringClass)) {
             this.classDependenceTrees.get(declaringClass).setExternalFieldInvocations(externalFieldDeclarations);
         } else {
-            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.setExternalFieldInvocations(externalFieldDeclarations);
-            this.classDependenceTrees.put(declaringClass, classDependenceTree);
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.setExternalFieldInvocations(externalFieldDeclarations);
+            this.classDependenceTrees.put(declaringClass, classStructure);
         }
     }
 
@@ -55,9 +55,9 @@ public class ProjectDependenceTree {
         if (this.classDependenceTrees.containsKey(declaringClass)) {
             this.classDependenceTrees.get(declaringClass).setCurrentPackage(packageDeclarationInformation);
         } else {
-            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.setCurrentPackage(packageDeclarationInformation);
-            this.classDependenceTrees.put(declaringClass, classDependenceTree);
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.setCurrentPackage(packageDeclarationInformation);
+            this.classDependenceTrees.put(declaringClass, classStructure);
         }
     }
 
@@ -70,9 +70,9 @@ public class ProjectDependenceTree {
         if (this.classDependenceTrees.containsKey(declaringClass)) {
             this.classDependenceTrees.get(declaringClass).addAttributeDeclaration(attributeDeclarationInformation);
         } else {
-            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addAttributeDeclaration(attributeDeclarationInformation);
-            this.classDependenceTrees.put(declaringClass, classDependenceTree);
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.addAttributeDeclaration(attributeDeclarationInformation);
+            this.classDependenceTrees.put(declaringClass, classStructure);
         }
     }
 
@@ -85,9 +85,9 @@ public class ProjectDependenceTree {
         if (this.classDependenceTrees.containsKey(declaringClass)) {
             this.classDependenceTrees.get(declaringClass).addConstructorDeclaration(constructorDeclarationInformation);
         } else {
-            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addConstructorDeclaration(constructorDeclarationInformation);
-            this.classDependenceTrees.put(declaringClass, classDependenceTree);
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.addConstructorDeclaration(constructorDeclarationInformation);
+            this.classDependenceTrees.put(declaringClass, classStructure);
         }
     }
 
@@ -100,9 +100,9 @@ public class ProjectDependenceTree {
         if (this.classDependenceTrees.containsKey(declaringClass)) {
             this.classDependenceTrees.get(declaringClass).addMethodDeclaration(methodDeclarationInformation);
         } else {
-            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addMethodDeclaration(methodDeclarationInformation);
-            this.classDependenceTrees.put(declaringClass, classDependenceTree);
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.addMethodDeclaration(methodDeclarationInformation);
+            this.classDependenceTrees.put(declaringClass, classStructure);
         }
     }
 
@@ -118,17 +118,17 @@ public class ProjectDependenceTree {
         if (this.classDependenceTrees.containsKey(consumingClassName)) {
             this.classDependenceTrees.get(consumingClassName).addPackageInvocationElement(declaringClassName, InvocationType.OUTGOING, packageDeclarationInformation);
         } else {
-            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addPackageInvocationElement(declaringClassName, InvocationType.OUTGOING, packageDeclarationInformation);
-            this.classDependenceTrees.put(consumingClassName, classDependenceTree);
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.addPackageInvocationElement(declaringClassName, InvocationType.OUTGOING, packageDeclarationInformation);
+            this.classDependenceTrees.put(consumingClassName, classStructure);
         }
 
         if (this.classDependenceTrees.containsKey(declaringClassName)) {
             this.classDependenceTrees.get(declaringClassName).addPackageInvocationElement(consumingClassName, InvocationType.INCOMING, packageDeclarationInformation);
         } else {
-            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addPackageInvocationElement(consumingClassName, InvocationType.INCOMING, packageDeclarationInformation);
-            this.classDependenceTrees.put(declaringClassName, classDependenceTree);
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.addPackageInvocationElement(consumingClassName, InvocationType.INCOMING, packageDeclarationInformation);
+            this.classDependenceTrees.put(declaringClassName, classStructure);
         }
     }
 
@@ -143,17 +143,17 @@ public class ProjectDependenceTree {
         if (this.classDependenceTrees.containsKey(consumingClassName)) {
             this.classDependenceTrees.get(consumingClassName).addAttributeInvocationElement(declaringClassName, InvocationType.OUTGOING, attributeInvocationInformation);
         } else {
-            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addAttributeInvocationElement(declaringClassName, InvocationType.OUTGOING, attributeInvocationInformation);
-            this.classDependenceTrees.put(consumingClassName, classDependenceTree);
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.addAttributeInvocationElement(declaringClassName, InvocationType.OUTGOING, attributeInvocationInformation);
+            this.classDependenceTrees.put(consumingClassName, classStructure);
         }
 
         if (this.classDependenceTrees.containsKey(declaringClassName)) {
             this.classDependenceTrees.get(declaringClassName).addAttributeInvocationElement(consumingClassName, InvocationType.INCOMING, attributeInvocationInformation);
         } else {
-            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addAttributeInvocationElement(consumingClassName, InvocationType.INCOMING, attributeInvocationInformation);
-            this.classDependenceTrees.put(declaringClassName, classDependenceTree);
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.addAttributeInvocationElement(consumingClassName, InvocationType.INCOMING, attributeInvocationInformation);
+            this.classDependenceTrees.put(declaringClassName, classStructure);
         }
     }
 
@@ -168,17 +168,17 @@ public class ProjectDependenceTree {
         if (this.classDependenceTrees.containsKey(consumingClassName)) {
             this.classDependenceTrees.get(consumingClassName).addConstructorInvocationElement(declaringClassName, InvocationType.OUTGOING, constructorInvocationInformation);
         } else {
-            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addConstructorInvocationElement(declaringClassName, InvocationType.OUTGOING, constructorInvocationInformation);
-            this.classDependenceTrees.put(consumingClassName, classDependenceTree);
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.addConstructorInvocationElement(declaringClassName, InvocationType.OUTGOING, constructorInvocationInformation);
+            this.classDependenceTrees.put(consumingClassName, classStructure);
         }
 
         if (this.classDependenceTrees.containsKey(declaringClassName)) {
             this.classDependenceTrees.get(declaringClassName).addConstructorInvocationElement(consumingClassName, InvocationType.INCOMING, constructorInvocationInformation);
         } else {
-            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addConstructorInvocationElement(consumingClassName, InvocationType.INCOMING, constructorInvocationInformation);
-            this.classDependenceTrees.put(declaringClassName, classDependenceTree);
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.addConstructorInvocationElement(consumingClassName, InvocationType.INCOMING, constructorInvocationInformation);
+            this.classDependenceTrees.put(declaringClassName, classStructure);
         }
     }
 
@@ -193,17 +193,17 @@ public class ProjectDependenceTree {
         if (this.classDependenceTrees.containsKey(consumingClassName)) {
             this.classDependenceTrees.get(consumingClassName).addMethodInvocationElement(declaringClassName, InvocationType.OUTGOING, methodInvocationInformation);
         } else {
-            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addMethodInvocationElement(declaringClassName, InvocationType.OUTGOING, methodInvocationInformation);
-            this.classDependenceTrees.put(consumingClassName, classDependenceTree);
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.addMethodInvocationElement(declaringClassName, InvocationType.OUTGOING, methodInvocationInformation);
+            this.classDependenceTrees.put(consumingClassName, classStructure);
         }
 
         if (this.classDependenceTrees.containsKey(declaringClassName)) {
             this.classDependenceTrees.get(declaringClassName).addMethodInvocationElement(consumingClassName, InvocationType.INCOMING, methodInvocationInformation);
         } else {
-            ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addMethodInvocationElement(consumingClassName, InvocationType.INCOMING, methodInvocationInformation);
-            this.classDependenceTrees.put(declaringClassName, classDependenceTree);
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.addMethodInvocationElement(consumingClassName, InvocationType.INCOMING, methodInvocationInformation);
+            this.classDependenceTrees.put(declaringClassName, classStructure);
         }
     }
 }
