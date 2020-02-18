@@ -1,4 +1,4 @@
-package com.ucl.ADA.parser.dependence_information;
+package com.ucl.ADA.model.dependence_information;
 
 import com.ucl.ADA.model.dependence_information.ClassStructure;
 import com.ucl.ADA.model.dependence_information.declaration_information.*;
