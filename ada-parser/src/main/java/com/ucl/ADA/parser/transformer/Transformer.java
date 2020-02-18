@@ -1,6 +1,6 @@
 package com.ucl.ADA.parser.transformer;
 
-import com.ucl.ADA.model.dependence_information.ProjectStructure;
+import com.ucl.ADA.model.project_structure.ProjectStructure;
 import com.ucl.ADA.parser.model.SourceFile;
 import com.ucl.ADA.parser.parser.ADAParser;
 

@@ -1,10 +1,6 @@
 package com.ucl.ADA.model.dependence_information;
 
-import com.ucl.ADA.model.dependence_information.DependenceInfo;
-import com.ucl.ADA.model.dependence_information.invocation_information.AttributeInvocation;
-import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
-import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
-import com.ucl.ADA.model.dependence_information.invocation_information.PackageInvocation;
+import com.ucl.ADA.model.dependence_information.invocation_information.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,64 +11,51 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class DependenceInfoTest {
 
-    private DependenceInfo cdi;
+    private DependenceInfo dependenceInfo;
+    private ArrayList<PassedParameter> passedParameterList = new ArrayList<>(Arrays.asList(
+            new PassedParameter("FirstParameter"),
+            new PassedParameter("SecondParameter")
+    ));
 
     @BeforeEach
     void setUp() {
-        cdi = new DependenceInfo();
+        dependenceInfo = new DependenceInfo();
+
     }
 
     @Test
     void addNewAttribute_addNewElement() {
         AttributeInvocation attributeInvocationInformation = new AttributeInvocation("invocationInformationName");
 
-        cdi.addNewAttribute(attributeInvocationInformation);
+        dependenceInfo.addNewAttribute(attributeInvocationInformation);
 
-        assertThat(cdi.getAttributes()).containsExactly(attributeInvocationInformation);
+        assertThat(dependenceInfo.getAttributes()).containsExactly(attributeInvocationInformation);
     }
 
     @Test
     void addNewConstructor_addNewElement() {
-        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", passedParameterList);
 
-        cdi.addNewConstructor(constructorInvocationInformation);
+        dependenceInfo.addNewConstructor(constructorInvocationInformation);
 
-        assertThat(cdi.getConstructors()).containsExactly(constructorInvocationInformation);
+        assertThat(dependenceInfo.getConstructors()).containsExactly(constructorInvocationInformation);
     }
 
     @Test
     void addNewMethod_addNewElement() {
-         MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+         MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", passedParameterList);
 
-        cdi.addNewMethod(methodInvocationInformation);
+        dependenceInfo.addNewMethod(methodInvocationInformation);
 
-        assertThat(cdi.getMethods()).containsExactly(methodInvocationInformation);
+        assertThat(dependenceInfo.getMethods()).containsExactly(methodInvocationInformation);
     }
 
     @Test
-    void addNewGlobalData_addNewElement() {
-         AttributeInvocation attributeInvocationInformation = new AttributeInvocation("globalInvocationInformationName");
+    void addNewPackage_addNewElement() {
+        PackageInvocation packageInvocationInformation = new PackageInvocation("moduleInvocationInformationName");
 
-        cdi.addNewGlobalData(attributeInvocationInformation);
+        dependenceInfo.addNewPackage(packageInvocationInformation);
 
-        assertThat(cdi.getGlobalData()).containsExactly(attributeInvocationInformation);
-    }
-
-    @Test
-    void addNewGlobalMethod_addNewElement() {
-         MethodInvocation methodInvocationInformation = new MethodInvocation("globalMethodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
-
-        cdi.addNewGlobalMethod(methodInvocationInformation);
-
-        assertThat(cdi.getGlobalMethods()).containsExactly(methodInvocationInformation);
-    }
-
-    @Test
-    void addNewModule_addNewElement() {
-         PackageInvocation packageInvocationInformation = new PackageInvocation("moduleInvocationInformationName");
-
-        cdi.addNewPackage(packageInvocationInformation);
-
-        assertThat(cdi.getPackages()).containsExactly(packageInvocationInformation);
+        assertThat(dependenceInfo.getPackages()).containsExactly(packageInvocationInformation);
     }
 }

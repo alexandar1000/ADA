@@ -1,6 +1,6 @@
 package com.ucl.ADA.metric_calculator.metrics_structure;
 
-import com.ucl.ADA.model.dependence_information.ProjectStructure;
+import com.ucl.ADA.model.project_structure.ProjectStructure;
 import com.ucl.ADA.model.dependence_information.declaration_information.*;
 import com.ucl.ADA.model.dependence_information.invocation_information.AttributeInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
