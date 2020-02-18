@@ -1,6 +1,6 @@
 package com.ucl.ADA.parser.transformer;
 
-import com.ucl.ADA.parser.dependence_information.ProjectStructure;
+import com.ucl.ADA.model.dependence_information.ProjectStructure;
 import com.ucl.ADA.parser.model.SourceMethod;
 
 public class SourceMethodProcessor {

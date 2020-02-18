@@ -1,9 +1,10 @@
 package com.ucl.ADA.parser.dependence_information;
 
-import com.ucl.ADA.parser.dependence_information.invocation_information.AttributeInvocation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocation;
+import com.ucl.ADA.model.dependence_information.DependenceInfo;
+import com.ucl.ADA.model.dependence_information.invocation_information.AttributeInvocation;
+import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
+import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
+import com.ucl.ADA.model.dependence_information.invocation_information.PackageInvocation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

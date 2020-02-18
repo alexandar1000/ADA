@@ -1,4 +1,4 @@
-package com.ucl.ADA.parser.dependence_information.declaration_information;
+package com.ucl.ADA.model.dependence_information.declaration_information;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

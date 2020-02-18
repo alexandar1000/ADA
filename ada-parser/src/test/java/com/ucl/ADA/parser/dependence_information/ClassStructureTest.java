@@ -1,7 +1,8 @@
 package com.ucl.ADA.parser.dependence_information;
 
-import com.ucl.ADA.parser.dependence_information.declaration_information.*;
-import com.ucl.ADA.parser.dependence_information.invocation_information.*;
+import com.ucl.ADA.model.dependence_information.ClassStructure;
+import com.ucl.ADA.model.dependence_information.declaration_information.*;
+import com.ucl.ADA.model.dependence_information.invocation_information.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

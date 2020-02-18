@@ -1,10 +1,10 @@
-package com.ucl.ADA.parser.dependence_information;
+package com.ucl.ADA.model.dependence_information;
 
-import com.ucl.ADA.parser.dependence_information.declaration_information.AttributeDeclaration;
-import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclaration;
-import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclaration;
-import com.ucl.ADA.parser.dependence_information.declaration_information.PackageDeclaration;
-import com.ucl.ADA.parser.dependence_information.invocation_information.*;
+import com.ucl.ADA.model.dependence_information.declaration_information.AttributeDeclaration;
+import com.ucl.ADA.model.dependence_information.declaration_information.ConstructorDeclaration;
+import com.ucl.ADA.model.dependence_information.declaration_information.MethodDeclaration;
+import com.ucl.ADA.model.dependence_information.declaration_information.PackageDeclaration;
+import com.ucl.ADA.model.dependence_information.invocation_information.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

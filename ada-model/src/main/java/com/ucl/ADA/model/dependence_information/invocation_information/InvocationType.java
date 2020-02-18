@@ -1,4 +1,4 @@
-package com.ucl.ADA.parser.dependence_information.invocation_information;
+package com.ucl.ADA.model.dependence_information.invocation_information;
 
 /**
  * An enumerator which represents the direction of the dependence. It can be either an incoming invocation in the case

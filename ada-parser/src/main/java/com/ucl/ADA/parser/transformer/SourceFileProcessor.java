@@ -1,13 +1,13 @@
 package com.ucl.ADA.parser.transformer;
 
-import com.ucl.ADA.parser.dependence_information.ProjectStructure;
-import com.ucl.ADA.parser.dependence_information.declaration_information.ModifierType;
-import com.ucl.ADA.parser.dependence_information.declaration_information.AttributeDeclaration;
-import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclaration;
-import com.ucl.ADA.parser.dependence_information.declaration_information.PackageDeclaration;
-import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocation;
+import com.ucl.ADA.model.dependence_information.ProjectStructure;
+import com.ucl.ADA.model.dependence_information.declaration_information.ModifierType;
+import com.ucl.ADA.model.dependence_information.declaration_information.AttributeDeclaration;
+import com.ucl.ADA.model.dependence_information.declaration_information.ConstructorDeclaration;
+import com.ucl.ADA.model.dependence_information.declaration_information.PackageDeclaration;
+import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
+import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
+import com.ucl.ADA.model.dependence_information.invocation_information.PackageInvocation;
 import com.ucl.ADA.parser.model.ExternalInvocationInfo;
 import com.ucl.ADA.parser.model.SourceFile;
 

@@ -1,6 +1,6 @@
 package com.ucl.ADA.metric_calculator.metrics_structure;
 
-import com.ucl.ADA.parser.dependence_information.ProjectStructure;
+import com.ucl.ADA.model.dependence_information.ProjectStructure;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

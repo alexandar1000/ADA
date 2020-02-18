@@ -1,7 +1,7 @@
 package com.ucl.ADA.metric_calculator.metrics;
 
 import com.ucl.ADA.metric_calculator.metrics_structure.ProjectMetricsContainer;
-import com.ucl.ADA.parser.dependence_information.ProjectStructure;
+import com.ucl.ADA.model.dependence_information.ProjectStructure;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;

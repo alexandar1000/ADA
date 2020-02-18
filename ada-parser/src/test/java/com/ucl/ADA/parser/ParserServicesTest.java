@@ -1,6 +1,6 @@
 package com.ucl.ADA.parser;
 
-import com.ucl.ADA.parser.dependence_information.ProjectStructure;
+import com.ucl.ADA.model.dependence_information.ProjectStructure;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
