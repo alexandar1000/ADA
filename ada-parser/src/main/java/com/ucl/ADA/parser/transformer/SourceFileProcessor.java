@@ -130,7 +130,7 @@ public class SourceFileProcessor {
 
         projectStructure.addExternalMethodInvocations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExMethodCalls());
         projectStructure.addExternalConstructorInvocations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExConstructorInvocations());
-        projectStructure.addExternalFieldDeclarations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExFieldInvocation());
+        projectStructure.addExternalAttributeDeclarations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExFieldInvocation());
     }
 
 }

@@ -300,4 +300,44 @@ class ProjectStructureTest {
        assertThat(pdt.getClassStructures().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getMethods()).containsExactlyInAnyOrderElementsOf(Arrays.asList(methodInvocationInformation0, methodInvocationInformation1));
     }
 
+    @Test
+    void addExternalPackageImport() {
+        String declaringClassName = "DeclaringTestClass";
+        PackageInvocation packageInvocation = new PackageInvocation("com.ADA.example");
+
+        pdt.addExternalPackageImport(declaringClassName, packageInvocation);
+
+        assertThat(pdt.getClassStructures().get(declaringClassName).getExternalPackageImports()).containsExactly(packageInvocation);
+    }
+
+    @Test
+    void addExternalMethodInvocations() {
+        String declaringClassName = "DeclaringTestClass";
+        MethodInvocation methodInvocation = new MethodInvocation("method", passedParameterList0);
+
+        pdt.addExternalMethodInvocations(declaringClassName, methodInvocation);
+
+        assertThat(pdt.getClassStructures().get(declaringClassName).getExternalMethodInvocations()).containsExactly(methodInvocation);
+    }
+
+    @Test
+    void addExternalConstructorInvocations() {
+        String declaringClassName = "DeclaringTestClass";
+        ConstructorInvocation constructorInvocation = new ConstructorInvocation("constructor", passedParameterList0);
+
+        pdt.addExternalConstructorInvocations(declaringClassName, constructorInvocation);
+
+        assertThat(pdt.getClassStructures().get(declaringClassName).getExternalConstructorInvocations()).containsExactly(constructorInvocation);
+    }
+
+    @Test
+    void addExternalFieldDeclarations() {
+        String declaringClassName = "DeclaringTestClass";
+
+        AttributeInvocation attributeInvocation = new AttributeInvocation("attribute");
+
+        pdt.addExternalAttributeDeclarations(declaringClassName, attributeInvocation);
+
+        assertThat(pdt.getClassStructures().get(declaringClassName).getExternalAttributeInvocations()).containsExactly(attributeInvocation);
+    }
 }

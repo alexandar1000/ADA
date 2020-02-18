@@ -17,6 +17,15 @@ import java.util.Map;
 public class ProjectStructure {
     private Map<String, ClassStructure> classStructures = new HashMap<>();
 
+    public void addExternalPackageImport(String declaringClass, PackageInvocation externalPackageImport) {
+        if (this.classStructures.containsKey(declaringClass)) {
+            this.classStructures.get(declaringClass).addExternalPackageImport(externalPackageImport);
+        } else {
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.addExternalPackageImport(externalPackageImport);
+            this.classStructures.put(declaringClass, classStructure);
+        }
+    }
     public void addExternalMethodInvocations(String declaringClass, MethodInvocation externalMethodInvocations) {
         if (this.classStructures.containsKey(declaringClass)) {
             this.classStructures.get(declaringClass).addExternalMethodInvocation(externalMethodInvocations);
@@ -37,7 +46,7 @@ public class ProjectStructure {
         }
     }
 
-    public void addExternalFieldDeclarations(String declaringClass, AttributeInvocation externalAttributeDeclarations) {
+    public void addExternalAttributeDeclarations(String declaringClass, AttributeInvocation externalAttributeDeclarations) {
         if (this.classStructures.containsKey(declaringClass)) {
             this.classStructures.get(declaringClass).addExternalAttributeInvocation(externalAttributeDeclarations);
         } else {
