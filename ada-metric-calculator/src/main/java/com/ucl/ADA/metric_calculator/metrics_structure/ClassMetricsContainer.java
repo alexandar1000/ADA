@@ -1,6 +1,8 @@
 package com.ucl.ADA.metric_calculator.metrics_structure;
 
 import com.ucl.ADA.model.class_structure.ClassStructure;
+import com.ucl.ADA.model.metrics.class_metrics.ClassMetricValue;
+import com.ucl.ADA.model.metrics.relation_metrics.RelationMetricValue;
 import com.ucl.ADA.model.project_structure.ProjectStructure;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

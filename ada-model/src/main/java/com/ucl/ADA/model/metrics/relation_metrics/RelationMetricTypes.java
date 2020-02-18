@@ -1,4 +1,4 @@
-package com.ucl.ADA.metric_calculator.metrics_structure;
+package com.ucl.ADA.model.metrics.relation_metrics;
 
 public enum RelationMetricTypes {
     NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_INCOMING,

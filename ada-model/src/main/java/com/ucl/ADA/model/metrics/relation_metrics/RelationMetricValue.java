@@ -1,4 +1,4 @@
-package com.ucl.ADA.metric_calculator.metrics_structure;
+package com.ucl.ADA.model.metrics.relation_metrics;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

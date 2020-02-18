@@ -1,6 +1,6 @@
 package com.ucl.ADA.metric_calculator.metrics;
 
-import com.ucl.ADA.metric_calculator.metrics_structure.ClassMetricTypes;
+import com.ucl.ADA.model.metrics.class_metrics.ClassMetricTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
