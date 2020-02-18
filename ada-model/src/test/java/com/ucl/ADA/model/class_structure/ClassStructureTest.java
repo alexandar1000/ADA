@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ClassStructureTest {
 
-    private ClassStructure cdt;
+    private ClassStructure classStructure;
 
     private Set<ModifierType> modifiers = new HashSet<>(Collections.singletonList(
             ModifierType.DEFAULT
@@ -38,43 +38,62 @@ class ClassStructureTest {
     ));
     @BeforeEach
     void setUp() {
-        cdt = new ClassStructure();
+        classStructure = new ClassStructure();
     }
 
     @Test
     void setCurrentModule_testSetUp() {
         PackageDeclaration module = new PackageDeclaration("com.ADA");
-        cdt.setCurrentPackage(module);
+        classStructure.setCurrentPackage(module);
 
-        assertThat(cdt.getCurrentPackage()).isEqualTo(module);
+        assertThat(classStructure.getCurrentPackage()).isEqualTo(module);
     }
 
     @Test
     void addDataDeclaration_addNewElement() {
         AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(modifiers, "String", "attribute", "declaringAttributeName");
 
-        cdt.addAttributeDeclaration(attributeDeclarationInformation);
+        classStructure.addAttributeDeclaration(attributeDeclarationInformation);
 
-        assertThat(cdt.getAttributeDeclarations()).containsExactly(attributeDeclarationInformation);
+        assertThat(classStructure.getAttributeDeclarations()).containsExactly(attributeDeclarationInformation);
     }
 
     @Test
     void addConstructorDeclaration_addNewElement() {
         ConstructorDeclaration constructorDeclarationInformation = new ConstructorDeclaration(modifiers, "String", declaredParameters0);
 
-        cdt.addConstructorDeclaration(constructorDeclarationInformation);
+        classStructure.addConstructorDeclaration(constructorDeclarationInformation);
 
-        assertThat(cdt.getConstructorDeclarations()).containsExactly(constructorDeclarationInformation);
+        assertThat(classStructure.getConstructorDeclarations()).containsExactly(constructorDeclarationInformation);
     }
 
     @Test
     void addMethodDeclaration_addNewElement() {
         MethodDeclaration methodDeclarationInformation = new MethodDeclaration(modifiers, "String", "testingTesting", declaredParameters0);
 
-        cdt.addMethodDeclaration(methodDeclarationInformation);
+        classStructure.addMethodDeclaration(methodDeclarationInformation);
 
-        assertThat(cdt.getMethodsDeclarations()).containsExactly(methodDeclarationInformation);
+        assertThat(classStructure.getMethodsDeclarations()).containsExactly(methodDeclarationInformation);
     }
+
+    @Test
+    void addNewGlobalData_addNewElement() {
+        AttributeInvocation attributeInvocationInformation = new AttributeInvocation("globalInvocationInformationName");
+
+        classStructure.addNewGlobalData(attributeInvocationInformation);
+
+        assertThat(classStructure.getGlobalData()).containsExactly(attributeInvocationInformation);
+    }
+
+    @Test
+    void addNewGlobalMethod_addNewElement() {
+        MethodInvocation methodInvocationInformation = new MethodInvocation("globalMethodExample", passedParameterList0);
+
+        classStructure.addNewGlobalMethod(methodInvocationInformation);
+
+        assertThat(classStructure.getGlobalMethods()).containsExactly(methodInvocationInformation);
+    }
+
 
     @Test
     void addModuleElement_testAddingOutgoingInvocation() {
@@ -82,11 +101,11 @@ class ClassStructureTest {
 
         PackageInvocation packageInvocationInformation = new PackageInvocation("moduleImportInformationName");
 
-        cdt.addPackageInvocationElement(className, InvocationType.OUTGOING, packageInvocationInformation);
+        classStructure.addPackageInvocationElement(className, InvocationType.OUTGOING, packageInvocationInformation);
 
-        assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
+        assertThat(classStructure.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getOutgoingDependenceInfo().get(className).getPackages()).containsExactly(packageInvocationInformation);
+        assertThat(classStructure.getOutgoingDependenceInfo().get(className).getPackages()).containsExactly(packageInvocationInformation);
     }
 
     @Test
@@ -95,11 +114,11 @@ class ClassStructureTest {
 
         AttributeInvocation attributeInvocationInformation = new AttributeInvocation("dataInvocationInformationName");
 
-        cdt.addAttributeInvocationElement(className, InvocationType.OUTGOING, attributeInvocationInformation);
+        classStructure.addAttributeInvocationElement(className, InvocationType.OUTGOING, attributeInvocationInformation);
 
-        assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
+        assertThat(classStructure.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getOutgoingDependenceInfo().get(className).getAttributes()).containsExactly(attributeInvocationInformation);
+        assertThat(classStructure.getOutgoingDependenceInfo().get(className).getAttributes()).containsExactly(attributeInvocationInformation);
     }
 
     @Test
@@ -108,11 +127,11 @@ class ClassStructureTest {
 
         ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", passedParameterList0);
 
-        cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING, constructorInvocationInformation);
+        classStructure.addConstructorInvocationElement(className, InvocationType.OUTGOING, constructorInvocationInformation);
 
-        assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
+        assertThat(classStructure.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getOutgoingDependenceInfo().get(className).getConstructors()).containsExactly(constructorInvocationInformation);
+        assertThat(classStructure.getOutgoingDependenceInfo().get(className).getConstructors()).containsExactly(constructorInvocationInformation);
     }
 
     @Test
@@ -121,11 +140,11 @@ class ClassStructureTest {
 
         MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", passedParameterList0);
 
-        cdt.addMethodInvocationElement(className, InvocationType.OUTGOING, methodInvocationInformation);
+        classStructure.addMethodInvocationElement(className, InvocationType.OUTGOING, methodInvocationInformation);
 
-        assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
+        assertThat(classStructure.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getOutgoingDependenceInfo().get(className).getMethods()).containsExactly(methodInvocationInformation);
+        assertThat(classStructure.getOutgoingDependenceInfo().get(className).getMethods()).containsExactly(methodInvocationInformation);
     }
 
     @Test
@@ -135,11 +154,11 @@ class ClassStructureTest {
         PackageInvocation packageInvocationInformation = new PackageInvocation("moduleImportInformationName");
 
 
-        cdt.addPackageInvocationElement(className, InvocationType.INCOMING, packageInvocationInformation);
+        classStructure.addPackageInvocationElement(className, InvocationType.INCOMING, packageInvocationInformation);
 
-        assertThat(cdt.getIncomingDependenceInfo().keySet()).containsExactly(className);
+        assertThat(classStructure.getIncomingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getIncomingDependenceInfo().get(className).getPackages()).containsExactly(packageInvocationInformation);
+        assertThat(classStructure.getIncomingDependenceInfo().get(className).getPackages()).containsExactly(packageInvocationInformation);
     }
 
     @Test
@@ -148,11 +167,11 @@ class ClassStructureTest {
 
         AttributeInvocation attributeInvocationInformation = new AttributeInvocation("dataInvocationInformationName");
 
-        cdt.addAttributeInvocationElement(className, InvocationType.INCOMING, attributeInvocationInformation);
+        classStructure.addAttributeInvocationElement(className, InvocationType.INCOMING, attributeInvocationInformation);
 
-        assertThat(cdt.getIncomingDependenceInfo().keySet()).containsExactly(className);
+        assertThat(classStructure.getIncomingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getIncomingDependenceInfo().get(className).getAttributes()).containsExactly(attributeInvocationInformation);
+        assertThat(classStructure.getIncomingDependenceInfo().get(className).getAttributes()).containsExactly(attributeInvocationInformation);
     }
 
     @Test
@@ -161,11 +180,11 @@ class ClassStructureTest {
 
         ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", passedParameterList0);
 
-        cdt.addConstructorInvocationElement(className, InvocationType.INCOMING, constructorInvocationInformation);
+        classStructure.addConstructorInvocationElement(className, InvocationType.INCOMING, constructorInvocationInformation);
 
-        assertThat(cdt.getIncomingDependenceInfo().keySet()).containsExactly(className);
+        assertThat(classStructure.getIncomingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getIncomingDependenceInfo().get(className).getConstructors()).containsExactly(constructorInvocationInformation);
+        assertThat(classStructure.getIncomingDependenceInfo().get(className).getConstructors()).containsExactly(constructorInvocationInformation);
     }
 
     @Test
@@ -174,11 +193,11 @@ class ClassStructureTest {
 
         MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", passedParameterList0);
 
-        cdt.addMethodInvocationElement(className, InvocationType.INCOMING, methodInvocationInformation);
+        classStructure.addMethodInvocationElement(className, InvocationType.INCOMING, methodInvocationInformation);
 
-        assertThat(cdt.getIncomingDependenceInfo().keySet()).containsExactly(className);
+        assertThat(classStructure.getIncomingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getIncomingDependenceInfo().get(className).getMethods()).containsExactly(methodInvocationInformation);
+        assertThat(classStructure.getIncomingDependenceInfo().get(className).getMethods()).containsExactly(methodInvocationInformation);
     }
 
 
@@ -189,12 +208,12 @@ class ClassStructureTest {
         PackageInvocation packageInvocationInformation0 = new PackageInvocation("moduleImportInformationName0");
         PackageInvocation packageInvocationInformation1 = new PackageInvocation("moduleImportInformationName1");
 
-        cdt.addPackageInvocationElement(className, InvocationType.OUTGOING, packageInvocationInformation0);
-        cdt.addPackageInvocationElement(className, InvocationType.OUTGOING, packageInvocationInformation1);
+        classStructure.addPackageInvocationElement(className, InvocationType.OUTGOING, packageInvocationInformation0);
+        classStructure.addPackageInvocationElement(className, InvocationType.OUTGOING, packageInvocationInformation1);
 
-        assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
+        assertThat(classStructure.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getOutgoingDependenceInfo().get(className).getPackages()).containsExactlyInAnyOrderElementsOf(Arrays.asList(packageInvocationInformation0, packageInvocationInformation1));
+        assertThat(classStructure.getOutgoingDependenceInfo().get(className).getPackages()).containsExactlyInAnyOrderElementsOf(Arrays.asList(packageInvocationInformation0, packageInvocationInformation1));
     }
 
     @Test
@@ -204,12 +223,12 @@ class ClassStructureTest {
         AttributeInvocation attributeInvocationInformation0 = new AttributeInvocation("dataInvocationInformationName0");
         AttributeInvocation attributeInvocationInformation1 = new AttributeInvocation("dataInvocationInformationName1");
 
-        cdt.addAttributeInvocationElement(className, InvocationType.OUTGOING, attributeInvocationInformation0);
-        cdt.addAttributeInvocationElement(className, InvocationType.OUTGOING, attributeInvocationInformation1);
+        classStructure.addAttributeInvocationElement(className, InvocationType.OUTGOING, attributeInvocationInformation0);
+        classStructure.addAttributeInvocationElement(className, InvocationType.OUTGOING, attributeInvocationInformation1);
 
-        assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
+        assertThat(classStructure.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getOutgoingDependenceInfo().get(className).getAttributes()).containsExactlyInAnyOrderElementsOf(Arrays.asList(attributeInvocationInformation0, attributeInvocationInformation1));
+        assertThat(classStructure.getOutgoingDependenceInfo().get(className).getAttributes()).containsExactlyInAnyOrderElementsOf(Arrays.asList(attributeInvocationInformation0, attributeInvocationInformation1));
     }
 
     @Test
@@ -219,12 +238,12 @@ class ClassStructureTest {
         ConstructorInvocation constructorInvocationInformation0 = new ConstructorInvocation("constructorExample0", passedParameterList0);
         ConstructorInvocation constructorInvocationInformation1 = new ConstructorInvocation("constructorExample1", passedParameterList1);
 
-        cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING, constructorInvocationInformation0);
-        cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING, constructorInvocationInformation1);
+        classStructure.addConstructorInvocationElement(className, InvocationType.OUTGOING, constructorInvocationInformation0);
+        classStructure.addConstructorInvocationElement(className, InvocationType.OUTGOING, constructorInvocationInformation1);
 
-        assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
+        assertThat(classStructure.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getOutgoingDependenceInfo().get(className).getConstructors()).containsExactlyInAnyOrderElementsOf(Arrays.asList(constructorInvocationInformation0, constructorInvocationInformation1));
+        assertThat(classStructure.getOutgoingDependenceInfo().get(className).getConstructors()).containsExactlyInAnyOrderElementsOf(Arrays.asList(constructorInvocationInformation0, constructorInvocationInformation1));
     }
 
     @Test
@@ -234,12 +253,12 @@ class ClassStructureTest {
         MethodInvocation methodInvocationInformation0 = new MethodInvocation("methodExample0", passedParameterList0);
         MethodInvocation methodInvocationInformation1 = new MethodInvocation("methodExample1", passedParameterList1);
 
-        cdt.addMethodInvocationElement(className, InvocationType.OUTGOING, methodInvocationInformation0);
-        cdt.addMethodInvocationElement(className, InvocationType.OUTGOING, methodInvocationInformation1);
+        classStructure.addMethodInvocationElement(className, InvocationType.OUTGOING, methodInvocationInformation0);
+        classStructure.addMethodInvocationElement(className, InvocationType.OUTGOING, methodInvocationInformation1);
 
-        assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
+        assertThat(classStructure.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getOutgoingDependenceInfo().get(className).getMethods()).containsExactlyInAnyOrderElementsOf(Arrays.asList(methodInvocationInformation0, methodInvocationInformation1));
+        assertThat(classStructure.getOutgoingDependenceInfo().get(className).getMethods()).containsExactlyInAnyOrderElementsOf(Arrays.asList(methodInvocationInformation0, methodInvocationInformation1));
     }
 
     @Test
@@ -250,12 +269,12 @@ class ClassStructureTest {
         PackageInvocation packageInvocationInformation1 = new PackageInvocation("moduleImportInformationName1");
 
 
-        cdt.addPackageInvocationElement(className, InvocationType.INCOMING, packageInvocationInformation0);
-        cdt.addPackageInvocationElement(className, InvocationType.INCOMING, packageInvocationInformation1);
+        classStructure.addPackageInvocationElement(className, InvocationType.INCOMING, packageInvocationInformation0);
+        classStructure.addPackageInvocationElement(className, InvocationType.INCOMING, packageInvocationInformation1);
 
-        assertThat(cdt.getIncomingDependenceInfo().keySet()).containsExactly(className);
+        assertThat(classStructure.getIncomingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getIncomingDependenceInfo().get(className).getPackages()).containsExactlyInAnyOrderElementsOf(Arrays.asList(packageInvocationInformation0, packageInvocationInformation1));
+        assertThat(classStructure.getIncomingDependenceInfo().get(className).getPackages()).containsExactlyInAnyOrderElementsOf(Arrays.asList(packageInvocationInformation0, packageInvocationInformation1));
     }
 
     @Test
@@ -265,12 +284,12 @@ class ClassStructureTest {
         AttributeInvocation attributeInvocationInformation0 = new AttributeInvocation("dataInvocationInformationName0");
         AttributeInvocation attributeInvocationInformation1 = new AttributeInvocation("dataInvocationInformationName1");
 
-        cdt.addAttributeInvocationElement(className, InvocationType.INCOMING, attributeInvocationInformation0);
-        cdt.addAttributeInvocationElement(className, InvocationType.INCOMING, attributeInvocationInformation1);
+        classStructure.addAttributeInvocationElement(className, InvocationType.INCOMING, attributeInvocationInformation0);
+        classStructure.addAttributeInvocationElement(className, InvocationType.INCOMING, attributeInvocationInformation1);
 
-        assertThat(cdt.getIncomingDependenceInfo().keySet()).containsExactly(className);
+        assertThat(classStructure.getIncomingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getIncomingDependenceInfo().get(className).getAttributes()).containsExactlyInAnyOrderElementsOf(Arrays.asList(attributeInvocationInformation0, attributeInvocationInformation1));
+        assertThat(classStructure.getIncomingDependenceInfo().get(className).getAttributes()).containsExactlyInAnyOrderElementsOf(Arrays.asList(attributeInvocationInformation0, attributeInvocationInformation1));
     }
 
     @Test
@@ -280,12 +299,12 @@ class ClassStructureTest {
         ConstructorInvocation constructorInvocationInformation0 = new ConstructorInvocation("constructorExample0", passedParameterList0);
         ConstructorInvocation constructorInvocationInformation1 = new ConstructorInvocation("constructorExample1", passedParameterList1);
 
-        cdt.addConstructorInvocationElement(className, InvocationType.INCOMING, constructorInvocationInformation0);
-        cdt.addConstructorInvocationElement(className, InvocationType.INCOMING, constructorInvocationInformation1);
+        classStructure.addConstructorInvocationElement(className, InvocationType.INCOMING, constructorInvocationInformation0);
+        classStructure.addConstructorInvocationElement(className, InvocationType.INCOMING, constructorInvocationInformation1);
 
-        assertThat(cdt.getIncomingDependenceInfo().keySet()).containsExactly(className);
+        assertThat(classStructure.getIncomingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getIncomingDependenceInfo().get(className).getConstructors()).containsExactlyInAnyOrderElementsOf(Arrays.asList(constructorInvocationInformation0, constructorInvocationInformation1));
+        assertThat(classStructure.getIncomingDependenceInfo().get(className).getConstructors()).containsExactlyInAnyOrderElementsOf(Arrays.asList(constructorInvocationInformation0, constructorInvocationInformation1));
     }
 
     @Test
@@ -295,24 +314,24 @@ class ClassStructureTest {
         MethodInvocation methodInvocationInformation0 = new MethodInvocation("methodExample0", passedParameterList0);
         MethodInvocation methodInvocationInformation1 = new MethodInvocation("methodExample1", passedParameterList1);
 
-        cdt.addMethodInvocationElement(className, InvocationType.INCOMING, methodInvocationInformation0);
-        cdt.addMethodInvocationElement(className, InvocationType.INCOMING, methodInvocationInformation1);
+        classStructure.addMethodInvocationElement(className, InvocationType.INCOMING, methodInvocationInformation0);
+        classStructure.addMethodInvocationElement(className, InvocationType.INCOMING, methodInvocationInformation1);
 
-        assertThat(cdt.getIncomingDependenceInfo().keySet()).containsExactly(className);
+        assertThat(classStructure.getIncomingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getIncomingDependenceInfo().get(className).getMethods()).containsExactlyInAnyOrderElementsOf(Arrays.asList(methodInvocationInformation0, methodInvocationInformation1));
+        assertThat(classStructure.getIncomingDependenceInfo().get(className).getMethods()).containsExactlyInAnyOrderElementsOf(Arrays.asList(methodInvocationInformation0, methodInvocationInformation1));
     }
 
     @Test
     public void addNewElements_testCreationOfKeys() {
         ArrayList<String> classNames = new ArrayList<>(Arrays.asList("FirstClass", "SecondClass", "ThirdClass", "FourthClass"));
 
-        cdt.addPackageInvocationElement(classNames.get(0), InvocationType.OUTGOING, null);
-        cdt.addAttributeInvocationElement(classNames.get(1), InvocationType.OUTGOING, null);
-        cdt.addConstructorInvocationElement(classNames.get(2), InvocationType.OUTGOING, null);
-        cdt.addMethodInvocationElement(classNames.get(3), InvocationType.OUTGOING, null);
+        classStructure.addPackageInvocationElement(classNames.get(0), InvocationType.OUTGOING, null);
+        classStructure.addAttributeInvocationElement(classNames.get(1), InvocationType.OUTGOING, null);
+        classStructure.addConstructorInvocationElement(classNames.get(2), InvocationType.OUTGOING, null);
+        classStructure.addMethodInvocationElement(classNames.get(3), InvocationType.OUTGOING, null);
 
-        assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactlyInAnyOrderElementsOf(classNames);
+        assertThat(classStructure.getOutgoingDependenceInfo().keySet()).containsExactlyInAnyOrderElementsOf(classNames);
     }
 
     @Test
@@ -325,17 +344,17 @@ class ClassStructureTest {
         MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", passedParameterList1);
 
 
-        cdt.addPackageInvocationElement(classNames.get(0), InvocationType.OUTGOING, packageInvocationInformation);
-        cdt.addAttributeInvocationElement(classNames.get(1), InvocationType.OUTGOING, attributeInvocationInformation);
-        cdt.addConstructorInvocationElement(classNames.get(2), InvocationType.OUTGOING, constructorInvocationInformation);
-        cdt.addMethodInvocationElement(classNames.get(3), InvocationType.OUTGOING, methodInvocationInformation);
+        classStructure.addPackageInvocationElement(classNames.get(0), InvocationType.OUTGOING, packageInvocationInformation);
+        classStructure.addAttributeInvocationElement(classNames.get(1), InvocationType.OUTGOING, attributeInvocationInformation);
+        classStructure.addConstructorInvocationElement(classNames.get(2), InvocationType.OUTGOING, constructorInvocationInformation);
+        classStructure.addMethodInvocationElement(classNames.get(3), InvocationType.OUTGOING, methodInvocationInformation);
 
-        assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactlyInAnyOrderElementsOf(classNames);
+        assertThat(classStructure.getOutgoingDependenceInfo().keySet()).containsExactlyInAnyOrderElementsOf(classNames);
 
-        assertThat(cdt.getOutgoingDependenceInfo().get(classNames.get(0)).getPackages()).containsExactly(packageInvocationInformation);
-        assertThat(cdt.getOutgoingDependenceInfo().get(classNames.get(1)).getAttributes()).containsExactly(attributeInvocationInformation);
-        assertThat(cdt.getOutgoingDependenceInfo().get(classNames.get(2)).getConstructors()).containsExactly(constructorInvocationInformation);
-        assertThat(cdt.getOutgoingDependenceInfo().get(classNames.get(3)).getMethods()).containsExactly(methodInvocationInformation);
+        assertThat(classStructure.getOutgoingDependenceInfo().get(classNames.get(0)).getPackages()).containsExactly(packageInvocationInformation);
+        assertThat(classStructure.getOutgoingDependenceInfo().get(classNames.get(1)).getAttributes()).containsExactly(attributeInvocationInformation);
+        assertThat(classStructure.getOutgoingDependenceInfo().get(classNames.get(2)).getConstructors()).containsExactly(constructorInvocationInformation);
+        assertThat(classStructure.getOutgoingDependenceInfo().get(classNames.get(3)).getMethods()).containsExactly(methodInvocationInformation);
     }
 
     @Test
@@ -348,16 +367,16 @@ class ClassStructureTest {
         MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", passedParameterList1);
 
 
-        cdt.addPackageInvocationElement(className, InvocationType.OUTGOING, packageInvocationInformation);
-        cdt.addAttributeInvocationElement(className, InvocationType.OUTGOING, attributeInvocationInformation);
-        cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING, constructorInvocationInformation);
-        cdt.addMethodInvocationElement(className, InvocationType.OUTGOING, methodInvocationInformation);
+        classStructure.addPackageInvocationElement(className, InvocationType.OUTGOING, packageInvocationInformation);
+        classStructure.addAttributeInvocationElement(className, InvocationType.OUTGOING, attributeInvocationInformation);
+        classStructure.addConstructorInvocationElement(className, InvocationType.OUTGOING, constructorInvocationInformation);
+        classStructure.addMethodInvocationElement(className, InvocationType.OUTGOING, methodInvocationInformation);
 
-        assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
+        assertThat(classStructure.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
-        assertThat(cdt.getOutgoingDependenceInfo().get(className).getPackages()).containsExactly(packageInvocationInformation);
-        assertThat(cdt.getOutgoingDependenceInfo().get(className).getAttributes()).containsExactly(attributeInvocationInformation);
-        assertThat(cdt.getOutgoingDependenceInfo().get(className).getConstructors()).containsExactly(constructorInvocationInformation);
-        assertThat(cdt.getOutgoingDependenceInfo().get(className).getMethods()).containsExactly(methodInvocationInformation);
+        assertThat(classStructure.getOutgoingDependenceInfo().get(className).getPackages()).containsExactly(packageInvocationInformation);
+        assertThat(classStructure.getOutgoingDependenceInfo().get(className).getAttributes()).containsExactly(attributeInvocationInformation);
+        assertThat(classStructure.getOutgoingDependenceInfo().get(className).getConstructors()).containsExactly(constructorInvocationInformation);
+        assertThat(classStructure.getOutgoingDependenceInfo().get(className).getMethods()).containsExactly(methodInvocationInformation);
     }
 }

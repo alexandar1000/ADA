@@ -51,25 +51,7 @@ class DependenceInfoTest {
     }
 
     @Test
-    void addNewGlobalData_addNewElement() {
-         AttributeInvocation attributeInvocationInformation = new AttributeInvocation("globalInvocationInformationName");
-
-        dependenceInfo.addNewGlobalData(attributeInvocationInformation);
-
-        assertThat(dependenceInfo.getGlobalData()).containsExactly(attributeInvocationInformation);
-    }
-
-    @Test
-    void addNewGlobalMethod_addNewElement() {
-         MethodInvocation methodInvocationInformation = new MethodInvocation("globalMethodExample", passedParameterList);
-
-        dependenceInfo.addNewGlobalMethod(methodInvocationInformation);
-
-        assertThat(dependenceInfo.getGlobalMethods()).containsExactly(methodInvocationInformation);
-    }
-
-    @Test
-    void addNewModule_addNewElement() {
+    void addNewPackage_addNewElement() {
          PackageInvocation packageInvocationInformation = new PackageInvocation("moduleInvocationInformationName");
 
         dependenceInfo.addNewPackage(packageInvocationInformation);

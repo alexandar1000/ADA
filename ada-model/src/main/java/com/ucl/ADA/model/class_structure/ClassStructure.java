@@ -51,6 +51,16 @@ public class ClassStructure {
     private Map<String, DependenceInfo> incomingDependenceInfo = new HashMap<>();
 
     /**
+     * Global Data present in the class. It can be either declared or invoked. Not really possible in Java.
+     */
+    private List<AttributeInvocation> globalData = new ArrayList<>();
+
+    /**
+     * Global Methods present in the class. They can be either declared or invoked. Not really possible in Java.
+     */
+    private List<MethodInvocation> globalMethods = new ArrayList<>();
+
+    /**
      * External Invocation Information, Setter is called
      */
     // TODO: make sure that this makes sense, and if possible extract into a new class
@@ -91,6 +101,24 @@ public class ClassStructure {
      */
     public void addConstructorDeclaration(ConstructorDeclaration constructorDeclaration) {
         this.constructorDeclarations.add(constructorDeclaration);
+    }
+
+    /**
+     * Adds a new global data to the instance.
+     * @param attributeInvocationInformation a global data invocation information object containing all of the
+     *                                       corresponding information about the method being added
+     */
+    public void addNewGlobalData(AttributeInvocation attributeInvocationInformation) {
+        this.globalData.add(attributeInvocationInformation);
+    }
+
+    /**
+     * Adds a new global method to the instance.
+     * @param methodInvocationInformation a global method invocation information object containing all of the
+     *                                       corresponding information about the global method being added
+     */
+    public void addNewGlobalMethod(MethodInvocation methodInvocationInformation) {
+        this.globalMethods.add(methodInvocationInformation);
     }
 
     /**

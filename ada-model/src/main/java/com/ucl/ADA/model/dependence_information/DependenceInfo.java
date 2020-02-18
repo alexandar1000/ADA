@@ -36,18 +36,6 @@ public class DependenceInfo {
     private List<MethodInvocation> methods = new ArrayList<>();
 
 
-    // For global coupling:
-    /**
-     * Global Data present in the class. It can be either declared or invoked. Not really possible in Java.
-     */
-    private List<AttributeInvocation> globalData = new ArrayList<>();
-
-    /**
-     * Global Methods present in the class. They can be either declared or invoked. Not really possible in Java.
-     */
-    private List<MethodInvocation> globalMethods = new ArrayList<>();
-
-
     public DependenceInfo() {
     }
 
@@ -76,24 +64,6 @@ public class DependenceInfo {
      */
     public void addNewMethod(MethodInvocation methodInvocationInformation) {
         this.methods.add(methodInvocationInformation);
-    }
-
-    /**
-     * Adds a new global data to the instance.
-     * @param attributeInvocationInformation a global data invocation information object containing all of the
-     *                                       corresponding information about the method being added
-     */
-    public void addNewGlobalData(AttributeInvocation attributeInvocationInformation) {
-        this.globalData.add(attributeInvocationInformation);
-    }
-
-    /**
-     * Adds a new global method to the instance.
-     * @param methodInvocationInformation a global method invocation information object containing all of the
-     *                                       corresponding information about the global method being added
-     */
-    public void addNewGlobalMethod(MethodInvocation methodInvocationInformation) {
-        this.globalMethods.add(methodInvocationInformation);
     }
 
     /**
