@@ -1,15 +1,14 @@
 package com.ucl.ADA.parser.dependence_information.invocation_information;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Getter
-public abstract class ElementInvocation {
-    /**
-     * The name of the invoked element.
-     */
+@Getter @NoArgsConstructor
+public class PassedParameter {
     private String name;
 
-    public ElementInvocation(String name) {
+    public PassedParameter(String name) {
         this.name = name;
     }
+
 }
