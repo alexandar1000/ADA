@@ -1,54 +1,25 @@
 package com.ucl.ADA.parser.model;
 
-import lombok.Builder;
+import lombok.Getter;
 
 import java.util.Set;
 
+@Getter
 public class SourceAttribute {
 
     private String name;
-    private Set<String> modifiers;
-    private String type;
-    private String assignedValue;
 
-    @Builder
+    private Set<String> modifiers;
+
+    private String type;
+
+    private String value;
+
     public SourceAttribute(Set<String> modifiers, String name, String type, String value) {
         this.modifiers = modifiers;
         this.name = name;
         this.type = type;
-        this.assignedValue = value;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Set<String> getModifiers() {
-        return modifiers;
-    }
-
-    public void setModifiers(Set<String> modifiers) {
-        this.modifiers = modifiers;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getAssignedValue() {
-        return assignedValue;
-    }
-
-    public void setAssignedValue(String assignedValue) {
-        this.assignedValue = assignedValue;
+        this.value = value;
     }
 
     @Override
@@ -57,7 +28,7 @@ public class SourceAttribute {
                 "name='" + name + '\'' +
                 ", modifiers=" + modifiers +
                 ", type='" + type + '\'' +
-                ", assignedValue='" + assignedValue + '\'' +
+                ", assignedValue='" + value + '\'' +
                 '}';
     }
 }

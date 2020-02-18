@@ -12,21 +12,22 @@ public class Transformer {
 
         ProjectStructure projectStructure = new ProjectStructure();
 
-        SourceFileProcessor sourceFileProcessor = new SourceFileProcessor();
-
+        // TODO: replace parser with the new JDT parser
         Set<SourceFile> sourceFiles = new ADAParser().getParsedSourceFile(src_dir);
 
-        sourceFiles.forEach(f -> {
-            sourceFileProcessor.processPackageDeclaration(projectStructure, f);
-            sourceFileProcessor.processAttributeDeclaration(projectStructure, f);
-            sourceFileProcessor.processConstructorDeclaration(projectStructure, f);
-            sourceFileProcessor.processMethodDeclaration(projectStructure, f);
-            sourceFileProcessor.processPackageInvocation(projectStructure, f);
-            sourceFileProcessor.processAttributeInvocation(projectStructure, f);
-            sourceFileProcessor.processConstructorInvocation(projectStructure, f);
-            sourceFileProcessor.processMethodInvocation(projectStructure, f);
-            sourceFileProcessor.processExternalInvocation(projectStructure, f);
-        });
+        for (SourceFile sourceFile : sourceFiles) {
+            SourceFileTransformer sourceFileTransformer = new SourceFileTransformer(projectStructure, sourceFile);
+
+            sourceFileTransformer.transformPackageDeclaration();
+            sourceFileTransformer.transformAttributeDeclaration();
+            sourceFileTransformer.processConstructorDeclaration();
+            sourceFileTransformer.processMethodDeclaration();
+            sourceFileTransformer.processPackageInvocation();
+            sourceFileTransformer.processAttributeInvocation();
+            sourceFileTransformer.processConstructorInvocation();
+            sourceFileTransformer.processMethodInvocation();
+            sourceFileTransformer.processExternalInvocation();
+        }
 
         return projectStructure;
     }
@@ -36,7 +37,7 @@ public class Transformer {
         //String src_dir ="/home/mrhmisu/Downloads/CloneInterfaceSimilarityDetector-master/src";
         //String src_dir= "/home/mrhmisu/Downloads/heritrix3-master";
         String src_dir = "ada-parser/src/main/resources/source_to_parse";
-
+        // TODO: replace parser with the new JDT parser
         new ADAParser().printParsedSourceFileInJSON(src_dir);
     }
 

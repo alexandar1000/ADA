@@ -6,10 +6,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class SourceFileProcessorTest {
+class SourceFileTransformerTest {
 
     private ProjectStructure projectStructure;
-    private SourceFileProcessor sourceFileProcessor;
+    private SourceFileTransformer sourceFileTransformer;
     private SourceFile sourceFile;
 
     @BeforeAll

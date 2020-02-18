@@ -1,14 +1,11 @@
 package com.ucl.ADA.model.dependence_information.declaration_information;
 
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter @Builder
-@NoArgsConstructor
+@Getter
 public class AttributeDeclaration extends ElementDeclaration {
     /**
      * The type of the attribute.
@@ -24,7 +21,6 @@ public class AttributeDeclaration extends ElementDeclaration {
      * The access modifier assigned to the attribute.
      */
     private Set<ModifierType> modifierTypes = new HashSet<>();
-
 
     /**
      * The constructor of the attribute declaration object.

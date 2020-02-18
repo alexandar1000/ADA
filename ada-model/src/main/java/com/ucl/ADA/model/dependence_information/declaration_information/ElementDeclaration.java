@@ -1,10 +1,8 @@
 package com.ucl.ADA.model.dependence_information.declaration_information;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter @Setter @NoArgsConstructor
+@Getter
 public abstract class ElementDeclaration {
     /**
      * The name of the element.

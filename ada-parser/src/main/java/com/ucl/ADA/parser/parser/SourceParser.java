@@ -70,7 +70,7 @@ public class SourceParser {
                 .className(className)
                 .declaredSourceConstructors(constructorDeclarations)
                 .implementedInterfaces(implementedInterfaces)
-                .importedPackages(importedPackages)
+                .importedClasses(importedPackages)
                 .methods(declaredMethods)
                 .packageName(packageName)
                 .parentClassName(parentClassName)
@@ -204,8 +204,8 @@ public class SourceParser {
         Map<String, String> parameters = getParametersOfDeclaredMethod(md);
         Map<String, String> localVariables = getAllLocalVariablesInsideMethodDeclaration(md);
         List<MethodCall> methodCalls = getAllMethodCalls(md);
-        List<ConstructorInvocation> constructorInvocations = getAllConstructorInvocations(md);
-        SourceMethod sm = new SourceMethod(methodName, returnType, accessModifiers, parameters, methodCalls, localVariables, constructorInvocations);
+        List<SourceConstructorInvocation> sourceConstructorInvocations = getAllConstructorInvocations(md);
+        SourceMethod sm = new SourceMethod(methodName, returnType, accessModifiers, parameters, methodCalls, localVariables, sourceConstructorInvocations);
         return sm;
     }
 
@@ -285,8 +285,8 @@ public class SourceParser {
         return methodCallExpression;
     }
 
-    private List<ConstructorInvocation> getAllConstructorInvocations(MethodDeclaration md) {
-        List<ConstructorInvocation> consInvocatino = new ArrayList<>();
+    private List<SourceConstructorInvocation> getAllConstructorInvocations(MethodDeclaration md) {
+        List<SourceConstructorInvocation> consInvocatino = new ArrayList<>();
         md.findAll(ObjectCreationExpr.class).forEach(obc -> {
             try {
                 ResolvedConstructorDeclaration rCD = obc.resolve();
@@ -296,7 +296,7 @@ public class SourceParser {
                 obc.getArguments().forEach(ar -> {
                     arguments.add(ar.toString().trim());
                 });
-                consInvocatino.add(new ConstructorInvocation(constructorClassName, arguments));
+                consInvocatino.add(new SourceConstructorInvocation(constructorClassName, arguments));
             } catch (UnsolvedSymbolException un) {
                 externalInvocationInfo.addExConstructorInvocations(un.getName());
 //                System.err.println("Occurred in ObjectCreationExpr:-> " + un.getName());

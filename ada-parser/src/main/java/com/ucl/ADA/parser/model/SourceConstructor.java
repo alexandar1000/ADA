@@ -4,22 +4,22 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
 public class SourceConstructor {
 
     private String name;
-    private String accessModifier;
-    private Map<String, String> parameters;// name -> type
-    // need list of method calls
+    private Set<String> modifiers;
+    private Map<String, String> parameters; // name -> type
+    // TODO: need list of method calls
 
     @Builder
-    public SourceConstructor(String name, String accessModifier, Map<String, String> parameters) {
+    public SourceConstructor(String name, Set<String> modifiers, Map<String, String> parameters) {
         this.name = name;
-        this.accessModifier = accessModifier;
+        this.modifiers = modifiers;
         this.parameters = parameters;
     }
 }

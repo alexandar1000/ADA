@@ -3,36 +3,34 @@ package com.ucl.ADA.parser.model;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Getter
-@Setter
 @NoArgsConstructor
+@Builder
 public class SourceFile {
 
-    private String packageName;
-    private String className;
-    private String parentClassName;
-    private Set<String> implementedInterfaces;
-    private List<SourceAttribute> classAttributes;
-    private Set<SourceMethod> methods;
-    private Set<String> importedPackages;
+    private String packageName; // ""
+    private String className;   // ""
+    private String parentClassName; // ""
+    private Set<String> implementedInterfaces; // empty set
+    private List<SourceAttribute> classAttributes;  // empty list
+    private Set<SourceMethod> methods;  // empty set
+    private Set<String> importedClasses;   // empty set (it should NOT have .*)
     private List<SourceConstructor> declaredSourceConstructors;
     private ExternalInvocationInfo externalInvocationInfo;
 
-    @Builder
-    public SourceFile(String packageName, String className, String parentClassName, Set<String> implementedInterfaces, List<SourceAttribute> classAttributes, Set<SourceMethod> methods, Set<String> importedPackages, List<SourceConstructor> declaredSourceConstructors, ExternalInvocationInfo externalInvocationInfo) {
+
+    public SourceFile(String packageName, String className, String parentClassName, Set<String> implementedInterfaces, List<SourceAttribute> classAttributes, Set<SourceMethod> methods, Set<String> importedClasses, List<SourceConstructor> declaredSourceConstructors, ExternalInvocationInfo externalInvocationInfo) {
         this.packageName = packageName;
         this.className = className;
         this.parentClassName = parentClassName;
         this.implementedInterfaces = implementedInterfaces;
         this.classAttributes = classAttributes;
         this.methods = methods;
-        this.importedPackages = importedPackages;
+        this.importedClasses = importedClasses;
         this.declaredSourceConstructors = declaredSourceConstructors;
         this.externalInvocationInfo = externalInvocationInfo;
     }
@@ -45,7 +43,7 @@ public class SourceFile {
             return false;
         }
         SourceFile sourceClass = (SourceFile) sf;
-        return sourceClass.importedPackages.equals(this.importedPackages)
+        return sourceClass.importedClasses.equals(this.importedClasses)
                 && sourceClass.packageName.equals(this.packageName)
                 && sourceClass.className.equals(this.className)
                 && sourceClass.parentClassName.equals(this.parentClassName)
@@ -59,7 +57,7 @@ public class SourceFile {
     @Override
     public int hashCode() {
         int result = 31;
-        result = 31 * result + importedPackages.hashCode();
+        result = 31 * result + importedClasses.hashCode();
         result = 31 * result + packageName.hashCode();
         result = 31 * result + className.hashCode();
         result = 31 * result + parentClassName.hashCode();

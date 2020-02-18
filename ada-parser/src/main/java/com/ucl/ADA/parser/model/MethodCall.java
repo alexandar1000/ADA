@@ -1,39 +1,29 @@
 package com.ucl.ADA.parser.model;
 
-import java.util.Map;
-import java.util.Set;
+import lombok.Getter;
 
+import java.util.List;
+
+@Getter
 public class MethodCall {
 
     private String calleeName;
-    // TODO: change set to list
-    private Set<String> arguments;
 
-    public MethodCall(String calleeName, Set<String> arguments) {
+    private String methodCallName;
+
+    private List<String> arguments;
+
+    public MethodCall(String methodCallName, String calleeName, List<String> arguments) {
+        this.methodCallName = methodCallName;
         this.calleeName = calleeName;
-        this.arguments = arguments;
-    }
-
-    public String getCalleeName() {
-        return calleeName;
-    }
-
-    public void setCalleeName(String calleeName) {
-        this.calleeName = calleeName;
-    }
-
-    public Set<String> getArguments() {
-        return arguments;
-    }
-
-    public void setArguments(Set<String> arguments) {
         this.arguments = arguments;
     }
 
     @Override
     public String toString() {
         return "MethodCall{" +
-                "calleeName='" + calleeName + '\'' +
+                "methodCallName" + methodCallName + '\'' +
+                ", calleeName='" + calleeName + '\'' +
                 ", arguments=" + arguments +
                 '}';
     }
