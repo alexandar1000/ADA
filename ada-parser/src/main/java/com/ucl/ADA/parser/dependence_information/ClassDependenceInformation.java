@@ -1,9 +1,9 @@
 package com.ucl.ADA.parser.dependence_information;
 
-import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.AttributeInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.AttributeInvocation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocation;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,36 +16,36 @@ public class ClassDependenceInformation {
     /**
      * Attributes present in the class. They can be either declared or invoked.
      */
-    private ArrayList<AttributeInvocationInformation> attributes = new ArrayList<>();
+    private ArrayList<AttributeInvocation> attributes = new ArrayList<>();
 
     /**
      * Constructors present in the class. They can be either declared or invoked.
      */
-    private ArrayList<ConstructorInvocationInformation> constructors = new ArrayList<>();
+    private ArrayList<ConstructorInvocation> constructors = new ArrayList<>();
 
     /**
      * Methods present in the class. They can be either declared or invoked.
      */
-    private ArrayList<MethodInvocationInformation> methods = new ArrayList<>();
+    private ArrayList<MethodInvocation> methods = new ArrayList<>();
 
 
     // For global coupling:
     /**
      * Global Data present in the class. It can be either declared or invoked.
      */
-    private ArrayList<AttributeInvocationInformation> globalData = new ArrayList<>();
+    private ArrayList<AttributeInvocation> globalData = new ArrayList<>();
 
     /**
      * Global Methods present in the class. They can be either declared or invoked.
      */
-    private ArrayList<MethodInvocationInformation> globalMethods = new ArrayList<>();
+    private ArrayList<MethodInvocation> globalMethods = new ArrayList<>();
 
 
     // For environmental coupling:
     /**
      * Packages present in the class. They can be either declared or imported.
      */
-    private ArrayList<PackageInvocationInformation> packages = new ArrayList<>();
+    private ArrayList<PackageInvocation> packages = new ArrayList<>();
 
 
     protected ClassDependenceInformation() {
@@ -56,7 +56,7 @@ public class ClassDependenceInformation {
      * @param attributeInvocationInformation an attribute invocation information object containing all of the
      *                                       corresponding information about the attribute being added
      */
-    protected void addNewAttribute(AttributeInvocationInformation attributeInvocationInformation) {
+    protected void addNewAttribute(AttributeInvocation attributeInvocationInformation) {
         this.attributes.add(attributeInvocationInformation);
     }
 
@@ -65,7 +65,7 @@ public class ClassDependenceInformation {
      * @param constructorInvocationInformation a constructor invocation information object containing all of the
      *                                       corresponding information about the constructor being added
      */
-    protected void addNewConstructor(ConstructorInvocationInformation constructorInvocationInformation) {
+    protected void addNewConstructor(ConstructorInvocation constructorInvocationInformation) {
         this.constructors.add(constructorInvocationInformation);
     }
 
@@ -74,7 +74,7 @@ public class ClassDependenceInformation {
      * @param methodInvocationInformation a method invocation information object containing all of the
      *                                       corresponding information about the method being added
      */
-    protected void addNewMethod(MethodInvocationInformation methodInvocationInformation) {
+    protected void addNewMethod(MethodInvocation methodInvocationInformation) {
         this.methods.add(methodInvocationInformation);
     }
 
@@ -83,7 +83,7 @@ public class ClassDependenceInformation {
      * @param attributeInvocationInformation a global data invocation information object containing all of the
      *                                       corresponding information about the method being added
      */
-    protected void addNewGlobalData(AttributeInvocationInformation attributeInvocationInformation) {
+    protected void addNewGlobalData(AttributeInvocation attributeInvocationInformation) {
         this.globalData.add(attributeInvocationInformation);
     }
 
@@ -92,7 +92,7 @@ public class ClassDependenceInformation {
      * @param methodInvocationInformation a global method invocation information object containing all of the
      *                                       corresponding information about the global method being added
      */
-    protected void addNewGlobalMethod(MethodInvocationInformation methodInvocationInformation) {
+    protected void addNewGlobalMethod(MethodInvocation methodInvocationInformation) {
         this.globalMethods.add(methodInvocationInformation);
     }
 
@@ -101,7 +101,7 @@ public class ClassDependenceInformation {
      * @param packageInvocationInformation a package invocation information object containing all of the
      *                                       corresponding information about the package being added
      */
-    protected void addNewPackage(PackageInvocationInformation packageInvocationInformation) {
+    protected void addNewPackage(PackageInvocation packageInvocationInformation) {
         this.packages.add(packageInvocationInformation);
     }
 }

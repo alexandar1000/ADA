@@ -6,6 +6,6 @@ package com.ucl.ADA.parser.dependence_information.invocation_information;
  * some class.
  */
 public enum InvocationType {
-    INCOMING_INVOCATION,
-    OUTGOING_INVOCATION
+    INCOMING, // A resource which I have is called from somewhere else
+    OUTGOING // I call a resource which is somewhere else
 }

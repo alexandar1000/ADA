@@ -57,9 +57,9 @@ class ClassDependenceTreeTest {
     void addModuleElement_testAddingOutgoingInvocation() {
         String className = "TestClass";
 
-        PackageInvocationInformation packageInvocationInformation = new PackageInvocationInformation("moduleImportInformationName");
+        PackageInvocation packageInvocationInformation = new PackageInvocation("moduleImportInformationName");
 
-        cdt.addPackageInvocationElement(className, InvocationType.OUTGOING_INVOCATION, packageInvocationInformation);
+        cdt.addPackageInvocationElement(className, InvocationType.OUTGOING, packageInvocationInformation);
 
         assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
@@ -70,9 +70,9 @@ class ClassDependenceTreeTest {
     void addDataElement_testAddingOutgoingInvocation() {
         String className = "TestClass";
 
-        AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("dataInvocationInformationName");
+        AttributeInvocation attributeInvocationInformation = new AttributeInvocation("dataInvocationInformationName");
 
-        cdt.addAttributeInvocationElement(className, InvocationType.OUTGOING_INVOCATION, attributeInvocationInformation);
+        cdt.addAttributeInvocationElement(className, InvocationType.OUTGOING, attributeInvocationInformation);
 
         assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
@@ -83,9 +83,9 @@ class ClassDependenceTreeTest {
     void addConstructorElement_testAddingOutgoingInvocation() {
         String className = "TestClass";
 
-        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
-        cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING_INVOCATION, constructorInvocationInformation);
+        cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING, constructorInvocationInformation);
 
         assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
@@ -96,9 +96,9 @@ class ClassDependenceTreeTest {
     void addMethodElement_testAddingOutgoingInvocation() {
         String className = "TestClass";
 
-        MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
-        cdt.addMethodInvocationElement(className, InvocationType.OUTGOING_INVOCATION, methodInvocationInformation);
+        cdt.addMethodInvocationElement(className, InvocationType.OUTGOING, methodInvocationInformation);
 
         assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
@@ -109,10 +109,10 @@ class ClassDependenceTreeTest {
     void addModuleElement_testAddingIncomingInvocation() {
         String className = "TestClass";
 
-        PackageInvocationInformation packageInvocationInformation = new PackageInvocationInformation("moduleImportInformationName");
+        PackageInvocation packageInvocationInformation = new PackageInvocation("moduleImportInformationName");
 
 
-        cdt.addPackageInvocationElement(className, InvocationType.INCOMING_INVOCATION, packageInvocationInformation);
+        cdt.addPackageInvocationElement(className, InvocationType.INCOMING, packageInvocationInformation);
 
         assertThat(cdt.getIncomingDependenceInfo().keySet()).containsExactly(className);
 
@@ -123,9 +123,9 @@ class ClassDependenceTreeTest {
     void addDataElement_testAddingIncomingInvocation() {
         String className = "TestClass";
 
-        AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("dataInvocationInformationName");
+        AttributeInvocation attributeInvocationInformation = new AttributeInvocation("dataInvocationInformationName");
 
-        cdt.addAttributeInvocationElement(className, InvocationType.INCOMING_INVOCATION, attributeInvocationInformation);
+        cdt.addAttributeInvocationElement(className, InvocationType.INCOMING, attributeInvocationInformation);
 
         assertThat(cdt.getIncomingDependenceInfo().keySet()).containsExactly(className);
 
@@ -136,9 +136,9 @@ class ClassDependenceTreeTest {
     void addConstructorElement_testAddingIncomingInvocation() {
         String className = "TestClass";
 
-        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
-        cdt.addConstructorInvocationElement(className, InvocationType.INCOMING_INVOCATION, constructorInvocationInformation);
+        cdt.addConstructorInvocationElement(className, InvocationType.INCOMING, constructorInvocationInformation);
 
         assertThat(cdt.getIncomingDependenceInfo().keySet()).containsExactly(className);
 
@@ -149,9 +149,9 @@ class ClassDependenceTreeTest {
     void addMethodElement_testAddingIncomingInvocation() {
         String className = "TestClass";
 
-        MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
-        cdt.addMethodInvocationElement(className, InvocationType.INCOMING_INVOCATION, methodInvocationInformation);
+        cdt.addMethodInvocationElement(className, InvocationType.INCOMING, methodInvocationInformation);
 
         assertThat(cdt.getIncomingDependenceInfo().keySet()).containsExactly(className);
 
@@ -163,11 +163,11 @@ class ClassDependenceTreeTest {
     void addModuleElement_testAddingOutgoingInvocationWithExistingElement() {
         String className = "TestClass";
 
-        PackageInvocationInformation packageInvocationInformation0 = new PackageInvocationInformation("moduleImportInformationName0");
-        PackageInvocationInformation packageInvocationInformation1 = new PackageInvocationInformation("moduleImportInformationName1");
+        PackageInvocation packageInvocationInformation0 = new PackageInvocation("moduleImportInformationName0");
+        PackageInvocation packageInvocationInformation1 = new PackageInvocation("moduleImportInformationName1");
 
-        cdt.addPackageInvocationElement(className, InvocationType.OUTGOING_INVOCATION, packageInvocationInformation0);
-        cdt.addPackageInvocationElement(className, InvocationType.OUTGOING_INVOCATION, packageInvocationInformation1);
+        cdt.addPackageInvocationElement(className, InvocationType.OUTGOING, packageInvocationInformation0);
+        cdt.addPackageInvocationElement(className, InvocationType.OUTGOING, packageInvocationInformation1);
 
         assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
@@ -178,11 +178,11 @@ class ClassDependenceTreeTest {
     void addDataElement_testAddingOutgoingInvocationWithExistingElement() {
         String className = "TestClass";
 
-        AttributeInvocationInformation attributeInvocationInformation0 = new AttributeInvocationInformation("dataInvocationInformationName0");
-        AttributeInvocationInformation attributeInvocationInformation1 = new AttributeInvocationInformation("dataInvocationInformationName1");
+        AttributeInvocation attributeInvocationInformation0 = new AttributeInvocation("dataInvocationInformationName0");
+        AttributeInvocation attributeInvocationInformation1 = new AttributeInvocation("dataInvocationInformationName1");
 
-        cdt.addAttributeInvocationElement(className, InvocationType.OUTGOING_INVOCATION, attributeInvocationInformation0);
-        cdt.addAttributeInvocationElement(className, InvocationType.OUTGOING_INVOCATION, attributeInvocationInformation1);
+        cdt.addAttributeInvocationElement(className, InvocationType.OUTGOING, attributeInvocationInformation0);
+        cdt.addAttributeInvocationElement(className, InvocationType.OUTGOING, attributeInvocationInformation1);
 
         assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
@@ -193,11 +193,11 @@ class ClassDependenceTreeTest {
     void addConstructorElement_testAddingOutgoingInvocationWithExistingElement() {
         String className = "TestClass";
 
-        ConstructorInvocationInformation constructorInvocationInformation0 = new ConstructorInvocationInformation("constructorExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
-        ConstructorInvocationInformation constructorInvocationInformation1 = new ConstructorInvocationInformation("constructorExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
+        ConstructorInvocation constructorInvocationInformation0 = new ConstructorInvocation("constructorExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
+        ConstructorInvocation constructorInvocationInformation1 = new ConstructorInvocation("constructorExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
 
-        cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING_INVOCATION, constructorInvocationInformation0);
-        cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING_INVOCATION, constructorInvocationInformation1);
+        cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING, constructorInvocationInformation0);
+        cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING, constructorInvocationInformation1);
 
         assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
@@ -208,11 +208,11 @@ class ClassDependenceTreeTest {
     void addMethodElement_testAddingOutgoingInvocationWithExistingElement() {
         String className = "TestClass";
 
-        MethodInvocationInformation methodInvocationInformation0 = new MethodInvocationInformation("methodExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
-        MethodInvocationInformation methodInvocationInformation1 = new MethodInvocationInformation("methodExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
+        MethodInvocation methodInvocationInformation0 = new MethodInvocation("methodExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
+        MethodInvocation methodInvocationInformation1 = new MethodInvocation("methodExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
 
-        cdt.addMethodInvocationElement(className, InvocationType.OUTGOING_INVOCATION, methodInvocationInformation0);
-        cdt.addMethodInvocationElement(className, InvocationType.OUTGOING_INVOCATION, methodInvocationInformation1);
+        cdt.addMethodInvocationElement(className, InvocationType.OUTGOING, methodInvocationInformation0);
+        cdt.addMethodInvocationElement(className, InvocationType.OUTGOING, methodInvocationInformation1);
 
         assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 
@@ -223,12 +223,12 @@ class ClassDependenceTreeTest {
     void addModuleElement_testAddingIncomingInvocationWithExistingElement() {
         String className = "TestClass";
 
-        PackageInvocationInformation packageInvocationInformation0 = new PackageInvocationInformation("moduleImportInformationName0");
-        PackageInvocationInformation packageInvocationInformation1 = new PackageInvocationInformation("moduleImportInformationName1");
+        PackageInvocation packageInvocationInformation0 = new PackageInvocation("moduleImportInformationName0");
+        PackageInvocation packageInvocationInformation1 = new PackageInvocation("moduleImportInformationName1");
 
 
-        cdt.addPackageInvocationElement(className, InvocationType.INCOMING_INVOCATION, packageInvocationInformation0);
-        cdt.addPackageInvocationElement(className, InvocationType.INCOMING_INVOCATION, packageInvocationInformation1);
+        cdt.addPackageInvocationElement(className, InvocationType.INCOMING, packageInvocationInformation0);
+        cdt.addPackageInvocationElement(className, InvocationType.INCOMING, packageInvocationInformation1);
 
         assertThat(cdt.getIncomingDependenceInfo().keySet()).containsExactly(className);
 
@@ -239,11 +239,11 @@ class ClassDependenceTreeTest {
     void addDataElement_testAddingIncomingInvocationWithExistingElement() {
         String className = "TestClass";
 
-        AttributeInvocationInformation attributeInvocationInformation0 = new AttributeInvocationInformation("dataInvocationInformationName0");
-        AttributeInvocationInformation attributeInvocationInformation1 = new AttributeInvocationInformation("dataInvocationInformationName1");
+        AttributeInvocation attributeInvocationInformation0 = new AttributeInvocation("dataInvocationInformationName0");
+        AttributeInvocation attributeInvocationInformation1 = new AttributeInvocation("dataInvocationInformationName1");
 
-        cdt.addAttributeInvocationElement(className, InvocationType.INCOMING_INVOCATION, attributeInvocationInformation0);
-        cdt.addAttributeInvocationElement(className, InvocationType.INCOMING_INVOCATION, attributeInvocationInformation1);
+        cdt.addAttributeInvocationElement(className, InvocationType.INCOMING, attributeInvocationInformation0);
+        cdt.addAttributeInvocationElement(className, InvocationType.INCOMING, attributeInvocationInformation1);
 
         assertThat(cdt.getIncomingDependenceInfo().keySet()).containsExactly(className);
 
@@ -254,11 +254,11 @@ class ClassDependenceTreeTest {
     void addConstructorElement_testAddingIncomingInvocationWithExistingElement() {
         String className = "TestClass";
 
-        ConstructorInvocationInformation constructorInvocationInformation0 = new ConstructorInvocationInformation("constructorExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
-        ConstructorInvocationInformation constructorInvocationInformation1 = new ConstructorInvocationInformation("constructorExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
+        ConstructorInvocation constructorInvocationInformation0 = new ConstructorInvocation("constructorExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
+        ConstructorInvocation constructorInvocationInformation1 = new ConstructorInvocation("constructorExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
 
-        cdt.addConstructorInvocationElement(className, InvocationType.INCOMING_INVOCATION, constructorInvocationInformation0);
-        cdt.addConstructorInvocationElement(className, InvocationType.INCOMING_INVOCATION, constructorInvocationInformation1);
+        cdt.addConstructorInvocationElement(className, InvocationType.INCOMING, constructorInvocationInformation0);
+        cdt.addConstructorInvocationElement(className, InvocationType.INCOMING, constructorInvocationInformation1);
 
         assertThat(cdt.getIncomingDependenceInfo().keySet()).containsExactly(className);
 
@@ -269,11 +269,11 @@ class ClassDependenceTreeTest {
     void addMethodElement_testAddingIncomingInvocationWithExistingElement() {
         String className = "TestClass";
 
-        MethodInvocationInformation methodInvocationInformation0 = new MethodInvocationInformation("methodExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
-        MethodInvocationInformation methodInvocationInformation1 = new MethodInvocationInformation("methodExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
+        MethodInvocation methodInvocationInformation0 = new MethodInvocation("methodExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
+        MethodInvocation methodInvocationInformation1 = new MethodInvocation("methodExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
 
-        cdt.addMethodInvocationElement(className, InvocationType.INCOMING_INVOCATION, methodInvocationInformation0);
-        cdt.addMethodInvocationElement(className, InvocationType.INCOMING_INVOCATION, methodInvocationInformation1);
+        cdt.addMethodInvocationElement(className, InvocationType.INCOMING, methodInvocationInformation0);
+        cdt.addMethodInvocationElement(className, InvocationType.INCOMING, methodInvocationInformation1);
 
         assertThat(cdt.getIncomingDependenceInfo().keySet()).containsExactly(className);
 
@@ -284,10 +284,10 @@ class ClassDependenceTreeTest {
     public void addNewElements_testCreationOfKeys() {
         ArrayList<String> classNames = new ArrayList<>(Arrays.asList("FirstClass", "SecondClass", "ThirdClass", "FourthClass"));
 
-        cdt.addPackageInvocationElement(classNames.get(0), InvocationType.OUTGOING_INVOCATION, null);
-        cdt.addAttributeInvocationElement(classNames.get(1), InvocationType.OUTGOING_INVOCATION, null);
-        cdt.addConstructorInvocationElement(classNames.get(2), InvocationType.OUTGOING_INVOCATION, null);
-        cdt.addMethodInvocationElement(classNames.get(3), InvocationType.OUTGOING_INVOCATION, null);
+        cdt.addPackageInvocationElement(classNames.get(0), InvocationType.OUTGOING, null);
+        cdt.addAttributeInvocationElement(classNames.get(1), InvocationType.OUTGOING, null);
+        cdt.addConstructorInvocationElement(classNames.get(2), InvocationType.OUTGOING, null);
+        cdt.addMethodInvocationElement(classNames.get(3), InvocationType.OUTGOING, null);
 
         assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactlyInAnyOrderElementsOf(classNames);
     }
@@ -296,16 +296,16 @@ class ClassDependenceTreeTest {
     public void addNewElements_testInsertionOfSingleElementPerClassAndType() {
         ArrayList<String> classNames = new ArrayList<>(Arrays.asList("FirstClass", "SecondClass", "ThirdClass", "FourthClass"));
 
-        PackageInvocationInformation packageInvocationInformation = new PackageInvocationInformation("moduleImportInformationName");
-        AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("dataInvocationInformationName");
-        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
-        MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        PackageInvocation packageInvocationInformation = new PackageInvocation("moduleImportInformationName");
+        AttributeInvocation attributeInvocationInformation = new AttributeInvocation("dataInvocationInformationName");
+        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
 
-        cdt.addPackageInvocationElement(classNames.get(0), InvocationType.OUTGOING_INVOCATION, packageInvocationInformation);
-        cdt.addAttributeInvocationElement(classNames.get(1), InvocationType.OUTGOING_INVOCATION, attributeInvocationInformation);
-        cdt.addConstructorInvocationElement(classNames.get(2), InvocationType.OUTGOING_INVOCATION, constructorInvocationInformation);
-        cdt.addMethodInvocationElement(classNames.get(3), InvocationType.OUTGOING_INVOCATION, methodInvocationInformation);
+        cdt.addPackageInvocationElement(classNames.get(0), InvocationType.OUTGOING, packageInvocationInformation);
+        cdt.addAttributeInvocationElement(classNames.get(1), InvocationType.OUTGOING, attributeInvocationInformation);
+        cdt.addConstructorInvocationElement(classNames.get(2), InvocationType.OUTGOING, constructorInvocationInformation);
+        cdt.addMethodInvocationElement(classNames.get(3), InvocationType.OUTGOING, methodInvocationInformation);
 
         assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactlyInAnyOrderElementsOf(classNames);
 
@@ -319,16 +319,16 @@ class ClassDependenceTreeTest {
     public void addNewElements_testInsertionOfSingleElementWithAnExistingKey() {
         String className = "TestClass";
 
-        PackageInvocationInformation packageInvocationInformation = new PackageInvocationInformation("moduleImportInformationName");
-        AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("dataInvocationInformationName");
-        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
-        MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        PackageInvocation packageInvocationInformation = new PackageInvocation("moduleImportInformationName");
+        AttributeInvocation attributeInvocationInformation = new AttributeInvocation("dataInvocationInformationName");
+        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
 
-        cdt.addPackageInvocationElement(className, InvocationType.OUTGOING_INVOCATION, packageInvocationInformation);
-        cdt.addAttributeInvocationElement(className, InvocationType.OUTGOING_INVOCATION, attributeInvocationInformation);
-        cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING_INVOCATION, constructorInvocationInformation);
-        cdt.addMethodInvocationElement(className, InvocationType.OUTGOING_INVOCATION, methodInvocationInformation);
+        cdt.addPackageInvocationElement(className, InvocationType.OUTGOING, packageInvocationInformation);
+        cdt.addAttributeInvocationElement(className, InvocationType.OUTGOING, attributeInvocationInformation);
+        cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING, constructorInvocationInformation);
+        cdt.addMethodInvocationElement(className, InvocationType.OUTGOING, methodInvocationInformation);
 
         assertThat(cdt.getOutgoingDependenceInfo().keySet()).containsExactly(className);
 

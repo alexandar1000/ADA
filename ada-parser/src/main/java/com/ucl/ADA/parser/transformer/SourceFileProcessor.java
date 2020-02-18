@@ -5,9 +5,9 @@ import com.ucl.ADA.parser.dependence_information.declaration_information.Modifie
 import com.ucl.ADA.parser.dependence_information.declaration_information.AttributeDeclaration;
 import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclaration;
 import com.ucl.ADA.parser.dependence_information.declaration_information.PackageDeclaration;
-import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocation;
 import com.ucl.ADA.parser.model.ExternalInvocationInfo;
 import com.ucl.ADA.parser.model.SourceFile;
 
@@ -90,7 +90,7 @@ public class SourceFileProcessor {
             return;
 
         for (String im : importPackages) {
-            PackageInvocationInformation packageInvocationInformation = new PackageInvocationInformation(im);
+            PackageInvocation packageInvocationInformation = new PackageInvocation(im);
             String[] package_arr = im.split("\\.");
             projectDependenceTree.addPackageInvocation(sourceFile.getClassName(), package_arr[package_arr.length - 1], packageInvocationInformation);
         }
@@ -105,7 +105,7 @@ public class SourceFileProcessor {
     public void processConstructorInvocation(ProjectDependenceTree projectDependenceTree, SourceFile sourceFile) {
         sourceFile.getMethods().forEach(m -> {
             m.getConstructorInvocations().forEach(ci -> {
-                ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation(sourceFile.getClassName(), (ArrayList<String>) ci.getArgumentsValues());
+                ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation(sourceFile.getClassName(), (ArrayList<String>) ci.getArgumentsValues());
                 projectDependenceTree.addConstructorInvocation(sourceFile.getClassName(), ci.getConstructorClassName(), constructorInvocationInformation);
             });
         });
@@ -118,7 +118,7 @@ public class SourceFileProcessor {
         sourceFile.getMethods().forEach(m -> {
             m.getMethodCalls().forEach(mc -> {
                 String[] calleeNames = mc.getCalleeName().split("\\.");
-                MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation(calleeNames[calleeNames.length - 1], new ArrayList<>(mc.getArguments()));
+                MethodInvocation methodInvocationInformation = new MethodInvocation(calleeNames[calleeNames.length - 1], new ArrayList<>(mc.getArguments()));
                 projectDependenceTree.addMethodInvocation(sourceFile.getClassName(), calleeNames[calleeNames.length - 2], methodInvocationInformation);
             });
         });

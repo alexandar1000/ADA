@@ -1,10 +1,10 @@
 package com.ucl.ADA.parser.dependence_information;
 
 import com.ucl.ADA.parser.dependence_information.declaration_information.*;
-import com.ucl.ADA.parser.dependence_information.invocation_information.AttributeInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.AttributeInvocation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -67,7 +67,7 @@ class ProjectDependenceTreeTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        PackageInvocationInformation packageDeclarationInformation = new PackageInvocationInformation("com.ADA.invocation_example");
+        PackageInvocation packageDeclarationInformation = new PackageInvocation("com.ADA.invocation_example");
 
         pdt.addPackageInvocation(consumingClassName, declaringClassName, packageDeclarationInformation);
 
@@ -80,7 +80,7 @@ class ProjectDependenceTreeTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        PackageInvocationInformation packageInvocationInformation = new PackageInvocationInformation("com.ADA.invocation_example");
+        PackageInvocation packageInvocationInformation = new PackageInvocation("com.ADA.invocation_example");
 
         pdt.addPackageInvocation(consumingClassName, declaringClassName, packageInvocationInformation);
 
@@ -92,8 +92,8 @@ class ProjectDependenceTreeTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        PackageInvocationInformation packageInvocationInformation0 = new PackageInvocationInformation("com.ADA.invocation_example0");
-        PackageInvocationInformation packageInvocationInformation1 = new PackageInvocationInformation("com.ADA.invocation_example1");
+        PackageInvocation packageInvocationInformation0 = new PackageInvocation("com.ADA.invocation_example0");
+        PackageInvocation packageInvocationInformation1 = new PackageInvocation("com.ADA.invocation_example1");
 
         pdt.addPackageInvocation(consumingClassName, declaringClassName, packageInvocationInformation0);
         pdt.addPackageInvocation(consumingClassName, declaringClassName, packageInvocationInformation1);
@@ -107,8 +107,8 @@ class ProjectDependenceTreeTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        PackageInvocationInformation packageInvocationInformation0 = new PackageInvocationInformation("com.ADA.invocation_example0");
-        PackageInvocationInformation packageInvocationInformation1 = new PackageInvocationInformation("com.ADA.invocation_example1");
+        PackageInvocation packageInvocationInformation0 = new PackageInvocation("com.ADA.invocation_example0");
+        PackageInvocation packageInvocationInformation1 = new PackageInvocation("com.ADA.invocation_example1");
 
         pdt.addPackageInvocation(consumingClassName, declaringClassName, packageInvocationInformation0);
         pdt.addPackageInvocation(consumingClassName, declaringClassName, packageInvocationInformation1);
@@ -121,7 +121,7 @@ class ProjectDependenceTreeTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("attributeExample");
+        AttributeInvocation attributeInvocationInformation = new AttributeInvocation("attributeExample");
 
         pdt.addAttributeInvocation(consumingClassName, declaringClassName, attributeInvocationInformation);
 
@@ -134,7 +134,7 @@ class ProjectDependenceTreeTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("attributeExample");
+        AttributeInvocation attributeInvocationInformation = new AttributeInvocation("attributeExample");
 
         pdt.addAttributeInvocation(consumingClassName, declaringClassName, attributeInvocationInformation);
 
@@ -147,8 +147,8 @@ class ProjectDependenceTreeTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        AttributeInvocationInformation attributeInvocationInformation0 = new AttributeInvocationInformation("attributeExample0");
-        AttributeInvocationInformation attributeInvocationInformation1 = new AttributeInvocationInformation("attributeExample1");
+        AttributeInvocation attributeInvocationInformation0 = new AttributeInvocation("attributeExample0");
+        AttributeInvocation attributeInvocationInformation1 = new AttributeInvocation("attributeExample1");
 
         pdt.addAttributeInvocation(consumingClassName, declaringClassName, attributeInvocationInformation0);
         pdt.addAttributeInvocation(consumingClassName, declaringClassName, attributeInvocationInformation1);
@@ -162,8 +162,8 @@ class ProjectDependenceTreeTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        AttributeInvocationInformation attributeInvocationInformation0 = new AttributeInvocationInformation("attributeExample0");
-        AttributeInvocationInformation attributeInvocationInformation1 = new AttributeInvocationInformation("attributeExample1");
+        AttributeInvocation attributeInvocationInformation0 = new AttributeInvocation("attributeExample0");
+        AttributeInvocation attributeInvocationInformation1 = new AttributeInvocation("attributeExample1");
 
         pdt.addAttributeInvocation(consumingClassName, declaringClassName, attributeInvocationInformation0);
         pdt.addAttributeInvocation(consumingClassName, declaringClassName, attributeInvocationInformation1);
@@ -176,7 +176,7 @@ class ProjectDependenceTreeTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
         pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation);
 
@@ -189,7 +189,7 @@ class ProjectDependenceTreeTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
         pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation);
 
@@ -201,8 +201,8 @@ class ProjectDependenceTreeTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        ConstructorInvocationInformation constructorInvocationInformation0 = new ConstructorInvocationInformation("constructorExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
-        ConstructorInvocationInformation constructorInvocationInformation1 = new ConstructorInvocationInformation("constructorExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
+        ConstructorInvocation constructorInvocationInformation0 = new ConstructorInvocation("constructorExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
+        ConstructorInvocation constructorInvocationInformation1 = new ConstructorInvocation("constructorExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
 
         pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation0);
         pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation1);
@@ -217,8 +217,8 @@ class ProjectDependenceTreeTest {
         String consumingClassName = "ConsumingTestClass";
 
 
-        ConstructorInvocationInformation constructorInvocationInformation0 = new ConstructorInvocationInformation("constructorExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
-        ConstructorInvocationInformation constructorInvocationInformation1 = new ConstructorInvocationInformation("constructorExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
+        ConstructorInvocation constructorInvocationInformation0 = new ConstructorInvocation("constructorExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
+        ConstructorInvocation constructorInvocationInformation1 = new ConstructorInvocation("constructorExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
 
         pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation0);
         pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation1);
@@ -231,7 +231,7 @@ class ProjectDependenceTreeTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
         pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation);
 
@@ -244,7 +244,7 @@ class ProjectDependenceTreeTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
         pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation);
 
@@ -256,8 +256,8 @@ class ProjectDependenceTreeTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        MethodInvocationInformation methodInvocationInformation0 = new MethodInvocationInformation("methodExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
-        MethodInvocationInformation methodInvocationInformation1 = new MethodInvocationInformation("methodExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
+        MethodInvocation methodInvocationInformation0 = new MethodInvocation("methodExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
+        MethodInvocation methodInvocationInformation1 = new MethodInvocation("methodExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
 
         pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation0);
         pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation1);
@@ -271,8 +271,8 @@ class ProjectDependenceTreeTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        MethodInvocationInformation methodInvocationInformation0 = new MethodInvocationInformation("methodExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
-        MethodInvocationInformation methodInvocationInformation1 = new MethodInvocationInformation("methodExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
+        MethodInvocation methodInvocationInformation0 = new MethodInvocation("methodExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
+        MethodInvocation methodInvocationInformation1 = new MethodInvocation("methodExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
 
         pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation0);
         pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation1);

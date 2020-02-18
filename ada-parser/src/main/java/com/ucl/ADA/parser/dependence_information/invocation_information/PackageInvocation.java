@@ -4,12 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class PackageInvocationInformation extends ElementInvocationInformation {
+public class PackageInvocation extends ElementInvocation {
     /**
      * The constructor of the package invocation object.
      * @param packageName the name of the package being invoked
      */
-    public PackageInvocationInformation(String packageName) {
+    public PackageInvocation(String packageName) {
         super(packageName);
     }
 }

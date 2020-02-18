@@ -2,10 +2,10 @@ package com.ucl.ADA.metric_calculator.metrics_structure;
 
 import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
 import com.ucl.ADA.parser.dependence_information.declaration_information.*;
-import com.ucl.ADA.parser.dependence_information.invocation_information.AttributeInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
-import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocationInformation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.AttributeInvocation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocation;
+import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -67,10 +67,10 @@ class ProjectMetricsContainerTest {
         }
 
         String className;
-        PackageInvocationInformation packageInvocationInformation = new PackageInvocationInformation("com.ADA.invocation_example");
-        AttributeInvocationInformation attributeInvocationInformation = new AttributeInvocationInformation("attributeExample");
-        ConstructorInvocationInformation constructorInvocationInformation = new ConstructorInvocationInformation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
-        MethodInvocationInformation methodInvocationInformation = new MethodInvocationInformation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        PackageInvocation packageInvocationInformation = new PackageInvocation("com.ADA.invocation_example");
+        AttributeInvocation attributeInvocationInformation = new AttributeInvocation("attributeExample");
+        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
         // For FirstClass
         className = classNames.get(0);

@@ -114,20 +114,20 @@ public class ProjectDependenceTree {
      * @param declaringClassName class where the package has been declared in
      * @param packageDeclarationInformation The package declaration object
      */
-    public void addPackageInvocation(String consumingClassName, String declaringClassName, PackageInvocationInformation packageDeclarationInformation) {
+    public void addPackageInvocation(String consumingClassName, String declaringClassName, PackageInvocation packageDeclarationInformation) {
         if (this.classDependenceTrees.containsKey(consumingClassName)) {
-            this.classDependenceTrees.get(consumingClassName).addPackageInvocationElement(declaringClassName, InvocationType.OUTGOING_INVOCATION, packageDeclarationInformation);
+            this.classDependenceTrees.get(consumingClassName).addPackageInvocationElement(declaringClassName, InvocationType.OUTGOING, packageDeclarationInformation);
         } else {
             ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addPackageInvocationElement(declaringClassName, InvocationType.OUTGOING_INVOCATION, packageDeclarationInformation);
+            classDependenceTree.addPackageInvocationElement(declaringClassName, InvocationType.OUTGOING, packageDeclarationInformation);
             this.classDependenceTrees.put(consumingClassName, classDependenceTree);
         }
 
         if (this.classDependenceTrees.containsKey(declaringClassName)) {
-            this.classDependenceTrees.get(declaringClassName).addPackageInvocationElement(consumingClassName, InvocationType.INCOMING_INVOCATION, packageDeclarationInformation);
+            this.classDependenceTrees.get(declaringClassName).addPackageInvocationElement(consumingClassName, InvocationType.INCOMING, packageDeclarationInformation);
         } else {
             ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addPackageInvocationElement(consumingClassName, InvocationType.INCOMING_INVOCATION, packageDeclarationInformation);
+            classDependenceTree.addPackageInvocationElement(consumingClassName, InvocationType.INCOMING, packageDeclarationInformation);
             this.classDependenceTrees.put(declaringClassName, classDependenceTree);
         }
     }
@@ -139,20 +139,20 @@ public class ProjectDependenceTree {
      * @param declaringClassName class where the attribute has been declared in
      * @param attributeInvocationInformation The package declaration object
      */
-    public void addAttributeInvocation(String consumingClassName, String declaringClassName, AttributeInvocationInformation attributeInvocationInformation) {
+    public void addAttributeInvocation(String consumingClassName, String declaringClassName, AttributeInvocation attributeInvocationInformation) {
         if (this.classDependenceTrees.containsKey(consumingClassName)) {
-            this.classDependenceTrees.get(consumingClassName).addAttributeInvocationElement(declaringClassName, InvocationType.OUTGOING_INVOCATION, attributeInvocationInformation);
+            this.classDependenceTrees.get(consumingClassName).addAttributeInvocationElement(declaringClassName, InvocationType.OUTGOING, attributeInvocationInformation);
         } else {
             ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addAttributeInvocationElement(declaringClassName, InvocationType.OUTGOING_INVOCATION, attributeInvocationInformation);
+            classDependenceTree.addAttributeInvocationElement(declaringClassName, InvocationType.OUTGOING, attributeInvocationInformation);
             this.classDependenceTrees.put(consumingClassName, classDependenceTree);
         }
 
         if (this.classDependenceTrees.containsKey(declaringClassName)) {
-            this.classDependenceTrees.get(declaringClassName).addAttributeInvocationElement(consumingClassName, InvocationType.INCOMING_INVOCATION, attributeInvocationInformation);
+            this.classDependenceTrees.get(declaringClassName).addAttributeInvocationElement(consumingClassName, InvocationType.INCOMING, attributeInvocationInformation);
         } else {
             ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addAttributeInvocationElement(consumingClassName, InvocationType.INCOMING_INVOCATION, attributeInvocationInformation);
+            classDependenceTree.addAttributeInvocationElement(consumingClassName, InvocationType.INCOMING, attributeInvocationInformation);
             this.classDependenceTrees.put(declaringClassName, classDependenceTree);
         }
     }
@@ -164,20 +164,20 @@ public class ProjectDependenceTree {
      * @param declaringClassName class where the constructor has been declared in
      * @param constructorInvocationInformation The package declaration object
      */
-    public void addConstructorInvocation(String consumingClassName, String declaringClassName, ConstructorInvocationInformation constructorInvocationInformation) {
+    public void addConstructorInvocation(String consumingClassName, String declaringClassName, ConstructorInvocation constructorInvocationInformation) {
         if (this.classDependenceTrees.containsKey(consumingClassName)) {
-            this.classDependenceTrees.get(consumingClassName).addConstructorInvocationElement(declaringClassName, InvocationType.OUTGOING_INVOCATION, constructorInvocationInformation);
+            this.classDependenceTrees.get(consumingClassName).addConstructorInvocationElement(declaringClassName, InvocationType.OUTGOING, constructorInvocationInformation);
         } else {
             ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addConstructorInvocationElement(declaringClassName, InvocationType.OUTGOING_INVOCATION, constructorInvocationInformation);
+            classDependenceTree.addConstructorInvocationElement(declaringClassName, InvocationType.OUTGOING, constructorInvocationInformation);
             this.classDependenceTrees.put(consumingClassName, classDependenceTree);
         }
 
         if (this.classDependenceTrees.containsKey(declaringClassName)) {
-            this.classDependenceTrees.get(declaringClassName).addConstructorInvocationElement(consumingClassName, InvocationType.INCOMING_INVOCATION, constructorInvocationInformation);
+            this.classDependenceTrees.get(declaringClassName).addConstructorInvocationElement(consumingClassName, InvocationType.INCOMING, constructorInvocationInformation);
         } else {
             ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addConstructorInvocationElement(consumingClassName, InvocationType.INCOMING_INVOCATION, constructorInvocationInformation);
+            classDependenceTree.addConstructorInvocationElement(consumingClassName, InvocationType.INCOMING, constructorInvocationInformation);
             this.classDependenceTrees.put(declaringClassName, classDependenceTree);
         }
     }
@@ -189,20 +189,20 @@ public class ProjectDependenceTree {
      * @param declaringClassName class where the method has been declared in
      * @param methodInvocationInformation The package declaration object
      */
-    public void addMethodInvocation(String consumingClassName, String declaringClassName, MethodInvocationInformation methodInvocationInformation) {
+    public void addMethodInvocation(String consumingClassName, String declaringClassName, MethodInvocation methodInvocationInformation) {
         if (this.classDependenceTrees.containsKey(consumingClassName)) {
-            this.classDependenceTrees.get(consumingClassName).addMethodInvocationElement(declaringClassName, InvocationType.OUTGOING_INVOCATION, methodInvocationInformation);
+            this.classDependenceTrees.get(consumingClassName).addMethodInvocationElement(declaringClassName, InvocationType.OUTGOING, methodInvocationInformation);
         } else {
             ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addMethodInvocationElement(declaringClassName, InvocationType.OUTGOING_INVOCATION, methodInvocationInformation);
+            classDependenceTree.addMethodInvocationElement(declaringClassName, InvocationType.OUTGOING, methodInvocationInformation);
             this.classDependenceTrees.put(consumingClassName, classDependenceTree);
         }
 
         if (this.classDependenceTrees.containsKey(declaringClassName)) {
-            this.classDependenceTrees.get(declaringClassName).addMethodInvocationElement(consumingClassName, InvocationType.INCOMING_INVOCATION, methodInvocationInformation);
+            this.classDependenceTrees.get(declaringClassName).addMethodInvocationElement(consumingClassName, InvocationType.INCOMING, methodInvocationInformation);
         } else {
             ClassDependenceTree classDependenceTree = new ClassDependenceTree();
-            classDependenceTree.addMethodInvocationElement(consumingClassName, InvocationType.INCOMING_INVOCATION, methodInvocationInformation);
+            classDependenceTree.addMethodInvocationElement(consumingClassName, InvocationType.INCOMING, methodInvocationInformation);
             this.classDependenceTrees.put(declaringClassName, classDependenceTree);
         }
     }

@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 
 @Getter @Setter
-public class MethodInvocationInformation extends ElementInvocationInformation {
+public class MethodInvocation extends ElementInvocation {
     /**
      * The list of parameters which have been passes to the method on invocation.
      */
@@ -17,7 +17,7 @@ public class MethodInvocationInformation extends ElementInvocationInformation {
      * @param name name of the constructor being invoked
      * @param passedParameters The list of parameters whit which the constructor has been invoked with
      */
-    public MethodInvocationInformation(String name, ArrayList<String> passedParameters) {
+    public MethodInvocation(String name, ArrayList<String> passedParameters) {
         super(name);
         this.passedParameters.addAll(passedParameters);
     }

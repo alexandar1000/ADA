@@ -96,8 +96,8 @@ public class ClassDependenceTree {
      * @param packageInvocationInformation the package invocation object containing the data corresponding to the
      *                                     invocation in question
      */
-    protected void addPackageInvocationElement(String relatingClass, InvocationType invocationType, PackageInvocationInformation packageInvocationInformation) {
-        if (invocationType == InvocationType.OUTGOING_INVOCATION) {
+    protected void addPackageInvocationElement(String relatingClass, InvocationType invocationType, PackageInvocation packageInvocationInformation) {
+        if (invocationType == InvocationType.OUTGOING) {
             if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
                 this.outgoingDependenceInfo.get(relatingClass).addNewPackage(packageInvocationInformation);
             } else {
@@ -125,8 +125,8 @@ public class ClassDependenceTree {
      * @param attributeInvocationInformation the attribute invocation object containing the data corresponding to the
      *                                     invocation in question
      */
-    protected void addAttributeInvocationElement(String relatingClass, InvocationType invocationType, AttributeInvocationInformation attributeInvocationInformation) {
-        if (invocationType == InvocationType.OUTGOING_INVOCATION) {
+    protected void addAttributeInvocationElement(String relatingClass, InvocationType invocationType, AttributeInvocation attributeInvocationInformation) {
+        if (invocationType == InvocationType.OUTGOING) {
             if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
                 this.outgoingDependenceInfo.get(relatingClass).addNewAttribute(attributeInvocationInformation);
             } else {
@@ -154,8 +154,8 @@ public class ClassDependenceTree {
      * @param constructorInvocationInformation the constructor invocation object containing the data corresponding to the
      *                                     invocation in question
      */
-    protected void addConstructorInvocationElement(String relatingClass, InvocationType invocationType, ConstructorInvocationInformation constructorInvocationInformation) {
-        if (invocationType == InvocationType.OUTGOING_INVOCATION) {
+    protected void addConstructorInvocationElement(String relatingClass, InvocationType invocationType, ConstructorInvocation constructorInvocationInformation) {
+        if (invocationType == InvocationType.OUTGOING) {
             if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
                 this.outgoingDependenceInfo.get(relatingClass).addNewConstructor(constructorInvocationInformation);
             } else {
@@ -183,8 +183,8 @@ public class ClassDependenceTree {
      * @param methodInvocationInformation the method invocation object containing the data corresponding to the
      *                                     invocation in question
      */
-    protected void addMethodInvocationElement(String relatingClass, InvocationType invocationType, MethodInvocationInformation methodInvocationInformation) {
-        if (invocationType == InvocationType.OUTGOING_INVOCATION) {
+    protected void addMethodInvocationElement(String relatingClass, InvocationType invocationType, MethodInvocation methodInvocationInformation) {
+        if (invocationType == InvocationType.OUTGOING) {
             if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
                 this.outgoingDependenceInfo.get(relatingClass).addNewMethod(methodInvocationInformation);
             } else {
