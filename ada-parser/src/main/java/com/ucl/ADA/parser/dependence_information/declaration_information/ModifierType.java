@@ -5,5 +5,9 @@ public enum ModifierType {
     PROTECTED,
     DEFAULT,
     PRIVATE,
-    LOCAL
+    STATIC,
+    FINAL,
+    ABSTRACT,
+    UNRESOLVED
+
 }
