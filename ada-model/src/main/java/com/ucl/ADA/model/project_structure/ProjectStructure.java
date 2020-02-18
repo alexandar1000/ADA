@@ -17,45 +17,6 @@ import java.util.Map;
 public class ProjectStructure {
     private Map<String, ClassStructure> classStructures = new HashMap<>();
 
-    public void addExternalPackageImport(String declaringClass, PackageInvocation externalPackageImport) {
-        if (this.classStructures.containsKey(declaringClass)) {
-            this.classStructures.get(declaringClass).addExternalPackageImport(externalPackageImport);
-        } else {
-            ClassStructure classStructure = new ClassStructure();
-            classStructure.addExternalPackageImport(externalPackageImport);
-            this.classStructures.put(declaringClass, classStructure);
-        }
-    }
-    public void addExternalMethodInvocations(String declaringClass, MethodInvocation externalMethodInvocations) {
-        if (this.classStructures.containsKey(declaringClass)) {
-            this.classStructures.get(declaringClass).addExternalMethodInvocation(externalMethodInvocations);
-        } else {
-            ClassStructure classStructure = new ClassStructure();
-            classStructure.addExternalMethodInvocation(externalMethodInvocations);
-            this.classStructures.put(declaringClass, classStructure);
-        }
-    }
-
-    public void addExternalConstructorInvocations(String declaringClass, ConstructorInvocation externalConstructorInvocations) {
-        if (this.classStructures.containsKey(declaringClass)) {
-            this.classStructures.get(declaringClass).addExternalConstructorInvocation(externalConstructorInvocations);
-        } else {
-            ClassStructure classStructure = new ClassStructure();
-            classStructure.addExternalConstructorInvocation(externalConstructorInvocations);
-            this.classStructures.put(declaringClass, classStructure);
-        }
-    }
-
-    public void addExternalAttributeDeclarations(String declaringClass, AttributeInvocation externalAttributeDeclarations) {
-        if (this.classStructures.containsKey(declaringClass)) {
-            this.classStructures.get(declaringClass).addExternalAttributeInvocation(externalAttributeDeclarations);
-        } else {
-            ClassStructure classStructure = new ClassStructure();
-            classStructure.addExternalAttributeInvocation(externalAttributeDeclarations);
-            this.classStructures.put(declaringClass, classStructure);
-        }
-    }
-
     /**
      * Adds package declaration for the corresponding declaring class where it is declared.
      * @param declaringClass Class where the package is declared
@@ -214,6 +175,66 @@ public class ProjectStructure {
             ClassStructure classStructure = new ClassStructure();
             classStructure.addMethodInvocationElement(consumingClassName, InvocationType.INCOMING, methodInvocation);
             this.classStructures.put(declaringClassName, classStructure);
+        }
+    }
+
+    /**
+     * Adds the external package invocation to the corresponding class.
+     * @param consumingClass the class which consumes the external package
+     * @param externalPackageImport the external package being imported
+     */
+    public void addExternalPackageImport(String consumingClass, PackageInvocation externalPackageImport) {
+        if (this.classStructures.containsKey(consumingClass)) {
+            this.classStructures.get(consumingClass).addExternalPackageImport(externalPackageImport);
+        } else {
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.addExternalPackageImport(externalPackageImport);
+            this.classStructures.put(consumingClass, classStructure);
+        }
+    }
+
+    /**
+     * Adds the external attribute invocation to the corresponding class.
+     * @param consumingClass the class which consumes the external attribute
+     * @param externalAttributeDeclarations the external attribute being consumed
+     */
+    public void addExternalAttributeDeclarations(String consumingClass, AttributeInvocation externalAttributeDeclarations) {
+        if (this.classStructures.containsKey(consumingClass)) {
+            this.classStructures.get(consumingClass).addExternalAttributeInvocation(externalAttributeDeclarations);
+        } else {
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.addExternalAttributeInvocation(externalAttributeDeclarations);
+            this.classStructures.put(consumingClass, classStructure);
+        }
+    }
+
+    /**
+     * Adds the external constructor invocation to the corresponding class.
+     * @param consumingClass the class which consumes the external constructor
+     * @param externalConstructorInvocations the external constructor being consumed
+     */
+    public void addExternalConstructorInvocations(String consumingClass, ConstructorInvocation externalConstructorInvocations) {
+        if (this.classStructures.containsKey(consumingClass)) {
+            this.classStructures.get(consumingClass).addExternalConstructorInvocation(externalConstructorInvocations);
+        } else {
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.addExternalConstructorInvocation(externalConstructorInvocations);
+            this.classStructures.put(consumingClass, classStructure);
+        }
+    }
+
+    /**
+     * Adds the external method invocation to the corresponding class.
+     * @param consumingClass the class which consumes the external method
+     * @param externalMethodInvocations the external method being consumed
+     */
+    public void addExternalMethodInvocations(String consumingClass, MethodInvocation externalMethodInvocations) {
+        if (this.classStructures.containsKey(consumingClass)) {
+            this.classStructures.get(consumingClass).addExternalMethodInvocation(externalMethodInvocations);
+        } else {
+            ClassStructure classStructure = new ClassStructure();
+            classStructure.addExternalMethodInvocation(externalMethodInvocations);
+            this.classStructures.put(consumingClass, classStructure);
         }
     }
 }

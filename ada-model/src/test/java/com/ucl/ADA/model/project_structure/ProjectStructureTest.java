@@ -15,12 +15,7 @@ class ProjectStructureTest {
             ModifierType.DEFAULT
     ));
 
-    private ArrayList<ParameterDeclaration> declaredParameters0 = new ArrayList<>(Arrays.asList(
-            new ParameterDeclaration("String", "FirstParameter"),
-            new ParameterDeclaration("Integer", "SecondParameter")
-    ));
-
-    private ArrayList<ParameterDeclaration> declaredParameters1 = new ArrayList<>(Arrays.asList(
+    private ArrayList<ParameterDeclaration> declaredParameters = new ArrayList<>(Arrays.asList(
             new ParameterDeclaration("String", "FirstParameter"),
             new ParameterDeclaration("Integer", "SecondParameter")
     ));
@@ -65,7 +60,7 @@ class ProjectStructureTest {
     @Test
     public void testAddConstructorDeclaration() {
         String declaringClassName = "DeclaringTestClass";
-        ConstructorDeclaration constructorDeclarationInformation = new ConstructorDeclaration(modifiers, "String", declaredParameters0);
+        ConstructorDeclaration constructorDeclarationInformation = new ConstructorDeclaration(modifiers, "String", declaredParameters);
 
         pdt.addConstructorDeclaration(declaringClassName, constructorDeclarationInformation);
 
@@ -75,7 +70,7 @@ class ProjectStructureTest {
     @Test
     public void testAddMethodDeclaration() {
         String declaringClassName = "DeclaringTestClass";
-        MethodDeclaration methodDeclarationInformation = new MethodDeclaration(modifiers, "String", "testingTesting", declaredParameters0);
+        MethodDeclaration methodDeclarationInformation = new MethodDeclaration(modifiers, "String", "testingTesting", declaredParameters);
 
         pdt.addMethodDeclaration(declaringClassName, methodDeclarationInformation);
 
