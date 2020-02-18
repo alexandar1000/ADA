@@ -29,8 +29,8 @@ public class ClassMetricsContainer {
      */
     protected void calculateNumberOfClassPackageImportsIncoming(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
                 metricValue += classStructure.getIncomingDependenceInfo().get(key).getPackages().size();
             }
@@ -45,8 +45,8 @@ public class ClassMetricsContainer {
      */
     protected void calculateNumberOfClassPackageImportsOutgoing(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
                 metricValue += classStructure.getOutgoingDependenceInfo().get(key).getPackages().size();
             }
@@ -62,8 +62,8 @@ public class ClassMetricsContainer {
      */
     protected void calculateNumberOfClassAttributeInvocationsIncoming(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
                 metricValue += classStructure.getIncomingDependenceInfo().get(key).getAttributes().size();
             }
@@ -79,8 +79,8 @@ public class ClassMetricsContainer {
      */
     protected void calculateNumberOfClassAttributeInvocationsOutgoing(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
                 metricValue += classStructure.getOutgoingDependenceInfo().get(key).getAttributes().size();
             }
@@ -96,8 +96,8 @@ public class ClassMetricsContainer {
      */
     protected void calculateNumberOfClassMethodInvocationsIncoming(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
                 metricValue += classStructure.getIncomingDependenceInfo().get(key).getMethods().size();
             }
@@ -113,8 +113,8 @@ public class ClassMetricsContainer {
      */
     protected void calculateNumberOfClassMethodInvocationsOutgoing(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
                 metricValue += classStructure.getOutgoingDependenceInfo().get(key).getMethods().size();
             }
@@ -130,8 +130,8 @@ public class ClassMetricsContainer {
      */
     protected void calculateNumberOfClassConstructorInvocationsIncoming(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
                 metricValue += classStructure.getIncomingDependenceInfo().get(key).getConstructors().size();
             }
@@ -147,8 +147,8 @@ public class ClassMetricsContainer {
      */
     protected void calculateNumberOfClassConstructorInvocationsOutgoing(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
                 metricValue += classStructure.getOutgoingDependenceInfo().get(key).getConstructors().size();
             }
@@ -165,8 +165,8 @@ public class ClassMetricsContainer {
      */
     protected void calculateBidirectionalNumberOfClassPackageImports(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
                 metricValue += classStructure.getIncomingDependenceInfo().get(key).getPackages().size();
             }
@@ -186,8 +186,8 @@ public class ClassMetricsContainer {
      */
     protected void calculateBidirectionalNumberOfClassAttributeInvocations(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
                 metricValue += classStructure.getIncomingDependenceInfo().get(key).getAttributes().size();
             }
@@ -207,8 +207,8 @@ public class ClassMetricsContainer {
      */
     protected void calculateBidirectionalNumberOfClassMethodInvocations(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
                 metricValue += classStructure.getIncomingDependenceInfo().get(key).getMethods().size();
             }
@@ -228,8 +228,8 @@ public class ClassMetricsContainer {
      */
     protected void calculateBidirectionalNumberOfClassConstructorInvocations(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue = 0F;
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
                 metricValue += classStructure.getIncomingDependenceInfo().get(key).getConstructors().size();
             }
@@ -250,9 +250,9 @@ public class ClassMetricsContainer {
     protected void calculateNumberOfRelationPackageImportsIncoming(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
             for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
                 metricValue = (float) classStructure.getIncomingDependenceInfo().get(key).getPackages().size();
@@ -276,9 +276,9 @@ public class ClassMetricsContainer {
     protected void calculateNumberOfRelationPackageImportsOutgoing(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
             for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
                 metricValue = (float) classStructure.getOutgoingDependenceInfo().get(key).getPackages().size();
@@ -302,9 +302,9 @@ public class ClassMetricsContainer {
     protected void calculateNumberOfRelationAttributeInvocationsIncoming(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
             for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
                 metricValue = (float) classStructure.getIncomingDependenceInfo().get(key).getAttributes().size();
@@ -328,9 +328,9 @@ public class ClassMetricsContainer {
     protected void calculateNumberOfRelationAttributeInvocationsOutgoing(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
             for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
                 metricValue = (float) classStructure.getOutgoingDependenceInfo().get(key).getAttributes().size();
@@ -354,9 +354,9 @@ public class ClassMetricsContainer {
     protected void calculateNumberOfRelationMethodInvocationsIncoming(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
             for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
                 metricValue = (float) classStructure.getIncomingDependenceInfo().get(key).getMethods().size();
@@ -381,9 +381,9 @@ public class ClassMetricsContainer {
     protected void calculateNumberOfRelationMethodInvocationsOutgoing(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
             for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
                 metricValue = (float) classStructure.getOutgoingDependenceInfo().get(key).getMethods().size();
@@ -407,9 +407,9 @@ public class ClassMetricsContainer {
     protected void calculateNumberOfRelationConstructorInvocationsIncoming(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
             for (String key : classStructure.getIncomingDependenceInfo().keySet()) {
                 metricValue = (float) classStructure.getIncomingDependenceInfo().get(key).getConstructors().size();
@@ -434,9 +434,9 @@ public class ClassMetricsContainer {
     protected void calculateNumberOfRelationConstructorInvocationsOutgoing(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
             for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
                 metricValue = (float) classStructure.getOutgoingDependenceInfo().get(key).getConstructors().size();
@@ -460,9 +460,9 @@ public class ClassMetricsContainer {
     protected void calculateBidirectionalNumberOfRelationPackageImports(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
             for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
                 metricValue = (float) classStructure.getOutgoingDependenceInfo().get(key).getPackages().size();
@@ -496,9 +496,9 @@ public class ClassMetricsContainer {
     protected void calculateBidirectionalNumberOfRelationAttributeInvocations(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
             for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
                 metricValue = (float) classStructure.getOutgoingDependenceInfo().get(key).getAttributes().size();
@@ -532,9 +532,9 @@ public class ClassMetricsContainer {
     protected void calculateBidirectionalNumberOfRelationMethodInvocations(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
             for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
                 metricValue = (float) classStructure.getOutgoingDependenceInfo().get(key).getMethods().size();
@@ -568,9 +568,9 @@ public class ClassMetricsContainer {
     protected void calculateBidirectionalNumberOfRelationConstructorInvocations(String correspondingClass, ProjectStructure projectStructure) {
         float metricValue;
         // Check if the corresponding class is present in the project dependence tree
-        if (projectStructure.getClassDependenceTrees().containsKey(correspondingClass)) {
+        if (projectStructure.getClassStructures().containsKey(correspondingClass)) {
             // Get corresponding class from the ProjectDependenceTree
-            ClassStructure classStructure = projectStructure.getClassDependenceTrees().get(correspondingClass);
+            ClassStructure classStructure = projectStructure.getClassStructures().get(correspondingClass);
             // For all of the relating classes get the corresponding metrics
             for (String key : classStructure.getOutgoingDependenceInfo().keySet()) {
                 metricValue = (float) classStructure.getOutgoingDependenceInfo().get(key).getConstructors().size();

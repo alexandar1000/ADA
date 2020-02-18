@@ -146,6 +146,6 @@ class ProjectMetricsContainerTest {
     void computeAllMetrics_testPresenceOfAllClasses() {
         projectMetricsContainer = new ProjectMetricsContainer();
         projectMetricsContainer.computeAllMetrics(pdt);
-        assertThat(projectMetricsContainer.getClassMetrics().keySet()).containsExactlyInAnyOrderElementsOf(pdt.getClassDependenceTrees().keySet());
+        assertThat(projectMetricsContainer.getClassMetrics().keySet()).containsExactlyInAnyOrderElementsOf(pdt.getClassStructures().keySet());
     }
 }

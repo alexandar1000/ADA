@@ -9,40 +9,41 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Getter @Setter @NoArgsConstructor
 public class ProjectStructure {
-    private HashMap<String, ClassStructure> classDependenceTrees = new HashMap<>();
+    private Map<String, ClassStructure> classStructures = new HashMap<>();
 
-    public void addExternalMethodInvocations(String declaringClass, ArrayList<String> externalMethodInvocations) {
-        if (this.classDependenceTrees.containsKey(declaringClass)) {
-            this.classDependenceTrees.get(declaringClass).setExternalMethodCalls(externalMethodInvocations);
+    public void addExternalMethodInvocations(String declaringClass, List<String> externalMethodInvocations) {
+        if (this.classStructures.containsKey(declaringClass)) {
+            this.classStructures.get(declaringClass).setExternalMethodCalls(externalMethodInvocations);
         } else {
             ClassStructure classStructure = new ClassStructure();
             classStructure.setExternalMethodCalls(externalMethodInvocations);
-            this.classDependenceTrees.put(declaringClass, classStructure);
+            this.classStructures.put(declaringClass, classStructure);
         }
     }
 
-    public void addExternalConstructorInvocations(String declaringClass, ArrayList<String> externalConstructorInvocations) {
-        if (this.classDependenceTrees.containsKey(declaringClass)) {
-            this.classDependenceTrees.get(declaringClass).setExternalConstructorInvocations(externalConstructorInvocations);
+    public void addExternalConstructorInvocations(String declaringClass, List<String> externalConstructorInvocations) {
+        if (this.classStructures.containsKey(declaringClass)) {
+            this.classStructures.get(declaringClass).setExternalConstructorInvocations(externalConstructorInvocations);
         } else {
             ClassStructure classStructure = new ClassStructure();
             classStructure.setExternalConstructorInvocations(externalConstructorInvocations);
-            this.classDependenceTrees.put(declaringClass, classStructure);
+            this.classStructures.put(declaringClass, classStructure);
         }
     }
 
-    public void addExternalFieldDeclarations(String declaringClass, ArrayList<String> externalFieldDeclarations) {
-        if (this.classDependenceTrees.containsKey(declaringClass)) {
-            this.classDependenceTrees.get(declaringClass).setExternalFieldInvocations(externalFieldDeclarations);
+    public void addExternalFieldDeclarations(String declaringClass, List<String> externalFieldDeclarations) {
+        if (this.classStructures.containsKey(declaringClass)) {
+            this.classStructures.get(declaringClass).setExternalFieldInvocations(externalFieldDeclarations);
         } else {
             ClassStructure classStructure = new ClassStructure();
             classStructure.setExternalFieldInvocations(externalFieldDeclarations);
-            this.classDependenceTrees.put(declaringClass, classStructure);
+            this.classStructures.put(declaringClass, classStructure);
         }
     }
 
@@ -52,12 +53,12 @@ public class ProjectStructure {
      * @param packageDeclarationInformation The package declaration object
      */
     public void addPackageDeclaration(String declaringClass, PackageDeclaration packageDeclarationInformation) {
-        if (this.classDependenceTrees.containsKey(declaringClass)) {
-            this.classDependenceTrees.get(declaringClass).setCurrentPackage(packageDeclarationInformation);
+        if (this.classStructures.containsKey(declaringClass)) {
+            this.classStructures.get(declaringClass).setCurrentPackage(packageDeclarationInformation);
         } else {
             ClassStructure classStructure = new ClassStructure();
             classStructure.setCurrentPackage(packageDeclarationInformation);
-            this.classDependenceTrees.put(declaringClass, classStructure);
+            this.classStructures.put(declaringClass, classStructure);
         }
     }
 
@@ -67,12 +68,12 @@ public class ProjectStructure {
      * @param attributeDeclarationInformation The attribute declaration object
      */
     public void addAttributeDeclaration(String declaringClass, AttributeDeclaration attributeDeclarationInformation) {
-        if (this.classDependenceTrees.containsKey(declaringClass)) {
-            this.classDependenceTrees.get(declaringClass).addAttributeDeclaration(attributeDeclarationInformation);
+        if (this.classStructures.containsKey(declaringClass)) {
+            this.classStructures.get(declaringClass).addAttributeDeclaration(attributeDeclarationInformation);
         } else {
             ClassStructure classStructure = new ClassStructure();
             classStructure.addAttributeDeclaration(attributeDeclarationInformation);
-            this.classDependenceTrees.put(declaringClass, classStructure);
+            this.classStructures.put(declaringClass, classStructure);
         }
     }
 
@@ -82,12 +83,12 @@ public class ProjectStructure {
      * @param constructorDeclarationInformation The attribute declaration object
      */
     public void addConstructorDeclaration(String declaringClass, ConstructorDeclaration constructorDeclarationInformation) {
-        if (this.classDependenceTrees.containsKey(declaringClass)) {
-            this.classDependenceTrees.get(declaringClass).addConstructorDeclaration(constructorDeclarationInformation);
+        if (this.classStructures.containsKey(declaringClass)) {
+            this.classStructures.get(declaringClass).addConstructorDeclaration(constructorDeclarationInformation);
         } else {
             ClassStructure classStructure = new ClassStructure();
             classStructure.addConstructorDeclaration(constructorDeclarationInformation);
-            this.classDependenceTrees.put(declaringClass, classStructure);
+            this.classStructures.put(declaringClass, classStructure);
         }
     }
 
@@ -97,12 +98,12 @@ public class ProjectStructure {
      * @param methodDeclarationInformation The method declaration object
      */
     public void addMethodDeclaration(String declaringClass, MethodDeclaration methodDeclarationInformation) {
-        if (this.classDependenceTrees.containsKey(declaringClass)) {
-            this.classDependenceTrees.get(declaringClass).addMethodDeclaration(methodDeclarationInformation);
+        if (this.classStructures.containsKey(declaringClass)) {
+            this.classStructures.get(declaringClass).addMethodDeclaration(methodDeclarationInformation);
         } else {
             ClassStructure classStructure = new ClassStructure();
             classStructure.addMethodDeclaration(methodDeclarationInformation);
-            this.classDependenceTrees.put(declaringClass, classStructure);
+            this.classStructures.put(declaringClass, classStructure);
         }
     }
 
@@ -115,20 +116,20 @@ public class ProjectStructure {
      * @param packageDeclarationInformation The package declaration object
      */
     public void addPackageInvocation(String consumingClassName, String declaringClassName, PackageInvocation packageDeclarationInformation) {
-        if (this.classDependenceTrees.containsKey(consumingClassName)) {
-            this.classDependenceTrees.get(consumingClassName).addPackageInvocationElement(declaringClassName, InvocationType.OUTGOING, packageDeclarationInformation);
+        if (this.classStructures.containsKey(consumingClassName)) {
+            this.classStructures.get(consumingClassName).addPackageInvocationElement(declaringClassName, InvocationType.OUTGOING, packageDeclarationInformation);
         } else {
             ClassStructure classStructure = new ClassStructure();
             classStructure.addPackageInvocationElement(declaringClassName, InvocationType.OUTGOING, packageDeclarationInformation);
-            this.classDependenceTrees.put(consumingClassName, classStructure);
+            this.classStructures.put(consumingClassName, classStructure);
         }
 
-        if (this.classDependenceTrees.containsKey(declaringClassName)) {
-            this.classDependenceTrees.get(declaringClassName).addPackageInvocationElement(consumingClassName, InvocationType.INCOMING, packageDeclarationInformation);
+        if (this.classStructures.containsKey(declaringClassName)) {
+            this.classStructures.get(declaringClassName).addPackageInvocationElement(consumingClassName, InvocationType.INCOMING, packageDeclarationInformation);
         } else {
             ClassStructure classStructure = new ClassStructure();
             classStructure.addPackageInvocationElement(consumingClassName, InvocationType.INCOMING, packageDeclarationInformation);
-            this.classDependenceTrees.put(declaringClassName, classStructure);
+            this.classStructures.put(declaringClassName, classStructure);
         }
     }
 
@@ -140,20 +141,20 @@ public class ProjectStructure {
      * @param attributeInvocationInformation The package declaration object
      */
     public void addAttributeInvocation(String consumingClassName, String declaringClassName, AttributeInvocation attributeInvocationInformation) {
-        if (this.classDependenceTrees.containsKey(consumingClassName)) {
-            this.classDependenceTrees.get(consumingClassName).addAttributeInvocationElement(declaringClassName, InvocationType.OUTGOING, attributeInvocationInformation);
+        if (this.classStructures.containsKey(consumingClassName)) {
+            this.classStructures.get(consumingClassName).addAttributeInvocationElement(declaringClassName, InvocationType.OUTGOING, attributeInvocationInformation);
         } else {
             ClassStructure classStructure = new ClassStructure();
             classStructure.addAttributeInvocationElement(declaringClassName, InvocationType.OUTGOING, attributeInvocationInformation);
-            this.classDependenceTrees.put(consumingClassName, classStructure);
+            this.classStructures.put(consumingClassName, classStructure);
         }
 
-        if (this.classDependenceTrees.containsKey(declaringClassName)) {
-            this.classDependenceTrees.get(declaringClassName).addAttributeInvocationElement(consumingClassName, InvocationType.INCOMING, attributeInvocationInformation);
+        if (this.classStructures.containsKey(declaringClassName)) {
+            this.classStructures.get(declaringClassName).addAttributeInvocationElement(consumingClassName, InvocationType.INCOMING, attributeInvocationInformation);
         } else {
             ClassStructure classStructure = new ClassStructure();
             classStructure.addAttributeInvocationElement(consumingClassName, InvocationType.INCOMING, attributeInvocationInformation);
-            this.classDependenceTrees.put(declaringClassName, classStructure);
+            this.classStructures.put(declaringClassName, classStructure);
         }
     }
 
@@ -165,20 +166,20 @@ public class ProjectStructure {
      * @param constructorInvocationInformation The package declaration object
      */
     public void addConstructorInvocation(String consumingClassName, String declaringClassName, ConstructorInvocation constructorInvocationInformation) {
-        if (this.classDependenceTrees.containsKey(consumingClassName)) {
-            this.classDependenceTrees.get(consumingClassName).addConstructorInvocationElement(declaringClassName, InvocationType.OUTGOING, constructorInvocationInformation);
+        if (this.classStructures.containsKey(consumingClassName)) {
+            this.classStructures.get(consumingClassName).addConstructorInvocationElement(declaringClassName, InvocationType.OUTGOING, constructorInvocationInformation);
         } else {
             ClassStructure classStructure = new ClassStructure();
             classStructure.addConstructorInvocationElement(declaringClassName, InvocationType.OUTGOING, constructorInvocationInformation);
-            this.classDependenceTrees.put(consumingClassName, classStructure);
+            this.classStructures.put(consumingClassName, classStructure);
         }
 
-        if (this.classDependenceTrees.containsKey(declaringClassName)) {
-            this.classDependenceTrees.get(declaringClassName).addConstructorInvocationElement(consumingClassName, InvocationType.INCOMING, constructorInvocationInformation);
+        if (this.classStructures.containsKey(declaringClassName)) {
+            this.classStructures.get(declaringClassName).addConstructorInvocationElement(consumingClassName, InvocationType.INCOMING, constructorInvocationInformation);
         } else {
             ClassStructure classStructure = new ClassStructure();
             classStructure.addConstructorInvocationElement(consumingClassName, InvocationType.INCOMING, constructorInvocationInformation);
-            this.classDependenceTrees.put(declaringClassName, classStructure);
+            this.classStructures.put(declaringClassName, classStructure);
         }
     }
 
@@ -190,20 +191,20 @@ public class ProjectStructure {
      * @param methodInvocationInformation The package declaration object
      */
     public void addMethodInvocation(String consumingClassName, String declaringClassName, MethodInvocation methodInvocationInformation) {
-        if (this.classDependenceTrees.containsKey(consumingClassName)) {
-            this.classDependenceTrees.get(consumingClassName).addMethodInvocationElement(declaringClassName, InvocationType.OUTGOING, methodInvocationInformation);
+        if (this.classStructures.containsKey(consumingClassName)) {
+            this.classStructures.get(consumingClassName).addMethodInvocationElement(declaringClassName, InvocationType.OUTGOING, methodInvocationInformation);
         } else {
             ClassStructure classStructure = new ClassStructure();
             classStructure.addMethodInvocationElement(declaringClassName, InvocationType.OUTGOING, methodInvocationInformation);
-            this.classDependenceTrees.put(consumingClassName, classStructure);
+            this.classStructures.put(consumingClassName, classStructure);
         }
 
-        if (this.classDependenceTrees.containsKey(declaringClassName)) {
-            this.classDependenceTrees.get(declaringClassName).addMethodInvocationElement(consumingClassName, InvocationType.INCOMING, methodInvocationInformation);
+        if (this.classStructures.containsKey(declaringClassName)) {
+            this.classStructures.get(declaringClassName).addMethodInvocationElement(consumingClassName, InvocationType.INCOMING, methodInvocationInformation);
         } else {
             ClassStructure classStructure = new ClassStructure();
             classStructure.addMethodInvocationElement(consumingClassName, InvocationType.INCOMING, methodInvocationInformation);
-            this.classDependenceTrees.put(declaringClassName, classStructure);
+            this.classStructures.put(declaringClassName, classStructure);
         }
     }
 }

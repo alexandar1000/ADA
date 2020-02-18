@@ -21,7 +21,7 @@ public class ProjectMetricsContainer {
      * @param projectStructure corresponding parsed repository stored in the ProjectDependenceTree
      */
     public void computeAllMetrics(ProjectStructure projectStructure) {
-        for (String key : projectStructure.getClassDependenceTrees().keySet()) {
+        for (String key : projectStructure.getClassStructures().keySet()) {
             if (!classMetrics.containsKey(key)) {
                 ClassMetricsContainer classMetricsContainer = new ClassMetricsContainer();
                 classMetrics.put(key, classMetricsContainer);

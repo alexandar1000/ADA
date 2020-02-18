@@ -28,7 +28,7 @@ class ProjectStructureTest {
 
         pdt.addPackageDeclaration(declaringClassName, packageDeclarationInformation);
 
-        assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getCurrentPackage()).isEqualTo(packageDeclarationInformation);
+        assertThat(pdt.getClassStructures().get(declaringClassName).getCurrentPackage()).isEqualTo(packageDeclarationInformation);
     }
 
     @Test
@@ -39,7 +39,7 @@ class ProjectStructureTest {
 
         pdt.addAttributeDeclaration(declaringClassName, attributeDeclarationInformation);
 
-        assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getAttributeDeclarations()).containsExactly(attributeDeclarationInformation);
+        assertThat(pdt.getClassStructures().get(declaringClassName).getAttributeDeclarations()).containsExactly(attributeDeclarationInformation);
     }
 
     @Test
@@ -49,7 +49,7 @@ class ProjectStructureTest {
 
         pdt.addConstructorDeclaration(declaringClassName, constructorDeclarationInformation);
 
-        assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getConstructorDeclarations()).containsExactly(constructorDeclarationInformation);
+        assertThat(pdt.getClassStructures().get(declaringClassName).getConstructorDeclarations()).containsExactly(constructorDeclarationInformation);
     }
 
     @Test
@@ -59,7 +59,7 @@ class ProjectStructureTest {
 
         pdt.addMethodDeclaration(declaringClassName, methodDeclarationInformation);
 
-        assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getMethodsDeclarations()).containsExactly(methodDeclarationInformation);
+        assertThat(pdt.getClassStructures().get(declaringClassName).getMethodsDeclarations()).containsExactly(methodDeclarationInformation);
     }
 
     @Test
@@ -71,7 +71,7 @@ class ProjectStructureTest {
 
         pdt.addPackageInvocation(consumingClassName, declaringClassName, packageDeclarationInformation);
 
-        assertThat(pdt.getClassDependenceTrees().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getPackages()).containsExactly(packageDeclarationInformation);
+        assertThat(pdt.getClassStructures().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getPackages()).containsExactly(packageDeclarationInformation);
     }
 
 
@@ -84,7 +84,7 @@ class ProjectStructureTest {
 
         pdt.addPackageInvocation(consumingClassName, declaringClassName, packageInvocationInformation);
 
-        assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getPackages()).containsExactly(packageInvocationInformation);
+        assertThat(pdt.getClassStructures().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getPackages()).containsExactly(packageInvocationInformation);
     }
 
     @Test
@@ -98,7 +98,7 @@ class ProjectStructureTest {
         pdt.addPackageInvocation(consumingClassName, declaringClassName, packageInvocationInformation0);
         pdt.addPackageInvocation(consumingClassName, declaringClassName, packageInvocationInformation1);
 
-        assertThat(pdt.getClassDependenceTrees().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getPackages()).containsExactlyInAnyOrderElementsOf(Arrays.asList(packageInvocationInformation0, packageInvocationInformation1));
+        assertThat(pdt.getClassStructures().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getPackages()).containsExactlyInAnyOrderElementsOf(Arrays.asList(packageInvocationInformation0, packageInvocationInformation1));
     }
 
 
@@ -113,7 +113,7 @@ class ProjectStructureTest {
         pdt.addPackageInvocation(consumingClassName, declaringClassName, packageInvocationInformation0);
         pdt.addPackageInvocation(consumingClassName, declaringClassName, packageInvocationInformation1);
 
-        assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getPackages()).containsExactlyInAnyOrderElementsOf(Arrays.asList(packageInvocationInformation0, packageInvocationInformation1));
+        assertThat(pdt.getClassStructures().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getPackages()).containsExactlyInAnyOrderElementsOf(Arrays.asList(packageInvocationInformation0, packageInvocationInformation1));
     }
 
     @Test
@@ -125,7 +125,7 @@ class ProjectStructureTest {
 
         pdt.addAttributeInvocation(consumingClassName, declaringClassName, attributeInvocationInformation);
 
-        assertThat(pdt.getClassDependenceTrees().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getAttributes()).containsExactly(attributeInvocationInformation);
+        assertThat(pdt.getClassStructures().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getAttributes()).containsExactly(attributeInvocationInformation);
     }
 
 
@@ -139,7 +139,7 @@ class ProjectStructureTest {
         pdt.addAttributeInvocation(consumingClassName, declaringClassName, attributeInvocationInformation);
 
 
-        assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getAttributes()).containsExactly(attributeInvocationInformation);
+        assertThat(pdt.getClassStructures().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getAttributes()).containsExactly(attributeInvocationInformation);
     }
 
     @Test
@@ -153,7 +153,7 @@ class ProjectStructureTest {
         pdt.addAttributeInvocation(consumingClassName, declaringClassName, attributeInvocationInformation0);
         pdt.addAttributeInvocation(consumingClassName, declaringClassName, attributeInvocationInformation1);
 
-        assertThat(pdt.getClassDependenceTrees().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getAttributes()).containsExactlyInAnyOrderElementsOf(Arrays.asList(attributeInvocationInformation0, attributeInvocationInformation1));
+        assertThat(pdt.getClassStructures().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getAttributes()).containsExactlyInAnyOrderElementsOf(Arrays.asList(attributeInvocationInformation0, attributeInvocationInformation1));
     }
 
 
@@ -168,7 +168,7 @@ class ProjectStructureTest {
         pdt.addAttributeInvocation(consumingClassName, declaringClassName, attributeInvocationInformation0);
         pdt.addAttributeInvocation(consumingClassName, declaringClassName, attributeInvocationInformation1);
 
-        assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getAttributes()).containsExactlyInAnyOrderElementsOf(Arrays.asList(attributeInvocationInformation0, attributeInvocationInformation1));
+        assertThat(pdt.getClassStructures().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getAttributes()).containsExactlyInAnyOrderElementsOf(Arrays.asList(attributeInvocationInformation0, attributeInvocationInformation1));
     }
 
     @Test
@@ -180,7 +180,7 @@ class ProjectStructureTest {
 
         pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation);
 
-        assertThat(pdt.getClassDependenceTrees().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getConstructors()).containsExactly(constructorInvocationInformation);
+        assertThat(pdt.getClassStructures().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getConstructors()).containsExactly(constructorInvocationInformation);
     }
 
 
@@ -193,7 +193,7 @@ class ProjectStructureTest {
 
         pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation);
 
-        assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getConstructors()).containsExactly(constructorInvocationInformation);
+        assertThat(pdt.getClassStructures().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getConstructors()).containsExactly(constructorInvocationInformation);
     }
 
     @Test
@@ -207,7 +207,7 @@ class ProjectStructureTest {
         pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation0);
         pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation1);
 
-        assertThat(pdt.getClassDependenceTrees().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getConstructors()).containsExactlyInAnyOrderElementsOf(Arrays.asList(constructorInvocationInformation0, constructorInvocationInformation1));
+        assertThat(pdt.getClassStructures().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getConstructors()).containsExactlyInAnyOrderElementsOf(Arrays.asList(constructorInvocationInformation0, constructorInvocationInformation1));
     }
 
 
@@ -223,7 +223,7 @@ class ProjectStructureTest {
         pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation0);
         pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation1);
 
-        assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getConstructors()).containsExactlyInAnyOrderElementsOf(Arrays.asList(constructorInvocationInformation0, constructorInvocationInformation1));
+        assertThat(pdt.getClassStructures().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getConstructors()).containsExactlyInAnyOrderElementsOf(Arrays.asList(constructorInvocationInformation0, constructorInvocationInformation1));
     }
 
     @Test
@@ -235,7 +235,7 @@ class ProjectStructureTest {
 
         pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation);
 
-        assertThat(pdt.getClassDependenceTrees().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getMethods()).containsExactly(methodInvocationInformation);
+        assertThat(pdt.getClassStructures().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getMethods()).containsExactly(methodInvocationInformation);
     }
 
 
@@ -248,7 +248,7 @@ class ProjectStructureTest {
 
         pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation);
 
-        assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getMethods()).containsExactly(methodInvocationInformation);
+        assertThat(pdt.getClassStructures().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getMethods()).containsExactly(methodInvocationInformation);
     }
 
     @Test
@@ -262,7 +262,7 @@ class ProjectStructureTest {
         pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation0);
         pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation1);
 
-        assertThat(pdt.getClassDependenceTrees().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getMethods()).containsExactlyInAnyOrderElementsOf(Arrays.asList(methodInvocationInformation0, methodInvocationInformation1));
+        assertThat(pdt.getClassStructures().get(consumingClassName).getOutgoingDependenceInfo().get(declaringClassName).getMethods()).containsExactlyInAnyOrderElementsOf(Arrays.asList(methodInvocationInformation0, methodInvocationInformation1));
     }
 
 
@@ -277,7 +277,7 @@ class ProjectStructureTest {
         pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation0);
         pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation1);
 
-       assertThat(pdt.getClassDependenceTrees().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getMethods()).containsExactlyInAnyOrderElementsOf(Arrays.asList(methodInvocationInformation0, methodInvocationInformation1));
+       assertThat(pdt.getClassStructures().get(declaringClassName).getIncomingDependenceInfo().get(consumingClassName).getMethods()).containsExactlyInAnyOrderElementsOf(Arrays.asList(methodInvocationInformation0, methodInvocationInformation1));
     }
 
 }
