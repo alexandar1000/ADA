@@ -1,10 +1,14 @@
 package com.ucl.ADA.parser.dependence_information.declaration_information;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter @Setter @NoArgsConstructor
+import java.util.HashSet;
+import java.util.Set;
+
+@Getter @Builder
+@NoArgsConstructor
 public class AttributeDeclaration extends ElementDeclaration {
     /**
      * The type of the attribute.
@@ -19,28 +23,20 @@ public class AttributeDeclaration extends ElementDeclaration {
     /**
      * The access modifier assigned to the attribute.
      */
-    private ModifierType modifierType;
-
-    /**
-     * Defines whether the attribute declaration is for the entire class (isLocalDeclaration == false), or if it is
-     * a local declaration (isLocalDeclaration == true)
-     */
-    private boolean isLocalDeclaration;
+    private Set<ModifierType> modifierTypes = new HashSet<>();
 
 
     /**
      * The constructor of the attribute declaration object.
-     * @param modifierType the access modifier associated with the attribute
+     * @param modifierTypes the set of access modifiers associated with the attribute
      * @param type the type of the attribute
      * @param name name of the attribute
      * @param value the value assigned to the attribute
-     * @param isLocalDeclaration describes whether this is a local or class-wide attribute declaration
      */
-    public AttributeDeclaration(ModifierType modifierType, String type, String name, String value, boolean isLocalDeclaration) {
+    public AttributeDeclaration(Set<ModifierType> modifierTypes, String type, String name, String value) {
         super(name);
-        this.modifierType = modifierType;
+        this.modifierTypes.addAll(modifierTypes);
         this.type = type;
         this.value = value;
-        this.isLocalDeclaration = isLocalDeclaration;
     }
 }

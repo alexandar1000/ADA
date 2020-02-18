@@ -36,7 +36,7 @@ public class SourceFileProcessor {
             } else if (a.getModifiers().contains("default")) {
                 modifierType = ModifierType.DEFAULT;
             }
-            AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(modifierType, a.getType(), a.getName(), a.getAssignedValue(), false);
+            AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(modifierType, a.getType(), a.getName(), a.getAssignedValue());
             projectDependenceTree.addAttributeDeclaration(sourceFile.getClassName(), attributeDeclarationInformation);
         });
 
@@ -46,7 +46,7 @@ public class SourceFileProcessor {
                 String name = localVariables.getKey();
                 // TODO: local variable no value
                 // TODO: check at the ModifierType.DEFAULT in the line below
-                AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(ModifierType.DEFAULT, type, name, null, true);
+                AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(ModifierType.DEFAULT, type, name, null);
                 projectDependenceTree.addAttributeDeclaration(sourceFile.getClassName(), attributeDeclarationInformation);
             }
         });

@@ -35,7 +35,7 @@ class ProjectDependenceTreeTest {
     public void testAddAttributeDeclaration() {
         String declaringClassName = "DeclaringTestClass";
 
-        AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(ModifierType.DEFAULT, "String", "attribute", "declaringAttributeName", true);
+        AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(ModifierType.DEFAULT, "String", "attribute", "declaringAttributeName");
 
         pdt.addAttributeDeclaration(declaringClassName, attributeDeclarationInformation);
 

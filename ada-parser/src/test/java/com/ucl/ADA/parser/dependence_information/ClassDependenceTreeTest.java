@@ -28,7 +28,7 @@ class ClassDependenceTreeTest {
 
     @Test
     void addDataDeclaration_addNewElement() {
-        AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(ModifierType.DEFAULT, "String", "attribute", "declaringAttributeName", true);
+        AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(ModifierType.DEFAULT, "String", "attribute", "declaringAttributeName");
 
         cdt.addAttributeDeclaration(attributeDeclarationInformation);
 

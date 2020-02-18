@@ -42,7 +42,7 @@ class ProjectMetricsContainerTest {
         for (String className : classNames) {
             for (int j = 0; j < 3; j++) {
                 String attributeName = "attribute" + j + "in" + className;
-                AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(ModifierType.DEFAULT, "String", attributeName, "declaringAttributeName" + j, true);
+                AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(ModifierType.DEFAULT, "String", attributeName, "declaringAttributeName" + j);
                 pdt.addAttributeDeclaration(className, attributeDeclarationInformation);
             }
         }
