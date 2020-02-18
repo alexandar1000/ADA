@@ -1,7 +1,7 @@
 package com.ucl.ADA.parser.dependence_information;
 
-import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclaration;
 import com.ucl.ADA.parser.dependence_information.declaration_information.AttributeDeclaration;
+import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclaration;
 import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclaration;
 import com.ucl.ADA.parser.dependence_information.declaration_information.PackageDeclaration;
 import com.ucl.ADA.parser.dependence_information.invocation_information.*;
@@ -11,6 +11,8 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Getter @Setter @NoArgsConstructor
 public class ClassStructure {
@@ -23,68 +25,71 @@ public class ClassStructure {
     /**
      * Attributes declared in this class.
      */
-    private ArrayList<AttributeDeclaration> attributeDeclarations = new ArrayList<>();
+    private List<AttributeDeclaration> attributeDeclarations = new ArrayList<>();
 
     /**
      * Constructors declared in this class.
      */
-    private ArrayList<ConstructorDeclaration> constructorDeclarations = new ArrayList<>();
+    private List<ConstructorDeclaration> constructorDeclarations = new ArrayList<>();
 
     /**
      * Methods declared in this class.
      */
-    private ArrayList<MethodDeclaration> methodsDeclarations = new ArrayList<>();
+    private List<MethodDeclaration> methodsDeclarations = new ArrayList<>();
 
     /**
-     * Information about the invocations of the elements from the other classes from this class.
+     * Information about the invocations of the elements from the other classes from this class. String is the qualified
+     * name of the class.
      */
-    private HashMap<String, DependenceInfo> outgoingDependenceInfo = new HashMap<>();
+    private Map<String, DependenceInfo> outgoingDependenceInfo = new HashMap<>();
 
     /**
-     * Information about the invocations of elements from this class by the other classes.
+     * Information about the invocations of elements from this class by the other classes. String is the qualified
+     * name of the class.
      */
-    private HashMap<String, DependenceInfo> incomingDependenceInfo = new HashMap<>();
+    private Map<String, DependenceInfo> incomingDependenceInfo = new HashMap<>();
 
     /**
      * External Invocation Information, Setter is called
      */
-    private ArrayList<String> ExternalMethodCalls = new ArrayList<>();
+    // TODO: make sure that this makes sense, and if possible extract into a new class
+    private List<String> ExternalMethodCalls = new ArrayList<>();
 
-    private ArrayList<String> ExternalConstructorInvocations = new ArrayList<>();
+    private List<String> ExternalConstructorInvocations = new ArrayList<>();
 
-    private ArrayList<String> ExternalFieldInvocations = new ArrayList<>();
+    private List<String> ExternalFieldInvocations = new ArrayList<>();
 
 
     /**
      * Creates a new instance using the package name.
-     * @param packageDeclarationInformation the name of the package corresponding to the current class
+     * @param packageDeclaration the name of the package corresponding to the current class
      */
-    protected ClassStructure(PackageDeclaration packageDeclarationInformation) {
-        this.currentPackage = packageDeclarationInformation;
+    protected ClassStructure(PackageDeclaration packageDeclaration) {
+        this.currentPackage = packageDeclaration;
     }
 
     /**
      * Adds a Attribute Declaration to the ClassDependenceTree
-     * @param attributeDeclarationInformation the attribute declaration object
+     * @param attributeDeclaration the attribute declaration object
      */
-    protected void addAttributeDeclaration(AttributeDeclaration attributeDeclarationInformation) {
-        this.attributeDeclarations.add(attributeDeclarationInformation);
+    protected void addAttributeDeclaration(AttributeDeclaration attributeDeclaration) {
+        this.attributeDeclarations.add(attributeDeclaration);
     }
 
     /**
      * Adds a Method Declaration to the ClassDependenceTree
-     * @param methodDeclarationInformation the method declaration object
+     * @param methodDeclaration the method declaration object
      */
-    protected void addMethodDeclaration(MethodDeclaration methodDeclarationInformation) {
-        this.methodsDeclarations.add(methodDeclarationInformation);
+    protected void addMethodDeclaration(MethodDeclaration methodDeclaration) {
+        this.methodsDeclarations.add(methodDeclaration);
     }
 
     /**
      * Adds a Constructor Declaration to the ClassDependenceTree
-     * @param constructorDeclarationInformation the constructor declaration object
+     * @param constructorDeclaration the constructor declaration object
      */
-    protected void addConstructorDeclaration(ConstructorDeclaration constructorDeclarationInformation) {
-        this.constructorDeclarations.add(constructorDeclarationInformation);
+    protected void addConstructorDeclaration(ConstructorDeclaration constructorDeclaration) {
+        this.constructorDeclarations.add(constructorDeclaration);
     }
 
     /**
@@ -93,24 +98,24 @@ public class ClassStructure {
      * @param invocationType either an incoming invocation type in the case that the package is being invoked from the
      *                       relatingClass, or an outgoing invocation type in the case that the package is invoked from
      *                       the relatingClass
-     * @param packageInvocationInformation the package invocation object containing the data corresponding to the
+     * @param packageInvocation the package invocation object containing the data corresponding to the
      *                                     invocation in question
      */
-    protected void addPackageInvocationElement(String relatingClass, InvocationType invocationType, PackageInvocation packageInvocationInformation) {
+    protected void addPackageInvocationElement(String relatingClass, InvocationType invocationType, PackageInvocation packageInvocation) {
         if (invocationType == InvocationType.OUTGOING) {
             if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
-                this.outgoingDependenceInfo.get(relatingClass).addNewPackage(packageInvocationInformation);
+                this.outgoingDependenceInfo.get(relatingClass).addNewPackage(packageInvocation);
             } else {
                 DependenceInfo dependenceInfo = new DependenceInfo();
-                dependenceInfo.addNewPackage(packageInvocationInformation);
+                dependenceInfo.addNewPackage(packageInvocation);
                 this.outgoingDependenceInfo.put(relatingClass, dependenceInfo);
             }
         } else {
             if (this.incomingDependenceInfo.containsKey(relatingClass)) {
-                this.incomingDependenceInfo.get(relatingClass).addNewPackage(packageInvocationInformation);
+                this.incomingDependenceInfo.get(relatingClass).addNewPackage(packageInvocation);
             } else {
                 DependenceInfo dependenceInfo = new DependenceInfo();
-                dependenceInfo.addNewPackage(packageInvocationInformation);
+                dependenceInfo.addNewPackage(packageInvocation);
                 this.incomingDependenceInfo.put(relatingClass, dependenceInfo);
             }
         }
@@ -122,24 +127,24 @@ public class ClassStructure {
      * @param invocationType either an incoming invocation type in the case that the attribute is being invoked from the
      *                       relatingClass, or an outgoing invocation type in the case that the attribute is invoked from
      *                       the relatingClass
-     * @param attributeInvocationInformation the attribute invocation object containing the data corresponding to the
+     * @param attributeInvocation the attribute invocation object containing the data corresponding to the
      *                                     invocation in question
      */
-    protected void addAttributeInvocationElement(String relatingClass, InvocationType invocationType, AttributeInvocation attributeInvocationInformation) {
+    protected void addAttributeInvocationElement(String relatingClass, InvocationType invocationType, AttributeInvocation attributeInvocation) {
         if (invocationType == InvocationType.OUTGOING) {
             if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
-                this.outgoingDependenceInfo.get(relatingClass).addNewAttribute(attributeInvocationInformation);
+                this.outgoingDependenceInfo.get(relatingClass).addNewAttribute(attributeInvocation);
             } else {
                 DependenceInfo dependenceInfo = new DependenceInfo();
-                dependenceInfo.addNewAttribute(attributeInvocationInformation);
+                dependenceInfo.addNewAttribute(attributeInvocation);
                 this.outgoingDependenceInfo.put(relatingClass, dependenceInfo);
             }
         } else {
             if (this.incomingDependenceInfo.containsKey(relatingClass)) {
-                this.incomingDependenceInfo.get(relatingClass).addNewAttribute(attributeInvocationInformation);
+                this.incomingDependenceInfo.get(relatingClass).addNewAttribute(attributeInvocation);
             } else {
                 DependenceInfo dependenceInfo = new DependenceInfo();
-                dependenceInfo.addNewAttribute(attributeInvocationInformation);
+                dependenceInfo.addNewAttribute(attributeInvocation);
                 this.incomingDependenceInfo.put(relatingClass, dependenceInfo);
             }
         }
@@ -151,24 +156,24 @@ public class ClassStructure {
      * @param invocationType either an incoming invocation type in the case that the constructor is being invoked from the
      *                       relatingClass, or an outgoing invocation type in the case that the constructor is invoked from
      *                       the relatingClass
-     * @param constructorInvocationInformation the constructor invocation object containing the data corresponding to the
+     * @param constructorInvocation the constructor invocation object containing the data corresponding to the
      *                                     invocation in question
      */
-    protected void addConstructorInvocationElement(String relatingClass, InvocationType invocationType, ConstructorInvocation constructorInvocationInformation) {
+    protected void addConstructorInvocationElement(String relatingClass, InvocationType invocationType, ConstructorInvocation constructorInvocation) {
         if (invocationType == InvocationType.OUTGOING) {
             if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
-                this.outgoingDependenceInfo.get(relatingClass).addNewConstructor(constructorInvocationInformation);
+                this.outgoingDependenceInfo.get(relatingClass).addNewConstructor(constructorInvocation);
             } else {
                 DependenceInfo dependenceInfo = new DependenceInfo();
-                dependenceInfo.addNewConstructor(constructorInvocationInformation);
+                dependenceInfo.addNewConstructor(constructorInvocation);
                 this.outgoingDependenceInfo.put(relatingClass, dependenceInfo);
             }
         } else {
             if (this.incomingDependenceInfo.containsKey(relatingClass)) {
-                this.incomingDependenceInfo.get(relatingClass).addNewConstructor(constructorInvocationInformation);
+                this.incomingDependenceInfo.get(relatingClass).addNewConstructor(constructorInvocation);
             } else {
                 DependenceInfo dependenceInfo = new DependenceInfo();
-                dependenceInfo.addNewConstructor(constructorInvocationInformation);
+                dependenceInfo.addNewConstructor(constructorInvocation);
                 this.incomingDependenceInfo.put(relatingClass, dependenceInfo);
             }
         }
@@ -180,24 +185,24 @@ public class ClassStructure {
      * @param invocationType either an incoming invocation type in the case that the method is being invoked from the
      *                       relatingClass, or an outgoing invocation type in the case that the method is invoked from
      *                       the relatingClass
-     * @param methodInvocationInformation the method invocation object containing the data corresponding to the
+     * @param methodInvocation the method invocation object containing the data corresponding to the
      *                                     invocation in question
      */
-    protected void addMethodInvocationElement(String relatingClass, InvocationType invocationType, MethodInvocation methodInvocationInformation) {
+    protected void addMethodInvocationElement(String relatingClass, InvocationType invocationType, MethodInvocation methodInvocation) {
         if (invocationType == InvocationType.OUTGOING) {
             if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
-                this.outgoingDependenceInfo.get(relatingClass).addNewMethod(methodInvocationInformation);
+                this.outgoingDependenceInfo.get(relatingClass).addNewMethod(methodInvocation);
             } else {
                 DependenceInfo dependenceInfo = new DependenceInfo();
-                dependenceInfo.addNewMethod(methodInvocationInformation);
+                dependenceInfo.addNewMethod(methodInvocation);
                 this.outgoingDependenceInfo.put(relatingClass, dependenceInfo);
             }
         } else {
             if (this.incomingDependenceInfo.containsKey(relatingClass)) {
-                this.incomingDependenceInfo.get(relatingClass).addNewMethod(methodInvocationInformation);
+                this.incomingDependenceInfo.get(relatingClass).addNewMethod(methodInvocation);
             } else {
                 DependenceInfo dependenceInfo = new DependenceInfo();
-                dependenceInfo.addNewMethod(methodInvocationInformation);
+                dependenceInfo.addNewMethod(methodInvocation);
                 this.incomingDependenceInfo.put(relatingClass, dependenceInfo);
             }
         }
