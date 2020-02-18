@@ -1,6 +1,6 @@
 package com.ucl.ADA.parser;
 
-import com.ucl.ADA.model.dependence_information.ProjectStructure;
+import com.ucl.ADA.model.project_structure.ProjectStructure;
 import com.ucl.ADA.parser.transformer.Transformer;
 import org.springframework.stereotype.Service;
 

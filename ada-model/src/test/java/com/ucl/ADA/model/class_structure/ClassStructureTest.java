@@ -1,19 +1,41 @@
-package com.ucl.ADA.model.dependence_information;
+package com.ucl.ADA.model.class_structure;
 
-import com.ucl.ADA.model.dependence_information.ClassStructure;
 import com.ucl.ADA.model.dependence_information.declaration_information.*;
 import com.ucl.ADA.model.dependence_information.invocation_information.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ClassStructureTest {
 
     private ClassStructure cdt;
+
+    private Set<ModifierType> modifiers = new HashSet<>(Collections.singletonList(
+            ModifierType.DEFAULT
+    ));
+
+    private ArrayList<ParameterDeclaration> declaredParameters0 = new ArrayList<>(Arrays.asList(
+            new ParameterDeclaration("String", "FirstParameter"),
+            new ParameterDeclaration("Integer", "SecondParameter")
+    ));
+
+    private ArrayList<ParameterDeclaration> declaredParameters1 = new ArrayList<>(Arrays.asList(
+            new ParameterDeclaration("String", "FirstParameter"),
+            new ParameterDeclaration("Integer", "SecondParameter")
+    ));
+
+    private ArrayList<PassedParameter> passedParameterList0 = new ArrayList<>(Arrays.asList(
+            new PassedParameter("FirstParameter0"),
+            new PassedParameter("SecondParameter0")
+    ));
+
+    private ArrayList<PassedParameter> passedParameterList1 = new ArrayList<>(Arrays.asList(
+            new PassedParameter("FirstParameter1"),
+            new PassedParameter("SecondParameter1")
+    ));
     @BeforeEach
     void setUp() {
         cdt = new ClassStructure();
@@ -29,7 +51,7 @@ class ClassStructureTest {
 
     @Test
     void addDataDeclaration_addNewElement() {
-        AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(ModifierType.DEFAULT, "String", "attribute", "declaringAttributeName");
+        AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(modifiers, "String", "attribute", "declaringAttributeName");
 
         cdt.addAttributeDeclaration(attributeDeclarationInformation);
 
@@ -38,7 +60,7 @@ class ClassStructureTest {
 
     @Test
     void addConstructorDeclaration_addNewElement() {
-        ConstructorDeclaration constructorDeclarationInformation = new ConstructorDeclaration(ModifierType.DEFAULT, "String", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        ConstructorDeclaration constructorDeclarationInformation = new ConstructorDeclaration(modifiers, "String", declaredParameters0);
 
         cdt.addConstructorDeclaration(constructorDeclarationInformation);
 
@@ -47,7 +69,7 @@ class ClassStructureTest {
 
     @Test
     void addMethodDeclaration_addNewElement() {
-        MethodDeclaration methodDeclarationInformation = new MethodDeclaration(ModifierType.DEFAULT, "String", "testingTesting", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        MethodDeclaration methodDeclarationInformation = new MethodDeclaration(modifiers, "String", "testingTesting", declaredParameters0);
 
         cdt.addMethodDeclaration(methodDeclarationInformation);
 
@@ -84,7 +106,7 @@ class ClassStructureTest {
     void addConstructorElement_testAddingOutgoingInvocation() {
         String className = "TestClass";
 
-        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", passedParameterList0);
 
         cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING, constructorInvocationInformation);
 
@@ -97,7 +119,7 @@ class ClassStructureTest {
     void addMethodElement_testAddingOutgoingInvocation() {
         String className = "TestClass";
 
-        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", passedParameterList0);
 
         cdt.addMethodInvocationElement(className, InvocationType.OUTGOING, methodInvocationInformation);
 
@@ -137,7 +159,7 @@ class ClassStructureTest {
     void addConstructorElement_testAddingIncomingInvocation() {
         String className = "TestClass";
 
-        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", passedParameterList0);
 
         cdt.addConstructorInvocationElement(className, InvocationType.INCOMING, constructorInvocationInformation);
 
@@ -150,7 +172,7 @@ class ClassStructureTest {
     void addMethodElement_testAddingIncomingInvocation() {
         String className = "TestClass";
 
-        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", passedParameterList0);
 
         cdt.addMethodInvocationElement(className, InvocationType.INCOMING, methodInvocationInformation);
 
@@ -194,8 +216,8 @@ class ClassStructureTest {
     void addConstructorElement_testAddingOutgoingInvocationWithExistingElement() {
         String className = "TestClass";
 
-        ConstructorInvocation constructorInvocationInformation0 = new ConstructorInvocation("constructorExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
-        ConstructorInvocation constructorInvocationInformation1 = new ConstructorInvocation("constructorExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
+        ConstructorInvocation constructorInvocationInformation0 = new ConstructorInvocation("constructorExample0", passedParameterList0);
+        ConstructorInvocation constructorInvocationInformation1 = new ConstructorInvocation("constructorExample1", passedParameterList1);
 
         cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING, constructorInvocationInformation0);
         cdt.addConstructorInvocationElement(className, InvocationType.OUTGOING, constructorInvocationInformation1);
@@ -209,8 +231,8 @@ class ClassStructureTest {
     void addMethodElement_testAddingOutgoingInvocationWithExistingElement() {
         String className = "TestClass";
 
-        MethodInvocation methodInvocationInformation0 = new MethodInvocation("methodExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
-        MethodInvocation methodInvocationInformation1 = new MethodInvocation("methodExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
+        MethodInvocation methodInvocationInformation0 = new MethodInvocation("methodExample0", passedParameterList0);
+        MethodInvocation methodInvocationInformation1 = new MethodInvocation("methodExample1", passedParameterList1);
 
         cdt.addMethodInvocationElement(className, InvocationType.OUTGOING, methodInvocationInformation0);
         cdt.addMethodInvocationElement(className, InvocationType.OUTGOING, methodInvocationInformation1);
@@ -255,8 +277,8 @@ class ClassStructureTest {
     void addConstructorElement_testAddingIncomingInvocationWithExistingElement() {
         String className = "TestClass";
 
-        ConstructorInvocation constructorInvocationInformation0 = new ConstructorInvocation("constructorExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
-        ConstructorInvocation constructorInvocationInformation1 = new ConstructorInvocation("constructorExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
+        ConstructorInvocation constructorInvocationInformation0 = new ConstructorInvocation("constructorExample0", passedParameterList0);
+        ConstructorInvocation constructorInvocationInformation1 = new ConstructorInvocation("constructorExample1", passedParameterList1);
 
         cdt.addConstructorInvocationElement(className, InvocationType.INCOMING, constructorInvocationInformation0);
         cdt.addConstructorInvocationElement(className, InvocationType.INCOMING, constructorInvocationInformation1);
@@ -270,8 +292,8 @@ class ClassStructureTest {
     void addMethodElement_testAddingIncomingInvocationWithExistingElement() {
         String className = "TestClass";
 
-        MethodInvocation methodInvocationInformation0 = new MethodInvocation("methodExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
-        MethodInvocation methodInvocationInformation1 = new MethodInvocation("methodExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
+        MethodInvocation methodInvocationInformation0 = new MethodInvocation("methodExample0", passedParameterList0);
+        MethodInvocation methodInvocationInformation1 = new MethodInvocation("methodExample1", passedParameterList1);
 
         cdt.addMethodInvocationElement(className, InvocationType.INCOMING, methodInvocationInformation0);
         cdt.addMethodInvocationElement(className, InvocationType.INCOMING, methodInvocationInformation1);
@@ -299,8 +321,8 @@ class ClassStructureTest {
 
         PackageInvocation packageInvocationInformation = new PackageInvocation("moduleImportInformationName");
         AttributeInvocation attributeInvocationInformation = new AttributeInvocation("dataInvocationInformationName");
-        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
-        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", passedParameterList0);
+        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", passedParameterList1);
 
 
         cdt.addPackageInvocationElement(classNames.get(0), InvocationType.OUTGOING, packageInvocationInformation);
@@ -322,8 +344,8 @@ class ClassStructureTest {
 
         PackageInvocation packageInvocationInformation = new PackageInvocation("moduleImportInformationName");
         AttributeInvocation attributeInvocationInformation = new AttributeInvocation("dataInvocationInformationName");
-        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
-        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", passedParameterList0);
+        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", passedParameterList1);
 
 
         cdt.addPackageInvocationElement(className, InvocationType.OUTGOING, packageInvocationInformation);

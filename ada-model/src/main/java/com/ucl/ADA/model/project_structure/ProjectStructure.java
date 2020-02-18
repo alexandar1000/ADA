@@ -1,5 +1,6 @@
-package com.ucl.ADA.model.dependence_information;
+package com.ucl.ADA.model.project_structure;
 
+import com.ucl.ADA.model.class_structure.ClassStructure;
 import com.ucl.ADA.model.dependence_information.declaration_information.AttributeDeclaration;
 import com.ucl.ADA.model.dependence_information.declaration_information.ConstructorDeclaration;
 import com.ucl.ADA.model.dependence_information.declaration_information.MethodDeclaration;

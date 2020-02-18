@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter @Builder
+@Getter
 @NoArgsConstructor
 public class AttributeDeclaration extends ElementDeclaration {
     /**
@@ -33,6 +33,7 @@ public class AttributeDeclaration extends ElementDeclaration {
      * @param name name of the attribute
      * @param value the value assigned to the attribute
      */
+    @Builder
     public AttributeDeclaration(Set<ModifierType> modifierTypes, String type, String name, String value) {
         super(name);
         this.modifierTypes.addAll(modifierTypes);

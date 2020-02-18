@@ -1,21 +1,40 @@
-package com.ucl.ADA.model.dependence_information;
+package com.ucl.ADA.model.project_structure;
 
-import com.ucl.ADA.model.dependence_information.ProjectStructure;
 import com.ucl.ADA.model.dependence_information.declaration_information.*;
-import com.ucl.ADA.model.dependence_information.invocation_information.AttributeInvocation;
-import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
-import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
-import com.ucl.ADA.model.dependence_information.invocation_information.PackageInvocation;
+import com.ucl.ADA.model.dependence_information.invocation_information.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ProjectStructureTest {
     private ProjectStructure pdt;
+    private Set<ModifierType> modifiers = new HashSet<>(Collections.singletonList(
+            ModifierType.DEFAULT
+    ));
+
+    private ArrayList<ParameterDeclaration> declaredParameters0 = new ArrayList<>(Arrays.asList(
+            new ParameterDeclaration("String", "FirstParameter"),
+            new ParameterDeclaration("Integer", "SecondParameter")
+    ));
+
+    private ArrayList<ParameterDeclaration> declaredParameters1 = new ArrayList<>(Arrays.asList(
+            new ParameterDeclaration("String", "FirstParameter"),
+            new ParameterDeclaration("Integer", "SecondParameter")
+    ));
+
+    private ArrayList<PassedParameter> passedParameterList0 = new ArrayList<>(Arrays.asList(
+            new PassedParameter("FirstParameter0"),
+            new PassedParameter("SecondParameter0")
+    ));
+
+    private ArrayList<PassedParameter> passedParameterList1 = new ArrayList<>(Arrays.asList(
+            new PassedParameter("FirstParameter1"),
+            new PassedParameter("SecondParameter1")
+    ));
+
 
     @BeforeEach
     void setUp() {
@@ -36,7 +55,7 @@ class ProjectStructureTest {
     public void testAddAttributeDeclaration() {
         String declaringClassName = "DeclaringTestClass";
 
-        AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(ModifierType.DEFAULT, "String", "attribute", "declaringAttributeName");
+        AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(modifiers, "String", "attribute", "declaringAttributeName");
 
         pdt.addAttributeDeclaration(declaringClassName, attributeDeclarationInformation);
 
@@ -46,7 +65,7 @@ class ProjectStructureTest {
     @Test
     public void testAddConstructorDeclaration() {
         String declaringClassName = "DeclaringTestClass";
-        ConstructorDeclaration constructorDeclarationInformation = new ConstructorDeclaration(ModifierType.DEFAULT, "String", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        ConstructorDeclaration constructorDeclarationInformation = new ConstructorDeclaration(modifiers, "String", declaredParameters0);
 
         pdt.addConstructorDeclaration(declaringClassName, constructorDeclarationInformation);
 
@@ -56,7 +75,7 @@ class ProjectStructureTest {
     @Test
     public void testAddMethodDeclaration() {
         String declaringClassName = "DeclaringTestClass";
-        MethodDeclaration methodDeclarationInformation = new MethodDeclaration(ModifierType.DEFAULT, "String", "testingTesting", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        MethodDeclaration methodDeclarationInformation = new MethodDeclaration(modifiers, "String", "testingTesting", declaredParameters0);
 
         pdt.addMethodDeclaration(declaringClassName, methodDeclarationInformation);
 
@@ -177,7 +196,7 @@ class ProjectStructureTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", passedParameterList0);
 
         pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation);
 
@@ -190,7 +209,7 @@ class ProjectStructureTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", passedParameterList0);
 
         pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation);
 
@@ -202,8 +221,8 @@ class ProjectStructureTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        ConstructorInvocation constructorInvocationInformation0 = new ConstructorInvocation("constructorExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
-        ConstructorInvocation constructorInvocationInformation1 = new ConstructorInvocation("constructorExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
+        ConstructorInvocation constructorInvocationInformation0 = new ConstructorInvocation("constructorExample0", passedParameterList0);
+        ConstructorInvocation constructorInvocationInformation1 = new ConstructorInvocation("constructorExample1", passedParameterList1);
 
         pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation0);
         pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation1);
@@ -218,8 +237,8 @@ class ProjectStructureTest {
         String consumingClassName = "ConsumingTestClass";
 
 
-        ConstructorInvocation constructorInvocationInformation0 = new ConstructorInvocation("constructorExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
-        ConstructorInvocation constructorInvocationInformation1 = new ConstructorInvocation("constructorExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
+        ConstructorInvocation constructorInvocationInformation0 = new ConstructorInvocation("constructorExample0", passedParameterList0);
+        ConstructorInvocation constructorInvocationInformation1 = new ConstructorInvocation("constructorExample1", passedParameterList1);
 
         pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation0);
         pdt.addConstructorInvocation(consumingClassName, declaringClassName, constructorInvocationInformation1);
@@ -232,7 +251,7 @@ class ProjectStructureTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", passedParameterList0);
 
         pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation);
 
@@ -245,7 +264,7 @@ class ProjectStructureTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", passedParameterList0);
 
         pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation);
 
@@ -257,8 +276,8 @@ class ProjectStructureTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        MethodInvocation methodInvocationInformation0 = new MethodInvocation("methodExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
-        MethodInvocation methodInvocationInformation1 = new MethodInvocation("methodExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
+        MethodInvocation methodInvocationInformation0 = new MethodInvocation("methodExample0", passedParameterList0);
+        MethodInvocation methodInvocationInformation1 = new MethodInvocation("methodExample1", passedParameterList1);
 
         pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation0);
         pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation1);
@@ -272,8 +291,8 @@ class ProjectStructureTest {
         String declaringClassName = "DeclaringTestClass";
         String consumingClassName = "ConsumingTestClass";
 
-        MethodInvocation methodInvocationInformation0 = new MethodInvocation("methodExample0", new ArrayList<>(Arrays.asList("String FirstParameter0", "Integer SecondParameter0")));
-        MethodInvocation methodInvocationInformation1 = new MethodInvocation("methodExample1", new ArrayList<>(Arrays.asList("String FirstParameter1", "Integer SecondParameter1")));
+        MethodInvocation methodInvocationInformation0 = new MethodInvocation("methodExample0", passedParameterList0);
+        MethodInvocation methodInvocationInformation1 = new MethodInvocation("methodExample1", passedParameterList1);
 
         pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation0);
         pdt.addMethodInvocation(consumingClassName, declaringClassName, methodInvocationInformation1);

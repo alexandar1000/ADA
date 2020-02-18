@@ -1,11 +1,11 @@
-package com.ucl.ADA.model.dependence_information;
+package com.ucl.ADA.model.class_structure;
 
+import com.ucl.ADA.model.dependence_information.DependenceInfo;
 import com.ucl.ADA.model.dependence_information.declaration_information.AttributeDeclaration;
 import com.ucl.ADA.model.dependence_information.declaration_information.ConstructorDeclaration;
 import com.ucl.ADA.model.dependence_information.declaration_information.MethodDeclaration;
 import com.ucl.ADA.model.dependence_information.declaration_information.PackageDeclaration;
 import com.ucl.ADA.model.dependence_information.invocation_information.*;
-import com.ucl.ADA.parser.dependence_information.invocation_information.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -65,7 +65,7 @@ public class ClassStructure {
      * Creates a new instance using the package name.
      * @param packageDeclaration the name of the package corresponding to the current class
      */
-    protected ClassStructure(PackageDeclaration packageDeclaration) {
+    public ClassStructure(PackageDeclaration packageDeclaration) {
         this.currentPackage = packageDeclaration;
     }
 
@@ -73,7 +73,7 @@ public class ClassStructure {
      * Adds a Attribute Declaration to the ClassDependenceTree
      * @param attributeDeclaration the attribute declaration object
      */
-    protected void addAttributeDeclaration(AttributeDeclaration attributeDeclaration) {
+    public void addAttributeDeclaration(AttributeDeclaration attributeDeclaration) {
         this.attributeDeclarations.add(attributeDeclaration);
     }
 
@@ -81,7 +81,7 @@ public class ClassStructure {
      * Adds a Method Declaration to the ClassDependenceTree
      * @param methodDeclaration the method declaration object
      */
-    protected void addMethodDeclaration(MethodDeclaration methodDeclaration) {
+    public void addMethodDeclaration(MethodDeclaration methodDeclaration) {
         this.methodsDeclarations.add(methodDeclaration);
     }
 
@@ -89,7 +89,7 @@ public class ClassStructure {
      * Adds a Constructor Declaration to the ClassDependenceTree
      * @param constructorDeclaration the constructor declaration object
      */
-    protected void addConstructorDeclaration(ConstructorDeclaration constructorDeclaration) {
+    public void addConstructorDeclaration(ConstructorDeclaration constructorDeclaration) {
         this.constructorDeclarations.add(constructorDeclaration);
     }
 
@@ -102,7 +102,7 @@ public class ClassStructure {
      * @param packageInvocation the package invocation object containing the data corresponding to the
      *                                     invocation in question
      */
-    protected void addPackageInvocationElement(String relatingClass, InvocationType invocationType, PackageInvocation packageInvocation) {
+    public void addPackageInvocationElement(String relatingClass, InvocationType invocationType, PackageInvocation packageInvocation) {
         if (invocationType == InvocationType.OUTGOING) {
             if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
                 this.outgoingDependenceInfo.get(relatingClass).addNewPackage(packageInvocation);
@@ -131,7 +131,7 @@ public class ClassStructure {
      * @param attributeInvocation the attribute invocation object containing the data corresponding to the
      *                                     invocation in question
      */
-    protected void addAttributeInvocationElement(String relatingClass, InvocationType invocationType, AttributeInvocation attributeInvocation) {
+    public void addAttributeInvocationElement(String relatingClass, InvocationType invocationType, AttributeInvocation attributeInvocation) {
         if (invocationType == InvocationType.OUTGOING) {
             if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
                 this.outgoingDependenceInfo.get(relatingClass).addNewAttribute(attributeInvocation);
@@ -160,7 +160,7 @@ public class ClassStructure {
      * @param constructorInvocation the constructor invocation object containing the data corresponding to the
      *                                     invocation in question
      */
-    protected void addConstructorInvocationElement(String relatingClass, InvocationType invocationType, ConstructorInvocation constructorInvocation) {
+    public void addConstructorInvocationElement(String relatingClass, InvocationType invocationType, ConstructorInvocation constructorInvocation) {
         if (invocationType == InvocationType.OUTGOING) {
             if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
                 this.outgoingDependenceInfo.get(relatingClass).addNewConstructor(constructorInvocation);
@@ -189,7 +189,7 @@ public class ClassStructure {
      * @param methodInvocation the method invocation object containing the data corresponding to the
      *                                     invocation in question
      */
-    protected void addMethodInvocationElement(String relatingClass, InvocationType invocationType, MethodInvocation methodInvocation) {
+    public void addMethodInvocationElement(String relatingClass, InvocationType invocationType, MethodInvocation methodInvocation) {
         if (invocationType == InvocationType.OUTGOING) {
             if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
                 this.outgoingDependenceInfo.get(relatingClass).addNewMethod(methodInvocation);

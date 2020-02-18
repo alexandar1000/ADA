@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @Builder
+@Getter
 public class ConstructorInvocation extends ElementInvocation {
     /**
      * The list of parameters which have been passes to the constructor on invocation.
@@ -18,6 +18,7 @@ public class ConstructorInvocation extends ElementInvocation {
      * @param name name of the constructor being invoked
      * @param passedParameters The list of parameters whit which the constructor has been invoked with
      */
+    @Builder
     public ConstructorInvocation(String name, ArrayList<PassedParameter> passedParameters) {
         super(name);
         this.passedParameters.addAll(passedParameters);

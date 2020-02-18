@@ -4,11 +4,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter @Builder
+@Getter
 @NoArgsConstructor
 public class ParameterDeclaration extends ElementDeclaration {
     private String type;
 
+    @Builder
     public ParameterDeclaration(String name, String type) {
         super(name);
         this.type = type;

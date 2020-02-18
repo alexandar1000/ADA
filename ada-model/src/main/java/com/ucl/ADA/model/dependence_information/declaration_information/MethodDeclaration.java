@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Getter @NoArgsConstructor @Builder
+@Getter @NoArgsConstructor
 public class MethodDeclaration extends ElementDeclaration {
     /**
      * The return type of the method.
@@ -33,6 +33,7 @@ public class MethodDeclaration extends ElementDeclaration {
      * @param name name of the method
      * @param parameters the parameters which the method accepts
      */
+    @Builder
     public MethodDeclaration(Set<ModifierType> modifierTypes, String returnType, String name, List<ParameterDeclaration> parameters) {
         super(name);
         this.modifierTypes.addAll(modifierTypes);
