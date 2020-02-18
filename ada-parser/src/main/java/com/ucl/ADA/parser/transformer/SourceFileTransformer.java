@@ -1,14 +1,17 @@
 package com.ucl.ADA.parser.transformer;
 
-import com.ucl.ADA.model.dependence_information.ProjectStructure;
 import com.ucl.ADA.model.dependence_information.declaration_information.*;
 import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.PackageInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.PassedParameter;
+import com.ucl.ADA.model.project_structure.ProjectStructure;
 import com.ucl.ADA.parser.model.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class SourceFileTransformer {
 
@@ -127,14 +130,11 @@ public class SourceFileTransformer {
         }
     }
 
+    // TODO: add import attribute into externalInfo model
     protected void processExternalInvocation() {
         String className = sourceFile.getClassName();
 
-        ExternalInvocationInfo externalInvocationInfo = sourceFile.getExternalInvocationInfo();
-
-        projectStructure.addExternalMethodInvocations(className, externalInvocationInfo.getExMethodCalls());
-        projectStructure.addExternalConstructorInvocations(className, externalInvocationInfo.getExConstructorInvocations());
-        projectStructure.addExternalFieldDeclarations(className, externalInvocationInfo.getExFieldInvocation());
+//        ExternalInvocationInfo externalInvocationInfo = sourceFile.getExternalInvocationInfo();
     }
 
 }
