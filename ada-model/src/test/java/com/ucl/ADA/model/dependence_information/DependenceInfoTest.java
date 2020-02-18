@@ -52,7 +52,7 @@ class DependenceInfoTest {
 
     @Test
     void addNewPackage_addNewElement() {
-         PackageInvocation packageInvocationInformation = new PackageInvocation("moduleInvocationInformationName");
+        PackageInvocation packageInvocationInformation = new PackageInvocation("moduleInvocationInformationName");
 
         dependenceInfo.addNewPackage(packageInvocationInformation);
 

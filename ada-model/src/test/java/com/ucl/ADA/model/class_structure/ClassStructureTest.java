@@ -36,6 +36,7 @@ class ClassStructureTest {
             new PassedParameter("FirstParameter1"),
             new PassedParameter("SecondParameter1")
     ));
+
     @BeforeEach
     void setUp() {
         classStructure = new ClassStructure();
@@ -89,11 +90,46 @@ class ClassStructureTest {
     void addNewGlobalMethod_addNewElement() {
         MethodInvocation methodInvocationInformation = new MethodInvocation("globalMethodExample", passedParameterList0);
 
-        classStructure.addNewGlobalMethod(methodInvocationInformation);
+        classStructure.addGlobalMethod(methodInvocationInformation);
 
         assertThat(classStructure.getGlobalMethods()).containsExactly(methodInvocationInformation);
     }
 
+    @Test
+    void addNewExternalPackageImport_addNewElement() {
+        PackageInvocation packageInvocationInformation = new PackageInvocation("moduleInvocationInformationName");
+
+        classStructure.addExternalPackageImport(packageInvocationInformation);
+
+        assertThat(classStructure.getExternalPackageImports()).containsExactly(packageInvocationInformation);
+    }
+
+    @Test
+    void addNewExternalAttributeInvocation_addNewElement() {
+        AttributeInvocation attributeInvocationInformation = new AttributeInvocation("invocationInformationName");
+
+        classStructure.addExternalAttributeInvocation(attributeInvocationInformation);
+
+        assertThat(classStructure.getExternalAttributeInvocations()).containsExactly(attributeInvocationInformation);
+    }
+
+    @Test
+    void addNewExternalConstructorInvocation_addNewElement() {
+        ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation("constructorExample", passedParameterList0);
+
+        classStructure.addExternalConstructorInvocation(constructorInvocationInformation);
+
+        assertThat(classStructure.getExternalConstructorInvocations()).containsExactly(constructorInvocationInformation);
+    }
+
+    @Test
+    void addNewExternalMethodInvocation_addNewElement() {
+        MethodInvocation methodInvocationInformation = new MethodInvocation("methodExample", passedParameterList0);
+
+        classStructure.addExternalMethodInvocation(methodInvocationInformation);
+
+        assertThat(classStructure.getExternalMethodInvocations()).containsExactly(methodInvocationInformation);
+    }
 
     @Test
     void addModuleElement_testAddingOutgoingInvocation() {

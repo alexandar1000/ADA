@@ -11,39 +11,38 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Getter @Setter @NoArgsConstructor
 public class ProjectStructure {
     private Map<String, ClassStructure> classStructures = new HashMap<>();
 
-    public void addExternalMethodInvocations(String declaringClass, List<String> externalMethodInvocations) {
+    public void addExternalMethodInvocations(String declaringClass, MethodInvocation externalMethodInvocations) {
         if (this.classStructures.containsKey(declaringClass)) {
-            this.classStructures.get(declaringClass).setExternalMethodCalls(externalMethodInvocations);
+            this.classStructures.get(declaringClass).addExternalMethodInvocation(externalMethodInvocations);
         } else {
             ClassStructure classStructure = new ClassStructure();
-            classStructure.setExternalMethodCalls(externalMethodInvocations);
+            classStructure.addExternalMethodInvocation(externalMethodInvocations);
             this.classStructures.put(declaringClass, classStructure);
         }
     }
 
-    public void addExternalConstructorInvocations(String declaringClass, List<String> externalConstructorInvocations) {
+    public void addExternalConstructorInvocations(String declaringClass, ConstructorInvocation externalConstructorInvocations) {
         if (this.classStructures.containsKey(declaringClass)) {
-            this.classStructures.get(declaringClass).setExternalConstructorInvocations(externalConstructorInvocations);
+            this.classStructures.get(declaringClass).addExternalConstructorInvocation(externalConstructorInvocations);
         } else {
             ClassStructure classStructure = new ClassStructure();
-            classStructure.setExternalConstructorInvocations(externalConstructorInvocations);
+            classStructure.addExternalConstructorInvocation(externalConstructorInvocations);
             this.classStructures.put(declaringClass, classStructure);
         }
     }
 
-    public void addExternalFieldDeclarations(String declaringClass, List<String> externalFieldDeclarations) {
+    public void addExternalFieldDeclarations(String declaringClass, AttributeInvocation externalAttributeDeclarations) {
         if (this.classStructures.containsKey(declaringClass)) {
-            this.classStructures.get(declaringClass).setExternalFieldInvocations(externalFieldDeclarations);
+            this.classStructures.get(declaringClass).addExternalAttributeInvocation(externalAttributeDeclarations);
         } else {
             ClassStructure classStructure = new ClassStructure();
-            classStructure.setExternalFieldInvocations(externalFieldDeclarations);
+            classStructure.addExternalAttributeInvocation(externalAttributeDeclarations);
             this.classStructures.put(declaringClass, classStructure);
         }
     }
