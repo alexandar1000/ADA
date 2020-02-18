@@ -1,9 +1,9 @@
 package com.ucl.ADA.parser.dependence_information;
 
-import com.ucl.ADA.parser.dependence_information.declaration_information.AttributeDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.PackageDeclarationInformation;
+import com.ucl.ADA.parser.dependence_information.declaration_information.AttributeDeclaration;
+import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclaration;
+import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclaration;
+import com.ucl.ADA.parser.dependence_information.declaration_information.PackageDeclaration;
 import com.ucl.ADA.parser.dependence_information.invocation_information.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,7 +51,7 @@ public class ProjectDependenceTree {
      * @param declaringClass Class where the package is declared
      * @param packageDeclarationInformation The package declaration object
      */
-    public void addPackageDeclaration(String declaringClass, PackageDeclarationInformation packageDeclarationInformation) {
+    public void addPackageDeclaration(String declaringClass, PackageDeclaration packageDeclarationInformation) {
         if (this.classDependenceTrees.containsKey(declaringClass)) {
             this.classDependenceTrees.get(declaringClass).setCurrentPackage(packageDeclarationInformation);
         } else {
@@ -66,7 +66,7 @@ public class ProjectDependenceTree {
      * @param declaringClass Class where the attribute is declared
      * @param attributeDeclarationInformation The attribute declaration object
      */
-    public void addAttributeDeclaration(String declaringClass, AttributeDeclarationInformation attributeDeclarationInformation) {
+    public void addAttributeDeclaration(String declaringClass, AttributeDeclaration attributeDeclarationInformation) {
         if (this.classDependenceTrees.containsKey(declaringClass)) {
             this.classDependenceTrees.get(declaringClass).addAttributeDeclaration(attributeDeclarationInformation);
         } else {
@@ -81,7 +81,7 @@ public class ProjectDependenceTree {
      * @param declaringClass Class where the constructor is declared
      * @param constructorDeclarationInformation The attribute declaration object
      */
-    public void addConstructorDeclaration(String declaringClass, ConstructorDeclarationInformation constructorDeclarationInformation) {
+    public void addConstructorDeclaration(String declaringClass, ConstructorDeclaration constructorDeclarationInformation) {
         if (this.classDependenceTrees.containsKey(declaringClass)) {
             this.classDependenceTrees.get(declaringClass).addConstructorDeclaration(constructorDeclarationInformation);
         } else {
@@ -96,7 +96,7 @@ public class ProjectDependenceTree {
      * @param declaringClass Class where the method is declared
      * @param methodDeclarationInformation The method declaration object
      */
-    public void addMethodDeclaration(String declaringClass, MethodDeclarationInformation methodDeclarationInformation) {
+    public void addMethodDeclaration(String declaringClass, MethodDeclaration methodDeclarationInformation) {
         if (this.classDependenceTrees.containsKey(declaringClass)) {
             this.classDependenceTrees.get(declaringClass).addMethodDeclaration(methodDeclarationInformation);
         } else {

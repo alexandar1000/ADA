@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor
-public abstract class ElementDeclarationInformation {
+public abstract class ElementDeclaration {
     /**
      * The name of the element.
      */
@@ -15,7 +15,7 @@ public abstract class ElementDeclarationInformation {
      * The constructor of the element declaration object.
      * @param elementName the name of the element being created
      */
-    public ElementDeclarationInformation(String elementName) {
+    public ElementDeclaration(String elementName) {
         this.elementName = elementName;
     }
 }

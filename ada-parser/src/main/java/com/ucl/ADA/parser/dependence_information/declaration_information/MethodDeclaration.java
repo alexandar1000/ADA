@@ -2,7 +2,7 @@ package com.ucl.ADA.parser.dependence_information.declaration_information;
 
 import java.util.ArrayList;
 
-public class MethodDeclarationInformation extends ElementDeclarationInformation {
+public class MethodDeclaration extends ElementDeclaration {
     /**
      * The return type of the method.
      */
@@ -11,7 +11,7 @@ public class MethodDeclarationInformation extends ElementDeclarationInformation 
     /**
      * The access modifier assigned to the method.
      */
-    private AccessModifierType accessModifierType;
+    private ModifierType modifierType;
 
     /**
      * The parameters which the method accepts.
@@ -20,14 +20,14 @@ public class MethodDeclarationInformation extends ElementDeclarationInformation 
 
     /**
      * The constructor of the method declaration object.
-     * @param accessModifierType the access modifier associated with the method
+     * @param modifierType the access modifier associated with the method
      * @param returnType the method return type
      * @param name name of the method
      * @param parameters the parameters which the method accepts
      */
-    public MethodDeclarationInformation(AccessModifierType accessModifierType, String returnType, String name, ArrayList<String> parameters) {
+    public MethodDeclaration(ModifierType modifierType, String returnType, String name, ArrayList<String> parameters) {
         super(name);
-        this.accessModifierType = accessModifierType;
+        this.modifierType = modifierType;
         this.returnType = returnType;
         this.parameters.addAll(parameters);
     }

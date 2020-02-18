@@ -7,11 +7,11 @@ import lombok.Setter;
 import java.util.ArrayList;
 
 @Getter @Setter @NoArgsConstructor
-public class ConstructorDeclarationInformation extends ElementDeclarationInformation  {
+public class ConstructorDeclaration extends ElementDeclaration {
     /**
      * The access modifier assigned to the constructor.
      */
-    private AccessModifierType accessModifierType ;
+    private ModifierType modifierType;
 
     /**
      * List of the parameters which the constructor accepts.
@@ -20,13 +20,13 @@ public class ConstructorDeclarationInformation extends ElementDeclarationInforma
 
     /**
      * The constructor of the constructor declaration object.
-     * @param accessModifierType the access modifier associated with the constructor
+     * @param modifierType the access modifier associated with the constructor
      * @param name name of the constructor
      * @param parameters the parameters in the constructor
      */
-    public ConstructorDeclarationInformation(AccessModifierType accessModifierType, String name, ArrayList<String> parameters) {
+    public ConstructorDeclaration(ModifierType modifierType, String name, ArrayList<String> parameters) {
         super(name);
-        this.accessModifierType = accessModifierType;
+        this.modifierType = modifierType;
         this.parameters.addAll(parameters);
     }
 }

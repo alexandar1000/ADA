@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,7 +20,7 @@ class ClassDependenceTreeTest {
 
     @Test
     void setCurrentModule_testSetUp() {
-        PackageDeclarationInformation module = new PackageDeclarationInformation("com.ADA");
+        PackageDeclaration module = new PackageDeclaration("com.ADA");
         cdt.setCurrentPackage(module);
 
         assertThat(cdt.getCurrentPackage()).isEqualTo(module);
@@ -30,7 +28,7 @@ class ClassDependenceTreeTest {
 
     @Test
     void addDataDeclaration_addNewElement() {
-        AttributeDeclarationInformation attributeDeclarationInformation = new AttributeDeclarationInformation(AccessModifierType.DEFAULT, "String", "attribute", "declaringAttributeName", true);
+        AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(ModifierType.DEFAULT, "String", "attribute", "declaringAttributeName", true);
 
         cdt.addAttributeDeclaration(attributeDeclarationInformation);
 
@@ -39,7 +37,7 @@ class ClassDependenceTreeTest {
 
     @Test
     void addConstructorDeclaration_addNewElement() {
-        ConstructorDeclarationInformation constructorDeclarationInformation = new ConstructorDeclarationInformation(AccessModifierType.DEFAULT, "String", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        ConstructorDeclaration constructorDeclarationInformation = new ConstructorDeclaration(ModifierType.DEFAULT, "String", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
         cdt.addConstructorDeclaration(constructorDeclarationInformation);
 
@@ -48,7 +46,7 @@ class ClassDependenceTreeTest {
 
     @Test
     void addMethodDeclaration_addNewElement() {
-        MethodDeclarationInformation methodDeclarationInformation = new MethodDeclarationInformation(AccessModifierType.DEFAULT, "String", "testingTesting", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        MethodDeclaration methodDeclarationInformation = new MethodDeclaration(ModifierType.DEFAULT, "String", "testingTesting", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
         cdt.addMethodDeclaration(methodDeclarationInformation);
 

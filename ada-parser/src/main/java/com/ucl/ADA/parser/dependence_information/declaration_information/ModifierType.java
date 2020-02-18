@@ -1,6 +1,6 @@
 package com.ucl.ADA.parser.dependence_information.declaration_information;
 
-public enum AccessModifierType {
+public enum ModifierType {
     PUBLIC,
     PROTECTED,
     DEFAULT,

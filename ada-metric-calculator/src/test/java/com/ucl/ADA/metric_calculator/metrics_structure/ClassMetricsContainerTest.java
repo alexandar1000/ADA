@@ -37,7 +37,7 @@ class ClassMetricsContainerTest {
 
         // Add the package declaration to every class
         for (String className : classNames) {
-            PackageDeclarationInformation packageDeclarationInformation = new PackageDeclarationInformation("com.ADA.example." + className);
+            PackageDeclaration packageDeclarationInformation = new PackageDeclaration("com.ADA.example." + className);
             pdt.addPackageDeclaration(className, packageDeclarationInformation);
         }
 
@@ -45,7 +45,7 @@ class ClassMetricsContainerTest {
         for (String className : classNames) {
             for (int j = 0; j < 3; j++) {
                 String attributeName = "attribute" + j + "in" + className;
-                AttributeDeclarationInformation attributeDeclarationInformation = new AttributeDeclarationInformation(AccessModifierType.DEFAULT, "String", attributeName, "declaringAttributeName" + j, true);
+                AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(ModifierType.DEFAULT, "String", attributeName, "declaringAttributeName" + j, true);
                 pdt.addAttributeDeclaration(className, attributeDeclarationInformation);
             }
         }
@@ -55,7 +55,7 @@ class ClassMetricsContainerTest {
         for (String className : classNames) {
             for (int j = 0; j < 2; j++) {
                 String constructorName = "constructor" + j + "in" + className;
-                ConstructorDeclarationInformation constructorDeclarationInformation = new ConstructorDeclarationInformation(AccessModifierType.DEFAULT, constructorName, new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+                ConstructorDeclaration constructorDeclarationInformation = new ConstructorDeclaration(ModifierType.DEFAULT, constructorName, new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
                 pdt.addConstructorDeclaration(className, constructorDeclarationInformation);
             }
         }
@@ -64,7 +64,7 @@ class ClassMetricsContainerTest {
         for (String className : classNames) {
             for (int j = 0; j < 2; j++) {
                 String methodName = "method" + j + "in" + className;
-                MethodDeclarationInformation methodDeclarationInformation = new MethodDeclarationInformation(AccessModifierType.DEFAULT, "String", methodName, new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+                MethodDeclaration methodDeclarationInformation = new MethodDeclaration(ModifierType.DEFAULT, "String", methodName, new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
                 pdt.addMethodDeclaration(className, methodDeclarationInformation);
             }
         }

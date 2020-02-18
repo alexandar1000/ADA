@@ -1,9 +1,9 @@
 package com.ucl.ADA.parser.dependence_information;
 
-import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.AttributeDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.PackageDeclarationInformation;
+import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclaration;
+import com.ucl.ADA.parser.dependence_information.declaration_information.AttributeDeclaration;
+import com.ucl.ADA.parser.dependence_information.declaration_information.MethodDeclaration;
+import com.ucl.ADA.parser.dependence_information.declaration_information.PackageDeclaration;
 import com.ucl.ADA.parser.dependence_information.invocation_information.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,22 +18,22 @@ public class ClassDependenceTree {
     /**
      * Class package
      */
-    private PackageDeclarationInformation currentPackage = null;
+    private PackageDeclaration currentPackage = null;
 
     /**
      * Attributes declared in this class.
      */
-    private ArrayList<AttributeDeclarationInformation> attributeDeclarations = new ArrayList<>();
+    private ArrayList<AttributeDeclaration> attributeDeclarations = new ArrayList<>();
 
     /**
      * Constructors declared in this class.
      */
-    private ArrayList<ConstructorDeclarationInformation> constructorDeclarations = new ArrayList<>();
+    private ArrayList<ConstructorDeclaration> constructorDeclarations = new ArrayList<>();
 
     /**
      * Methods declared in this class.
      */
-    private ArrayList<MethodDeclarationInformation> methodsDeclarations = new ArrayList<>();
+    private ArrayList<MethodDeclaration> methodsDeclarations = new ArrayList<>();
 
     /**
      * Information about the invocations of the elements from the other classes from this class.
@@ -59,7 +59,7 @@ public class ClassDependenceTree {
      * Creates a new instance using the package name.
      * @param packageDeclarationInformation the name of the package corresponding to the current class
      */
-    protected ClassDependenceTree(PackageDeclarationInformation packageDeclarationInformation) {
+    protected ClassDependenceTree(PackageDeclaration packageDeclarationInformation) {
         this.currentPackage = packageDeclarationInformation;
     }
 
@@ -67,7 +67,7 @@ public class ClassDependenceTree {
      * Adds a Attribute Declaration to the ClassDependenceTree
      * @param attributeDeclarationInformation the attribute declaration object
      */
-    protected void addAttributeDeclaration(AttributeDeclarationInformation attributeDeclarationInformation) {
+    protected void addAttributeDeclaration(AttributeDeclaration attributeDeclarationInformation) {
         this.attributeDeclarations.add(attributeDeclarationInformation);
     }
 
@@ -75,7 +75,7 @@ public class ClassDependenceTree {
      * Adds a Method Declaration to the ClassDependenceTree
      * @param methodDeclarationInformation the method declaration object
      */
-    protected void addMethodDeclaration(MethodDeclarationInformation methodDeclarationInformation) {
+    protected void addMethodDeclaration(MethodDeclaration methodDeclarationInformation) {
         this.methodsDeclarations.add(methodDeclarationInformation);
     }
 
@@ -83,7 +83,7 @@ public class ClassDependenceTree {
      * Adds a Constructor Declaration to the ClassDependenceTree
      * @param constructorDeclarationInformation the constructor declaration object
      */
-    protected void addConstructorDeclaration(ConstructorDeclarationInformation constructorDeclarationInformation) {
+    protected void addConstructorDeclaration(ConstructorDeclaration constructorDeclarationInformation) {
         this.constructorDeclarations.add(constructorDeclarationInformation);
     }
 

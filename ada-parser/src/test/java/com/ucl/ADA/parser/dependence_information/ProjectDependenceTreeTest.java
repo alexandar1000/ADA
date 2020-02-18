@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,7 +24,7 @@ class ProjectDependenceTreeTest {
     @Test
     public void testAddPackageDeclaration() {
         String declaringClassName = "DeclaringTestClass";
-        PackageDeclarationInformation packageDeclarationInformation = new PackageDeclarationInformation("com.ADA.example");
+        PackageDeclaration packageDeclarationInformation = new PackageDeclaration("com.ADA.example");
 
         pdt.addPackageDeclaration(declaringClassName, packageDeclarationInformation);
 
@@ -37,7 +35,7 @@ class ProjectDependenceTreeTest {
     public void testAddAttributeDeclaration() {
         String declaringClassName = "DeclaringTestClass";
 
-        AttributeDeclarationInformation attributeDeclarationInformation = new AttributeDeclarationInformation(AccessModifierType.DEFAULT, "String", "attribute", "declaringAttributeName", true);
+        AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(ModifierType.DEFAULT, "String", "attribute", "declaringAttributeName", true);
 
         pdt.addAttributeDeclaration(declaringClassName, attributeDeclarationInformation);
 
@@ -47,7 +45,7 @@ class ProjectDependenceTreeTest {
     @Test
     public void testAddConstructorDeclaration() {
         String declaringClassName = "DeclaringTestClass";
-        ConstructorDeclarationInformation constructorDeclarationInformation = new ConstructorDeclarationInformation(AccessModifierType.DEFAULT, "String", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        ConstructorDeclaration constructorDeclarationInformation = new ConstructorDeclaration(ModifierType.DEFAULT, "String", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
         pdt.addConstructorDeclaration(declaringClassName, constructorDeclarationInformation);
 
@@ -57,7 +55,7 @@ class ProjectDependenceTreeTest {
     @Test
     public void testAddMethodDeclaration() {
         String declaringClassName = "DeclaringTestClass";
-        MethodDeclarationInformation methodDeclarationInformation = new MethodDeclarationInformation(AccessModifierType.DEFAULT, "String", "testingTesting", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
+        MethodDeclaration methodDeclarationInformation = new MethodDeclaration(ModifierType.DEFAULT, "String", "testingTesting", new ArrayList<>(Arrays.asList("String FirstParameter", "Integer SecondParameter")));
 
         pdt.addMethodDeclaration(declaringClassName, methodDeclarationInformation);
 

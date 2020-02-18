@@ -1,10 +1,10 @@
 package com.ucl.ADA.parser.transformer;
 
 import com.ucl.ADA.parser.dependence_information.ProjectDependenceTree;
-import com.ucl.ADA.parser.dependence_information.declaration_information.AccessModifierType;
-import com.ucl.ADA.parser.dependence_information.declaration_information.AttributeDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclarationInformation;
-import com.ucl.ADA.parser.dependence_information.declaration_information.PackageDeclarationInformation;
+import com.ucl.ADA.parser.dependence_information.declaration_information.ModifierType;
+import com.ucl.ADA.parser.dependence_information.declaration_information.AttributeDeclaration;
+import com.ucl.ADA.parser.dependence_information.declaration_information.ConstructorDeclaration;
+import com.ucl.ADA.parser.dependence_information.declaration_information.PackageDeclaration;
 import com.ucl.ADA.parser.dependence_information.invocation_information.ConstructorInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.MethodInvocationInformation;
 import com.ucl.ADA.parser.dependence_information.invocation_information.PackageInvocationInformation;
@@ -19,24 +19,24 @@ public class SourceFileProcessor {
 
     // OK
     public void processPackageDeclaration(ProjectDependenceTree projectDependenceTree, SourceFile sourceFile) {
-        PackageDeclarationInformation packageDeclarationInformation = new PackageDeclarationInformation(sourceFile.getPackageName());
+        PackageDeclaration packageDeclarationInformation = new PackageDeclaration(sourceFile.getPackageName());
         projectDependenceTree.addPackageDeclaration(sourceFile.getClassName(), packageDeclarationInformation);
     }
 
     // OK
     public void processAttributeDeclaration(ProjectDependenceTree projectDependenceTree, SourceFile sourceFile) {
         sourceFile.getClassAttributes().forEach(a -> {
-            AccessModifierType accessModifierType = null;
+            ModifierType modifierType = null;
             if (a.getModifiers().contains("public")) {
-                accessModifierType = AccessModifierType.PUBLIC;
+                modifierType = ModifierType.PUBLIC;
             } else if (a.getModifiers().contains("private")) {
-                accessModifierType = AccessModifierType.PRIVATE;
+                modifierType = ModifierType.PRIVATE;
             } else if (a.getModifiers().contains("protected")) {
-                accessModifierType = AccessModifierType.PROTECTED;
+                modifierType = ModifierType.PROTECTED;
             } else if (a.getModifiers().contains("default")) {
-                accessModifierType = AccessModifierType.DEFAULT;
+                modifierType = ModifierType.DEFAULT;
             }
-            AttributeDeclarationInformation attributeDeclarationInformation = new AttributeDeclarationInformation(accessModifierType, a.getType(), a.getName(), a.getAssignedValue(), false);
+            AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(modifierType, a.getType(), a.getName(), a.getAssignedValue(), false);
             projectDependenceTree.addAttributeDeclaration(sourceFile.getClassName(), attributeDeclarationInformation);
         });
 
@@ -45,7 +45,7 @@ public class SourceFileProcessor {
                 String type = localVariables.getValue();
                 String name = localVariables.getKey();
                 // TODO: local variable no value
-                AttributeDeclarationInformation attributeDeclarationInformation = new AttributeDeclarationInformation(AccessModifierType.LOCAL, type, name, null, true);
+                AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(ModifierType.LOCAL, type, name, null, true);
                 projectDependenceTree.addAttributeDeclaration(sourceFile.getClassName(), attributeDeclarationInformation);
             }
         });
@@ -55,21 +55,21 @@ public class SourceFileProcessor {
     public void processConstructorDeclaration(ProjectDependenceTree projectDependenceTree, SourceFile sourceFile) {
         sourceFile.getDeclaredSourceConstructors().forEach(c -> {
             String modifier = c.getAccessModifier();
-            AccessModifierType accessModifierType = null;
+            ModifierType modifierType = null;
             if (modifier.equalsIgnoreCase("public")) {
-                accessModifierType = AccessModifierType.PUBLIC;
+                modifierType = ModifierType.PUBLIC;
             } else if (modifier.equalsIgnoreCase("private")) {
-                accessModifierType = AccessModifierType.PRIVATE;
+                modifierType = ModifierType.PRIVATE;
             } else if (modifier.equalsIgnoreCase("protected")) {
-                accessModifierType = AccessModifierType.PROTECTED;
+                modifierType = ModifierType.PROTECTED;
             } else if (modifier.equalsIgnoreCase("default")) {
-                accessModifierType = AccessModifierType.DEFAULT;
+                modifierType = ModifierType.DEFAULT;
             }
             ArrayList<String> parameters = new ArrayList<>();
             c.getParameters().forEach((name, type) -> {
                 parameters.add(type + " " + name);
             });
-            ConstructorDeclarationInformation constructorDeclarationInformation = new ConstructorDeclarationInformation(accessModifierType, c.getName(), parameters);
+            ConstructorDeclaration constructorDeclarationInformation = new ConstructorDeclaration(modifierType, c.getName(), parameters);
             projectDependenceTree.addConstructorDeclaration(sourceFile.getClassName(), constructorDeclarationInformation);
         });
     }
