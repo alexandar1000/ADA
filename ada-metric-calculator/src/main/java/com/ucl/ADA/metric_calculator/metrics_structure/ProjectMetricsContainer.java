@@ -1,5 +1,6 @@
 package com.ucl.ADA.metric_calculator.metrics_structure;
 
+import com.ucl.ADA.model.metrics.ClassMetricsContainer;
 import com.ucl.ADA.model.project_structure.ProjectStructure;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +27,8 @@ public class ProjectMetricsContainer {
                 ClassMetricsContainer classMetricsContainer = new ClassMetricsContainer();
                 classMetrics.put(key, classMetricsContainer);
             }
-            classMetrics.get(key).computeAllClassMetrics(key, projectStructure);
-            classMetrics.get(key).computeAllRelationMetrics(key, projectStructure);
+//            classMetrics.get(key).computeAllClassMetrics(key, projectStructure);
+//            classMetrics.get(key).computeAllRelationMetrics(key, projectStructure);
         }
     }
 }

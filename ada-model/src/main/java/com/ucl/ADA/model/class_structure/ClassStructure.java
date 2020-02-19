@@ -8,6 +8,7 @@ import com.ucl.ADA.model.dependence_information.declaration_information.PackageD
 import com.ucl.ADA.model.dependence_information.invocation_information.*;
 import com.ucl.ADA.model.metrics.class_metrics.ClassMetricType;
 import com.ucl.ADA.model.metrics.class_metrics.ClassMetricValue;
+import com.ucl.ADA.model.metrics.relation_metrics.RelationMetricType;
 import com.ucl.ADA.model.metrics.relation_metrics.RelationMetricValue;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -402,6 +403,119 @@ public class ClassStructure {
                 }
                 this.classMetricValues.setBidirectionalNumberOfConstructorInvocations(metricValue);
                 break;
+        }
+    }
+
+    public void computeRelationMetric(RelationMetricType relationMetricType) {
+        float metricValue = 0F;
+        // TODO: This could be made nicer by extracting the for loop around the switch. However, the switch would then
+        //  be executed for each item, which would make it less efficient.
+
+        switch(relationMetricType) {
+            case NUMBER_OF_RELATION_PACKAGE_IMPORTS_INCOMING:
+
+                // For all of the relating classes get the corresponding metrics
+                for (String key : incomingDependenceInfo.keySet()) {
+                    metricValue = (float) incomingDependenceInfo.get(key).getPackages().size();
+
+                    // Check if the relation metrics for the class have already been computed
+                    if (!relationMetricValues.containsKey(key)) {
+                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                        relationMetricValues.put(key, relationMetricValueObject);
+                    }
+                    relationMetricValues.get(key).setNumberOfPackageImportsIncoming(metricValue);
+                }
+
+                break;
+
+//            case NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_OUTGOING:
+//                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
+//                    metricValue += dependenceInfoValue.getAttributes().size();
+//                }
+//                this.classMetricValues.setNumberOfAttributeInvocationsOutgoing(metricValue);
+//                break;
+//
+//            case NUMBER_OF_RELATION_METHOD_INVOCATIONS_INCOMING:
+//                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
+//                    metricValue += dependenceInfoValue.getMethods().size();
+//                }
+//                this.classMetricValues.setNumberOfMethodInvocationsIncoming(metricValue);
+//                break;
+//
+//            case NUMBER_OF_RELATION_METHOD_INVOCATIONS_OUTGOING:
+//                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
+//                    metricValue += dependenceInfoValue.getMethods().size();
+//                }
+//                this.classMetricValues.setNumberOfMethodInvocationsOutgoing(metricValue);
+//                break;
+//
+//            case NUMBER_OF_RELATION_PACKAGE_IMPORTS_INCOMING:
+//                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
+//                    metricValue += dependenceInfoValue.getPackages().size();
+//                }
+//                this.classMetricValues.setNumberOfPackageImportsIncoming(metricValue);
+//                break;
+//
+//            case NUMBER_OF_RELATION_PACKAGE_IMPORTS_OUTGOING:
+//                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
+//                    metricValue += dependenceInfoValue.getPackages().size();
+//                }
+//                this.classMetricValues.setNumberOfPackageImportsOutgoing(metricValue);
+//                break;
+//
+//            case NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS_INCOMING:
+//                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
+//                    metricValue += dependenceInfoValue.getConstructors().size();
+//                }
+//                this.classMetricValues.setNumberOfConstructorInvocationsIncoming(metricValue);
+//                break;
+//
+//            case NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS_OUTGOING:
+//                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
+//                    metricValue += dependenceInfoValue.getConstructors().size();
+//                }
+//                this.classMetricValues.setNumberOfConstructorInvocationsOutgoing(metricValue);
+//                break;
+//
+//            case BIDIRECTIONAL_NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS:
+//                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
+//                    metricValue += dependenceInfoValue.getAttributes().size();
+//                }
+//                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
+//                    metricValue += dependenceInfoValue.getAttributes().size();
+//                }
+//                this.classMetricValues.setBidirectionalNumberOfAttributeInvocations(metricValue);
+//                break;
+//
+//            case BIDIRECTIONAL_NUMBER_OF_RELATION_METHOD_INVOCATIONS:
+//                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
+//                    metricValue += dependenceInfoValue.getMethods().size();
+//                }
+//                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
+//                    metricValue += dependenceInfoValue.getMethods().size();
+//                }
+//                this.classMetricValues.setBidirectionalNumberOfMethodInvocations(metricValue);
+//                break;
+//
+//            case BIDIRECTIONAL_NUMBER_OF_RELATION_PACKAGE_IMPORTS:
+//                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
+//                    metricValue += dependenceInfoValue.getPackages().size();
+//                }
+//                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
+//                    metricValue += dependenceInfoValue.getPackages().size();
+//                }
+//                this.classMetricValues.setBidirectionalNumberOfPackageImports(metricValue);
+//                break;
+//
+//            case BIDIRECTIONAL_NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS:
+//                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
+//                    metricValue += dependenceInfoValue.getConstructors().size();
+//                }
+//                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
+//                    metricValue += dependenceInfoValue.getConstructors().size();
+//                }
+//                this.classMetricValues.setBidirectionalNumberOfConstructorInvocations(metricValue);
+//                break;
         }
     }
 }
