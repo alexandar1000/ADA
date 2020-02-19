@@ -1,10 +1,7 @@
 package com.ucl.ADA.parser.transformer;
 
 import com.ucl.ADA.model.dependence_information.declaration_information.*;
-import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
-import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
-import com.ucl.ADA.model.dependence_information.invocation_information.PackageInvocation;
-import com.ucl.ADA.model.dependence_information.invocation_information.PassedParameter;
+import com.ucl.ADA.model.dependence_information.invocation_information.*;
 import com.ucl.ADA.model.project_structure.ProjectStructure;
 import com.ucl.ADA.parser.model.*;
 
@@ -93,7 +90,7 @@ public class SourceFileTransformer {
         }
     }
 
-    // TODO: ...
+    // TODO: Talk to RAKIB
     protected void processAttributeInvocation() {
 
     }
@@ -130,11 +127,29 @@ public class SourceFileTransformer {
         }
     }
 
-    // TODO: add import attribute into externalInfo model
     protected void processExternalInvocation() {
         String className = sourceFile.getClassName();
 
-//        ExternalInvocationInfo externalInvocationInfo = sourceFile.getExternalInvocationInfo();
+        ExternalInvocationInfo externalInvocationInfo = sourceFile.getExternalInvocationInfo();
+
+        for (String exImport : externalInvocationInfo.getExImports()) {
+            PackageInvocation packageInvocation = new PackageInvocation(exImport);
+            projectStructure.addExternalPackageImport(className, packageInvocation);
+        }
+        for (String exAttribute : externalInvocationInfo.getExFieldInvocation()) {
+            AttributeInvocation attributeInvocation = new AttributeInvocation(exAttribute);
+            projectStructure.addExternalAttributeDeclarations(className, attributeInvocation);
+        }
+        // TODO: GOTO ExternalInvocationInfo class
+        for (String exMethodCalls : externalInvocationInfo.getExMethodCalls()) {
+            MethodInvocation methodInvocation = new MethodInvocation(exMethodCalls, null);
+            projectStructure.addExternalMethodInvocations(className, methodInvocation);
+        }
+        // TODO: GOTO ExternalInvocationInfo class
+        for (String exConstructor : externalInvocationInfo.getExConstructorInvocations()) {
+            ConstructorInvocation constructorInvocation = new ConstructorInvocation(exConstructor, null);
+            projectStructure.addExternalConstructorInvocations(className, constructorInvocation);
+        }
     }
 
 }
