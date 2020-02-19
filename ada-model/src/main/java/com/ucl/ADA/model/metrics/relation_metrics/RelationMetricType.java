@@ -1,6 +1,6 @@
 package com.ucl.ADA.model.metrics.relation_metrics;
 
-public enum RelationMetricTypes {
+public enum RelationMetricType {
     NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_INCOMING,
     NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_OUTGOING,
 

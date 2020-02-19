@@ -1,6 +1,6 @@
 package com.ucl.ADA.model.metrics.class_metrics;
 
-public enum ClassMetricTypes {
+public enum ClassMetricType {
     NUMBER_OF_CLASS_ATTRIBUTE_INVOCATIONS_INCOMING,
     NUMBER_OF_CLASS_ATTRIBUTE_INVOCATIONS_OUTGOING,
 

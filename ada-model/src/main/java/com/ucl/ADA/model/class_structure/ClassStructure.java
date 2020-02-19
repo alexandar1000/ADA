@@ -6,13 +6,13 @@ import com.ucl.ADA.model.dependence_information.declaration_information.Construc
 import com.ucl.ADA.model.dependence_information.declaration_information.MethodDeclaration;
 import com.ucl.ADA.model.dependence_information.declaration_information.PackageDeclaration;
 import com.ucl.ADA.model.dependence_information.invocation_information.*;
+import com.ucl.ADA.model.metrics.class_metrics.ClassMetricType;
+import com.ucl.ADA.model.metrics.class_metrics.ClassMetricValue;
+import com.ucl.ADA.model.metrics.relation_metrics.RelationMetricValue;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter @NoArgsConstructor
 public class ClassStructure {
@@ -93,6 +93,19 @@ public class ClassStructure {
      * include the dependencies and libraries.
      */
     private List<AttributeInvocation> externalAttributeInvocations = new ArrayList<>();
+
+
+    // Metrics:
+
+    /**
+     * All of the metric values for the link between the current class and the linking classes.
+     */
+    private HashMap<String, RelationMetricValue> relationMetricValues = new HashMap<>();
+
+    /**
+     * The metrics corresponding to the current class.
+     */
+    private ClassMetricValue classMetricValues = new ClassMetricValue();
 
 
 
@@ -283,6 +296,112 @@ public class ClassStructure {
                 dependenceInfo.addNewMethod(methodInvocation);
                 this.incomingDependenceInfo.put(relatingClass, dependenceInfo);
             }
+        }
+    }
+
+    public void computeClassMetric(ClassMetricType classMetricType) {
+        float metricValue = 0F;
+        // TODO: This could be made nicer by extracting the for loop around the switch. However, the switch would then
+        //  be executed for each item, which would make it less efficient.
+        Collection<DependenceInfo> incomingDependencyValues = incomingDependenceInfo.values();
+        Collection<DependenceInfo> outgoingDependencyValues = outgoingDependenceInfo.values();
+
+        switch(classMetricType) {
+            case NUMBER_OF_CLASS_ATTRIBUTE_INVOCATIONS_INCOMING:
+                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
+                    metricValue += dependenceInfoValue.getAttributes().size();
+                }
+                this.classMetricValues.setNumberOfAttributeInvocationsIncoming(metricValue);
+                break;
+
+            case NUMBER_OF_CLASS_ATTRIBUTE_INVOCATIONS_OUTGOING:
+                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
+                    metricValue += dependenceInfoValue.getAttributes().size();
+                }
+                this.classMetricValues.setNumberOfAttributeInvocationsOutgoing(metricValue);
+                break;
+
+            case NUMBER_OF_CLASS_METHOD_INVOCATIONS_INCOMING:
+                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
+                    metricValue += dependenceInfoValue.getMethods().size();
+                }
+                this.classMetricValues.setNumberOfMethodInvocationsIncoming(metricValue);
+                break;
+
+            case NUMBER_OF_CLASS_METHOD_INVOCATIONS_OUTGOING:
+                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
+                    metricValue += dependenceInfoValue.getMethods().size();
+                }
+                this.classMetricValues.setNumberOfMethodInvocationsOutgoing(metricValue);
+                break;
+
+            case NUMBER_OF_CLASS_PACKAGE_IMPORTS_INCOMING:
+                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
+                    metricValue += dependenceInfoValue.getPackages().size();
+                }
+                this.classMetricValues.setNumberOfPackageImportsIncoming(metricValue);
+                break;
+
+            case NUMBER_OF_CLASS_PACKAGE_IMPORTS_OUTGOING:
+                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
+                    metricValue += dependenceInfoValue.getPackages().size();
+                }
+                this.classMetricValues.setNumberOfPackageImportsOutgoing(metricValue);
+                break;
+
+            case NUMBER_OF_CLASS_CONSTRUCTOR_INVOCATIONS_INCOMING:
+                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
+                    metricValue += dependenceInfoValue.getConstructors().size();
+                }
+                this.classMetricValues.setNumberOfConstructorInvocationsIncoming(metricValue);
+                break;
+
+            case NUMBER_OF_CLASS_CONSTRUCTOR_INVOCATIONS_OUTGOING:
+                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
+                    metricValue += dependenceInfoValue.getConstructors().size();
+                }
+                this.classMetricValues.setNumberOfConstructorInvocationsOutgoing(metricValue);
+                break;
+
+            case BIDIRECTIONAL_NUMBER_OF_CLASS_ATTRIBUTE_INVOCATIONS:
+                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
+                    metricValue += dependenceInfoValue.getAttributes().size();
+                }
+                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
+                    metricValue += dependenceInfoValue.getAttributes().size();
+                }
+                this.classMetricValues.setBidirectionalNumberOfAttributeInvocations(metricValue);
+                break;
+
+            case BIDIRECTIONAL_NUMBER_OF_CLASS_METHOD_INVOCATIONS:
+                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
+                    metricValue += dependenceInfoValue.getMethods().size();
+                }
+                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
+                    metricValue += dependenceInfoValue.getMethods().size();
+                }
+                this.classMetricValues.setBidirectionalNumberOfMethodInvocations(metricValue);
+                break;
+
+            case BIDIRECTIONAL_NUMBER_OF_CLASS_PACKAGE_IMPORTS:
+                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
+                    metricValue += dependenceInfoValue.getPackages().size();
+                }
+                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
+                    metricValue += dependenceInfoValue.getPackages().size();
+                }
+                this.classMetricValues.setBidirectionalNumberOfPackageImports(metricValue);
+                break;
+
+            case BIDIRECTIONAL_NUMBER_OF_CLASS_CONSTRUCTOR_INVOCATIONS:
+                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
+                    metricValue += dependenceInfoValue.getConstructors().size();
+                }
+                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
+                    metricValue += dependenceInfoValue.getConstructors().size();
+                }
+                this.classMetricValues.setBidirectionalNumberOfConstructorInvocations(metricValue);
+                break;
         }
     }
 }

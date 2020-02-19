@@ -1,6 +1,6 @@
 package com.ucl.ADA.metric_calculator.metrics;
 
-import com.ucl.ADA.model.metrics.class_metrics.ClassMetricTypes;
+import com.ucl.ADA.model.metrics.class_metrics.ClassMetricType;
 
 import javax.persistence.*;
 
@@ -14,7 +14,7 @@ public class Metric {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "TYPE")
-    private ClassMetricTypes type;
+    private ClassMetricType type;
 
     @Column(nullable = false, name = "VALUE")
     private Float value;
@@ -22,7 +22,7 @@ public class Metric {
     public Metric() {
     }
 
-    public Metric(ClassMetricTypes type, Float value) {
+    public Metric(ClassMetricType type, Float value) {
         this.id = null;
         this.type = type;
         this.value = value;
@@ -36,11 +36,11 @@ public class Metric {
         this.id = id;
     }
 
-    public ClassMetricTypes getType() {
+    public ClassMetricType getType() {
         return type;
     }
 
-    public void setType(ClassMetricTypes type) {
+    public void setType(ClassMetricType type) {
         this.type = type;
     }
 

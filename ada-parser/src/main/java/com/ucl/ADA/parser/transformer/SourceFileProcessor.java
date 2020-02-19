@@ -1,21 +1,29 @@
 package com.ucl.ADA.parser.transformer;
 
-import com.ucl.ADA.model.project_structure.ProjectStructure;
-import com.ucl.ADA.model.dependence_information.declaration_information.ModifierType;
-import com.ucl.ADA.model.dependence_information.declaration_information.AttributeDeclaration;
-import com.ucl.ADA.model.dependence_information.declaration_information.ConstructorDeclaration;
-import com.ucl.ADA.model.dependence_information.declaration_information.PackageDeclaration;
+import com.ucl.ADA.model.dependence_information.declaration_information.*;
 import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.PackageInvocation;
-import com.ucl.ADA.parser.model.ExternalInvocationInfo;
+import com.ucl.ADA.model.dependence_information.invocation_information.PassedParameter;
+import com.ucl.ADA.model.project_structure.ProjectStructure;
 import com.ucl.ADA.parser.model.SourceFile;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class SourceFileProcessor {
+
+    private Set<ModifierType> modifiers = new HashSet<>(Collections.singletonList(
+            ModifierType.DEFAULT
+    ));
+    private ArrayList<ParameterDeclaration> declaredParameters = new ArrayList<>(Arrays.asList(
+            new ParameterDeclaration("String", "FirstParameter"),
+            new ParameterDeclaration("Integer", "SecondParameter")
+    ));
+
+    private ArrayList<PassedParameter> passedParameterList0 = new ArrayList<>(Arrays.asList(
+            new PassedParameter("FirstParameter0"),
+            new PassedParameter("SecondParameter0")
+    ));
 
     // OK
     public void processPackageDeclaration(ProjectStructure projectStructure, SourceFile sourceFile) {
@@ -36,7 +44,8 @@ public class SourceFileProcessor {
             } else if (a.getModifiers().contains("default")) {
                 modifierType = ModifierType.DEFAULT;
             }
-            AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(modifierType, a.getType(), a.getName(), a.getAssignedValue());
+
+            AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(modifiers, a.getType(), a.getName(), a.getAssignedValue());
             projectStructure.addAttributeDeclaration(sourceFile.getClassName(), attributeDeclarationInformation);
         });
 
@@ -46,7 +55,7 @@ public class SourceFileProcessor {
                 String name = localVariables.getKey();
                 // TODO: local variable no value
                 // TODO: check at the ModifierType.DEFAULT in the line below
-                AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(ModifierType.DEFAULT, type, name, null);
+                AttributeDeclaration attributeDeclarationInformation = new AttributeDeclaration(modifiers, type, name, null);
                 projectStructure.addAttributeDeclaration(sourceFile.getClassName(), attributeDeclarationInformation);
             }
         });
@@ -70,7 +79,7 @@ public class SourceFileProcessor {
             c.getParameters().forEach((name, type) -> {
                 parameters.add(type + " " + name);
             });
-            ConstructorDeclaration constructorDeclarationInformation = new ConstructorDeclaration(modifierType, c.getName(), parameters);
+            ConstructorDeclaration constructorDeclarationInformation = new ConstructorDeclaration(modifiers, c.getName(), declaredParameters);
             projectStructure.addConstructorDeclaration(sourceFile.getClassName(), constructorDeclarationInformation);
         });
     }
@@ -106,7 +115,7 @@ public class SourceFileProcessor {
     public void processConstructorInvocation(ProjectStructure projectStructure, SourceFile sourceFile) {
         sourceFile.getMethods().forEach(m -> {
             m.getConstructorInvocations().forEach(ci -> {
-                ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation(sourceFile.getClassName(), (ArrayList<String>) ci.getArgumentsValues());
+                ConstructorInvocation constructorInvocationInformation = new ConstructorInvocation(sourceFile.getClassName(), passedParameterList0);
                 projectStructure.addConstructorInvocation(sourceFile.getClassName(), ci.getConstructorClassName(), constructorInvocationInformation);
             });
         });
@@ -119,18 +128,18 @@ public class SourceFileProcessor {
         sourceFile.getMethods().forEach(m -> {
             m.getMethodCalls().forEach(mc -> {
                 String[] calleeNames = mc.getCalleeName().split("\\.");
-                MethodInvocation methodInvocationInformation = new MethodInvocation(calleeNames[calleeNames.length - 1], new ArrayList<>(mc.getArguments()));
+                MethodInvocation methodInvocationInformation = new MethodInvocation(calleeNames[calleeNames.length - 1], passedParameterList0);
                 projectStructure.addMethodInvocation(sourceFile.getClassName(), calleeNames[calleeNames.length - 2], methodInvocationInformation);
             });
         });
     }
 
     public void processExternalInvocation(ProjectStructure projectStructure, SourceFile sourceFile) {
-        ExternalInvocationInfo externalInvocationInfo = sourceFile.getExternalInvocationInfo();
-
-        projectStructure.addExternalMethodInvocations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExMethodCalls());
-        projectStructure.addExternalConstructorInvocations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExConstructorInvocations());
-        projectStructure.addExternalAttributeDeclarations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExFieldInvocation());
+//        ExternalInvocationInfo externalInvocationInfo = sourceFile.getExternalInvocationInfo();
+//
+//        projectStructure.addExternalMethodInvocations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExMethodCalls());
+//        projectStructure.addExternalConstructorInvocations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExConstructorInvocations());
+//        projectStructure.addExternalAttributeDeclarations(sourceFile.getClassName(), (ArrayList<String>) externalInvocationInfo.getExFieldInvocation());
     }
 
 }
