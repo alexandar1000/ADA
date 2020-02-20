@@ -428,94 +428,199 @@ public class ClassStructure {
 
                 break;
 
-//            case NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_OUTGOING:
-//                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
-//                    metricValue += dependenceInfoValue.getAttributes().size();
-//                }
-//                this.classMetricValues.setNumberOfAttributeInvocationsOutgoing(metricValue);
-//                break;
-//
-//            case NUMBER_OF_RELATION_METHOD_INVOCATIONS_INCOMING:
-//                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
-//                    metricValue += dependenceInfoValue.getMethods().size();
-//                }
-//                this.classMetricValues.setNumberOfMethodInvocationsIncoming(metricValue);
-//                break;
-//
-//            case NUMBER_OF_RELATION_METHOD_INVOCATIONS_OUTGOING:
-//                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
-//                    metricValue += dependenceInfoValue.getMethods().size();
-//                }
-//                this.classMetricValues.setNumberOfMethodInvocationsOutgoing(metricValue);
-//                break;
-//
-//            case NUMBER_OF_RELATION_PACKAGE_IMPORTS_INCOMING:
-//                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
-//                    metricValue += dependenceInfoValue.getPackages().size();
-//                }
-//                this.classMetricValues.setNumberOfPackageImportsIncoming(metricValue);
-//                break;
-//
-//            case NUMBER_OF_RELATION_PACKAGE_IMPORTS_OUTGOING:
-//                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
-//                    metricValue += dependenceInfoValue.getPackages().size();
-//                }
-//                this.classMetricValues.setNumberOfPackageImportsOutgoing(metricValue);
-//                break;
-//
-//            case NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS_INCOMING:
-//                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
-//                    metricValue += dependenceInfoValue.getConstructors().size();
-//                }
-//                this.classMetricValues.setNumberOfConstructorInvocationsIncoming(metricValue);
-//                break;
-//
-//            case NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS_OUTGOING:
-//                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
-//                    metricValue += dependenceInfoValue.getConstructors().size();
-//                }
-//                this.classMetricValues.setNumberOfConstructorInvocationsOutgoing(metricValue);
-//                break;
-//
-//            case BIDIRECTIONAL_NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS:
-//                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
-//                    metricValue += dependenceInfoValue.getAttributes().size();
-//                }
-//                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
-//                    metricValue += dependenceInfoValue.getAttributes().size();
-//                }
-//                this.classMetricValues.setBidirectionalNumberOfAttributeInvocations(metricValue);
-//                break;
-//
-//            case BIDIRECTIONAL_NUMBER_OF_RELATION_METHOD_INVOCATIONS:
-//                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
-//                    metricValue += dependenceInfoValue.getMethods().size();
-//                }
-//                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
-//                    metricValue += dependenceInfoValue.getMethods().size();
-//                }
-//                this.classMetricValues.setBidirectionalNumberOfMethodInvocations(metricValue);
-//                break;
-//
-//            case BIDIRECTIONAL_NUMBER_OF_RELATION_PACKAGE_IMPORTS:
-//                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
-//                    metricValue += dependenceInfoValue.getPackages().size();
-//                }
-//                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
-//                    metricValue += dependenceInfoValue.getPackages().size();
-//                }
-//                this.classMetricValues.setBidirectionalNumberOfPackageImports(metricValue);
-//                break;
-//
-//            case BIDIRECTIONAL_NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS:
-//                for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
-//                    metricValue += dependenceInfoValue.getConstructors().size();
-//                }
-//                for (DependenceInfo dependenceInfoValue : outgoingDependencyValues) {
-//                    metricValue += dependenceInfoValue.getConstructors().size();
-//                }
-//                this.classMetricValues.setBidirectionalNumberOfConstructorInvocations(metricValue);
-//                break;
+            case NUMBER_OF_RELATION_PACKAGE_IMPORTS_OUTGOING:
+                // For all of the relating classes get the corresponding metrics
+                for (String key : outgoingDependenceInfo.keySet()) {
+                    metricValue = (float) outgoingDependenceInfo.get(key).getPackages().size();
+
+                    // Check if the relation metrics for the class have already been computed
+                    if (!relationMetricValues.containsKey(key)) {
+                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                        relationMetricValues.put(key, relationMetricValueObject);
+                    }
+                    relationMetricValues.get(key).setNumberOfPackageImportsOutgoing(metricValue);
+                }
+                break;
+
+            case NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_INCOMING:
+                // For all of the relating classes get the corresponding metrics
+                for (String key : incomingDependenceInfo.keySet()) {
+                    metricValue = (float) incomingDependenceInfo.get(key).getAttributes().size();
+
+                    // Check if the relation metrics for the class have already been computed
+                    if (!relationMetricValues.containsKey(key)) {
+                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                        relationMetricValues.put(key, relationMetricValueObject);
+                    }
+                    relationMetricValues.get(key).setNumberOfAttributeInvocationsIncoming(metricValue);
+                }
+                break;
+
+
+            case NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_OUTGOING:
+                // For all of the relating classes get the corresponding metrics
+                for (String key : outgoingDependenceInfo.keySet()) {
+                    metricValue = (float) outgoingDependenceInfo.get(key).getAttributes().size();
+
+                    // Check if the relation metrics for the class have already been computed
+                    if (!relationMetricValues.containsKey(key)) {
+                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                        relationMetricValues.put(key, relationMetricValueObject);
+                    }
+                    relationMetricValues.get(key).setNumberOfAttributeInvocationsOutgoing(metricValue);
+                }
+                break;
+
+            case NUMBER_OF_RELATION_METHOD_INVOCATIONS_INCOMING:
+                // For all of the relating classes get the corresponding metrics
+                for (String key : incomingDependenceInfo.keySet()) {
+                    metricValue = (float) incomingDependenceInfo.get(key).getMethods().size();
+
+
+                    // Check if the relation metrics for the class have already been computed
+                    if (!relationMetricValues.containsKey(key)) {
+                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                        relationMetricValues.put(key, relationMetricValueObject);
+                    }
+                    relationMetricValues.get(key).setNumberOfMethodInvocationsIncoming(metricValue);
+                }
+                break;
+
+            case NUMBER_OF_RELATION_METHOD_INVOCATIONS_OUTGOING:
+                // For all of the relating classes get the corresponding metrics
+                for (String key : outgoingDependenceInfo.keySet()) {
+                    metricValue = (float) outgoingDependenceInfo.get(key).getMethods().size();
+
+                    // Check if the relation metrics for the class have already been computed
+                    if (!relationMetricValues.containsKey(key)) {
+                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                        relationMetricValues.put(key, relationMetricValueObject);
+                    }
+                    relationMetricValues.get(key).setNumberOfMethodInvocationsOutgoing(metricValue);
+                }
+                break;
+
+
+            case NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS_INCOMING:
+                // For all of the relating classes get the corresponding metrics
+                for (String key : incomingDependenceInfo.keySet()) {
+                    metricValue = (float) incomingDependenceInfo.get(key).getConstructors().size();
+
+
+                    // Check if the relation metrics for the class have already been computed
+                    if (!relationMetricValues.containsKey(key)) {
+                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                        relationMetricValues.put(key, relationMetricValueObject);
+                    }
+                    relationMetricValues.get(key).setNumberOfConstructorInvocationsIncoming(metricValue);
+                }
+                break;
+
+            case NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS_OUTGOING:
+                // For all of the relating classes get the corresponding metrics
+                for (String key : outgoingDependenceInfo.keySet()) {
+                    metricValue = (float) outgoingDependenceInfo.get(key).getConstructors().size();
+
+                    // Check if the relation metrics for the class have already been computed
+                    if (!relationMetricValues.containsKey(key)) {
+                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                        relationMetricValues.put(key, relationMetricValueObject);
+                    }
+                    relationMetricValues.get(key).setNumberOfConstructorInvocationsOutgoing(metricValue);
+                }
+                break;
+
+            case BIDIRECTIONAL_NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS:
+                // For all of the relating classes get the corresponding metrics
+                for (String key : outgoingDependenceInfo.keySet()) {
+                    metricValue = (float) outgoingDependenceInfo.get(key).getAttributes().size();
+                    // Check if the relation metrics for the class have already been computed
+                    if (!relationMetricValues.containsKey(key)) {
+                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                        relationMetricValues.put(key, relationMetricValueObject);
+                    }
+                    relationMetricValues.get(key).setBidirectionalNumberOfAttributeInvocations(metricValue);
+                }
+                for (String key : incomingDependenceInfo.keySet()) {
+                    metricValue = (float) incomingDependenceInfo.get(key).getAttributes().size();
+                    // Check if the relation metrics for the class have already been computed
+                    if (!relationMetricValues.containsKey(key)) {
+                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                        relationMetricValues.put(key, relationMetricValueObject);
+                    }
+                    float currentMetricValue = relationMetricValues.get(key).getBidirectionalNumberOfAttributeInvocations();
+                    relationMetricValues.get(key).setBidirectionalNumberOfAttributeInvocations(currentMetricValue + metricValue);
+                }
+                break;
+
+            case BIDIRECTIONAL_NUMBER_OF_RELATION_METHOD_INVOCATIONS:
+                // For all of the relating classes get the corresponding metrics
+                for (String key : outgoingDependenceInfo.keySet()) {
+                    metricValue = (float) outgoingDependenceInfo.get(key).getMethods().size();
+                    // Check if the relation metrics for the class have already been computed
+                    if (!relationMetricValues.containsKey(key)) {
+                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                        relationMetricValues.put(key, relationMetricValueObject);
+                    }
+                    relationMetricValues.get(key).setBidirectionalNumberOfMethodInvocations(metricValue);
+                }
+                for (String key : incomingDependenceInfo.keySet()) {
+                    metricValue = (float) incomingDependenceInfo.get(key).getMethods().size();
+                    // Check if the relation metrics for the class have already been computed
+                    if (!relationMetricValues.containsKey(key)) {
+                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                        relationMetricValues.put(key, relationMetricValueObject);
+                    }
+                    float currentMetricValue = relationMetricValues.get(key).getBidirectionalNumberOfMethodInvocations();
+                    relationMetricValues.get(key).setBidirectionalNumberOfMethodInvocations(currentMetricValue + metricValue);
+                }
+                break;
+
+            case BIDIRECTIONAL_NUMBER_OF_RELATION_PACKAGE_IMPORTS:
+                // For all of the relating classes get the corresponding metrics
+                for (String key : outgoingDependenceInfo.keySet()) {
+                    metricValue = (float) outgoingDependenceInfo.get(key).getPackages().size();
+                    // Check if the relation metrics for the class have already been computed
+                    if (!relationMetricValues.containsKey(key)) {
+                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                        relationMetricValues.put(key, relationMetricValueObject);
+                    }
+                    relationMetricValues.get(key).setBidirectionalNumberOfPackageImports(metricValue);
+                }
+                for (String key : incomingDependenceInfo.keySet()) {
+                    metricValue = (float) incomingDependenceInfo.get(key).getPackages().size();
+                    // Check if the relation metrics for the class have already been computed
+                    if (!relationMetricValues.containsKey(key)) {
+                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                        relationMetricValues.put(key, relationMetricValueObject);
+                    }
+                    float previousMetricValue = relationMetricValues.get(key).getBidirectionalNumberOfPackageImports();
+                    relationMetricValues.get(key).setBidirectionalNumberOfPackageImports(previousMetricValue + metricValue);
+                }
+                break;
+
+            case BIDIRECTIONAL_NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS:
+                // For all of the relating classes get the corresponding metrics
+                for (String key : outgoingDependenceInfo.keySet()) {
+                    metricValue = (float) outgoingDependenceInfo.get(key).getConstructors().size();
+                    // Check if the relation metrics for the class have already been computed
+                    if (!relationMetricValues.containsKey(key)) {
+                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                        relationMetricValues.put(key, relationMetricValueObject);
+                    }
+                    relationMetricValues.get(key).setBidirectionalNumberOfConstructorInvocations(metricValue);
+                }
+                for (String key : incomingDependenceInfo.keySet()) {
+                    metricValue = (float) incomingDependenceInfo.get(key).getConstructors().size();
+                    // Check if the relation metrics for the class have already been computed
+                    if (!relationMetricValues.containsKey(key)) {
+                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                        relationMetricValues.put(key, relationMetricValueObject);
+                    }
+                    float currentMetricValue = relationMetricValues.get(key).getBidirectionalNumberOfConstructorInvocations();
+                    relationMetricValues.get(key).setBidirectionalNumberOfConstructorInvocations(currentMetricValue + metricValue);
+                }
+                break;
         }
     }
 }

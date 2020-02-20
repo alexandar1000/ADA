@@ -176,7 +176,7 @@ public class ClassStructureRelationMetricsTest {
     }
 
     @Test
-    public void numberOfRelationPackageImportsIncoming_testMetricCorrectness() {
+    public void computeRelationMetric_testNumberOfRelationPackageImportsIncoming() {
         RelationMetricType relationMetricType = RelationMetricType.NUMBER_OF_RELATION_PACKAGE_IMPORTS_INCOMING;
 
         classStructure1.computeRelationMetric(relationMetricType);
@@ -207,408 +207,375 @@ public class ClassStructureRelationMetricsTest {
         assertThat(classStructure6.getRelationMetricValues().containsKey(sixthClass)).isFalse();
     }
 
-   /* @Test
-    public void numberOfRelationPackageImportsOutgoing_testMetricCorrectness() {
-        classMetricsContainer.calculateNumberOfRelationPackageImportsOutgoing(firstClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getNumberOfPackageImportsOutgoing()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getNumberOfPackageImportsOutgoing()).isEqualTo(1);
+   @Test
+    public void computeRelationMetric_testNumberOfRelationPackageImportsOutgoing() {
+       RelationMetricType relationMetricType = RelationMetricType.NUMBER_OF_RELATION_PACKAGE_IMPORTS_OUTGOING;
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationPackageImportsOutgoing(secondClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getNumberOfPackageImportsOutgoing()).isEqualTo(1);
+       classStructure1.computeRelationMetric(relationMetricType);
+        assertThat(classStructure1.getRelationMetricValues().size()).isEqualTo(2);
+        assertThat(classStructure1.getRelationMetricValues().get(secondClass).getNumberOfPackageImportsOutgoing()).isEqualTo(1);
+        assertThat(classStructure1.getRelationMetricValues().get(fifthClass).getNumberOfPackageImportsOutgoing()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationPackageImportsOutgoing(thirdClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(4);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getNumberOfPackageImportsOutgoing()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getNumberOfPackageImportsOutgoing()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fourthClass).getNumberOfPackageImportsOutgoing()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getNumberOfPackageImportsOutgoing()).isEqualTo(1);
+       classStructure2.computeRelationMetric(relationMetricType);
+        assertThat(classStructure2.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure2.getRelationMetricValues().get(firstClass).getNumberOfPackageImportsOutgoing()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationPackageImportsOutgoing(fourthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().containsKey(fourthClass)).isFalse();
+       classStructure3.computeRelationMetric(relationMetricType);
+        assertThat(classStructure3.getRelationMetricValues().size()).isEqualTo(4);
+        assertThat(classStructure3.getRelationMetricValues().get(firstClass).getNumberOfPackageImportsOutgoing()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(secondClass).getNumberOfPackageImportsOutgoing()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(fourthClass).getNumberOfPackageImportsOutgoing()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(fifthClass).getNumberOfPackageImportsOutgoing()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationPackageImportsOutgoing(fifthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getNumberOfPackageImportsOutgoing()).isEqualTo(1);
+       classStructure4.computeRelationMetric(relationMetricType);
+        assertThat(classStructure4.getRelationMetricValues().containsKey(fourthClass)).isFalse();
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationPackageImportsOutgoing(sixthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getNumberOfPackageImportsOutgoing()).isEqualTo(1);
+       classStructure5.computeRelationMetric(relationMetricType);
+        assertThat(classStructure5.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure5.getRelationMetricValues().get(firstClass).getNumberOfPackageImportsOutgoing()).isEqualTo(1);
+
+       classStructure6.computeRelationMetric(relationMetricType);
+        assertThat(classStructure6.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure6.getRelationMetricValues().get(thirdClass).getNumberOfPackageImportsOutgoing()).isEqualTo(1);
     }
 
     @Test
-    public void numberOfRelationAttributeInvocationsIncoming_testMetricCorrectness() {
-        classMetricsContainer.calculateNumberOfRelationAttributeInvocationsIncoming(firstClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(3);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
+    public void computeRelationMetric_testNumberOfRelationAttributeInvocationsIncoming() {
+        RelationMetricType relationMetricType = RelationMetricType.NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_INCOMING;
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationAttributeInvocationsIncoming(secondClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
+        classStructure1.computeRelationMetric(relationMetricType);
+        assertThat(classStructure1.getRelationMetricValues().size()).isEqualTo(3);
+        assertThat(classStructure1.getRelationMetricValues().get(secondClass).getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
+        assertThat(classStructure1.getRelationMetricValues().get(thirdClass).getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
+        assertThat(classStructure1.getRelationMetricValues().get(fifthClass).getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationAttributeInvocationsIncoming(thirdClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(sixthClass).getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
+        classStructure2.computeRelationMetric(relationMetricType);
+        assertThat(classStructure2.getRelationMetricValues().size()).isEqualTo(2);
+        assertThat(classStructure2.getRelationMetricValues().get(firstClass).getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
+        assertThat(classStructure2.getRelationMetricValues().get(thirdClass).getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationAttributeInvocationsIncoming(fourthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
+        classStructure3.computeRelationMetric(relationMetricType);
+        assertThat(classStructure3.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(sixthClass).getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationAttributeInvocationsIncoming(fifthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
+        classStructure4.computeRelationMetric(relationMetricType);
+        assertThat(classStructure4.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure4.getRelationMetricValues().get(thirdClass).getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationAttributeInvocationsIncoming(sixthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().containsKey(sixthClass)).isFalse();
+        classStructure5.computeRelationMetric(relationMetricType);
+        assertThat(classStructure5.getRelationMetricValues().size()).isEqualTo(2);
+        assertThat(classStructure5.getRelationMetricValues().get(firstClass).getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
+        assertThat(classStructure5.getRelationMetricValues().get(thirdClass).getNumberOfAttributeInvocationsIncoming()).isEqualTo(1);
+
+        classStructure6.computeRelationMetric(relationMetricType);
+        assertThat(classStructure6.getRelationMetricValues().containsKey(sixthClass)).isFalse();
     }
 
     @Test
-    public void numberOfRelationAttributeInvocationsOutgoing_testMetricCorrectness() {
-        classMetricsContainer.calculateNumberOfRelationAttributeInvocationsOutgoing(firstClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
+    public void computeRelationMetric_testNumberOfRelationAttributeInvocationsOutgoing() {
+        RelationMetricType relationMetricType = RelationMetricType.NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_OUTGOING;
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationAttributeInvocationsOutgoing(secondClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
+        classStructure1.computeRelationMetric(relationMetricType);
+        assertThat(classStructure1.getRelationMetricValues().size()).isEqualTo(2);
+        assertThat(classStructure1.getRelationMetricValues().get(secondClass).getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
+        assertThat(classStructure1.getRelationMetricValues().get(fifthClass).getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationAttributeInvocationsOutgoing(thirdClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(4);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fourthClass).getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
+        classStructure2.computeRelationMetric(relationMetricType);
+        assertThat(classStructure2.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure2.getRelationMetricValues().get(firstClass).getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationAttributeInvocationsOutgoing(fourthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().containsKey(fourthClass)).isFalse();
+        classStructure3.computeRelationMetric(relationMetricType);
+        assertThat(classStructure3.getRelationMetricValues().size()).isEqualTo(4);
+        assertThat(classStructure3.getRelationMetricValues().get(firstClass).getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(secondClass).getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(fourthClass).getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(fifthClass).getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationAttributeInvocationsOutgoing(fifthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
+        classStructure4.computeRelationMetric(relationMetricType);
+        assertThat(classStructure4.getRelationMetricValues().containsKey(fourthClass)).isFalse();
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationAttributeInvocationsOutgoing(sixthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
+        classStructure5.computeRelationMetric(relationMetricType);
+        assertThat(classStructure5.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure5.getRelationMetricValues().get(firstClass).getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
+
+        classStructure6.computeRelationMetric(relationMetricType);
+        assertThat(classStructure6.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure6.getRelationMetricValues().get(thirdClass).getNumberOfAttributeInvocationsOutgoing()).isEqualTo(1);
     }
 
     @Test
-    public void numberOfRelationMethodInvocationsIncoming_testMetricCorrectness() {
-        classMetricsContainer.calculateNumberOfRelationMethodInvocationsIncoming(firstClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(3);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
+    public void computeRelationMetric_testNumberOfRelationMethodInvocationsIncoming() {
+        RelationMetricType relationMetricType = RelationMetricType.NUMBER_OF_RELATION_METHOD_INVOCATIONS_INCOMING;
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationMethodInvocationsIncoming(secondClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
+        classStructure1.computeRelationMetric(relationMetricType);
+        assertThat(classStructure1.getRelationMetricValues().size()).isEqualTo(3);
+        assertThat(classStructure1.getRelationMetricValues().get(secondClass).getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
+        assertThat(classStructure1.getRelationMetricValues().get(thirdClass).getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
+        assertThat(classStructure1.getRelationMetricValues().get(fifthClass).getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationMethodInvocationsIncoming(thirdClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(sixthClass).getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
+        classStructure2.computeRelationMetric(relationMetricType);
+        assertThat(classStructure2.getRelationMetricValues().size()).isEqualTo(2);
+        assertThat(classStructure2.getRelationMetricValues().get(firstClass).getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
+        assertThat(classStructure2.getRelationMetricValues().get(thirdClass).getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationMethodInvocationsIncoming(fourthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
+        classStructure3.computeRelationMetric(relationMetricType);
+        assertThat(classStructure3.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(sixthClass).getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationMethodInvocationsIncoming(fifthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
+        classStructure4.computeRelationMetric(relationMetricType);
+        assertThat(classStructure4.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure4.getRelationMetricValues().get(thirdClass).getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationMethodInvocationsIncoming(sixthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().containsKey(sixthClass)).isFalse();
+        classStructure5.computeRelationMetric(relationMetricType);
+        assertThat(classStructure5.getRelationMetricValues().size()).isEqualTo(2);
+        assertThat(classStructure5.getRelationMetricValues().get(firstClass).getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
+        assertThat(classStructure5.getRelationMetricValues().get(thirdClass).getNumberOfMethodInvocationsIncoming()).isEqualTo(1);
+
+        classStructure6.computeRelationMetric(relationMetricType);
+        assertThat(classStructure6.getRelationMetricValues().containsKey(sixthClass)).isFalse();
     }
 
     @Test
-    public void numberOfRelationMethodInvocationsOutgoing_testMetricCorrectness() {
-        classMetricsContainer.calculateNumberOfRelationMethodInvocationsOutgoing(firstClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
+    public void computeRelationMetric_testNumberOfRelationMethodInvocationsOutgoing() {
+        RelationMetricType relationMetricType = RelationMetricType.NUMBER_OF_RELATION_METHOD_INVOCATIONS_OUTGOING;
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationMethodInvocationsOutgoing(secondClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
+        classStructure1.computeRelationMetric(relationMetricType);
+        assertThat(classStructure1.getRelationMetricValues().size()).isEqualTo(2);
+        assertThat(classStructure1.getRelationMetricValues().get(secondClass).getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
+        assertThat(classStructure1.getRelationMetricValues().get(fifthClass).getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationMethodInvocationsOutgoing(thirdClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(4);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fourthClass).getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
+        classStructure2.computeRelationMetric(relationMetricType);
+        assertThat(classStructure2.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure2.getRelationMetricValues().get(firstClass).getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationMethodInvocationsOutgoing(fourthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().containsKey(fourthClass)).isFalse();
+       classStructure3.computeRelationMetric(relationMetricType);
+        assertThat(classStructure3.getRelationMetricValues().size()).isEqualTo(4);
+        assertThat(classStructure3.getRelationMetricValues().get(firstClass).getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(secondClass).getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(fourthClass).getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(fifthClass).getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationMethodInvocationsOutgoing(fifthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
+        classStructure4.computeRelationMetric(relationMetricType);
+        assertThat(classStructure4.getRelationMetricValues().containsKey(fourthClass)).isFalse();
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationMethodInvocationsOutgoing(sixthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
+        classStructure5.computeRelationMetric(relationMetricType);
+        assertThat(classStructure5.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure5.getRelationMetricValues().get(firstClass).getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
+
+        classStructure6.computeRelationMetric(relationMetricType);
+        assertThat(classStructure6.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure6.getRelationMetricValues().get(thirdClass).getNumberOfMethodInvocationsOutgoing()).isEqualTo(1);
     }
 
     @Test
-    public void numberOfRelationConstructorInvocationsIncoming_testMetricCorrectness() {
-        classMetricsContainer.calculateNumberOfRelationConstructorInvocationsIncoming(firstClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(3);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
+    public void computeRelationMetric_testNumberOfRelationConstructorInvocationsIncoming() {
+        RelationMetricType relationMetricType = RelationMetricType.NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS_INCOMING;
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationConstructorInvocationsIncoming(secondClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
+        classStructure1.computeRelationMetric(relationMetricType);
+        assertThat(classStructure1.getRelationMetricValues().size()).isEqualTo(3);
+        assertThat(classStructure1.getRelationMetricValues().get(secondClass).getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
+        assertThat(classStructure1.getRelationMetricValues().get(thirdClass).getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
+        assertThat(classStructure1.getRelationMetricValues().get(fifthClass).getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationConstructorInvocationsIncoming(thirdClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(sixthClass).getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
+        classStructure2.computeRelationMetric(relationMetricType);
+        assertThat(classStructure2.getRelationMetricValues().size()).isEqualTo(2);
+        assertThat(classStructure2.getRelationMetricValues().get(firstClass).getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
+        assertThat(classStructure2.getRelationMetricValues().get(thirdClass).getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationConstructorInvocationsIncoming(fourthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
+        classStructure3.computeRelationMetric(relationMetricType);
+        assertThat(classStructure3.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(sixthClass).getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationConstructorInvocationsIncoming(fifthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
+        classStructure4.computeRelationMetric(relationMetricType);
+        assertThat(classStructure4.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure4.getRelationMetricValues().get(thirdClass).getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationConstructorInvocationsIncoming(sixthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().containsKey(sixthClass)).isFalse();
+        classStructure5.computeRelationMetric(relationMetricType);
+        assertThat(classStructure5.getRelationMetricValues().size()).isEqualTo(2);
+        assertThat(classStructure5.getRelationMetricValues().get(firstClass).getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
+        assertThat(classStructure5.getRelationMetricValues().get(thirdClass).getNumberOfConstructorInvocationsIncoming()).isEqualTo(1);
+
+        classStructure6.computeRelationMetric(relationMetricType);
+        assertThat(classStructure6.getRelationMetricValues().containsKey(sixthClass)).isFalse();
     }
 
     @Test
-    public void numberOfRelationConstructorInvocationsOutgoing_testMetricCorrectness() {
-        classMetricsContainer.calculateNumberOfRelationConstructorInvocationsOutgoing(firstClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
+    public void computeRelationMetric_testNumberOfRelationConstructorInvocationsOutgoing() {
+        RelationMetricType relationMetricType = RelationMetricType.NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS_OUTGOING;
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationConstructorInvocationsOutgoing(secondClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
+        classStructure1.computeRelationMetric(relationMetricType);
+        assertThat(classStructure1.getRelationMetricValues().size()).isEqualTo(2);
+        assertThat(classStructure1.getRelationMetricValues().get(secondClass).getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
+        assertThat(classStructure1.getRelationMetricValues().get(fifthClass).getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationConstructorInvocationsOutgoing(thirdClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(4);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fourthClass).getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
+        classStructure2.computeRelationMetric(relationMetricType);
+        assertThat(classStructure2.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure2.getRelationMetricValues().get(firstClass).getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationConstructorInvocationsOutgoing(fourthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().containsKey(fourthClass)).isFalse();
+        classStructure3.computeRelationMetric(relationMetricType);
+        assertThat(classStructure3.getRelationMetricValues().size()).isEqualTo(4);
+        assertThat(classStructure3.getRelationMetricValues().get(firstClass).getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(secondClass).getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(fourthClass).getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(fifthClass).getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationConstructorInvocationsOutgoing(fifthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
+        classStructure4.computeRelationMetric(relationMetricType);
+        assertThat(classStructure4.getRelationMetricValues().containsKey(fourthClass)).isFalse();
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateNumberOfRelationConstructorInvocationsOutgoing(sixthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
+        classStructure5.computeRelationMetric(relationMetricType);
+        assertThat(classStructure5.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure5.getRelationMetricValues().get(firstClass).getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
+
+        classStructure6.computeRelationMetric(relationMetricType);
+        assertThat(classStructure6.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure6.getRelationMetricValues().get(thirdClass).getNumberOfConstructorInvocationsOutgoing()).isEqualTo(1);
     }
 
     @Test
-    public void bidirectionalNumberOfRelationPackageImports_testMetricCorrectness() {
-        classMetricsContainer.calculateBidirectionalNumberOfRelationPackageImports(firstClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(3);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getBidirectionalNumberOfPackageImports()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getBidirectionalNumberOfPackageImports()).isEqualTo(2);
+    public void computeRelationMetric_testBidirectionalNumberOfRelationPackageImports() {
+        RelationMetricType relationMetricType = RelationMetricType.BIDIRECTIONAL_NUMBER_OF_RELATION_PACKAGE_IMPORTS;
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationPackageImports(secondClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfPackageImports()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
+        classStructure1.computeRelationMetric(relationMetricType);
+        assertThat(classStructure1.getRelationMetricValues().size()).isEqualTo(3);
+        assertThat(classStructure1.getRelationMetricValues().get(secondClass).getBidirectionalNumberOfPackageImports()).isEqualTo(2);
+        assertThat(classStructure1.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
+        assertThat(classStructure1.getRelationMetricValues().get(fifthClass).getBidirectionalNumberOfPackageImports()).isEqualTo(2);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationPackageImports(thirdClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(5);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fourthClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(sixthClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
+        classStructure2.computeRelationMetric(relationMetricType);
+        assertThat(classStructure2.getRelationMetricValues().size()).isEqualTo(2);
+        assertThat(classStructure2.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfPackageImports()).isEqualTo(2);
+        assertThat(classStructure2.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationPackageImports(fourthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
+        classStructure3.computeRelationMetric(relationMetricType);
+        assertThat(classStructure3.getRelationMetricValues().size()).isEqualTo(5);
+        assertThat(classStructure3.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(secondClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(fourthClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(fifthClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(sixthClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationPackageImports(fifthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfPackageImports()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
+        classStructure4.computeRelationMetric(relationMetricType);
+        assertThat(classStructure4.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure4.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationPackageImports(sixthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
+        classStructure5.computeRelationMetric(relationMetricType);
+        assertThat(classStructure5.getRelationMetricValues().size()).isEqualTo(2);
+        assertThat(classStructure5.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfPackageImports()).isEqualTo(2);
+        assertThat(classStructure5.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
+
+        classStructure6.computeRelationMetric(relationMetricType);
+        assertThat(classStructure6.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure6.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfPackageImports()).isEqualTo(1);
     }
 
     @Test
-    public void bidirectionalNumberOfRelationAttributeInvocations_testMetricCorrectness() {
-        classMetricsContainer.calculateBidirectionalNumberOfRelationAttributeInvocations(firstClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(3);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(2);
+    public void computeRelationMetric_testBidirectionalNumberOfRelationAttributeInvocations() {
+        RelationMetricType relationMetricType = RelationMetricType.BIDIRECTIONAL_NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS;
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationAttributeInvocations(secondClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
+        classStructure1.computeRelationMetric(relationMetricType);
+        assertThat(classStructure1.getRelationMetricValues().size()).isEqualTo(3);
+        assertThat(classStructure1.getRelationMetricValues().get(secondClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(2);
+        assertThat(classStructure1.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
+        assertThat(classStructure1.getRelationMetricValues().get(fifthClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(2);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationAttributeInvocations(thirdClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(5);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fourthClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(sixthClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
+        classStructure2.computeRelationMetric(relationMetricType);
+        assertThat(classStructure2.getRelationMetricValues().size()).isEqualTo(2);
+        assertThat(classStructure2.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(2);
+        assertThat(classStructure2.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationAttributeInvocations(fourthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
+        classStructure3.computeRelationMetric(relationMetricType);
+        assertThat(classStructure3.getRelationMetricValues().size()).isEqualTo(5);
+        assertThat(classStructure3.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(secondClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(fourthClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(fifthClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(sixthClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationAttributeInvocations(fifthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
+        classStructure4.computeRelationMetric(relationMetricType);
+        assertThat(classStructure4.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure4.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationAttributeInvocations(sixthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
+        classStructure5.computeRelationMetric(relationMetricType);
+        assertThat(classStructure5.getRelationMetricValues().size()).isEqualTo(2);
+        assertThat(classStructure5.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(2);
+        assertThat(classStructure5.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
+
+        classStructure6.computeRelationMetric(relationMetricType);
+        assertThat(classStructure6.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure6.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfAttributeInvocations()).isEqualTo(1);
     }
 
     @Test
-    public void bidirectionalNumberOfRelationMethodInvocations_testMetricCorrectness() {
-        classMetricsContainer.calculateBidirectionalNumberOfRelationMethodInvocations(firstClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(3);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(2);
+    public void computeRelationMetric_testBidirectionalNumberOfRelationMethodInvocations() {
+        RelationMetricType relationMetricType = RelationMetricType.BIDIRECTIONAL_NUMBER_OF_RELATION_METHOD_INVOCATIONS;
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationMethodInvocations(secondClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
+        classStructure1.computeRelationMetric(relationMetricType);
+        assertThat(classStructure1.getRelationMetricValues().size()).isEqualTo(3);
+        assertThat(classStructure1.getRelationMetricValues().get(secondClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(2);
+        assertThat(classStructure1.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
+        assertThat(classStructure1.getRelationMetricValues().get(fifthClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(2);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationMethodInvocations(thirdClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(5);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fourthClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(sixthClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
+        classStructure2.computeRelationMetric(relationMetricType);
+        assertThat(classStructure2.getRelationMetricValues().size()).isEqualTo(2);
+        assertThat(classStructure2.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(2);
+        assertThat(classStructure2.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationMethodInvocations(fourthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
+        classStructure3.computeRelationMetric(relationMetricType);
+        assertThat(classStructure3.getRelationMetricValues().size()).isEqualTo(5);
+        assertThat(classStructure3.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(secondClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(fourthClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(fifthClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(sixthClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationMethodInvocations(fifthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
+        classStructure4.computeRelationMetric(relationMetricType);
+        assertThat(classStructure4.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure4.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationMethodInvocations(sixthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
+        classStructure5.computeRelationMetric(relationMetricType);
+        assertThat(classStructure5.getRelationMetricValues().size()).isEqualTo(2);
+        assertThat(classStructure5.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(2);
+        assertThat(classStructure5.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
+
+        classStructure6.computeRelationMetric(relationMetricType);
+        assertThat(classStructure6.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure6.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfMethodInvocations()).isEqualTo(1);
     }
 
     @Test
-    public void bidirectionalNumberOfRelationConstructorInvocations_testMetricCorrectness() {
-        classMetricsContainer.calculateBidirectionalNumberOfRelationConstructorInvocations(firstClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(3);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(2);
+    public void computeRelationMetric_testBidirectionalNumberOfRelationConstructorInvocations() {
+        RelationMetricType relationMetricType = RelationMetricType.BIDIRECTIONAL_NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS;
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationConstructorInvocations(secondClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
+        classStructure1.computeRelationMetric(relationMetricType);
+        assertThat(classStructure1.getRelationMetricValues().size()).isEqualTo(3);
+        assertThat(classStructure1.getRelationMetricValues().get(secondClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(2);
+        assertThat(classStructure1.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
+        assertThat(classStructure1.getRelationMetricValues().get(fifthClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(2);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationConstructorInvocations(thirdClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(5);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(secondClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fourthClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(fifthClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(sixthClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
+        classStructure2.computeRelationMetric(relationMetricType);
+        assertThat(classStructure2.getRelationMetricValues().size()).isEqualTo(2);
+        assertThat(classStructure2.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(2);
+        assertThat(classStructure2.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationConstructorInvocations(fourthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
+        classStructure3.computeRelationMetric(relationMetricType);
+        assertThat(classStructure3.getRelationMetricValues().size()).isEqualTo(5);
+        assertThat(classStructure3.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(secondClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(fourthClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(fifthClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
+        assertThat(classStructure3.getRelationMetricValues().get(sixthClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationConstructorInvocations(fifthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(2);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
+        classStructure4.computeRelationMetric(relationMetricType);
+        assertThat(classStructure4.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure4.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
 
-        classMetricsContainer = new ClassMetricsContainer();
-        classMetricsContainer.calculateBidirectionalNumberOfRelationConstructorInvocations(sixthClass, projectStructure);
-        assertThat(classMetricsContainer.getRelationMetricValues().size()).isEqualTo(1);
-        assertThat(classMetricsContainer.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
-    }*/
+        classStructure5.computeRelationMetric(relationMetricType);
+        assertThat(classStructure5.getRelationMetricValues().size()).isEqualTo(2);
+        assertThat(classStructure5.getRelationMetricValues().get(firstClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(2);
+        assertThat(classStructure5.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
+
+        classStructure6.computeRelationMetric(relationMetricType);
+        assertThat(classStructure6.getRelationMetricValues().size()).isEqualTo(1);
+        assertThat(classStructure6.getRelationMetricValues().get(thirdClass).getBidirectionalNumberOfConstructorInvocations()).isEqualTo(1);
+    }
 }
