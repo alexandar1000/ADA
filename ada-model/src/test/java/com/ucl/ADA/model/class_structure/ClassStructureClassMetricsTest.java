@@ -39,13 +39,6 @@ public class ClassStructureClassMetricsTest {
     private ArrayList<Float> classSolutionsIncoming = new ArrayList<>(Arrays.asList(3.0F, 2.0F, 1.0F, 1.0F, 2.0F, 0.0F));
     private ArrayList<Float> classSolutionsBidirectional = new ArrayList<>(Arrays.asList(5.0F, 3.0F, 5.0F, 1.0F, 3.0F, 1.0F));
 
-    private String firstClass = classNames.get(0);
-    private String secondClass = classNames.get(1);
-    private String thirdClass = classNames.get(2);
-    private String fourthClass = classNames.get(3);
-    private String fifthClass = classNames.get(4);
-    private String sixthClass = classNames.get(5);
-
     @BeforeEach
     void setUp() {
         projectStructure = new ProjectStructure();

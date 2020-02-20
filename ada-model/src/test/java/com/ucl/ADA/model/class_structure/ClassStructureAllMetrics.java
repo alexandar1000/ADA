@@ -11,7 +11,6 @@ import java.util.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ClassStructureAllMetrics {
-    private ProjectStructure projectStructure;
 
     private Set<ModifierType> modifiers = new HashSet<>(Collections.singletonList(
             ModifierType.DEFAULT
@@ -50,7 +49,7 @@ public class ClassStructureAllMetrics {
 
     @BeforeEach
     void setUp() {
-        projectStructure = new ProjectStructure();
+        ProjectStructure projectStructure = new ProjectStructure();
 
         // Add the package declaration to every class
         for (String className : classNames) {
