@@ -623,4 +623,16 @@ public class ClassStructure {
                 break;
         }
     }
+
+    public void computeAllClassMetrics() {
+        for (ClassMetricType classMetricType : ClassMetricType.values()) {
+            this.computeClassMetric(classMetricType);
+        }
+    }
+
+    public void computeAllRelationMetrics() {
+        for (RelationMetricType relationMetricType : RelationMetricType.values()) {
+            this.computeRelationMetric(relationMetricType);
+        }
+    }
 }
