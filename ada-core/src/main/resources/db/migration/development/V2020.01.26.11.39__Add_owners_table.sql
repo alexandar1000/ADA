@@ -1,4 +1,4 @@
-CREATE TABLE public.owners
+CREATE TABLE public.owner
 (
     owner_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY (start 1),
     user_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
@@ -8,5 +8,5 @@ CREATE TABLE public.owners
 
 TABLESPACE pg_default;
 
-ALTER TABLE public.owners
+ALTER TABLE public.owner
     OWNER to "ada-team";

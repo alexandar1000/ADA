@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "REPOSITORIES")
+@Table(name = "REPOSITORY")
 public class GitRepository {
 
     @Id

@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "OWNERS")
+@Table(name = "OWNER")
 public class Owner {
 
     @Id

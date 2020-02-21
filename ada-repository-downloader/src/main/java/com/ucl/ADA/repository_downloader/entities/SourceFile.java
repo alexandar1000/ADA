@@ -3,8 +3,8 @@ package com.ucl.ADA.repository_downloader.entities;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Entity()
-@Table(name = "SOURCE_FILES")
+@Entity
+@Table(name = "SOURCEFILE")
 public class SourceFile {
 
     @Id
@@ -12,7 +12,7 @@ public class SourceFile {
     private int fileHash;
 
     @ManyToOne
-    @JoinColumn(name = "fk_snapshot_id")
+    @JoinColumn(name = "snapshot_id")
     private Snapshot snapshot;
 
     @Column(name = "file_name", nullable = false)

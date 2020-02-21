@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "BRANCHES")
+@Table(name = "BRANCH")
 public class Branch {
 
     @Id
@@ -18,7 +18,7 @@ public class Branch {
     private String branchName;
 
     @ManyToOne
-    @JoinColumn(name = "fk_repo_id", nullable = false)
+    @JoinColumn(name = "repo_id", nullable = false)
     private GitRepository repository;
 
     @OneToMany(mappedBy = "branch", targetEntity = Snapshot.class, cascade = CascadeType.ALL, orphanRemoval = true)

@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "SNAPSHOTS")
+@Table(name = "SNAPSHOT")
 public class Snapshot {
 
     @Id
@@ -15,7 +15,7 @@ public class Snapshot {
     private Long snapshotID;
 
     @ManyToOne
-    @JoinColumn(name = "fk_branch_id")
+    @JoinColumn(name = "branch_id")
     private Branch branch;
 
     @OneToMany(mappedBy = "snapshot", targetEntity = SourceFile.class, cascade = CascadeType.ALL, orphanRemoval = true)
