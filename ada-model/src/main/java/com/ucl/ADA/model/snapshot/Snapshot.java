@@ -1,4 +1,7 @@
-package com.ucl.ADA.repository_downloader.entities;
+package com.ucl.ADA.model.snapshot;
+
+import com.ucl.ADA.model.branch.Branch;
+import com.ucl.ADA.model.source_file.SourceFile;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

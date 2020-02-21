@@ -1,6 +1,5 @@
-package com.ucl.ADA.repository_downloader.repositories;
+package com.ucl.ADA.model.branch;
 
-import com.ucl.ADA.repository_downloader.entities.Branch;
 import org.springframework.data.repository.CrudRepository;
 
 public interface BranchRepository extends CrudRepository<Branch, Long> {

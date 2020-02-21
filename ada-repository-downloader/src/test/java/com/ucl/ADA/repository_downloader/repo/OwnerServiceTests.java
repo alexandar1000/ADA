@@ -1,7 +1,7 @@
 package com.ucl.ADA.repository_downloader.repo;
 
-import com.ucl.ADA.repository_downloader.entities.Owner;
-import com.ucl.ADA.repository_downloader.repositories.UserRepository;
+import com.ucl.ADA.model.owner.Owner;
+import com.ucl.ADA.model.owner.OwnerRepository;
 import com.ucl.ADA.repository_downloader.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ public class OwnerServiceTests {
     private UserService userService;
 
     @Mock
-    private UserRepository userRepository;
+    private OwnerRepository ownerRepository;
 
     @BeforeEach
     void init() {
@@ -43,11 +43,11 @@ public class OwnerServiceTests {
         owners.add(owner);
         owners.add(owner2);
 
-        when(userRepository.findAll()).thenReturn(owners);
+        when(ownerRepository.findAll()).thenReturn(owners);
 
         List<Owner> retrievedRepos = userService.listUsers();
 
-        verify(userRepository).findAll();
+        verify(ownerRepository).findAll();
 
         assertThat(retrievedRepos).hasSize(2);
 
@@ -62,11 +62,11 @@ public class OwnerServiceTests {
     void getUser(){
         Owner owner = new Owner("naum");
         owner.setOwnerID(122L);
-        when(userRepository.findById(122L)).thenReturn(Optional.of(owner));
+        when(ownerRepository.findById(122L)).thenReturn(Optional.of(owner));
 
         Owner retrievedOwner = userService.getUser(122L);
 
-        verify(userRepository).findById(122L);
+        verify(ownerRepository).findById(122L);
 
         assertThat(retrievedOwner.getUserName()).isEqualTo("naum");
         assertThat(retrievedOwner.getOwnerID()).isEqualTo(122L);
@@ -75,11 +75,11 @@ public class OwnerServiceTests {
     @Test
     void getNonExistingUser(){
 
-        when(userRepository.findById(122L)).thenReturn(Optional.empty());
+        when(ownerRepository.findById(122L)).thenReturn(Optional.empty());
 
         Owner retrievedOwner = userService.getUser(122L);
 
-        verify(userRepository).findById(122L);
+        verify(ownerRepository).findById(122L);
 
         assertThat(retrievedOwner).isNull();
     }

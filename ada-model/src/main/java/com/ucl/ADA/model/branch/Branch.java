@@ -1,4 +1,7 @@
-package com.ucl.ADA.repository_downloader.entities;
+package com.ucl.ADA.model.branch;
+
+import com.ucl.ADA.model.repository.GitRepository;
+import com.ucl.ADA.model.snapshot.Snapshot;
 
 import javax.persistence.*;
 import java.util.HashSet;

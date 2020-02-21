@@ -1,11 +1,14 @@
-package com.ucl.ADA.repository_downloader.entities;
+package com.ucl.ADA.model.repository;
+
+import com.ucl.ADA.model.branch.Branch;
+import com.ucl.ADA.model.owner.Owner;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "REPOSITORY")
+@Table(name = "REPOSITORY   ")
 public class GitRepository {
 
     @Id

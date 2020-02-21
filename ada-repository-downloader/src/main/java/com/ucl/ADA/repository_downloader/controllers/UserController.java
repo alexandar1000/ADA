@@ -1,10 +1,10 @@
 package com.ucl.ADA.repository_downloader.controllers;
 
 
-import com.ucl.ADA.repository_downloader.entities.Branch;
-import com.ucl.ADA.repository_downloader.entities.GitRepository;
-import com.ucl.ADA.repository_downloader.entities.Owner;
-import com.ucl.ADA.repository_downloader.entities.Snapshot;
+import com.ucl.ADA.model.branch.Branch;
+import com.ucl.ADA.model.repository.GitRepository;
+import com.ucl.ADA.model.owner.Owner;
+import com.ucl.ADA.model.snapshot.Snapshot;
 import com.ucl.ADA.repository_downloader.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

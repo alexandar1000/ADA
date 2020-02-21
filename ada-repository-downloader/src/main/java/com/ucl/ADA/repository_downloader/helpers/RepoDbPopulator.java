@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * A helper class, created and initialized by the RepoDownloaderService and used to populate the database.
+ * Contains metadata of the downloaded Repository.
  */
 
 public class RepoDbPopulator {
@@ -64,12 +65,6 @@ public class RepoDbPopulator {
 
     public void setDirectoryPath(String directoryPath) {
         this.directoryPath = directoryPath;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Repository -> url: " + url + "name: " + name + "owner: " + owner + "branch: " + branch;
     }
 
 }

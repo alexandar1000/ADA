@@ -1,7 +1,7 @@
 package com.ucl.ADA.repository_downloader.services;
 
-import com.ucl.ADA.repository_downloader.entities.Owner;
-import com.ucl.ADA.repository_downloader.repositories.UserRepository;
+import com.ucl.ADA.model.owner.Owner;
+import com.ucl.ADA.model.owner.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +14,14 @@ import java.util.List;
 @Service
 public class UserService {
 
-    @Autowired private UserRepository userRepository;
+    @Autowired private OwnerRepository ownerRepository;
 
     /**
      * List all users as User entities, including their Repositories, Branches, Snapshots and ClassNames.
      * @return a list of Users
      */
     public List<Owner> listUsers(){
-        return (List<Owner>) userRepository.findAll();
+        return (List<Owner>) ownerRepository.findAll();
     }
 
     /**
@@ -29,26 +29,26 @@ public class UserService {
      * @return list of strings containing the usernames of each user
      */
     public List<String> listUserNames(){
-        return userRepository.fetchUserNames();
+        return ownerRepository.fetchUserNames();
     }
 
     public Owner getUser(Long id){
-        return userRepository.findById(id).orElse(null);
+        return ownerRepository.findById(id).orElse(null);
     }
 
     public void addUser(Owner owner){
-        userRepository.save(owner);
+        ownerRepository.save(owner);
     }
 
     public void deleteAllUsers(){
-        userRepository.deleteAll();
+        ownerRepository.deleteAll();
     }
 
     public void deleteUser(Long id){
-        userRepository.deleteById(id);
+        ownerRepository.deleteById(id);
     }
 
     public Owner getUserByName(String name) {
-        return userRepository.findByUserName(name);
+        return ownerRepository.findByUserName(name);
     }
 }

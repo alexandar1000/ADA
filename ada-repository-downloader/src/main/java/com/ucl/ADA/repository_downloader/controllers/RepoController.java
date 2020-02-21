@@ -1,6 +1,6 @@
 package com.ucl.ADA.repository_downloader.controllers;
 
-import com.ucl.ADA.repository_downloader.entities.GitRepository;
+import com.ucl.ADA.model.repository.GitRepository;
 import com.ucl.ADA.repository_downloader.services.RepoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

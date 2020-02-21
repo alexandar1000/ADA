@@ -1,6 +1,5 @@
-package com.ucl.ADA.repository_downloader.repositories;
+package com.ucl.ADA.model.snapshot;
 
-import com.ucl.ADA.repository_downloader.entities.Snapshot;
 import org.springframework.data.repository.CrudRepository;
 
 public interface SnapshotRepository extends CrudRepository<Snapshot, Long> {

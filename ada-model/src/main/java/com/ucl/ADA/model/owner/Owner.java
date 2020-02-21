@@ -1,4 +1,6 @@
-package com.ucl.ADA.repository_downloader.entities;
+package com.ucl.ADA.model.owner;
+
+import com.ucl.ADA.model.repository.GitRepository;
 
 import javax.persistence.*;
 import java.util.HashSet;

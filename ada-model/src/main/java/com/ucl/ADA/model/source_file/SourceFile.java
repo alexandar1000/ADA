@@ -1,4 +1,6 @@
-package com.ucl.ADA.repository_downloader.entities;
+package com.ucl.ADA.model.source_file;
+
+import com.ucl.ADA.model.snapshot.Snapshot;
 
 import javax.persistence.*;
 import java.util.Objects;
