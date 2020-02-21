@@ -1,4 +1,4 @@
-package com.ucl.ADA.repository_downloader.repo;
+package com.ucl.ADA.repository_downloader;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

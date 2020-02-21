@@ -39,7 +39,7 @@ public class RepositoryAnalyserServices {
 
         // Download repository and store metadata in DB
         try {
-            repoService.downloadAndStoreRepo(populator);
+            populator = repoService.downloadAndStoreRepo(populator);
         } catch (GitAPIException e) {
             e.printStackTrace();
         }

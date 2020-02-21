@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 @Service
-public class UserService {
+public class OwnerService {
 
     @Autowired private OwnerRepository ownerRepository;
 
@@ -36,8 +36,8 @@ public class UserService {
         return ownerRepository.findById(id).orElse(null);
     }
 
-    public void addUser(Owner owner){
-        ownerRepository.save(owner);
+    public Owner addUser(Owner owner){
+        return ownerRepository.save(owner);
     }
 
     public void deleteAllUsers(){

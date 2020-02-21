@@ -1,17 +1,16 @@
 package com.ucl.ADA.repository_downloader.services;
 
 import com.ucl.ADA.model.branch.Branch;
-import com.ucl.ADA.model.owner.Owner;
 import com.ucl.ADA.model.branch.BranchRepository;
-import com.ucl.ADA.model.owner.OwnerRepository;
+import com.ucl.ADA.model.owner.Owner;
 import com.ucl.ADA.model.repository.GitRepository;
 import com.ucl.ADA.model.repository.RepoEntityRepository;
 import com.ucl.ADA.model.snapshot.Snapshot;
 import com.ucl.ADA.model.snapshot.SnapshotRepository;
 import com.ucl.ADA.model.source_file.SourceFile;
 import com.ucl.ADA.model.source_file.SourceFileRepository;
-import com.ucl.ADA.repository_downloader.helpers.RepoDownloader;
 import com.ucl.ADA.repository_downloader.helpers.RepoDbPopulator;
+import com.ucl.ADA.repository_downloader.helpers.RepoDownloader;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,7 @@ public class RepoService {
     //TODO: refactor this class.
 
     @Autowired
-    private OwnerRepository ownerRepository;
+    private OwnerService ownerService;
 
     @Autowired
     private RepoEntityRepository repoEntityRepository;
@@ -47,15 +46,27 @@ public class RepoService {
     private SourceFileRepository sourceFileRepository;
 
     /**
-     * Download Git repository and populate database, following the hierarchical database model of User -*> GitRepo -*> Branch -*> Snapshot
+     * Download Git repository and populate database, following the hierarchical database model of
+     * User -*> GitRepo -*> Branch -*> Snapshot -*> SourceFiles
      * @param repoInfoUI - instance of RepoDbPopulator which initially holds the git URL and branch name
      *
      * */
     public RepoDbPopulator downloadAndStoreRepo(RepoDbPopulator repoInfoUI) throws GitAPIException {
 
-        LocalDateTime timestamp = LocalDateTime.now();
-
         RepoDbPopulator repoDbPopulator = RepoDownloader.downloadRepository(repoInfoUI);
+
+        return populateDatabase(repoDbPopulator);
+    }
+
+    /**
+     * Populate database with the metadata of the git repository.
+     * @param repoDbPopulator helper object containing the name, owner, branch and path to source files
+     *                        of the downloaded Git Repository
+     * @return the same RepoDbPopulator object, to be used by the the parser.
+     */
+    RepoDbPopulator populateDatabase(RepoDbPopulator repoDbPopulator) {
+
+        LocalDateTime timestamp = LocalDateTime.now();
 
         Owner owner = initOwner(repoDbPopulator);
 
@@ -164,7 +175,7 @@ public class RepoService {
      */
     private Owner initOwner(RepoDbPopulator downloadedRepo) {
 
-        List<Owner> owners = (List<Owner>) ownerRepository.findAll();
+        List<Owner> owners = ownerService.listUsers();
         String testUserName = downloadedRepo.getOwner();
 
         // Search and return existing user, if found
@@ -177,7 +188,7 @@ public class RepoService {
         // If not found, create and return a new user
         Owner owner = new Owner();
         owner.setUserName(downloadedRepo.getOwner());
-        return ownerRepository.save(owner);
+        return ownerService.addUser(owner);
     }
 
     public List<GitRepository> listRepositories(){

@@ -7,11 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
-/**
- * Controller for storing the metadata of a given repository in the database.
- */
-
 @RestController
 @RequestMapping("/repositories")
 public class RepoController {
@@ -19,30 +14,18 @@ public class RepoController {
     @Autowired private RepoService repoService;
 
     /**
-     * Download a repository and populate the database with its metadata (owner, repoName, branch, timestamp, fileNames etc...)
+     * Endpoint for listing all GitRepository entities in the DB.
+     * @return a List of all GitRepository entities.
      */
-
-    //todo: delete this endpoint, not used
-
-//    @CrossOrigin(origins = "http://localhost:4200")
-//    @PostMapping("/repo-metadata")
-//    public User addEntry(@RequestBody RepoDbPopulator repo) {
-//
-//        User user;
-//        try {
-//            repoService.addEntry(repo);
-//        }
-//        catch (Exception exception) {
-//            return null;
-//        }
-//        return user;
-//    }
-
     @GetMapping
     public List<GitRepository> listAllRepositories(){
         return repoService.listRepositories();
     }
 
+    /**
+     * Endpoint for listing the names of all GitRepositories stored in the DB.
+     * @return list of repository names
+     */
     @GetMapping("/names")
     public List<String> listAllRepoNames(){
         return repoService.listRepoNames();

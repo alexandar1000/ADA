@@ -18,7 +18,6 @@ public class RepoDbPopulator {
     private List<String> fileNames = new ArrayList<>();
     private String directoryPath;
 
-
     public List<String> getFileNames() {
         return fileNames;
     }
