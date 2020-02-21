@@ -3,8 +3,8 @@ package com.ucl.ADA.repository_downloader.controllers;
 
 import com.ucl.ADA.repository_downloader.entities.Branch;
 import com.ucl.ADA.repository_downloader.entities.GitRepository;
+import com.ucl.ADA.repository_downloader.entities.Owner;
 import com.ucl.ADA.repository_downloader.entities.Snapshot;
-import com.ucl.ADA.repository_downloader.entities.User;
 import com.ucl.ADA.repository_downloader.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +30,7 @@ public class UserController {
 
 
     @GetMapping(value = "/{user_name}")
-    public User getUserByName(@PathVariable String user_name){
+    public Owner getUserByName(@PathVariable String user_name){
         return userService.getUserByName(user_name);
     }
 
@@ -94,7 +94,7 @@ public class UserController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping
-    public List<User> listAllUsers() {
+    public List<Owner> listAllUsers() {
         return userService.listUsers();
     }
 

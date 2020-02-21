@@ -20,14 +20,14 @@ public class GitRepository {
     Set<Branch> branches = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "fk_user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "owner_id", nullable = false)
+    private Owner owner;
 
     public GitRepository(){}
 
-    public GitRepository(String repoName, User user) {
+    public GitRepository(String repoName, Owner owner) {
         this.repoName = repoName;
-        this.user = user;
+        this.owner = owner;
     }
 
     public Long getRepoID() {
@@ -46,8 +46,8 @@ public class GitRepository {
         this.repoName = repoName;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setOwner(Owner owner) {
+        this.owner = owner;
     }
 
     public Set<Branch> getBranches() {

@@ -1,10 +1,7 @@
 package com.ucl.ADA.repository_downloader.controllers;
 
 import com.ucl.ADA.repository_downloader.entities.GitRepository;
-import com.ucl.ADA.repository_downloader.entities.User;
-import com.ucl.ADA.repository_downloader.helpers.RepoDbPopulator;
 import com.ucl.ADA.repository_downloader.services.RepoService;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

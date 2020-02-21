@@ -1,6 +1,6 @@
 package com.ucl.ADA.repository_downloader.repo;
 
-import com.ucl.ADA.repository_downloader.entities.User;
+import com.ucl.ADA.repository_downloader.entities.Owner;
 import com.ucl.ADA.repository_downloader.repositories.UserRepository;
 import com.ucl.ADA.repository_downloader.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class UserServiceTests {
+public class OwnerServiceTests {
 
     @InjectMocks
     private UserService userService;
@@ -33,26 +33,26 @@ public class UserServiceTests {
     @Test
     void getAllUsers(){
 
-        User user = new User("naum");
-        User user2 = new User("nina");
+        Owner owner = new Owner("naum");
+        Owner owner2 = new Owner("nina");
 
-        user.setUserID(1L);
-        user2.setUserID(2L);
+        owner.setOwnerID(1L);
+        owner2.setOwnerID(2L);
 
-        List<User> users = new ArrayList<>();
-        users.add(user);
-        users.add(user2);
+        List<Owner> owners = new ArrayList<>();
+        owners.add(owner);
+        owners.add(owner2);
 
-        when(userRepository.findAll()).thenReturn(users);
+        when(userRepository.findAll()).thenReturn(owners);
 
-        List<User> retrievedRepos = userService.listUsers();
+        List<Owner> retrievedRepos = userService.listUsers();
 
         verify(userRepository).findAll();
 
         assertThat(retrievedRepos).hasSize(2);
 
-        assertThat(retrievedRepos.get(0).getUserID()).isEqualTo(1L);
-        assertThat(retrievedRepos.get(1).getUserID()).isEqualTo(2L);
+        assertThat(retrievedRepos.get(0).getOwnerID()).isEqualTo(1L);
+        assertThat(retrievedRepos.get(1).getOwnerID()).isEqualTo(2L);
 
         assertThat(retrievedRepos.get(0).getUserName()).isEqualTo("naum");
         assertThat(retrievedRepos.get(1).getUserName()).isEqualTo("nina");
@@ -60,16 +60,16 @@ public class UserServiceTests {
 
     @Test
     void getUser(){
-        User user = new User("naum");
-        user.setUserID(122L);
-        when(userRepository.findById(122L)).thenReturn(Optional.of(user));
+        Owner owner = new Owner("naum");
+        owner.setOwnerID(122L);
+        when(userRepository.findById(122L)).thenReturn(Optional.of(owner));
 
-        User retrievedUser = userService.getUser(122L);
+        Owner retrievedOwner = userService.getUser(122L);
 
         verify(userRepository).findById(122L);
 
-        assertThat(retrievedUser.getUserName()).isEqualTo("naum");
-        assertThat(retrievedUser.getUserID()).isEqualTo(122L);
+        assertThat(retrievedOwner.getUserName()).isEqualTo("naum");
+        assertThat(retrievedOwner.getOwnerID()).isEqualTo(122L);
     }
 
     @Test
@@ -77,10 +77,10 @@ public class UserServiceTests {
 
         when(userRepository.findById(122L)).thenReturn(Optional.empty());
 
-        User retrievedUser = userService.getUser(122L);
+        Owner retrievedOwner = userService.getUser(122L);
 
         verify(userRepository).findById(122L);
 
-        assertThat(retrievedUser).isNull();
+        assertThat(retrievedOwner).isNull();
     }
 }

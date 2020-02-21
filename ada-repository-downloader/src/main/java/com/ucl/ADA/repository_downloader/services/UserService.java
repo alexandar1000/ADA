@@ -1,6 +1,6 @@
 package com.ucl.ADA.repository_downloader.services;
 
-import com.ucl.ADA.repository_downloader.entities.User;
+import com.ucl.ADA.repository_downloader.entities.Owner;
 import com.ucl.ADA.repository_downloader.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +20,8 @@ public class UserService {
      * List all users as User entities, including their Repositories, Branches, Snapshots and ClassNames.
      * @return a list of Users
      */
-    public List<User> listUsers(){
-        return (List<User>) userRepository.findAll();
+    public List<Owner> listUsers(){
+        return (List<Owner>) userRepository.findAll();
     }
 
     /**
@@ -32,12 +32,12 @@ public class UserService {
         return userRepository.fetchUserNames();
     }
 
-    public User getUser(Long id){
+    public Owner getUser(Long id){
         return userRepository.findById(id).orElse(null);
     }
 
-    public void addUser(User user){
-        userRepository.save(user);
+    public void addUser(Owner owner){
+        userRepository.save(owner);
     }
 
     public void deleteAllUsers(){
@@ -48,7 +48,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public User getUserByName(String name) {
+    public Owner getUserByName(String name) {
         return userRepository.findByUserName(name);
     }
 }

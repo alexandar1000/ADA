@@ -49,9 +49,9 @@ public class RepoService {
 
         RepoDbPopulator repoDbPopulator = RepoDownloader.downloadRepository(repoInfoUI);
 
-        User user = initUser(repoDbPopulator);
+        Owner owner = initUser(repoDbPopulator);
 
-        GitRepository repo = initRepo(user, repoDbPopulator);
+        GitRepository repo = initRepo(owner, repoDbPopulator);
 
         Branch branchEntity = initBranch(repo, repoDbPopulator);
 
@@ -121,13 +121,13 @@ public class RepoService {
     /**
      * Initialize a GitRepository entity by searching for existing repo associated with a given user, and returning it if found.
      * Otherwise, create, initialize and return a new GitRepository entity.
-     * @param user corresponding user
+     * @param owner corresponding user
      * @param downloadedRepo object containing metadata of Git repository
      * @return an existing (or new) GitRepository
      */
-    private GitRepository initRepo(User user, RepoDbPopulator downloadedRepo) {
+    private GitRepository initRepo(Owner owner, RepoDbPopulator downloadedRepo) {
 
-        Set<GitRepository> repos = user.getRepos();
+        Set<GitRepository> repos = owner.getRepos();
         String repoName = downloadedRepo.getName();
         for(GitRepository r : repos){
             if(r.getRepoName().equals(repoName)){
@@ -135,7 +135,7 @@ public class RepoService {
             }
         }
         GitRepository repo = new GitRepository();
-        repo.setUser(user);
+        repo.setOwner(owner);
         repo.setRepoName(repoName);
         return repoEntityRepository.save(repo);
     }
@@ -146,22 +146,22 @@ public class RepoService {
      * @param downloadedRepo object containining metadata of Git repository
      * @return an existing (or new) User
      */
-    private User initUser(RepoDbPopulator downloadedRepo) {
+    private Owner initUser(RepoDbPopulator downloadedRepo) {
 
-        List<User> users = (List<User>) userRepository.findAll();
+        List<Owner> owners = (List<Owner>) userRepository.findAll();
         String testUserName = downloadedRepo.getOwner();
 
         // Search and return existing user, if found
-        for(User u : users){
+        for(Owner u : owners){
             if(u.getUserName().equals(testUserName)){
                 return u;
             }
         }
 
         // If not found, create and return a new user
-        User user = new User();
-        user.setUserName(downloadedRepo.getOwner());
-        return userRepository.save(user);
+        Owner owner = new Owner();
+        owner.setUserName(downloadedRepo.getOwner());
+        return userRepository.save(owner);
     }
 
     public List<GitRepository> listRepositories(){
