@@ -1,16 +1,11 @@
-CREATE TABLE public.branch
+CREATE TABLE BRANCH
 (
-    branch_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY (start 1),
-    branch_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
-    repo_id bigint NOT NULL,
+    branch_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY (START 1),
+    branch_name VARCHAR(255) NOT NULL,
+    repo_id BIGINT NOT NULL,
     CONSTRAINT branches_pkey PRIMARY KEY (branch_id),
     CONSTRAINT branches_fkey FOREIGN KEY (repo_id)
-        REFERENCES public.repository (repo_id) MATCH SIMPLE
+        REFERENCES REPOSITORY (repo_id) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE CASCADE 
+        ON DELETE CASCADE
 )
-
-TABLESPACE pg_default;
-
-ALTER TABLE public.branch
-    OWNER to "ada-team";

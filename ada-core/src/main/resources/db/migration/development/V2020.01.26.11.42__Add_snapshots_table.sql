@@ -1,16 +1,11 @@
-CREATE TABLE public.snapshot
+CREATE TABLE SNAPSHOT
 (
-    snapshot_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY (start 1),
-    branch_id bigint NOT NULL,
-    "timestamp" timestamp without time zone NOT NULL,
+    snapshot_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY (START 1),
+    branch_id BIGINT NOT NULL,
+    "timestamp" TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT snapshot_pkey PRIMARY KEY (snapshot_id),
     CONSTRAINT snapshot_fkey FOREIGN KEY (branch_id)
-        REFERENCES public.branch (branch_id) MATCH SIMPLE
+        REFERENCES BRANCH (branch_id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE 
 )
-
-TABLESPACE pg_default;
-
-ALTER TABLE public.snapshot
-    OWNER to "ada-team";
