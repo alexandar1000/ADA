@@ -53,8 +53,9 @@ class SourceClassTransformer {
             // get modifiers and parameters
             Set<ModifierType> modifierTypes = ModifierTransformer.getModifierTypes(declaration.getModifiers());
             List<ParameterDeclaration> parameters = new ArrayList<>();
-            for (Map.Entry<String, String> entry : declaration.getParameters().entrySet())
+            for (Map.Entry<String, String> entry : declaration.getParameters().entrySet()) {
                 parameters.add(new ParameterDeclaration(entry.getKey(), entry.getValue()));
+            }
 
             if (declaration.isConstructor()) {
                 // constructor declaration
