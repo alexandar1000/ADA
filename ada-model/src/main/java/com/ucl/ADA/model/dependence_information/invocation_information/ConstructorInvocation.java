@@ -1,6 +1,5 @@
 package com.ucl.ADA.model.dependence_information.invocation_information;
 
-import lombok.Builder;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -18,7 +17,6 @@ public class ConstructorInvocation extends ElementInvocation {
      * @param name name of the constructor being invoked
      * @param passedParameters The list of parameters whit which the constructor has been invoked with
      */
-    @Builder
     public ConstructorInvocation(String name, List<PassedParameter> passedParameters) {
         super(name);
         if (passedParameters != null) {

@@ -32,8 +32,6 @@ public class RepositoryAnalyserServices {
     public ProjectStructure analyseRepositoryService(String url, String branchName) {
 
         RepoDbPopulator populator = new RepoDbPopulator();
-//        String branch = "";
-//        String url = "https://github.com/sebastianvburlacu/Fitbit-JSON-Data-Generator.git";
         populator.setUrl(url);
         populator.setBranch(branchName);
 
