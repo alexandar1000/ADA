@@ -1,26 +1,27 @@
 package com.ucl.ADA.parser.transformer;
 
-import java.util.Set;
+import lombok.Getter;
 
+import java.util.*;
+
+@Getter
 class PackageBreaker {
 
-    private PackageNode root;
+    private Map<String, Set<String>> packageContents = new HashMap<>();
 
     protected PackageBreaker(Set<String> classNames) {
-        root = new PackageNode();
-
         for (String className : classNames) {
-            String[] classNameArr = className.split("\\.");
-
+            int p = className.lastIndexOf(".");
+            String packageName = (p == -1 ? "" : className.substring(0, p));
+            if (!packageContents.containsKey(packageName)) {
+                packageContents.put(packageName, new HashSet<>(Collections.singletonList(className)));
+            } else {
+                Set<String> curr = packageContents.get(packageName);
+                curr.add(className);
+            }
         }
     }
 
-    private static class PackageNode {
-        String name;
-        Set<PackageNode> subPackageNodes;
-        Set<String> classNames;
-
-    }
 }
 
 

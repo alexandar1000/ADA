@@ -17,11 +17,14 @@ class SourceClassTransformer {
 
     private Set<String> classNames;
 
-    protected SourceClassTransformer(ProjectStructure projectStructure, ADAClass sourceClass, Set<String> classNames) {
+    private PackageBreaker packageBreaker;
+
+    protected SourceClassTransformer(ProjectStructure projectStructure, ADAClass sourceClass, Set<String> classNames, PackageBreaker packageBreaker) {
         this.projectStructure = projectStructure;
         this.sourceClass = sourceClass;
         className = sourceClass.getClassName();
         this.classNames = classNames;
+        this.packageBreaker = packageBreaker;
     }
 
     protected static Set<String> getClassNames(Set<ADAClass> sourceClasses) {
@@ -71,17 +74,29 @@ class SourceClassTransformer {
         Set<String> importedClasses = sourceClass.getImportedInternalClasses();
 
         for (String importClass : importedClasses) {
-            // TODO: build project hierarchy tree to decode .*
-            if (importClass.endsWith(".*")) continue;
 
-            PackageInvocation packageInvocation = new PackageInvocation(importClass);
             if (classNames.contains(importClass)) {
                 // internal package invocation
-                projectStructure.addPackageInvocation(className, importClass, packageInvocation);
+                if (importClass.endsWith(".*")) {
+                    // resolve .*
+                    int p = className.lastIndexOf(".");
+                    String packageName = className.substring(0, p);
+                    Set<String> importNames = packageBreaker.getPackageContents().get(packageName);
+                    for (String importName : importNames) {
+                        PackageInvocation packageInvocation = new PackageInvocation(importName);
+                        projectStructure.addPackageInvocation(className, importName, packageInvocation);
+                    }
+                } else {
+                    // normal import class
+                    PackageInvocation packageInvocation = new PackageInvocation(importClass);
+                    projectStructure.addPackageInvocation(className, importClass, packageInvocation);
+                }
             } else {
                 // external package invocation
+                PackageInvocation packageInvocation = new PackageInvocation(importClass);
                 projectStructure.addExternalPackageImport(className, packageInvocation);
             }
+
         }
     }
 

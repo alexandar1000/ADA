@@ -16,8 +16,10 @@ public class Transformer {
 
         Set<String> classNames = SourceClassTransformer.getClassNames(sourceClasses);
 
+        PackageBreaker packageBreaker = new PackageBreaker(classNames);
+
         for (ADAClass sourceFile : sourceClasses) {
-            SourceClassTransformer sourceClassTransformer = new SourceClassTransformer(projectStructure, sourceFile, classNames);
+            SourceClassTransformer sourceClassTransformer = new SourceClassTransformer(projectStructure, sourceFile, classNames, packageBreaker);
 
             sourceClassTransformer.transformPackageDeclaration();
             sourceClassTransformer.transformAttributeDeclaration();
