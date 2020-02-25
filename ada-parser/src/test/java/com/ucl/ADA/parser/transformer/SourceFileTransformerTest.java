@@ -1,7 +1,6 @@
 package com.ucl.ADA.parser.transformer;
 
 import com.ucl.ADA.model.project_structure.ProjectStructure;
-import com.ucl.ADA.parser.model.SourceFile;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,7 @@ class SourceFileTransformerTest {
 
     private ProjectStructure projectStructure;
     private SourceFileTransformer sourceFileTransformer;
-    private SourceFile sourceFile;
+   // private SourceFile sourceFile;
 
     @BeforeAll
     static void setUpProcessor() {

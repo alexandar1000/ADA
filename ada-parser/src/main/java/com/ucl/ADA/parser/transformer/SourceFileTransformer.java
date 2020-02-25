@@ -4,6 +4,7 @@ import com.ucl.ADA.model.dependence_information.declaration_information.*;
 import com.ucl.ADA.model.dependence_information.invocation_information.*;
 import com.ucl.ADA.model.project_structure.ProjectStructure;
 import com.ucl.ADA.parser.model.*;
+import org.eclipse.jdt.internal.core.SourceMethod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +15,14 @@ public class SourceFileTransformer {
 
     private ProjectStructure projectStructure;
 
-    private SourceFile sourceFile;
+    private ADAClassModel sourceFile;
 
-    protected SourceFileTransformer(ProjectStructure projectStructure, SourceFile sourceFile) {
+    protected SourceFileTransformer(ProjectStructure projectStructure, ADAClassModel sourceFile) {
         this.projectStructure = projectStructure;
         this.sourceFile = sourceFile;
     }
 
-    protected void transformPackageDeclaration() {
+   /* protected void transformPackageDeclaration() {
         PackageDeclaration packageDeclaration = new PackageDeclaration(sourceFile.getPackageName());
 
         projectStructure.addPackageDeclaration(sourceFile.getClassName(), packageDeclaration);
@@ -30,11 +31,11 @@ public class SourceFileTransformer {
     protected void transformAttributeDeclaration() {
         String className = sourceFile.getClassName();
 
-        for (SourceAttribute sourceAttribute : sourceFile.getClassAttributes()) {
-            Set<ModifierType> modifierTypes = ModifierTransformer.getModifierTypes(sourceAttribute.getModifiers());
+        for (ADAClassAttributeModel ADAClassAttributeModel : sourceFile.getClassAttributes()) {
+            Set<ModifierType> modifierTypes = ModifierTransformer.getModifierTypes(ADAClassAttributeModel.getModifiers());
 
             AttributeDeclaration attributeDeclaration = new AttributeDeclaration
-                    (modifierTypes, sourceAttribute.getType(), sourceAttribute.getName(), sourceAttribute.getValue());
+                    (modifierTypes, ADAClassAttributeModel.getType(), ADAClassAttributeModel.getName(), ADAClassAttributeModel.getValue());
 
             projectStructure.addAttributeDeclaration(className, attributeDeclaration);
         }
@@ -115,14 +116,14 @@ public class SourceFileTransformer {
         String className = sourceFile.getClassName();
 
         for (SourceMethod sourceMethod : sourceFile.getMethods()) {
-            for (MethodCall methodCall : sourceMethod.getMethodCalls()) {
+            for (ADAMethodCallModel ADAMethodCallModel : sourceMethod.getMethodCalls()) {
                 List<PassedParameter> parameters = new ArrayList<>();
-                for (String value : methodCall.getArguments())
+                for (String value : ADAMethodCallModel.getArguments())
                     parameters.add(new PassedParameter(value));
 
-                MethodInvocation methodInvocation = new MethodInvocation(methodCall.getMethodCallName(), parameters);
+                MethodInvocation methodInvocation = new MethodInvocation(ADAMethodCallModel.getMethodCallName(), parameters);
 
-                projectStructure.addMethodInvocation(className, methodCall.getCalleeName(), methodInvocation);
+                projectStructure.addMethodInvocation(className, ADAMethodCallModel.getCalleeName(), methodInvocation);
             }
         }
     }
@@ -150,6 +151,6 @@ public class SourceFileTransformer {
             ConstructorInvocation constructorInvocation = new ConstructorInvocation(exConstructor, null);
             projectStructure.addExternalConstructorInvocations(className, constructorInvocation);
         }
-    }
+    }*/
 
 }
