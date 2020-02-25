@@ -29,8 +29,9 @@ class SourceClassTransformer {
 
     protected static Set<String> getClassNames(Set<ADAClass> sourceClasses) {
         Set<String> classNames = new HashSet<>();
-        for (ADAClass sourceClass : sourceClasses)
+        for (ADAClass sourceClass : sourceClasses) {
             classNames.add(sourceClass.getClassName());
+        }
         return classNames;
     }
 
@@ -124,8 +125,9 @@ class SourceClassTransformer {
     protected void transformConstructorInvocation() {
         for (ADAConstructorInvocation adaConstructorInvocation : sourceClass.getADAConstructorInvocations()) {
             List<PassedParameter> parameters = new ArrayList<>();
-            for (String value : adaConstructorInvocation.getArguments())
+            for (String value : adaConstructorInvocation.getArguments()) {
                 parameters.add(new PassedParameter(value));
+            }
             String constructorFullName = adaConstructorInvocation.getConstructorClassName();
             String[] constructorNameArr = constructorFullName.split("\\.");
             ConstructorInvocation constructorInvocation = new ConstructorInvocation(constructorNameArr[constructorNameArr.length - 1], parameters);
@@ -136,8 +138,9 @@ class SourceClassTransformer {
     protected void transformMethodInvocation() {
         for (ADAMethodInvocation adaMethodInvocation : sourceClass.getADAMethodInvocations()) {
             List<PassedParameter> parameters = new ArrayList<>();
-            for (String value : adaMethodInvocation.getArguments())
+            for (String value : adaMethodInvocation.getArguments()) {
                 parameters.add(new PassedParameter(value));
+            }
             MethodInvocation methodInvocation = new MethodInvocation(adaMethodInvocation.getMethodCallName(), parameters);
             projectStructure.addMethodInvocation(className, adaMethodInvocation.getCalleeName(), methodInvocation);
         }
