@@ -31,7 +31,8 @@ public class Transformer {
     }
 
     public static void main(String[] args) {
-        String src_dir = "ada-parser/src/main/resources/source_to_parse";
+        //String src_dir = "ada-parser/src/main/resources/source_to_parse";
+        String src_dir =  "/home/mrhmisu/UCL-MS/ADA-test-simple-JAVA-project-0/src";
         // TODO: replace parser with the new JDT parser
         new ADAParser().printParsedSourceFileInJSON(src_dir);
     }
