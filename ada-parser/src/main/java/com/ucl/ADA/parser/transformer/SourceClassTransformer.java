@@ -4,7 +4,6 @@ import com.ucl.ADA.model.dependence_information.declaration_information.*;
 import com.ucl.ADA.model.dependence_information.invocation_information.*;
 import com.ucl.ADA.model.project_structure.ProjectStructure;
 import com.ucl.ADA.parser.model.*;
-import org.eclipse.jdt.internal.core.SourceMethod;
 
 import java.util.*;
 
@@ -38,10 +37,10 @@ public class SourceClassTransformer {
     }
 
     protected void transformAttributeDeclaration() {
-        for (ADAClassAttribute ADAClassAttribute : sourceClass.getAdaClassAttributes()) {
-            Set<ModifierType> modifierTypes = ModifierTransformer.getModifierTypes(ADAClassAttribute.getModifiers());
+        for (ADAClassAttribute adaClassAttribute : sourceClass.getAdaClassAttributes()) {
+            Set<ModifierType> modifierTypes = ModifierTransformer.getModifierTypes(adaClassAttribute.getModifiers());
             AttributeDeclaration attributeDeclaration = new AttributeDeclaration
-                    (modifierTypes, ADAClassAttribute.getType(), ADAClassAttribute.getName(), ADAClassAttribute.getValue());
+                    (modifierTypes, adaClassAttribute.getType(), adaClassAttribute.getName(), adaClassAttribute.getValue());
             projectStructure.addAttributeDeclaration(className, attributeDeclaration);
         }
     }
@@ -80,8 +79,9 @@ public class SourceClassTransformer {
         Set<String> importedClasses = sourceClass.getImportedInternalClasses();
 
         for (String importClass : importedClasses) {
-            // TODO: import class should not end with .*
-            assert !importClass.endsWith(".*");
+            // TODO: build project hierarchy tree to decode .*
+            if (importClass.endsWith(".*")) continue;
+
             PackageInvocation packageInvocation = new PackageInvocation(importClass);
             if (classNames.contains(importClass)) {
                 // internal package invocation

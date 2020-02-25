@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class ModifierTransformer {
 
-    public static Set<ModifierType> getModifierTypes(Set<String> modifiers) {
+    protected static Set<ModifierType> getModifierTypes(Set<String> modifiers) {
         Set<ModifierType> modifierTypes = new HashSet<>();
 
         if      (modifiers.contains("public"))      modifierTypes.add(ModifierType.PUBLIC);
