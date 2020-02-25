@@ -1,8 +1,6 @@
 package com.ucl.ADA.model.dependence_information.declaration_information;
 
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,7 +31,9 @@ public class AttributeDeclaration extends ElementDeclaration {
      */
     public AttributeDeclaration(Set<ModifierType> modifierTypes, String type, String name, String value) {
         super(name);
-        this.modifierTypes.addAll(modifierTypes);
+        if (modifierTypes != null) {
+            this.modifierTypes.addAll(modifierTypes);
+        }
         this.type = type;
         this.value = value;
     }
