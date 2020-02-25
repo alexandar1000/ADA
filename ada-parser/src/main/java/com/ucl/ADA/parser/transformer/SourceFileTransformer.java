@@ -15,71 +15,69 @@ public class SourceFileTransformer {
 
     private ProjectStructure projectStructure;
 
-    private ADAClassModel sourceFile;
+    private ADAClass sourceClass;
 
-    protected SourceFileTransformer(ProjectStructure projectStructure, ADAClassModel sourceFile) {
+    protected SourceFileTransformer(ProjectStructure projectStructure, ADAClass sourceClass) {
         this.projectStructure = projectStructure;
-        this.sourceFile = sourceFile;
+        this.sourceClass = sourceClass;
     }
 
-   /* protected void transformPackageDeclaration() {
-        PackageDeclaration packageDeclaration = new PackageDeclaration(sourceFile.getPackageName());
+    protected void transformPackageDeclaration() {
+        PackageDeclaration packageDeclaration = new PackageDeclaration(sourceClass.getPackageName());
 
-        projectStructure.addPackageDeclaration(sourceFile.getClassName(), packageDeclaration);
+        projectStructure.addPackageDeclaration(sourceClass.getClassName(), packageDeclaration);
     }
 
     protected void transformAttributeDeclaration() {
-        String className = sourceFile.getClassName();
+        String className = sourceClass.getClassName();
 
-        for (ADAClassAttributeModel ADAClassAttributeModel : sourceFile.getClassAttributes()) {
-            Set<ModifierType> modifierTypes = ModifierTransformer.getModifierTypes(ADAClassAttributeModel.getModifiers());
+        for (ADAClassAttribute ADAClassAttribute : sourceClass.getAdaClassAttributes()) {
+            Set<ModifierType> modifierTypes = ModifierTransformer.getModifierTypes(ADAClassAttribute.getModifiers());
 
             AttributeDeclaration attributeDeclaration = new AttributeDeclaration
-                    (modifierTypes, ADAClassAttributeModel.getType(), ADAClassAttributeModel.getName(), ADAClassAttributeModel.getValue());
+                    (modifierTypes, ADAClassAttribute.getType(), ADAClassAttribute.getName(), ADAClassAttribute.getValue());
 
             projectStructure.addAttributeDeclaration(className, attributeDeclaration);
         }
     }
 
-    protected void processConstructorDeclaration() {
-        String className = sourceFile.getClassName();
+    protected void processConstructorAndMethodDeclaration() {
+        String className = sourceClass.getClassName();
 
-        for (SourceConstructor sourceConstructor : sourceFile.getDeclaredSourceConstructors()) {
-            Set<ModifierType> modifierTypes = ModifierTransformer.getModifierTypes(sourceConstructor.getModifiers());
+        for (ADAMethodOrConstructorDeclaration declaration : sourceClass.getADAMethodOrConstructorDeclaration()) {
+            // constructor declaration
+            if (declaration.isConstructor()) {
+                Set<ModifierType> modifierTypes = ModifierTransformer.getModifierTypes(declaration.getModifiers());
 
-            List<ParameterDeclaration> parameters = new ArrayList<>();
-            for (Map.Entry<String, String> entry : sourceConstructor.getParameters().entrySet())
-                parameters.add(new ParameterDeclaration(entry.getKey(), entry.getValue()));
+                List<ParameterDeclaration> parameters = new ArrayList<>();
+                for (Map.Entry<String, String> entry : declaration.getParameters().entrySet())
+                    parameters.add(new ParameterDeclaration(entry.getKey(), entry.getValue()));
 
-            ConstructorDeclaration constructorDeclaration = new ConstructorDeclaration
-                    (modifierTypes, sourceConstructor.getName(), parameters);
+                ConstructorDeclaration constructorDeclaration = new ConstructorDeclaration
+                        (modifierTypes, declaration.getName(), parameters);
 
-            projectStructure.addConstructorDeclaration(className, constructorDeclaration);
-        }
-    }
+                projectStructure.addConstructorDeclaration(className, constructorDeclaration);
+            } else {
+                // method declaration
+                Set<ModifierType> modifierTypes = ModifierTransformer.getModifierTypes(declaration.getModifiers());
 
-    protected void processMethodDeclaration() {
-        String className = sourceFile.getClassName();
+                List<ParameterDeclaration> parameters = new ArrayList<>();
+                for (Map.Entry<String, String> entry : declaration.getParameters().entrySet())
+                    parameters.add(new ParameterDeclaration(entry.getKey(), entry.getValue()));
 
-        for (SourceMethod sourceMethod : sourceFile.getMethods()) {
-            Set<ModifierType> modifierTypes = ModifierTransformer.getModifierTypes(sourceMethod.getModifiers());
+                MethodDeclaration methodDeclaration = new MethodDeclaration
+                        (modifierTypes, declaration.getReturnType(), declaration.getName(), parameters);
 
-            List<ParameterDeclaration> parameters = new ArrayList<>();
-            for (Map.Entry<String, String> entry : sourceMethod.getParameters().entrySet())
-                parameters.add(new ParameterDeclaration(entry.getKey(), entry.getValue()));
-
-            MethodDeclaration methodDeclaration = new MethodDeclaration
-                    (modifierTypes, sourceMethod.getReturnType(), sourceMethod.getName(), parameters);
-
-            projectStructure.addMethodDeclaration(className, methodDeclaration);
+                projectStructure.addMethodDeclaration(className, methodDeclaration);
+            }
         }
     }
 
     protected void processPackageInvocation() {
-        Set<String> importedClasses = sourceFile.getImportedClasses();
+        Set<String> importedClasses = sourceClass.getImportedClasses();
         if (importedClasses.isEmpty()) return;
 
-        String className = sourceFile.getClassName();
+        String className = sourceClass.getClassName();
 
         for (String importClass : importedClasses) {
             // import class should not end with .*
@@ -91,66 +89,59 @@ public class SourceFileTransformer {
         }
     }
 
-    // TODO: Talk to RAKIB
+    // TODO: look up information in models
     protected void processAttributeInvocation() {
 
     }
 
     protected void processConstructorInvocation() {
-        String className = sourceFile.getClassName();
+        String className = sourceClass.getClassName();
 
-        for (SourceMethod sourceMethod : sourceFile.getMethods()) {
-            for (SourceConstructorInvocation ci : sourceMethod.getSourceConstructorInvocations()) {
-                List<PassedParameter> parameters = new ArrayList<>();
-                for (String value : ci.getArguments())
-                    parameters.add(new PassedParameter(value));
+        for (ADAConstructorInvocation adaConstructorInvocation : sourceClass.getADAConstructorInvocations()) {
+            List<PassedParameter> parameters = new ArrayList<>();
+            for (String value : adaConstructorInvocation.getArguments())
+                parameters.add(new PassedParameter(value));
 
-                ConstructorInvocation constructorInvocation = new ConstructorInvocation(className, parameters);
+            ConstructorInvocation constructorInvocation = new ConstructorInvocation(className, parameters);
 
-                projectStructure.addConstructorInvocation(className, ci.getConstructorClassName(), constructorInvocation);
-            }
+            projectStructure.addConstructorInvocation(className, adaConstructorInvocation.getConstructorClassName(), constructorInvocation);
         }
     }
 
     protected void processMethodInvocation() {
-        String className = sourceFile.getClassName();
+        String className = sourceClass.getClassName();
 
-        for (SourceMethod sourceMethod : sourceFile.getMethods()) {
-            for (ADAMethodCallModel ADAMethodCallModel : sourceMethod.getMethodCalls()) {
-                List<PassedParameter> parameters = new ArrayList<>();
-                for (String value : ADAMethodCallModel.getArguments())
-                    parameters.add(new PassedParameter(value));
+        for (ADAMethodInvocation adaMethodInvocation : sourceClass.getADAMethodInvocations()) {
+            List<PassedParameter> parameters = new ArrayList<>();
+            for (String value : adaMethodInvocation.getArguments())
+                parameters.add(new PassedParameter(value));
 
-                MethodInvocation methodInvocation = new MethodInvocation(ADAMethodCallModel.getMethodCallName(), parameters);
+            MethodInvocation methodInvocation = new MethodInvocation(adaMethodInvocation.getMethodCallName(), parameters);
 
-                projectStructure.addMethodInvocation(className, ADAMethodCallModel.getCalleeName(), methodInvocation);
-            }
+            projectStructure.addMethodInvocation(className, adaMethodInvocation.getCalleeName(), methodInvocation);
         }
     }
 
     protected void processExternalInvocation() {
-        String className = sourceFile.getClassName();
+        String className = sourceClass.getClassName();
 
-        ExternalInvocationInfo externalInvocationInfo = sourceFile.getExternalInvocationInfo();
-
-        for (String exImport : externalInvocationInfo.getExImports()) {
-            PackageInvocation packageInvocation = new PackageInvocation(exImport);
-            projectStructure.addExternalPackageImport(className, packageInvocation);
-        }
-        for (String exAttribute : externalInvocationInfo.getExFieldInvocation()) {
+        // TODO: add external invocation
+//        for (String exImport : sourceClass.) {
+//            PackageInvocation packageInvocation = new PackageInvocation(exImport);
+//            projectStructure.addExternalPackageImport(className, packageInvocation);
+//        }
+        for (String exAttribute : sourceClass.getExFieldInvocation()) {
             AttributeInvocation attributeInvocation = new AttributeInvocation(exAttribute);
             projectStructure.addExternalAttributeDeclarations(className, attributeInvocation);
         }
-        // TODO: GOTO ExternalInvocationInfo class
-        for (String exMethodCalls : externalInvocationInfo.getExMethodCalls()) {
+        for (String exMethodCalls : sourceClass.getExMethodCalls()) {
             MethodInvocation methodInvocation = new MethodInvocation(exMethodCalls, null);
             projectStructure.addExternalMethodInvocations(className, methodInvocation);
         }
-        // TODO: GOTO ExternalInvocationInfo class
-        for (String exConstructor : externalInvocationInfo.getExConstructorInvocations()) {
+        for (String exConstructor : sourceClass.getExConstructorInvocations()) {
             ConstructorInvocation constructorInvocation = new ConstructorInvocation(exConstructor, null);
             projectStructure.addExternalConstructorInvocations(className, constructorInvocation);
         }
-    }*/
+    }
 
 }

@@ -2,7 +2,7 @@ package com.ucl.ADA.parser.parser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ucl.ADA.parser.model.ADAClassModel;
+import com.ucl.ADA.parser.model.ADAClass;
 import com.ucl.ADA.parser.util.SourceFileCollector;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
@@ -20,12 +20,12 @@ import java.util.Set;
 
 public class ADAParser {
 
-    public Set<ADAClassModel> getParsedSourceFile(String src_dir) {
-        Set<ADAClassModel> allParsedFile = new HashSet<>();
+    public Set<ADAClass> getParsedSourceFile(String src_dir) {
+        Set<ADAClass> allParsedFile = new HashSet<>();
         List<String> filePaths = SourceFileCollector.getJavaFilesFromSourceDirectory(new File(src_dir));
         filePaths.forEach(file -> {
             ASTParser parser = buildASTParser(src_dir);
-            ADAClassModel cm = parseSourceFile(parser, file);
+            ADAClass cm = parseSourceFile(parser, file);
             allParsedFile.add(cm);
         });
         return allParsedFile;
@@ -33,13 +33,13 @@ public class ADAParser {
 
     public void printParsedSourceFileInJSON(String src_dir) {
 
-        Set<ADAClassModel> allParsedFile = new HashSet<>();
+        Set<ADAClass> allParsedFile = new HashSet<>();
         List<String> filePaths = SourceFileCollector.getJavaFilesFromSourceDirectory(new File(src_dir));
 
         for (String file : filePaths) {
             System.out.println("Processing->  "+file);
             ASTParser parser = buildASTParser(src_dir);
-            ADAClassModel cm = parseSourceFile(parser, file);
+            ADAClass cm = parseSourceFile(parser, file);
             allParsedFile.add(cm);
             ObjectMapper objMapper = new ObjectMapper();
             String jsonStr = "[]";
@@ -67,7 +67,7 @@ public class ADAParser {
         return parser;
     }
 
-    private ADAClassModel parseSourceFile(ASTParser parser, String sourceFile) {
+    private ADAClass parseSourceFile(ASTParser parser, String sourceFile) {
         String sourceCode = getSourceFromFile(sourceFile);
         String unitName = new File(sourceFile).getName();
         parser.setSource(sourceCode.toCharArray());
@@ -78,7 +78,7 @@ public class ADAParser {
         }
         JavaClassParser jp = new JavaClassParser();
         cu.accept(jp);
-        ADAClassModel cm = jp.getExtractedClass();
+        ADAClass cm = jp.getExtractedClass();
         return cm;
 
     }

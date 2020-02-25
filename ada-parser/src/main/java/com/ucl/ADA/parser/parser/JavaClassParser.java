@@ -15,19 +15,19 @@ public class JavaClassParser extends ASTVisitor {
     private String className = "";
     private String parentClassName = "";
     private Set<String> implementedInterfaces = new HashSet<>();
-    private List<ADAClassAttributeModel> classAttributes = new ArrayList<>();
+    private List<ADAClassAttribute> classAttributes = new ArrayList<>();
 
-    private List<ADAMethodCallModel> ADAMethodCallModels = new ArrayList<>();
-    private List<ADAConstructorCallModel> constructorInvocations = new ArrayList<>();
-    private List<ADAMethodConstructorDeclareModel> methodConstructorDeclaration = new ArrayList<>();
+    private List<ADAMethodInvocation> ADAMethodInvocations = new ArrayList<>();
+    private List<ADAConstructorInvocation> constructorInvocations = new ArrayList<>();
+    private List<ADAMethodOrConstructorDeclaration> methodConstructorDeclaration = new ArrayList<>();
     private List<String> exMethodCalls = new ArrayList<>();
     private List<String> exConstructorInvocations = new ArrayList<>();
     private List<String> exFieldInvocation = new ArrayList<>();
 
 
-    public ADAClassModel getExtractedClass() {
-        ADAClassModel cl = new ADAClassModel(packageName, importedPackages, className, parentClassName, implementedInterfaces,
-                classAttributes, ADAMethodCallModels, constructorInvocations, methodConstructorDeclaration, exMethodCalls, exConstructorInvocations, exFieldInvocation);
+    public ADAClass getExtractedClass() {
+        ADAClass cl = new ADAClass(packageName, importedPackages, className, parentClassName, implementedInterfaces,
+                classAttributes, ADAMethodInvocations, constructorInvocations, methodConstructorDeclaration, exMethodCalls, exConstructorInvocations, exFieldInvocation);
 
         return cl;
     }
@@ -82,7 +82,7 @@ public class JavaClassParser extends ASTVisitor {
                     //System.out.println(fragment.getInitializer().toString());
                     value = fragment.getInitializer().toString();
                 }
-                ADAClassAttributeModel sa = new ADAClassAttributeModel(modifiers, name, type, value);
+                ADAClassAttribute sa = new ADAClassAttribute(modifiers, name, type, value);
                 this.classAttributes.add(sa);
                 //System.out.println(binding.getName() + "--" + binding.getType().getQualifiedName());
             } else {
@@ -115,7 +115,7 @@ public class JavaClassParser extends ASTVisitor {
 
                 //System.out.println(binding.getName() + "-->" + binding.getDeclaringClass().getQualifiedName());
            }
-            this.ADAMethodCallModels.add(new ADAMethodCallModel(methodCallName, calleeName, arguments));
+            this.ADAMethodInvocations.add(new ADAMethodInvocation(methodCallName, calleeName, arguments));
         } else {
             this.exMethodCalls.add(node.getName().toString());
             //System.out.println(node.getName().toString());
@@ -140,7 +140,7 @@ public class JavaClassParser extends ASTVisitor {
                         arguments.add(an.toString());
                     }
                 }
-                this.constructorInvocations.add(new ADAConstructorCallModel(name, arguments));
+                this.constructorInvocations.add(new ADAConstructorInvocation(name, arguments));
             }
 
         } else {
@@ -185,11 +185,11 @@ public class JavaClassParser extends ASTVisitor {
         if (node.isConstructor()) {
             boolean isConstructor = true;
             //name,returnType,accessModifiers,parameters,localVariables,isConstructor
-            ADAMethodConstructorDeclareModel mc = new ADAMethodConstructorDeclareModel(name, returnType, accessModifiers, parameters, localVariables, isConstructor);
+            ADAMethodOrConstructorDeclaration mc = new ADAMethodOrConstructorDeclaration(name, returnType, accessModifiers, parameters, localVariables, isConstructor);
             this.methodConstructorDeclaration.add(mc);
         } else {
             boolean isConstructor = false;
-            ADAMethodConstructorDeclareModel mc = new ADAMethodConstructorDeclareModel(name, returnType, accessModifiers, parameters, localVariables, isConstructor);
+            ADAMethodOrConstructorDeclaration mc = new ADAMethodOrConstructorDeclaration(name, returnType, accessModifiers, parameters, localVariables, isConstructor);
             this.methodConstructorDeclaration.add(mc);
         }
         return true;
