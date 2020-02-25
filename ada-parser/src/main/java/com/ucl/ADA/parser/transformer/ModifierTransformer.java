@@ -5,7 +5,7 @@ import com.ucl.ADA.model.dependence_information.declaration_information.Modifier
 import java.util.HashSet;
 import java.util.Set;
 
-public class ModifierTransformer {
+class ModifierTransformer {
 
     protected static Set<ModifierType> getModifierTypes(Set<String> modifiers) {
         Set<ModifierType> modifierTypes = new HashSet<>();

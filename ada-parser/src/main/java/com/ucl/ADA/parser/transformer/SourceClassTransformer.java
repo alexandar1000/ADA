@@ -7,7 +7,7 @@ import com.ucl.ADA.parser.model.*;
 
 import java.util.*;
 
-public class SourceClassTransformer {
+class SourceClassTransformer {
 
     private ProjectStructure projectStructure;
 
