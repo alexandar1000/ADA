@@ -17,12 +17,7 @@ class ClassStructureTest {
             ModifierType.DEFAULT
     ));
 
-    private ArrayList<ParameterDeclaration> declaredParameters0 = new ArrayList<>(Arrays.asList(
-            new ParameterDeclaration("String", "FirstParameter"),
-            new ParameterDeclaration("Integer", "SecondParameter")
-    ));
-
-    private ArrayList<ParameterDeclaration> declaredParameters1 = new ArrayList<>(Arrays.asList(
+    private ArrayList<ParameterDeclaration> declaredParameters = new ArrayList<>(Arrays.asList(
             new ParameterDeclaration("String", "FirstParameter"),
             new ParameterDeclaration("Integer", "SecondParameter")
     ));
@@ -61,7 +56,7 @@ class ClassStructureTest {
 
     @Test
     void addConstructorDeclaration_addNewElement() {
-        ConstructorDeclaration constructorDeclarationInformation = new ConstructorDeclaration(modifiers, "String", declaredParameters0);
+        ConstructorDeclaration constructorDeclarationInformation = new ConstructorDeclaration(modifiers, "String", declaredParameters);
 
         classStructure.addConstructorDeclaration(constructorDeclarationInformation);
 
@@ -70,7 +65,7 @@ class ClassStructureTest {
 
     @Test
     void addMethodDeclaration_addNewElement() {
-        MethodDeclaration methodDeclarationInformation = new MethodDeclaration(modifiers, "String", "testingTesting", declaredParameters0);
+        MethodDeclaration methodDeclarationInformation = new MethodDeclaration(modifiers, "String", "testingTesting", declaredParameters);
 
         classStructure.addMethodDeclaration(methodDeclarationInformation);
 

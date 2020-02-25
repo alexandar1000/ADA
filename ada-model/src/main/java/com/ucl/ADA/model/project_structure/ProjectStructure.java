@@ -237,4 +237,14 @@ public class ProjectStructure {
             this.classStructures.put(consumingClass, classStructure);
         }
     }
+
+    /**
+     * Computes both the class and the relation metrics for the project structure
+     */
+    public void computeAllMetrics() {
+        for (ClassStructure classStructure : classStructures.values()) {
+            classStructure.computeAllClassMetrics();
+            classStructure.computeAllRelationMetrics();
+        }
+    }
 }
