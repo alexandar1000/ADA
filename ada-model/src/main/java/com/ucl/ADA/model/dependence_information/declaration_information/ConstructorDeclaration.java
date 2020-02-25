@@ -29,7 +29,11 @@ public class ConstructorDeclaration extends ElementDeclaration {
      */
     public ConstructorDeclaration(Set<ModifierType> modifierTypes, String name, List<ParameterDeclaration> parameters) {
         super(name);
-        this.modifierTypes.addAll(modifierTypes);
-        this.parameters.addAll(parameters);
+        if (modifierTypes != null) {
+            this.modifierTypes.addAll(modifierTypes);
+        }
+        if (parameters != null) {
+            this.parameters.addAll(parameters);
+        }
     }
 }

@@ -21,6 +21,8 @@ public class ConstructorInvocation extends ElementInvocation {
     @Builder
     public ConstructorInvocation(String name, List<PassedParameter> passedParameters) {
         super(name);
-        this.passedParameters.addAll(passedParameters);
+        if (passedParameters != null) {
+            this.passedParameters.addAll(passedParameters);
+        }
     }
 }

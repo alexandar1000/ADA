@@ -33,8 +33,12 @@ public class MethodDeclaration extends ElementDeclaration {
      */
     public MethodDeclaration(Set<ModifierType> modifierTypes, String returnType, String name, List<ParameterDeclaration> parameters) {
         super(name);
-        this.modifierTypes.addAll(modifierTypes);
+        if (modifierTypes != null) {
+            this.modifierTypes.addAll(modifierTypes);
+        }
         this.returnType = returnType;
-        this.parameters.addAll(parameters);
+        if (parameters != null) {
+            this.parameters.addAll(parameters);
+        }
     }
 }
