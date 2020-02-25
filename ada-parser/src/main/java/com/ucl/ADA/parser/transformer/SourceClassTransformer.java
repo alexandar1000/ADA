@@ -47,29 +47,21 @@ class SourceClassTransformer {
 
     protected void transformConstructorAndMethodDeclaration() {
         for (ADAMethodOrConstructorDeclaration declaration : sourceClass.getADAMethodOrConstructorDeclaration()) {
+            // get modifiers and parameters
+            Set<ModifierType> modifierTypes = ModifierTransformer.getModifierTypes(declaration.getModifiers());
+            List<ParameterDeclaration> parameters = new ArrayList<>();
+            for (Map.Entry<String, String> entry : declaration.getParameters().entrySet())
+                parameters.add(new ParameterDeclaration(entry.getKey(), entry.getValue()));
+
             if (declaration.isConstructor()) {
                 // constructor declaration
-                Set<ModifierType> modifierTypes = ModifierTransformer.getModifierTypes(declaration.getModifiers());
-
-                List<ParameterDeclaration> parameters = new ArrayList<>();
-                for (Map.Entry<String, String> entry : declaration.getParameters().entrySet())
-                    parameters.add(new ParameterDeclaration(entry.getKey(), entry.getValue()));
-
                 ConstructorDeclaration constructorDeclaration = new ConstructorDeclaration
                         (modifierTypes, declaration.getName(), parameters);
-
                 projectStructure.addConstructorDeclaration(className, constructorDeclaration);
             } else {
                 // method declaration
-                Set<ModifierType> modifierTypes = ModifierTransformer.getModifierTypes(declaration.getModifiers());
-
-                List<ParameterDeclaration> parameters = new ArrayList<>();
-                for (Map.Entry<String, String> entry : declaration.getParameters().entrySet())
-                    parameters.add(new ParameterDeclaration(entry.getKey(), entry.getValue()));
-
                 MethodDeclaration methodDeclaration = new MethodDeclaration
                         (modifierTypes, declaration.getReturnType(), declaration.getName(), parameters);
-
                 projectStructure.addMethodDeclaration(className, methodDeclaration);
             }
         }
@@ -118,8 +110,10 @@ class SourceClassTransformer {
             List<PassedParameter> parameters = new ArrayList<>();
             for (String value : adaConstructorInvocation.getArguments())
                 parameters.add(new PassedParameter(value));
-            ConstructorInvocation constructorInvocation = new ConstructorInvocation(adaConstructorInvocation.getConstructorClassName(), parameters);
-            projectStructure.addConstructorInvocation(className, adaConstructorInvocation.getConstructorClassName(), constructorInvocation);
+            String constructorFullName = adaConstructorInvocation.getConstructorClassName();
+            String[] constructorNameArr = constructorFullName.split("\\.");
+            ConstructorInvocation constructorInvocation = new ConstructorInvocation(constructorNameArr[constructorNameArr.length - 1], parameters);
+            projectStructure.addConstructorInvocation(className, constructorFullName, constructorInvocation);
         }
     }
 
