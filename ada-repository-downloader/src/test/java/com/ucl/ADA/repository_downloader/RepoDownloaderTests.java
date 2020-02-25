@@ -1,12 +1,10 @@
-package com.ucl.ADA.repository_downloader.repo;
+package com.ucl.ADA.repository_downloader;
 
 
 import com.ucl.ADA.repository_downloader.helpers.RepoDbPopulator;
 import com.ucl.ADA.repository_downloader.helpers.RepoDownloader;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,14 +22,13 @@ public class RepoDownloaderTests {
 
         populator = RepoDownloader.downloadRepository(populator);
 
-        ArrayList<String> list = new ArrayList<>();
         assertEquals("sebastianvburlacu",populator.getOwner());
         assertEquals("master",populator.getBranch());
         assertEquals("Fitbit-JSON-Data-Generator",populator.getName());
     }
 
     @Test
-    void testGitAPIExceptionThrownIfUrlIsNotGit(){
+    void testGitAPIExceptionThrownIfUrlIsWrong(){
 
         Exception exception = assertThrows(GitAPIException.class,()->{
             RepoDbPopulator repoDbPopulator = new RepoDbPopulator();

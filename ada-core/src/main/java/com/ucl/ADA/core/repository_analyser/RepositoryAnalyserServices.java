@@ -38,6 +38,7 @@ public class RepositoryAnalyserServices {
         populator.setBranch(branchName);
 
         // Download repository and store metadata in DB
+        // Also set the path to the downloaded directory, to be used by the parser
         try {
             repoService.downloadAndStoreRepo(populator);
         } catch (GitAPIException e) {

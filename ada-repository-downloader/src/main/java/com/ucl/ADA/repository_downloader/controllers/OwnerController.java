@@ -1,11 +1,11 @@
 package com.ucl.ADA.repository_downloader.controllers;
 
 
-import com.ucl.ADA.repository_downloader.entities.Branch;
-import com.ucl.ADA.repository_downloader.entities.GitRepository;
-import com.ucl.ADA.repository_downloader.entities.Snapshot;
-import com.ucl.ADA.repository_downloader.entities.User;
-import com.ucl.ADA.repository_downloader.services.UserService;
+import com.ucl.ADA.model.branch.Branch;
+import com.ucl.ADA.model.repository.GitRepository;
+import com.ucl.ADA.model.owner.Owner;
+import com.ucl.ADA.model.snapshot.Snapshot;
+import com.ucl.ADA.repository_downloader.services.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,20 +18,20 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class OwnerController {
 
-    @Autowired private UserService userService;
+    @Autowired private OwnerService ownerService;
 
     @DeleteMapping
-    public void deleteAll(){ userService.deleteAllUsers();}
+    public void deleteAll(){ ownerService.deleteAllUsers();}
 
     @DeleteMapping(value = "/{id}")
-    public void deleteUserById(@PathVariable Long id){ userService.deleteUser(id);}
+    public void deleteUserById(@PathVariable Long id){ ownerService.deleteUser(id);}
 
 
     @GetMapping(value = "/{user_name}")
-    public User getUserByName(@PathVariable String user_name){
-        return userService.getUserByName(user_name);
+    public Owner getUserByName(@PathVariable String user_name){
+        return ownerService.getUserByName(user_name);
     }
 
     @GetMapping(value = "/{user_name}/repositories")
@@ -90,16 +90,14 @@ public class UserController {
         return snapshot;
     }
 
-
-
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping
-    public List<User> listAllUsers() {
-        return userService.listUsers();
+    public List<Owner> listAllUsers() {
+        return ownerService.listUsers();
     }
 
     @GetMapping("/names")
     public List<String> listAllUserNames(){
-        return userService.listUserNames();
+        return ownerService.listUserNames();
     }
 }

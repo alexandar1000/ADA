@@ -1,6 +1,6 @@
-package com.ucl.ADA.repository_downloader.repositories;
+package com.ucl.ADA.model.repository;
 
-import com.ucl.ADA.repository_downloader.entities.GitRepository;
+import com.ucl.ADA.model.repository.GitRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

@@ -1,11 +1,14 @@
-package com.ucl.ADA.repository_downloader.entities;
+package com.ucl.ADA.model.branch;
+
+import com.ucl.ADA.model.repository.GitRepository;
+import com.ucl.ADA.model.snapshot.Snapshot;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "BRANCHES")
+@Table(name = "BRANCH")
 public class Branch {
 
     @Id
@@ -18,7 +21,7 @@ public class Branch {
     private String branchName;
 
     @ManyToOne
-    @JoinColumn(name = "fk_repo_id", nullable = false)
+    @JoinColumn(name = "repo_id", nullable = false)
     private GitRepository repository;
 
     @OneToMany(mappedBy = "branch", targetEntity = Snapshot.class, cascade = CascadeType.ALL, orphanRemoval = true)
