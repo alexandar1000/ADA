@@ -74,7 +74,7 @@ public class ADAParser {
         parser.setUnitName(unitName);
         CompilationUnit cu = (CompilationUnit) parser.createAST(null);
         if (cu.getAST().hasBindingsRecovery()) {
-            System.out.println("Binding activated.");
+           // System.out.println("Binding activated.");
         }
         JavaClassParser jp = new JavaClassParser();
         cu.accept(jp);
