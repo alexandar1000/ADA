@@ -17,17 +17,21 @@ class SourceClassTransformer {
 
     private Set<String> classNames;
 
-    protected SourceClassTransformer(ProjectStructure projectStructure, ADAClass sourceClass, Set<String> classNames) {
+    private PackageBreaker packageBreaker;
+
+    protected SourceClassTransformer(ProjectStructure projectStructure, ADAClass sourceClass, Set<String> classNames, PackageBreaker packageBreaker) {
         this.projectStructure = projectStructure;
         this.sourceClass = sourceClass;
         className = sourceClass.getClassName();
         this.classNames = classNames;
+        this.packageBreaker = packageBreaker;
     }
 
     protected static Set<String> getClassNames(Set<ADAClass> sourceClasses) {
         Set<String> classNames = new HashSet<>();
-        for (ADAClass sourceClass : sourceClasses)
+        for (ADAClass sourceClass : sourceClasses) {
             classNames.add(sourceClass.getClassName());
+        }
         return classNames;
     }
 
@@ -47,29 +51,22 @@ class SourceClassTransformer {
 
     protected void transformConstructorAndMethodDeclaration() {
         for (ADAMethodOrConstructorDeclaration declaration : sourceClass.getADAMethodOrConstructorDeclaration()) {
+            // get modifiers and parameters
+            Set<ModifierType> modifierTypes = ModifierTransformer.getModifierTypes(declaration.getModifiers());
+            List<ParameterDeclaration> parameters = new ArrayList<>();
+            for (Map.Entry<String, String> entry : declaration.getParameters().entrySet()) {
+                parameters.add(new ParameterDeclaration(entry.getKey(), entry.getValue()));
+            }
+
             if (declaration.isConstructor()) {
                 // constructor declaration
-                Set<ModifierType> modifierTypes = ModifierTransformer.getModifierTypes(declaration.getModifiers());
-
-                List<ParameterDeclaration> parameters = new ArrayList<>();
-                for (Map.Entry<String, String> entry : declaration.getParameters().entrySet())
-                    parameters.add(new ParameterDeclaration(entry.getKey(), entry.getValue()));
-
                 ConstructorDeclaration constructorDeclaration = new ConstructorDeclaration
                         (modifierTypes, declaration.getName(), parameters);
-
                 projectStructure.addConstructorDeclaration(className, constructorDeclaration);
             } else {
                 // method declaration
-                Set<ModifierType> modifierTypes = ModifierTransformer.getModifierTypes(declaration.getModifiers());
-
-                List<ParameterDeclaration> parameters = new ArrayList<>();
-                for (Map.Entry<String, String> entry : declaration.getParameters().entrySet())
-                    parameters.add(new ParameterDeclaration(entry.getKey(), entry.getValue()));
-
                 MethodDeclaration methodDeclaration = new MethodDeclaration
                         (modifierTypes, declaration.getReturnType(), declaration.getName(), parameters);
-
                 projectStructure.addMethodDeclaration(className, methodDeclaration);
             }
         }
@@ -79,17 +76,29 @@ class SourceClassTransformer {
         Set<String> importedClasses = sourceClass.getImportedInternalClasses();
 
         for (String importClass : importedClasses) {
-            // TODO: build project hierarchy tree to decode .*
-            if (importClass.endsWith(".*")) continue;
 
-            PackageInvocation packageInvocation = new PackageInvocation(importClass);
             if (classNames.contains(importClass)) {
                 // internal package invocation
-                projectStructure.addPackageInvocation(className, importClass, packageInvocation);
+                if (importClass.endsWith(".*")) {
+                    // resolve .*
+                    int p = className.lastIndexOf(".");
+                    String packageName = className.substring(0, p);
+                    Set<String> importNames = packageBreaker.getPackageContents().get(packageName);
+                    for (String importName : importNames) {
+                        PackageInvocation packageInvocation = new PackageInvocation(importName);
+                        projectStructure.addPackageInvocation(className, importName, packageInvocation);
+                    }
+                } else {
+                    // normal import class
+                    PackageInvocation packageInvocation = new PackageInvocation(importClass);
+                    projectStructure.addPackageInvocation(className, importClass, packageInvocation);
+                }
             } else {
                 // external package invocation
+                PackageInvocation packageInvocation = new PackageInvocation(importClass);
                 projectStructure.addExternalPackageImport(className, packageInvocation);
             }
+
         }
     }
 
@@ -116,18 +125,22 @@ class SourceClassTransformer {
     protected void transformConstructorInvocation() {
         for (ADAConstructorInvocation adaConstructorInvocation : sourceClass.getADAConstructorInvocations()) {
             List<PassedParameter> parameters = new ArrayList<>();
-            for (String value : adaConstructorInvocation.getArguments())
+            for (String value : adaConstructorInvocation.getArguments()) {
                 parameters.add(new PassedParameter(value));
-            ConstructorInvocation constructorInvocation = new ConstructorInvocation(adaConstructorInvocation.getConstructorClassName(), parameters);
-            projectStructure.addConstructorInvocation(className, adaConstructorInvocation.getConstructorClassName(), constructorInvocation);
+            }
+            String constructorFullName = adaConstructorInvocation.getConstructorClassName();
+            String[] constructorNameArr = constructorFullName.split("\\.");
+            ConstructorInvocation constructorInvocation = new ConstructorInvocation(constructorNameArr[constructorNameArr.length - 1], parameters);
+            projectStructure.addConstructorInvocation(className, constructorFullName, constructorInvocation);
         }
     }
 
     protected void transformMethodInvocation() {
         for (ADAMethodInvocation adaMethodInvocation : sourceClass.getADAMethodInvocations()) {
             List<PassedParameter> parameters = new ArrayList<>();
-            for (String value : adaMethodInvocation.getArguments())
+            for (String value : adaMethodInvocation.getArguments()) {
                 parameters.add(new PassedParameter(value));
+            }
             MethodInvocation methodInvocation = new MethodInvocation(adaMethodInvocation.getMethodCallName(), parameters);
             projectStructure.addMethodInvocation(className, adaMethodInvocation.getCalleeName(), methodInvocation);
         }
