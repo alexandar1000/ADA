@@ -31,10 +31,7 @@ public class ADAParser {
     }
 
     public void printParsedSourceFileInJSON(String src_dir) {
-
-
         List<String> filePaths = SourceFileCollector.getJavaFilesFromSourceDirectory(new File(src_dir));
-
         for (String file : filePaths) {
             System.out.println("Processing->  " + file);
             ASTParser parser = buildASTParser(src_dir);
