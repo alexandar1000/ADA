@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Getter
-@NoArgsConstructor
 public class AttributeDeclaration extends ElementDeclaration {
     /**
      * The type of the attribute.
@@ -25,7 +24,6 @@ public class AttributeDeclaration extends ElementDeclaration {
      */
     private Set<ModifierType> modifierTypes = new HashSet<>();
 
-
     /**
      * The constructor of the attribute declaration object.
      * @param modifierTypes the set of access modifiers associated with the attribute
@@ -33,7 +31,6 @@ public class AttributeDeclaration extends ElementDeclaration {
      * @param name name of the attribute
      * @param value the value assigned to the attribute
      */
-    @Builder
     public AttributeDeclaration(Set<ModifierType> modifierTypes, String type, String name, String value) {
         super(name);
         this.modifierTypes.addAll(modifierTypes);

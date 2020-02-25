@@ -18,7 +18,7 @@ public class MethodInvocation extends ElementInvocation {
      * @param name name of the constructor being invoked
      * @param passedParameters The list of parameters whit which the constructor has been invoked with
      */
-    public MethodInvocation(String name, ArrayList<PassedParameter> passedParameters) {
+    public MethodInvocation(String name, List<PassedParameter> passedParameters) {
         super(name);
         this.passedParameters.addAll(passedParameters);
     }

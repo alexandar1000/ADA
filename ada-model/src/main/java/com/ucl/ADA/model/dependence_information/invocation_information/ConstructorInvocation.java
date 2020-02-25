@@ -19,7 +19,7 @@ public class ConstructorInvocation extends ElementInvocation {
      * @param passedParameters The list of parameters whit which the constructor has been invoked with
      */
     @Builder
-    public ConstructorInvocation(String name, ArrayList<PassedParameter> passedParameters) {
+    public ConstructorInvocation(String name, List<PassedParameter> passedParameters) {
         super(name);
         this.passedParameters.addAll(passedParameters);
     }
