@@ -12,28 +12,29 @@ public class Transformer {
 
         ProjectStructure projectStructure = new ProjectStructure();
 
-        Set<ADAClass> sourceFiles = new ADAParser().getParsedSourceFile(src_dir);
+        Set<ADAClass> sourceClasses = new ADAParser().getParsedSourceFile(src_dir);
 
-        for (ADAClass sourceFile : sourceFiles) {
-            SourceFileTransformer sourceFileTransformer = new SourceFileTransformer(projectStructure, sourceFile);
+        Set<String> classNames = SourceClassTransformer.getClassNames(sourceClasses);
 
-            sourceFileTransformer.transformPackageDeclaration();
-            sourceFileTransformer.transformAttributeDeclaration();
-            sourceFileTransformer.processConstructorAndMethodDeclaration();
-            sourceFileTransformer.processPackageInvocation();
-            sourceFileTransformer.processAttributeInvocation();
-            sourceFileTransformer.processConstructorInvocation();
-            sourceFileTransformer.processMethodInvocation();
-            sourceFileTransformer.processExternalInvocation();
+        for (ADAClass sourceFile : sourceClasses) {
+            SourceClassTransformer sourceClassTransformer = new SourceClassTransformer(projectStructure, sourceFile, classNames);
+
+            sourceClassTransformer.transformPackageDeclaration();
+            sourceClassTransformer.transformAttributeDeclaration();
+            sourceClassTransformer.transformConstructorAndMethodDeclaration();
+            sourceClassTransformer.transformInAndExPackageInvocation();
+            sourceClassTransformer.transformAttributeInvocation();
+            sourceClassTransformer.transformConstructorInvocation();
+            sourceClassTransformer.transformMethodInvocation();
+            sourceClassTransformer.transformExternalInvocation();
         }
 
         return projectStructure;
     }
 
     public static void main(String[] args) {
-        //String src_dir = "ada-parser/src/main/resources/source_to_parse";
-        String src_dir =  "/home/mrhmisu/UCL-MS/ADA-test-simple-JAVA-project-0/src";
-        // TODO: replace parser with the new JDT parser
+        String src_dir = "ada-parser/src/main/resources/source_to_parse";
+//        String src_dir =  "/home/mrhmisu/UCL-MS/ADA-test-simple-JAVA-project-0/src";
         new ADAParser().printParsedSourceFileInJSON(src_dir);
     }
 

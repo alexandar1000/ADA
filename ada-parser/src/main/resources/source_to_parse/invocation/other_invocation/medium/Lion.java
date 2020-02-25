@@ -17,7 +17,7 @@ public class Lion {
     }
 }
 
-//class Lional {
-//
-//    String name = "Messi";
-//}
+class Lional {
+
+    String name = "Messi";
+}
