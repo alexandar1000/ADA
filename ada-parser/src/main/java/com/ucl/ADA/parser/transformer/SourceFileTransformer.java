@@ -4,7 +4,6 @@ import com.ucl.ADA.model.dependence_information.declaration_information.*;
 import com.ucl.ADA.model.dependence_information.invocation_information.*;
 import com.ucl.ADA.model.project_structure.ProjectStructure;
 import com.ucl.ADA.parser.model.*;
-import org.eclipse.jdt.internal.core.SourceMethod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +73,7 @@ public class SourceFileTransformer {
     }
 
     protected void processPackageInvocation() {
-        Set<String> importedClasses = sourceClass.getImportedClasses();
+        Set<String> importedClasses = sourceClass.getImportedInternalClasses();
         if (importedClasses.isEmpty()) return;
 
         String className = sourceClass.getClassName();

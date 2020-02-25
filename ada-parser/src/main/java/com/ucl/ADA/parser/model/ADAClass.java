@@ -2,6 +2,7 @@ package com.ucl.ADA.parser.model;
 
 import lombok.Getter;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -9,7 +10,8 @@ import java.util.Set;
 public class ADAClass {
 
     private String packageName;
-    private Set<String> importedClasses;
+    private Set<String> importedInternalClasses;
+    private Set<String> importedExternalClasses;
     private String className;
     private String parentClassName;
     private Set<String> implementedInterfaces;
@@ -22,9 +24,10 @@ public class ADAClass {
     private List<String> exConstructorInvocations;
     private List<String> exFieldInvocation;
 
-    public ADAClass(String packageName, Set<String> importedClasses, String className, String parentClassName, Set<String> implementedInterfaces, List<ADAClassAttribute> adaClassAttributes, List<ADAMethodInvocation> ADAMethodInvocations, List<ADAConstructorInvocation> ADAConstructorInvocations, List<ADAMethodOrConstructorDeclaration> ADAMethodOrConstructorDeclaration, List<String> exMethodCalls, List<String> exConstructorInvocations, List<String> exFieldInvocation) {
+    public ADAClass(String packageName, Set<String> importedInternalClasses, Set<String> importedExternalClasses, String className, String parentClassName, Set<String> implementedInterfaces, List<ADAClassAttribute> adaClassAttributes, List<ADAMethodInvocation> ADAMethodInvocations, List<ADAConstructorInvocation> ADAConstructorInvocations, List<ADAMethodOrConstructorDeclaration> ADAMethodOrConstructorDeclaration, List<String> exMethodCalls, List<String> exConstructorInvocations, List<String> exFieldInvocation) {
         this.packageName = packageName;
-        this.importedClasses = importedClasses;
+        this.importedInternalClasses = importedInternalClasses;
+        this.importedExternalClasses = importedExternalClasses;
         this.className = className;
         this.parentClassName = parentClassName;
         this.implementedInterfaces = implementedInterfaces;
@@ -47,7 +50,8 @@ public class ADAClass {
         }
         ADAClass ADAClass = (ADAClass) sf;
         return ADAClass.packageName.equals(this.packageName)
-                && ADAClass.importedClasses.equals(this.importedClasses)
+                && ADAClass.importedInternalClasses.equals(this.importedInternalClasses)
+                && ADAClass.importedExternalClasses.equals(this.importedExternalClasses)
                 && ADAClass.className.equals(this.className)
                 && ADAClass.parentClassName.equals(this.parentClassName)
                 && ADAClass.implementedInterfaces.equals(this.implementedInterfaces)
@@ -65,7 +69,8 @@ public class ADAClass {
     public int hashCode() {
         int result = 31;
         result = 31 * result + packageName.hashCode();
-        result = 31 * result + importedClasses.hashCode();
+        result = 31 * result + importedInternalClasses.hashCode();
+        result = 31 * result + importedExternalClasses.hashCode();
         result = 31 * result + className.hashCode();
         result = 31 * result + parentClassName.hashCode();
         result = 31 * result + implementedInterfaces.hashCode();
@@ -79,19 +84,19 @@ public class ADAClass {
         return result;
     }
 
-
     @Override
     public String toString() {
-        return "ClassModel{" +
+        return "ADAClass{" +
                 "packageName='" + packageName + '\'' +
-                ", importedPackages=" + importedClasses +
+                ", importedInternalClasses=" + importedInternalClasses +
+                ", importedExternalClasses=" + importedExternalClasses +
                 ", className='" + className + '\'' +
                 ", parentClassName='" + parentClassName + '\'' +
                 ", implementedInterfaces=" + implementedInterfaces +
-                ", classAttributes=" + adaClassAttributes +
-                ", methodCalls=" + ADAMethodInvocations +
-                ", constructorInvocations=" + ADAConstructorInvocations +
-                ", methodConstructorDeclaration=" + ADAMethodOrConstructorDeclaration +
+                ", adaClassAttributes=" + adaClassAttributes +
+                ", ADAMethodInvocations=" + ADAMethodInvocations +
+                ", ADAConstructorInvocations=" + ADAConstructorInvocations +
+                ", ADAMethodOrConstructorDeclaration=" + ADAMethodOrConstructorDeclaration +
                 ", exMethodCalls=" + exMethodCalls +
                 ", exConstructorInvocations=" + exConstructorInvocations +
                 ", exFieldInvocation=" + exFieldInvocation +

@@ -1,7 +1,6 @@
 package com.ucl.ADA.parser.parser;
 
 
-
 import com.ucl.ADA.parser.model.*;
 import com.ucl.ADA.parser.parser.visitor.VariableDeclarationVisitor;
 import org.eclipse.jdt.core.dom.*;
@@ -11,7 +10,8 @@ import java.util.*;
 
 public class JavaClassParser extends ASTVisitor {
     private String packageName = "";
-    private Set<String> importedPackages = new HashSet<>();
+    private Set<String> importedInternalClasses = new HashSet<>();
+    private Set<String> importedExternalClasses = new HashSet<>();
     private String className = "";
     private String parentClassName = "";
     private Set<String> implementedInterfaces = new HashSet<>();
@@ -25,8 +25,16 @@ public class JavaClassParser extends ASTVisitor {
     private List<String> exFieldInvocation = new ArrayList<>();
 
 
+    public JavaClassParser(String packageName, Set<String> importedInternalClasses, Set<String> importedExternalClasses) {
+
+        this.packageName = packageName;
+        this.importedInternalClasses.addAll(importedInternalClasses);
+        this.importedExternalClasses.addAll(importedExternalClasses);
+    }
+
+
     public ADAClass getExtractedClass() {
-        ADAClass cl = new ADAClass(packageName, importedPackages, className, parentClassName, implementedInterfaces,
+        ADAClass cl = new ADAClass(packageName, importedInternalClasses, importedExternalClasses, className, parentClassName, implementedInterfaces,
                 classAttributes, ADAMethodInvocations, constructorInvocations, methodConstructorDeclaration, exMethodCalls, exConstructorInvocations, exFieldInvocation);
 
         return cl;
@@ -35,17 +43,6 @@ public class JavaClassParser extends ASTVisitor {
     //variable declaration visitor
     private VariableDeclarationVisitor variableDeclaratorVisitor = new VariableDeclarationVisitor();
 
-    // package declaration
-    public boolean visit(PackageDeclaration node) {
-        this.packageName = node.getName().toString();
-        return true;
-    }
-
-    // import declaration
-    public boolean visit(ImportDeclaration node) {
-        importedPackages.add(node.getName().toString());
-        return true;
-    }
 
     //class name, parent class and implemented interfaces
     public boolean visit(TypeDeclaration typeDeclaration) {
@@ -100,7 +97,7 @@ public class JavaClassParser extends ASTVisitor {
         String calleeName = "";
         List<String> arguments = new ArrayList<>();
         if (binding != null) {
-           if (!binding.isConstructor()) {
+            if (!binding.isConstructor()) {
                 methodCallName = node.getName().toString();
                 calleeName = binding.getDeclaringClass().getQualifiedName();
                 List<ASTNode> list = node.arguments();
@@ -114,7 +111,7 @@ public class JavaClassParser extends ASTVisitor {
                 }
 
                 //System.out.println(binding.getName() + "-->" + binding.getDeclaringClass().getQualifiedName());
-           }
+            }
             this.ADAMethodInvocations.add(new ADAMethodInvocation(methodCallName, calleeName, arguments));
         } else {
             this.exMethodCalls.add(node.getName().toString());

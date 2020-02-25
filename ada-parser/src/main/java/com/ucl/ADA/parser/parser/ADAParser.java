@@ -3,6 +3,7 @@ package com.ucl.ADA.parser.parser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ucl.ADA.parser.model.ADAClass;
+import com.ucl.ADA.parser.parser.visitor.PackageAndImportVisitor;
 import com.ucl.ADA.parser.parser.visitor.TypeDeclatorVisitor;
 import com.ucl.ADA.parser.util.SourceFileCollector;
 import org.eclipse.jdt.core.JavaCore;
@@ -74,12 +75,14 @@ public class ADAParser {
             // System.out.println("Binding activated.");
         }
 
+        PackageAndImportVisitor pv = new PackageAndImportVisitor();
+        cu.accept(pv);
         TypeDeclatorVisitor tv = new TypeDeclatorVisitor();
         cu.accept(tv);
         List<TypeDeclaration> classes = tv.getClasses();
         List<ADAClass> parsedClasses = new ArrayList<>();
         for (TypeDeclaration cl : classes) {
-            JavaClassParser jp = new JavaClassParser();
+            JavaClassParser jp = new JavaClassParser(pv.getPackageName(), pv.getImportedInternalClasses(), pv.getImportedExternalClasses());
             cl.accept(jp);
             ADAClass cm = jp.getExtractedClass();
             parsedClasses.add(cm);
