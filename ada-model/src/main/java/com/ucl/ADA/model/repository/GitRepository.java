@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "REPOSITORY   ")
+@Table(name = "REPOSITORY")
 public class GitRepository {
 
     @Id
