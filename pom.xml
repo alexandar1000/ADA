@@ -8,7 +8,8 @@
 		<module>ada-metric-calculator</module>
 		<module>ada-repository-downloader</module>
 		<module>ada-core</module>
-	</modules>
+        <module>ada-model</module>
+    </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -86,6 +87,11 @@
 			<artifactId>lombok</artifactId>
 			<version>1.18.10</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.ucl</groupId>
+			<artifactId>ada-model</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
