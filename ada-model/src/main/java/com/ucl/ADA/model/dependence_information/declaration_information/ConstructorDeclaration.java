@@ -4,21 +4,31 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@Entity
+@Table(name = "CONSTRUCTOR_DECLARATION")
 public class ConstructorDeclaration extends ElementDeclaration {
+
     /**
      * The access modifier assigned to the constructor.
      */
+    @Transient
     private Set<ModifierType> modifierTypes = new HashSet<>();
 
     /**
      * List of the parameters which the constructor accepts.
      */
+    @Transient
     private List<ParameterDeclaration> parameters = new ArrayList<>();
 
     /**

@@ -1,5 +1,6 @@
 package com.ucl.ADA.model.class_structure;
 
+import com.ucl.ADA.model.BaseEntity;
 import com.ucl.ADA.model.dependence_information.DependenceInfo;
 import com.ucl.ADA.model.dependence_information.declaration_information.AttributeDeclaration;
 import com.ucl.ADA.model.dependence_information.declaration_information.ConstructorDeclaration;
@@ -12,32 +13,58 @@ import com.ucl.ADA.model.metrics.relation_metrics.RelationMetricType;
 import com.ucl.ADA.model.metrics.relation_metrics.RelationMetricValue;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.*;
 import java.util.*;
 
-@Getter @NoArgsConstructor
-public class ClassStructure {
+@Getter
+@Setter
+@NoArgsConstructor
+@Entity
+@Table(name = "CLASS_STRUCTURE")
+public class ClassStructure extends BaseEntity {
 
     // Declaration information corresponding to this class:
 
     /**
      * Fully qualified class package name (including the name of the class in the end).
      */
+    @OneToOne
+    @JoinColumn(name = "package_declaration_id")
     private PackageDeclaration currentPackage = null;
 
     /**
      * Attributes declared in this class.
      */
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "CLASS_STRUCTURE_ATTRIBUTE_DECLARATION",
+            joinColumns = @JoinColumn(name = "class_structure_id"),
+            inverseJoinColumns = @JoinColumn(name = "attribute_declaration_id")
+    )
     private List<AttributeDeclaration> attributeDeclarations = new ArrayList<>();
 
     /**
      * Constructors declared in this class.
      */
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "CLASS_STRUCTURE_CONSTRUCTOR_DECLARATION",
+            joinColumns = @JoinColumn(name = "class_structure_id"),
+            inverseJoinColumns = @JoinColumn(name = "constructor_declaration_id")
+    )
     private List<ConstructorDeclaration> constructorDeclarations = new ArrayList<>();
 
     /**
      * Methods declared in this class.
      */
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "CLASS_STRUCTURE_CONSTRUCTOR_DECLARATION",
+            joinColumns = @JoinColumn(name = "class_structure_id"),
+            inverseJoinColumns = @JoinColumn(name = "constructor_declaration_id")
+    )
     private List<MethodDeclaration> methodsDeclarations = new ArrayList<>();
 
 
@@ -47,12 +74,14 @@ public class ClassStructure {
      * Information about the invocations of the elements from the other classes from this class. String is the qualified
      * name of the class.
      */
+    @Transient
     private Map<String, DependenceInfo> outgoingDependenceInfo = new HashMap<>();
 
     /**
      * Information about the invocations of elements from this class by the other classes. String is the qualified
      * name of the class.
      */
+    @Transient
     private Map<String, DependenceInfo> incomingDependenceInfo = new HashMap<>();
 
 
@@ -61,11 +90,13 @@ public class ClassStructure {
     /**
      * Global Data present in the class. It can be either declared or invoked. Not really possible in Java.
      */
+    @Transient
     private List<AttributeInvocation> globalData = new ArrayList<>();
 
     /**
      * Global Methods present in the class. They can be either declared or invoked. Not really possible in Java.
      */
+    @Transient
     private List<MethodInvocation> globalMethods = new ArrayList<>();
 
 
@@ -75,24 +106,28 @@ public class ClassStructure {
      * External Attribute Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
+    @Transient
     private List<PackageInvocation> externalPackageImports = new ArrayList<>();
 
     /**
      * External Method Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
+    @Transient
     private List<MethodInvocation> externalMethodInvocations = new ArrayList<>();
 
     /**
      * External Constructor Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
+    @Transient
     private List<ConstructorInvocation> externalConstructorInvocations = new ArrayList<>();
 
     /**
      * External Attribute Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
+    @Transient
     private List<AttributeInvocation> externalAttributeInvocations = new ArrayList<>();
 
 
@@ -101,17 +136,19 @@ public class ClassStructure {
     /**
      * All of the metric values for the link between the current class and the linking classes.
      */
-    private HashMap<String, RelationMetricValue> relationMetricValues = new HashMap<>();
+    @Transient
+    private Map<String, RelationMetricValue> relationMetricValues = new HashMap<>();
 
     /**
      * The metrics corresponding to the current class.
      */
+    @Transient
     private ClassMetricValue classMetricValues = new ClassMetricValue();
-
 
 
     /**
      * Creates a new instance using the package name.
+     *
      * @param packageDeclaration the name of the package corresponding to the current class
      */
     public ClassStructure(PackageDeclaration packageDeclaration) {
@@ -120,6 +157,7 @@ public class ClassStructure {
 
     /**
      * Updates the package corresponding to the class.
+     *
      * @param packageDeclaration the name of the package corresponding to the current class
      */
     public void setCurrentPackage(PackageDeclaration packageDeclaration) {
@@ -128,6 +166,7 @@ public class ClassStructure {
 
     /**
      * Adds a Attribute Declaration to the ClassDependenceTree
+     *
      * @param attributeDeclaration the attribute declaration object
      */
     public void addAttributeDeclaration(AttributeDeclaration attributeDeclaration) {
@@ -136,6 +175,7 @@ public class ClassStructure {
 
     /**
      * Adds a Method Declaration to the ClassDependenceTree
+     *
      * @param methodDeclaration the method declaration object
      */
     public void addMethodDeclaration(MethodDeclaration methodDeclaration) {
@@ -144,6 +184,7 @@ public class ClassStructure {
 
     /**
      * Adds a Constructor Declaration to the ClassDependenceTree
+     *
      * @param constructorDeclaration the constructor declaration object
      */
     public void addConstructorDeclaration(ConstructorDeclaration constructorDeclaration) {
@@ -152,6 +193,7 @@ public class ClassStructure {
 
     /**
      * Adds a new global data to the instance.
+     *
      * @param attributeInvocationInformation a global data invocation information object containing all of the
      *                                       corresponding information about the method being added
      */
@@ -161,8 +203,9 @@ public class ClassStructure {
 
     /**
      * Adds a new global method to the instance.
+     *
      * @param methodInvocationInformation a global method invocation information object containing all of the
-     *                                       corresponding information about the global method being added
+     *                                    corresponding information about the global method being added
      */
     public void addGlobalMethod(MethodInvocation methodInvocationInformation) {
         this.globalMethods.add(methodInvocationInformation);
@@ -186,12 +229,13 @@ public class ClassStructure {
 
     /**
      * Adds a package invocation element as either an incoming or outgoing dependency, depending on the call.
-     * @param relatingClass the class which the invocation relates to
-     * @param invocationType either an incoming invocation type in the case that the package is being invoked from the
-     *                       relatingClass, or an outgoing invocation type in the case that the package is invoked from
-     *                       the relatingClass
+     *
+     * @param relatingClass     the class which the invocation relates to
+     * @param invocationType    either an incoming invocation type in the case that the package is being invoked from the
+     *                          relatingClass, or an outgoing invocation type in the case that the package is invoked from
+     *                          the relatingClass
      * @param packageInvocation the package invocation object containing the data corresponding to the
-     *                                     invocation in question
+     *                          invocation in question
      */
     public void addPackageInvocationElement(String relatingClass, InvocationType invocationType, PackageInvocation packageInvocation) {
         if (invocationType == InvocationType.OUTGOING) {
@@ -215,12 +259,13 @@ public class ClassStructure {
 
     /**
      * Adds an attribute invocation element as either an incoming or outgoing dependency, depending on the call.
-     * @param relatingClass the class which the invocation relates to
-     * @param invocationType either an incoming invocation type in the case that the attribute is being invoked from the
-     *                       relatingClass, or an outgoing invocation type in the case that the attribute is invoked from
-     *                       the relatingClass
+     *
+     * @param relatingClass       the class which the invocation relates to
+     * @param invocationType      either an incoming invocation type in the case that the attribute is being invoked from the
+     *                            relatingClass, or an outgoing invocation type in the case that the attribute is invoked from
+     *                            the relatingClass
      * @param attributeInvocation the attribute invocation object containing the data corresponding to the
-     *                                     invocation in question
+     *                            invocation in question
      */
     public void addAttributeInvocationElement(String relatingClass, InvocationType invocationType, AttributeInvocation attributeInvocation) {
         if (invocationType == InvocationType.OUTGOING) {
@@ -244,12 +289,13 @@ public class ClassStructure {
 
     /**
      * Adds a constructor invocation element as either an incoming or outgoing dependency, depending on the call.
-     * @param relatingClass the class which the invocation relates to
-     * @param invocationType either an incoming invocation type in the case that the constructor is being invoked from the
-     *                       relatingClass, or an outgoing invocation type in the case that the constructor is invoked from
-     *                       the relatingClass
+     *
+     * @param relatingClass         the class which the invocation relates to
+     * @param invocationType        either an incoming invocation type in the case that the constructor is being invoked from the
+     *                              relatingClass, or an outgoing invocation type in the case that the constructor is invoked from
+     *                              the relatingClass
      * @param constructorInvocation the constructor invocation object containing the data corresponding to the
-     *                                     invocation in question
+     *                              invocation in question
      */
     public void addConstructorInvocationElement(String relatingClass, InvocationType invocationType, ConstructorInvocation constructorInvocation) {
         if (invocationType == InvocationType.OUTGOING) {
@@ -273,12 +319,13 @@ public class ClassStructure {
 
     /**
      * Adds a method invocation element as either an incoming or outgoing dependency, depending on the call.
-     * @param relatingClass the class which the invocation relates to
-     * @param invocationType either an incoming invocation type in the case that the method is being invoked from the
-     *                       relatingClass, or an outgoing invocation type in the case that the method is invoked from
-     *                       the relatingClass
+     *
+     * @param relatingClass    the class which the invocation relates to
+     * @param invocationType   either an incoming invocation type in the case that the method is being invoked from the
+     *                         relatingClass, or an outgoing invocation type in the case that the method is invoked from
+     *                         the relatingClass
      * @param methodInvocation the method invocation object containing the data corresponding to the
-     *                                     invocation in question
+     *                         invocation in question
      */
     public void addMethodInvocationElement(String relatingClass, InvocationType invocationType, MethodInvocation methodInvocation) {
         if (invocationType == InvocationType.OUTGOING) {
@@ -307,7 +354,7 @@ public class ClassStructure {
         Collection<DependenceInfo> incomingDependencyValues = incomingDependenceInfo.values();
         Collection<DependenceInfo> outgoingDependencyValues = outgoingDependenceInfo.values();
 
-        switch(classMetricType) {
+        switch (classMetricType) {
             case NUMBER_OF_CLASS_ATTRIBUTE_INVOCATIONS_INCOMING:
                 for (DependenceInfo dependenceInfoValue : incomingDependencyValues) {
                     metricValue += dependenceInfoValue.getAttributes().size();
@@ -411,7 +458,7 @@ public class ClassStructure {
         // TODO: This could be made nicer by extracting the for loop around the switch. However, the switch would then
         //  be executed for each item, which would make it less efficient.
 
-        switch(relationMetricType) {
+        switch (relationMetricType) {
             case NUMBER_OF_RELATION_PACKAGE_IMPORTS_INCOMING:
 
                 // For all of the relating classes get the corresponding metrics
