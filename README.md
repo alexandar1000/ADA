@@ -1,3 +1,5 @@
+![Ada Logo](ada-core/src/main/resources/logos/LogoMakr_8rK051.png)
+
 # ADA - The Architectural Design Advisor
 
 ### The repository of ADA, the Architectural Design Advisor
