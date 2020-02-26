@@ -18,6 +18,7 @@ import { RepoFormComponent } from './repo-form/repo-form.component';
 import { UserService } from './user.service';
 import { AcceptedUrlDirective } from './shared/accepted-url.directive';
 import { GraphComponent } from './graph/graph.component';
+import {AnalyserService} from "./analyser.service";
 
 @NgModule({
   declarations: [
@@ -43,7 +44,7 @@ import { GraphComponent } from './graph/graph.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [UserService],
+  providers: [UserService, AnalyserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
