@@ -34,6 +34,7 @@ public class ADAParser {
 
     public void printParsedSourceFileInJSON(String src_dir) {
         List<String> filePaths = SourceFileCollector.getJavaFilesFromSourceDirectory(new File(src_dir));
+        //List<String> filePathNew = getAllSourceFiles(src_dir);
         for (int i = 0, filePathsSize = filePaths.size(); i < filePathsSize; i++) {
             String file = filePaths.get(i);
             System.out.println("Processing->  " + i + "->th->Path" + file);
@@ -55,9 +56,9 @@ public class ADAParser {
     private ASTParser buildASTParser(String sourceRoot) {
         String[] srcDirs = getAllSrcDirectories(new File(sourceRoot));
 
-        String [] encoding= new String[srcDirs.length];
-        for(int i=0; i<encoding.length;i++){
-            encoding[i]= "UTF-8";
+        String[] encoding = new String[srcDirs.length];
+        for (int i = 0; i < encoding.length; i++) {
+            encoding[i] = "UTF-8";
         }
         ASTParser parser = ASTParser.newParser(AST.JLS13);
         parser.setKind(ASTParser.K_COMPILATION_UNIT);
@@ -68,8 +69,8 @@ public class ADAParser {
         parser.setCompilerOptions(options);
         String[] sources = srcDirs;
         String[] classpath = {};
-        parser.setEnvironment(classpath, sources,encoding, true);
-       // parser.setEnvironment(classpath, sources, new String[]{"UTF-8"}, true);
+        parser.setEnvironment(classpath, sources, encoding, true);
+        // parser.setEnvironment(classpath, sources, new String[]{"UTF-8"}, true);
         return parser;
     }
 
@@ -130,6 +131,20 @@ public class ADAParser {
         }
         String[] srcDirs = allSrcDirectories.stream().toArray(String[]::new);
         return srcDirs;
+    }
+
+
+    public List<String> getAllSourceFiles(String rootPath) {
+        File rootDir = new File(rootPath);
+        List<String> sourcesFiles = new ArrayList<>();
+        Iterator<File> files = FileUtils.iterateFiles(rootDir, null, true);
+        while (files.hasNext()) {
+            File f = files.next();
+            if (f.getAbsolutePath().endsWith(".java")) {
+                sourcesFiles.add(files.next().getAbsolutePath());
+            }
+        }
+        return sourcesFiles;
     }
 }
 

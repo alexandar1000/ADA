@@ -9,8 +9,15 @@ public class SourceFileCollector {
     public static List<String> getJavaFilesFromSourceDirectory(File directoryPath) {
         List<String> sourceFiles = new ArrayList<>();
         new DirectoryExplorer((level, path, file) -> path.endsWith(".java"), (level, path, file) -> {
-            String absolutePath = directoryPath + path;
-            sourceFiles.add(absolutePath);
+            if (!path.endsWith("Test.java") && !path.endsWith("Tests.java")) {
+                {
+                    String absolutePath = directoryPath + path;
+                    sourceFiles.add(absolutePath);
+                }
+            } else {
+                System.out.println(path);
+            }
+
         }).explore(directoryPath);
         return sourceFiles;
     }
