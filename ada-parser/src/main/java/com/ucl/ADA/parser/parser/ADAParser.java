@@ -6,16 +6,16 @@ import com.ucl.ADA.parser.model.ADAClass;
 import com.ucl.ADA.parser.parser.visitor.PackageAndImportVisitor;
 import com.ucl.ADA.parser.parser.visitor.TypeDeclatorVisitor;
 import com.ucl.ADA.parser.util.SourceFileCollector;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class ADAParser {
@@ -31,10 +31,12 @@ public class ADAParser {
         return allParsedFile;
     }
 
+
     public void printParsedSourceFileInJSON(String src_dir) {
         List<String> filePaths = SourceFileCollector.getJavaFilesFromSourceDirectory(new File(src_dir));
-        for (String file : filePaths) {
-            System.out.println("Processing->  " + file);
+        for (int i = 0, filePathsSize = filePaths.size(); i < filePathsSize; i++) {
+            String file = filePaths.get(i);
+            System.out.println("Processing->  " + i + "->th->Path" + file);
             ASTParser parser = buildASTParser(src_dir);
             List<ADAClass> classes = parseSourceFile(parser, file);
             for (ADAClass aClass : classes) {
@@ -47,11 +49,16 @@ public class ADAParser {
                 }
                 System.out.println(jsonStr);
             }
-
         }
     }
 
     private ASTParser buildASTParser(String sourceRoot) {
+        String[] srcDirs = getAllSrcDirectories(new File(sourceRoot));
+
+        String [] encoding= new String[srcDirs.length];
+        for(int i=0; i<encoding.length;i++){
+            encoding[i]= "UTF-8";
+        }
         ASTParser parser = ASTParser.newParser(AST.JLS13);
         parser.setKind(ASTParser.K_COMPILATION_UNIT);
         parser.setBindingsRecovery(true);
@@ -59,9 +66,10 @@ public class ADAParser {
         parser.setStatementsRecovery(true);
         Map options = JavaCore.getOptions();
         parser.setCompilerOptions(options);
-        String[] sources = {sourceRoot};
+        String[] sources = srcDirs;
         String[] classpath = {};
-        parser.setEnvironment(classpath, sources, new String[]{"UTF-8"}, true);
+        parser.setEnvironment(classpath, sources,encoding, true);
+       // parser.setEnvironment(classpath, sources, new String[]{"UTF-8"}, true);
         return parser;
     }
 
@@ -107,7 +115,22 @@ public class ADAParser {
         return sb.toString();
     }
 
-
+    // Recursive function to list all files in a directory with Apache Commons IO
+    public String[] getAllSrcDirectories(File rootDir) {
+        List<String> allSrcDirectories = new ArrayList<>();
+        Collection<File> files = FileUtils.listFilesAndDirs(rootDir,
+                TrueFileFilter.INSTANCE,
+                TrueFileFilter.INSTANCE);
+        for (File file : files) {
+            if (file.isDirectory()) {
+                if (file.getName().equals("src"))
+                    allSrcDirectories.add(file.getAbsolutePath());
+                //System.out.println(file);
+            }
+        }
+        String[] srcDirs = allSrcDirectories.stream().toArray(String[]::new);
+        return srcDirs;
+    }
 }
 
 

@@ -51,8 +51,8 @@ public class JavaClassParser extends ASTVisitor {
             if (typeDeclaration.getSuperclassType() != null) {
                 this.parentClassName = typeDeclaration.getSuperclassType().resolveBinding().getQualifiedName();
             }
-            List<SimpleType> interfaces = typeDeclaration.superInterfaceTypes();
-            for (SimpleType anInterface : interfaces) {
+            List<Type> interfaces = typeDeclaration.superInterfaceTypes();
+            for (Type anInterface : interfaces) {
                 implementedInterfaces.add(anInterface.resolveBinding().getQualifiedName());
             }
         }
@@ -66,9 +66,14 @@ public class JavaClassParser extends ASTVisitor {
             IVariableBinding binding = fragment.resolveBinding();
             if (binding != null) {
                 Set<String> modifiers = new HashSet<>();
-                List<Modifier> mlist = node.modifiers();
-                if (!mlist.isEmpty()) {
-                    for (Modifier md : mlist) {
+                List<Object> mlist = node.modifiers();
+                for (Object o : mlist) {
+                    IExtendedModifier im = (IExtendedModifier) o;
+                    if (im.isAnnotation()) {
+                        Annotation mk = (Annotation) o;
+                        modifiers.add(mk.toString());
+                    } else {
+                        Modifier md = (Modifier) o;
                         modifiers.add(md.getKeyword().toString());
                     }
                 }
@@ -164,12 +169,13 @@ public class JavaClassParser extends ASTVisitor {
                 parameters.put(parameterName, parameterType);
             }
         }
+
         Set<String> accessModifiers = new HashSet<>();
         List<Object> mlist = node.modifiers();
         for (Object o : mlist) {
             IExtendedModifier im = (IExtendedModifier) o;
             if (im.isAnnotation()) {
-                MarkerAnnotation mk = (MarkerAnnotation) o;
+                Annotation mk = (Annotation) o;
                 accessModifiers.add(mk.toString());
             } else {
                 Modifier md = (Modifier) o;
