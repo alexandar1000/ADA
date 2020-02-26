@@ -17,6 +17,7 @@ import java.util.Set;
  */
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/users")
 public class UserController {
 
@@ -90,9 +91,6 @@ public class UserController {
         return snapshot;
     }
 
-
-
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping
     public List<User> listAllUsers() {
         return userService.listUsers();

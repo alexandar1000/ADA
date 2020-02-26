@@ -5,6 +5,7 @@ import { RepoFormComponent } from './repo-form/repo-form.component';
 const routes: Routes = [
   { path: 'repo-form', component: RepoFormComponent},
   { path: '', redirectTo: '/repo-form', pathMatch: 'full' },
+  { path: 'repo/:owner', component: RepoFormComponent}
 ];
 
 @NgModule({

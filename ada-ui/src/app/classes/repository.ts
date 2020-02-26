@@ -1,6 +1,6 @@
 import { Branch } from './branch';
 
 export class Repository {
-    repoName: string;
+    name: string;
     branches: Branch[];
 }
