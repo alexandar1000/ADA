@@ -172,7 +172,8 @@ public class ClassStructure extends BaseEntity {
     /**
      * The metrics corresponding to the current class.
      */
-    @Transient
+    @OneToOne
+    @JoinColumn(name = "class_metric_value_id")
     private ClassMetricValue classMetricValues = new ClassMetricValue();
 
 
