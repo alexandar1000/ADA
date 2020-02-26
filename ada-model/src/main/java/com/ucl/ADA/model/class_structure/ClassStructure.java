@@ -61,9 +61,9 @@ public class ClassStructure extends BaseEntity {
      */
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
-            name = "CLASS_STRUCTURE_CONSTRUCTOR_DECLARATION",
+            name = "CLASS_STRUCTURE_METHOD_DECLARATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),
-            inverseJoinColumns = @JoinColumn(name = "constructor_declaration_id")
+            inverseJoinColumns = @JoinColumn(name = "method_declaration_id")
     )
     private List<MethodDeclaration> methodsDeclarations = new ArrayList<>();
 
@@ -90,13 +90,23 @@ public class ClassStructure extends BaseEntity {
     /**
      * Global Data present in the class. It can be either declared or invoked. Not really possible in Java.
      */
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "CLASS_STRUCTURE_GLOBAL_ATTRIBUTE_INVOCATION",
+            joinColumns = @JoinColumn(name = "class_structure_id"),
+            inverseJoinColumns = @JoinColumn(name = "attribute_invocation_id")
+    )
     private List<AttributeInvocation> globalData = new ArrayList<>();
 
     /**
      * Global Methods present in the class. They can be either declared or invoked. Not really possible in Java.
      */
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "CLASS_STRUCTURE_GLOBAL_METHOD_INVOCATION",
+            joinColumns = @JoinColumn(name = "class_structure_id"),
+            inverseJoinColumns = @JoinColumn(name = "method_invocation_id")
+    )
     private List<MethodInvocation> globalMethods = new ArrayList<>();
 
 

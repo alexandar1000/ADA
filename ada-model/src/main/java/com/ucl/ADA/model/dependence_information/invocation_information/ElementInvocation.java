@@ -19,7 +19,7 @@ public abstract class ElementInvocation extends BaseEntity {
     /**
      * The name of the invoked element.
      */
-    @Column(name = "element_name", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
 }
