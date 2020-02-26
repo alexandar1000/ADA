@@ -34,7 +34,10 @@ public class PackageAndImportVisitor extends ASTVisitor {
 
     // package declaration
     public boolean visit(PackageDeclaration node) {
-        this.packageName = node.getName().toString();
+        IBinding binding = node.resolveBinding();
+        if (binding != null) {
+            this.packageName = node.getName().toString();
+        }
         return true;
     }
 

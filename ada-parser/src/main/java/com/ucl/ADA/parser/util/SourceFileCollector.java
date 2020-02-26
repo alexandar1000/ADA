@@ -10,10 +10,9 @@ public class SourceFileCollector {
         List<String> sourceFiles = new ArrayList<String>();
         new DirectoryExplorer((level, path, file) -> path.endsWith(".java"), (level, path, file) -> {
             String absolutePath = directoryPath + path;
-            //System.out.println(absolutePath);
+            // System.out.println(absolutePath);
             sourceFiles.add(absolutePath);
         }).explore(directoryPath);
         return sourceFiles;
     }
-
 }
