@@ -20,8 +20,6 @@ export class GraphComponent implements OnInit {
         tap(_ => console.log('tapped'))
       ).subscribe(data => this.graphData = data);
 
-    // var sigmaJs = new sigma();
-
   }
 
 }
