@@ -1,4 +1,6 @@
-![Ada Logo](ada-core/src/main/resources/logos/LogoMakr_8rK051.png)
+<p align="center">
+  <img width="250" height="250" src="ada-core/src/main/resources/logos/LogoMakr_8rK051.png">
+</p>
 
 # ADA - The Architectural Design Advisor
 
