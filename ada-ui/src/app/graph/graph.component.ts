@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AnalyserService} from "../analyser.service";
 import {tap} from "rxjs/operators";
+import { sigma } from 'sigma';
 
 @Component({
   selector: 'app-graph',
@@ -18,6 +19,9 @@ export class GraphComponent implements OnInit {
       .pipe(
         tap(_ => console.log('tapped'))
       ).subscribe(data => this.graphData = data);
+
+    // var sigmaJs = new sigma();
+
   }
 
 }
