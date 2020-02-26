@@ -17,9 +17,9 @@ import javax.persistence.MappedSuperclass;
 public abstract class ElementDeclaration extends BaseEntity {
 
     /**
-     * The name of the element.
+     * The name of the element declaration.
      */
-    @Column(name = "element_name", nullable = false)
-    private String elementName;
+    @Column(name = "name", nullable = false)
+    private String name;
 
 }
