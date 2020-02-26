@@ -116,28 +116,48 @@ public class ClassStructure extends BaseEntity {
      * External Attribute Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "CLASS_STRUCTURE_EXTERNAL_PACKAGE_INVOCATION",
+            joinColumns = @JoinColumn(name = "class_structure_id"),
+            inverseJoinColumns = @JoinColumn(name = "package_invocation_id")
+    )
     private List<PackageInvocation> externalPackageImports = new ArrayList<>();
 
     /**
      * External Method Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "CLASS_STRUCTURE_EXTERNAL_METHOD_INVOCATION",
+            joinColumns = @JoinColumn(name = "class_structure_id"),
+            inverseJoinColumns = @JoinColumn(name = "method_invocation_id")
+    )
     private List<MethodInvocation> externalMethodInvocations = new ArrayList<>();
 
     /**
      * External Constructor Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "CLASS_STRUCTURE_EXTERNAL_CONSTRUCTOR_INVOCATION",
+            joinColumns = @JoinColumn(name = "class_structure_id"),
+            inverseJoinColumns = @JoinColumn(name = "constructor_invocation_id")
+    )
     private List<ConstructorInvocation> externalConstructorInvocations = new ArrayList<>();
 
     /**
      * External Attribute Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "CLASS_STRUCTURE_EXTERNAL_ATTRIBUTE_INVOCATION",
+            joinColumns = @JoinColumn(name = "class_structure_id"),
+            inverseJoinColumns = @JoinColumn(name = "attribute_invocation_id")
+    )
     private List<AttributeInvocation> externalAttributeInvocations = new ArrayList<>();
 
 
