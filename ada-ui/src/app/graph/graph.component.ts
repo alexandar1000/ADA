@@ -18,7 +18,11 @@ export class GraphComponent implements OnInit {
     this.analyserService.getAnalysis()
       .pipe(
         tap(_ => console.log('tapped'))
-      ).subscribe(data => this.graphData = data);
+      ).subscribe(data => this.populateGraph(data));
+  }
+
+  populateGraph(data: any) : void {
+    this.graphData = data;
 
     // Let's first initialize sigma:
     var s = new sigma('sigma-container');
