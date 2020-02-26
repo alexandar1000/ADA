@@ -1,16 +1,11 @@
-CREATE TABLE public.repositories
+CREATE TABLE REPOSITORY
 (
-    repo_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( start 1 ),
-    repo_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
-    fk_user_id bigint NOT NULL,
+    repo_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY (START 1),
+    repo_name VARCHAR(255) NOT NULL,
+    owner_id BIGINT NOT NULL,
     CONSTRAINT repositories_pkey PRIMARY KEY (repo_id),
-    CONSTRAINT repositories_fkey FOREIGN KEY (fk_user_id)
-        REFERENCES public.users (user_id) MATCH SIMPLE
+    CONSTRAINT repositories_fkey FOREIGN KEY (owner_id)
+        REFERENCES OWNER (owner_id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE 
 )
-
-TABLESPACE pg_default;
-
-ALTER TABLE public.repositories
-    OWNER to "ada-team";

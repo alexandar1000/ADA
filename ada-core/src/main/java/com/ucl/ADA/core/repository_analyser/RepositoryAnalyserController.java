@@ -1,6 +1,6 @@
 package com.ucl.ADA.core.repository_analyser;
 
-import com.ucl.ADA.metric_calculator.metrics_structure.ProjectMetricsContainer;
+import com.ucl.ADA.model.project_structure.ProjectStructure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +17,7 @@ public class RepositoryAnalyserController {
      */
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(produces = "application/json")
-    public ProjectMetricsContainer analyseRepository(@RequestParam(value = "url", defaultValue = "") String url, @RequestParam(value = "branch", defaultValue = "") String branchName) {
+    public ProjectStructure analyseRepository(@RequestParam(value = "url", defaultValue = "") String url, @RequestParam(value = "branch", defaultValue = "") String branchName) {
         return repositoryAnalyserServices.analyseRepositoryService(url, branchName);
     }
 }
