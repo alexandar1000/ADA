@@ -11,7 +11,7 @@ import {ProjectStructure} from "../classes/project-structure";
 })
 export class GraphComponent implements OnInit {
 
-  private graphData: ProjectStructure;
+  private projectStructure: ProjectStructure;
 
   constructor(private analyserService: AnalyserService) { }
 
@@ -22,13 +22,13 @@ export class GraphComponent implements OnInit {
       ).subscribe(data => this.handleRequestResponse(data));
   }
 
-  private handleRequestResponse(data: ProjectStructure) {
-    this.populateGraphData(data);
-    this.populateGraph(data);
+  private handleRequestResponse(data: JSON) {
+    this.projectStructure = this.populateGraphData(data);
+    this.populateGraph(this.projectStructure);
   }
 
-  private populateGraphData(data: ProjectStructure) {
-    this.graphData = new ProjectStructure(data.classStructures)
+  private populateGraphData(data: JSON): ProjectStructure {
+    return new ProjectStructure(data)
   }
 
   populateGraph(data: ProjectStructure) : void {
@@ -37,7 +37,7 @@ export class GraphComponent implements OnInit {
 
     this.addNodes(s);
 
-    this.addEdges(s);
+    // this.addEdges(s);
 
     // Refresh the sigma instance:
     s.refresh();
@@ -47,7 +47,7 @@ export class GraphComponent implements OnInit {
   private addNodes(sigma: sigma): any {
     // Then, let's add some data to display:
     let i = 0;
-    for ( let element in this.graphData.classStructures) {
+    for ( let element in this.projectStructure.classStructures) {
       // console.log(element);
       let lastIndex = element.lastIndexOf('.');
       let className = (lastIndex > 0 ? element.substr(lastIndex + 1, element.length - 1) : element);
@@ -66,9 +66,6 @@ export class GraphComponent implements OnInit {
   private addEdges(sigma: sigma): any {
     // Then, let's add some data to display:
     let i = 0;
-    for (let element in this.graphData.classStructures) {
-      console.log();
-    }
 
 
     // s.addEdge({

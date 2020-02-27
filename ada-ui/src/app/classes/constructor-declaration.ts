@@ -10,7 +10,7 @@ export class ConstructorDeclaration {
   }
 
   name: string;
-  modifierTypes: string[];
+  modifierTypes: string[] = [];
   parameters: ParameterDeclaration[] = [];
 
 

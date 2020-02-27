@@ -4,17 +4,24 @@ import {ConstructorInvocation} from "./constructor-invocation";
 import {MethodInvocation} from "./method-invocation";
 
 export class DependenceInfo {
-  constructor(dependenceInfoJSON: any) {
-    for (let packageInvocationJSON of dependenceInfoJSON['packages']) {
+  constructor(dependenceInfoJSON: JSON) {
+    let packageInvocationsJSON = dependenceInfoJSON['packages'];
+    for (let packageInvocationJSON of packageInvocationsJSON) {
       this.packages.push(new PackageInvocation(packageInvocationJSON));
     }
-    for (let methodInvocationJSON of dependenceInfoJSON['methods']) {
+
+    let methodInvocationsJSON = dependenceInfoJSON['methods'];
+    for (let methodInvocationJSON of methodInvocationsJSON) {
       this.methods.push(new MethodInvocation(methodInvocationJSON));
     }
-    for (let constructorInvocationJSON of dependenceInfoJSON['constructors']) {
+
+    let constructorInvocationsJSON = dependenceInfoJSON['constructors'];
+    for (let constructorInvocationJSON of constructorInvocationsJSON) {
       this.constructors.push(new ConstructorInvocation(constructorInvocationJSON));
     }
-    for (let attributeInvocationJSON of dependenceInfoJSON['attributes']) {
+
+    let attributeInvocationsJSON = dependenceInfoJSON['attributes'];
+    for (let attributeInvocationJSON of attributeInvocationsJSON) {
       this.attributes.push(new AttributeInvocation(attributeInvocationJSON));
     }
   }

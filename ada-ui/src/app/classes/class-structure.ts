@@ -16,8 +16,8 @@ export class ClassStructure {
   constructorDeclarations: ConstructorDeclaration[] = [];
   methodDeclarations: MethodDeclaration[] = [];
 
-  outgoingDependenceInfo: Map<String, DependenceInfo>;
-  incomingDependenceInfo: Map<String, DependenceInfo>;
+  outgoingDependenceInfo: Map<String, DependenceInfo> = new Map<String, DependenceInfo>();
+  incomingDependenceInfo: Map<String, DependenceInfo> = new Map<String, DependenceInfo>();
 
   globalData: AttributeInvocation[] = [];
   globalMethods: MethodInvocation[] = [];
@@ -32,9 +32,11 @@ export class ClassStructure {
 
 
   constructor(classDeclaration: JSON) {
-    this.packageDeclaration = classDeclaration['packageDeclaration'];
-    for (let attributeDeclaration of classDeclaration['attributeDeclarations']) {
-      this.attributeDeclarations.push(new AttributeDeclaration(attributeDeclaration));
+    this.packageDeclaration = new PackageDeclaration(classDeclaration['currentPackage']);
+
+    let attributeDeclarationsJSON = classDeclaration['attributeDeclarations'];
+    for (let attributeDeclarationJSON of attributeDeclarationsJSON) {
+      this.attributeDeclarations.push(new AttributeDeclaration(attributeDeclarationJSON));
     }
     for (let constructorDeclaration of classDeclaration['constructorDeclarations']) {
       this.constructorDeclarations.push(new ConstructorDeclaration(constructorDeclaration));
@@ -43,16 +45,18 @@ export class ClassStructure {
       this.methodDeclarations.push(new MethodDeclaration(methodDeclaration));
     }
 
-    this.outgoingDependenceInfo = new Map<String, DependenceInfo>();
-    for (let outgoingDependenceInfoClassName in classDeclaration['outgoingDependenceInfo']) {
-      this.outgoingDependenceInfo.set(outgoingDependenceInfoClassName, new DependenceInfo(classDeclaration[outgoingDependenceInfoClassName]));
+    let outgoingDependenceInfoJSON = classDeclaration['outgoingDependenceInfo'];
+    for (let outgoingDependenceInfoClassName in outgoingDependenceInfoJSON) {
+      if (outgoingDependenceInfoJSON.hasOwnProperty(outgoingDependenceInfoClassName)) {
+        this.outgoingDependenceInfo.set(outgoingDependenceInfoClassName, new DependenceInfo(outgoingDependenceInfoJSON[outgoingDependenceInfoClassName]));
+      }
     }
-    this.incomingDependenceInfo = new Map<String, DependenceInfo>();
-    for (let incomingDependenceInfoClassName in classDeclaration['incomingDependenceInfo']) {
-      console.log('HERE');
-      console.log(incomingDependenceInfoClassName);
-      console.log(classDeclaration[incomingDependenceInfoClassName]);
-      this.incomingDependenceInfo.set(incomingDependenceInfoClassName, new DependenceInfo(classDeclaration[incomingDependenceInfoClassName]));
+
+    let incomingDependenceInfoJSON = classDeclaration['incomingDependenceInfo'];
+    for (let incomingDependenceInfoClassName in incomingDependenceInfoJSON) {
+      if (incomingDependenceInfoJSON.hasOwnProperty(incomingDependenceInfoClassName)) {
+        this.incomingDependenceInfo.set(incomingDependenceInfoClassName, new DependenceInfo(incomingDependenceInfoJSON[incomingDependenceInfoClassName]));
+      }
     }
 
 

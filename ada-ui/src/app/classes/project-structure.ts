@@ -1,13 +1,16 @@
 import {ClassStructure} from "./class-structure";
-import {ClassStructureInterface} from "../interfaces/class-structure-interface";
+import {getFileSystem} from "@angular/compiler-cli/src/ngtsc/file_system";
 
 export class ProjectStructure {
-  classStructures: Map<String, ClassStructure>;
+  classStructures: Map<String, ClassStructure> = new Map<String, ClassStructure>();
 
-  constructor(classStructures: any) {
-    this.classStructures = new Map<String, ClassStructure>();
-    for (let classStructureName in classStructures) {
-      this.classStructures.set(classStructureName, new ClassStructure(classStructures[classStructureName]));
+  constructor(projectStructureJSON: JSON) {
+    let classStructuresJSON = projectStructureJSON['classStructures'];
+    for (let classStructureName in classStructuresJSON) {
+      if (classStructuresJSON.hasOwnProperty(classStructureName)) {
+        this.classStructures.set(classStructureName, new ClassStructure(classStructuresJSON[classStructureName]));
+      }
+      console.log(this.classStructures);
     }
   }
 }

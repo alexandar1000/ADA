@@ -1,6 +1,4 @@
 import {PassedParameter} from "./passed-parameter";
-import {AttributeDeclaration} from "./attribute-declaration";
-import {ParameterDeclaration} from "./parameter-declaration";
 
 export class MethodInvocation {
   constructor(globalMethodJSON: any) {
@@ -11,5 +9,5 @@ export class MethodInvocation {
   }
 
   name: string;
-  passedParameters: PassedParameter[];
+  passedParameters: PassedParameter[] = [];
 }

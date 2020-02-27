@@ -10,7 +10,7 @@ import {ProjectStructure} from "./classes/project-structure";
 export class AnalyserService {
 
   private repoFormUrl = 'http://localhost:8080/analyser';
-  private analysis: Observable<ProjectStructure>;
+  private analysis: Observable<JSON>;
 
   constructor(private http: HttpClient) {
   }
@@ -27,7 +27,7 @@ export class AnalyserService {
       )
   }
 
-  public getAnalysis(): Observable<ProjectStructure> {
+  public getAnalysis(): Observable<JSON> {
     return this.analysis;
   }
 

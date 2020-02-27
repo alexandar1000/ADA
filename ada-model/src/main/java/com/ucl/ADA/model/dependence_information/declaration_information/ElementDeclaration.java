@@ -8,13 +8,13 @@ public abstract class ElementDeclaration {
     /**
      * The name of the element.
      */
-    private String elementName;
+    private String name;
 
     /**
      * The constructor of the element declaration object.
-     * @param elementName the name of the element being created
+     * @param name the name of the element being created
      */
-    public ElementDeclaration(String elementName) {
-        this.elementName = elementName;
+    public ElementDeclaration(String name) {
+        this.name = name;
     }
 }
