@@ -9,9 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +24,12 @@ public class DependenceInfo extends BaseEntity {
     /**
      * Packages present in the class. They can be either declared or imported.
      */
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "DEPENDENCE_INFO_PACKAGE_INVOCATION",
+            joinColumns = @JoinColumn(name = "dependence_info_id"),
+            inverseJoinColumns = @JoinColumn(name = "package_invocation_id")
+    )
     private List<PackageInvocation> packages = new ArrayList<>();
 
 

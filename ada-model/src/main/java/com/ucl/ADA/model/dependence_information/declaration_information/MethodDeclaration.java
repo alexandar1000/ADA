@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -28,13 +25,23 @@ public class MethodDeclaration extends ElementDeclaration {
     /**
      * The access modifier assigned to the method.
      */
-    @Transient
+    @ManyToMany(targetEntity = ModifierType.class)
+    @JoinTable(
+            name = "METHOD_DECLARATION_MODIFIER_TYPE",
+            joinColumns = @JoinColumn(name = "method_declaration_id"),
+            inverseJoinColumns = @JoinColumn(name = "modifier_type_id")
+    )
     private Set<ModifierType> modifierTypes = new HashSet<>();
 
     /**
      * The parameters which the method accepts.
      */
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "METHOD_DECLARATION_PARAMETER_DECLARATION",
+            joinColumns = @JoinColumn(name = "method_declaration_id"),
+            inverseJoinColumns = @JoinColumn(name = "parameter_declaration_id")
+    )
     private List<ParameterDeclaration> parameters = new ArrayList<>();
 
     /**
