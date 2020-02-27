@@ -27,8 +27,8 @@ export class ClassStructure {
   externalConstructorInvocations: ConstructorInvocation[] = [];
   externalAttributeInvocations: AttributeInvocation[] = [];
 
-  relationMetricValues: Map<String, RelationMetricValue>;
-  classMetricValues: Map<String, ClassMetricValue>;
+  relationMetricValues: Map<String, RelationMetricValue> = new Map<String, RelationMetricValue>();
+  classMetricValues: ClassMetricValue;
 
 
   constructor(classDeclaration: JSON) {
@@ -81,7 +81,13 @@ export class ClassStructure {
       this.externalAttributeInvocations.push(new AttributeInvocation(externalAttributeInvocationsJSON));
     }
 
-    // this.relationMetricValues = classDeclaration['relationMetricValues'];
-    // this.classMetricValues = classDeclaration['classMetricValues'];
+
+    let relationMetricValuesJSON = classDeclaration['relationMetricValues'];
+    for (let classNameForRelationMetricValue in relationMetricValuesJSON) {
+      if (relationMetricValuesJSON.hasOwnProperty(classNameForRelationMetricValue)) {
+        this.relationMetricValues.set(classNameForRelationMetricValue, new RelationMetricValue(relationMetricValuesJSON[classNameForRelationMetricValue]));
+      }
+    }
+    this.classMetricValues = new ClassMetricValue(classDeclaration['classMetricValues']);
   }
 }
