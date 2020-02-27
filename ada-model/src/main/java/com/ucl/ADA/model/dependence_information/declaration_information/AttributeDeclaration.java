@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,7 +29,12 @@ public class AttributeDeclaration extends ElementDeclaration {
     /**
      * The access modifier assigned to the attribute.
      */
-    @Transient
+    @ManyToMany(targetEntity = ModifierType.class)
+    @JoinTable(
+            name = "ATTRIBUTE_DECLARATION_MODIFIER_TYPE",
+            joinColumns = @JoinColumn(name = "attribute_declaration_id"),
+            inverseJoinColumns = @JoinColumn(name = "modifier_type_id")
+    )
     private Set<ModifierType> modifierTypes = new HashSet<>();
 
     /**

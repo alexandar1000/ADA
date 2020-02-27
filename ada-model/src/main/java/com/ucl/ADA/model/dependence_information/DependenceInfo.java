@@ -2,10 +2,9 @@ package com.ucl.ADA.model.dependence_information;
 
 import com.ucl.ADA.model.BaseEntity;
 import com.ucl.ADA.model.dependence_information.invocation_information.AttributeInvocation;
-import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
+import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.PackageInvocation;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +18,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "DEPENDENCE_INFO")
 public class DependenceInfo extends BaseEntity {

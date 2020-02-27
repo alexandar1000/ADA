@@ -11,7 +11,6 @@ import com.ucl.ADA.model.metrics.class_metrics.ClassMetricType;
 import com.ucl.ADA.model.metrics.class_metrics.ClassMetricValue;
 import com.ucl.ADA.model.metrics.relation_metrics.RelationMetricType;
 import com.ucl.ADA.model.metrics.relation_metrics.RelationMetricValue;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +21,6 @@ import java.util.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "CLASS_STRUCTURE")
 public class ClassStructure extends BaseEntity {

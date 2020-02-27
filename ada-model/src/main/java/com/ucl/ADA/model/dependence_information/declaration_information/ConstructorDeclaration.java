@@ -31,7 +31,12 @@ public class ConstructorDeclaration extends ElementDeclaration {
     /**
      * List of the parameters which the constructor accepts.
      */
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "CONSTRUCTOR_DECLARATION_PARAMETER_DECLARATION",
+            joinColumns = @JoinColumn(name = "constructor_declaration_id"),
+            inverseJoinColumns = @JoinColumn(name = "parameter_declaration_id")
+    )
     private List<ParameterDeclaration> parameters = new ArrayList<>();
 
     /**
