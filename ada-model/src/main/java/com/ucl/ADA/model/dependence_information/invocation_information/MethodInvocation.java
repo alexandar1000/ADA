@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +18,12 @@ public class MethodInvocation extends ElementInvocation {
     /**
      * The list of parameters which have been passes to the method on invocation.
      */
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "METHOD_INVOCATION_PASSED_PARAMETER",
+            joinColumns = @JoinColumn(name = "method_invocation_id"),
+            inverseJoinColumns = @JoinColumn(name = "passed_parameter_id")
+    )
     private List<PassedParameter> passedParameters = new ArrayList<>();
 
     /**
