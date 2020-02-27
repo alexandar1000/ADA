@@ -4,4 +4,3 @@ CREATE TABLE CLASS_STRUCTURE
     package_declaration_id BIGINT NOT NULL,
     class_metric_value_id  BIGINT NOT NULL
 )
-
