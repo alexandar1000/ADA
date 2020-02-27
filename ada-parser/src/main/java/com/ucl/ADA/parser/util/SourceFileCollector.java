@@ -12,6 +12,8 @@ public class SourceFileCollector {
             if (!path.endsWith("Test.java") && !path.endsWith("Tests.java")) {
                 {
                     String absolutePath = directoryPath + path;
+                    System.out.println(directoryPath);
+                    System.out.println(path);
                     sourceFiles.add(absolutePath);
                 }
             }

@@ -49,6 +49,8 @@ public class ADAParser {
     }
 
     private ASTParser buildASTParser(String sourceRoot) {
+
+
         String[] srcDirs = getAllSrcDirectories(new File(sourceRoot));
 
         String[] encoding = new String[srcDirs.length];
@@ -65,6 +67,7 @@ public class ADAParser {
         options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, JavaCore.VERSION_1_5);
         options.put(JavaCore.COMPILER_SOURCE, JavaCore.VERSION_1_5);
         parser.setCompilerOptions(options);
+
         String[] sources = srcDirs;
         String[] classpath = {};
         parser.setEnvironment(classpath, sources, encoding, true);

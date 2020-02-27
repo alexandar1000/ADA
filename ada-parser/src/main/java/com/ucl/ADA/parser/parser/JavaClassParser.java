@@ -21,6 +21,7 @@ public class JavaClassParser extends ASTVisitor {
     private String parentClassName = "";
     private Set<String> implementedInterfaces = new HashSet<>();
     private List<ADAClassAttribute> classAttributes = new ArrayList<>();
+    private List<String> declaredEnums = new ArrayList<>();
 
     private List<ADAMethodInvocation> ADAMethodInvocations = new ArrayList<>();
     private List<ADAConstructorInvocation> constructorInvocations = new ArrayList<>();
@@ -39,8 +40,8 @@ public class JavaClassParser extends ASTVisitor {
 
 
     public ADAClass getExtractedClass() {
-        ADAClass cl = new ADAClass(packageName, importedInternalClasses, importedExternalClasses, className, parentClassName, implementedInterfaces,
-                classAttributes, ADAMethodInvocations, constructorInvocations, methodConstructorDeclaration, exMethodCalls, exConstructorInvocations, exFieldInvocation);
+        ADAClass cl = new ADAClass(packageName, importedInternalClasses, importedExternalClasses, className, isInterface, isEnum, parentClassName, implementedInterfaces,
+                classAttributes, declaredEnums, ADAMethodInvocations, constructorInvocations, methodConstructorDeclaration, exMethodCalls, exConstructorInvocations, exFieldInvocation);
 
         return cl;
     }
@@ -77,10 +78,13 @@ public class JavaClassParser extends ASTVisitor {
             List<ASTNode> enumConstant = enumDeclaration.enumConstants();
             if (!enumConstant.isEmpty()) {
                 for (ASTNode an : enumConstant) {
-                    System.out.println(an.toString());
+                    if (an instanceof EnumConstantDeclaration) {
+                        EnumConstantDeclaration en = (EnumConstantDeclaration) an;
+                        declaredEnums.add(en.getName().toString());
+                    }
+
                 }
             }
-
         }
         return true;
     }
