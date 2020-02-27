@@ -14,12 +14,8 @@ public class SourceFileCollector {
                     String absolutePath = directoryPath + path;
                     sourceFiles.add(absolutePath);
                 }
-            } else {
-                System.out.println(path);
             }
-
         }).explore(directoryPath);
         return sourceFiles;
     }
-
 }

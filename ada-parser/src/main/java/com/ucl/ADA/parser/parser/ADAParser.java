@@ -4,16 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ucl.ADA.parser.model.ADAClass;
 import com.ucl.ADA.parser.parser.visitor.PackageAndImportVisitor;
-import com.ucl.ADA.parser.parser.visitor.TypeDeclatorVisitor;
+import com.ucl.ADA.parser.parser.visitor.TypeDeclarationVisitor;
 import com.ucl.ADA.parser.util.SourceFileCollector;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.*;
 
 import java.io.*;
 import java.util.*;
@@ -34,7 +30,6 @@ public class ADAParser {
 
     public void printParsedSourceFileInJSON(String src_dir) {
         List<String> filePaths = SourceFileCollector.getJavaFilesFromSourceDirectory(new File(src_dir));
-        //List<String> filePathNew = getAllSourceFiles(src_dir);
         for (int i = 0, filePathsSize = filePaths.size(); i < filePathsSize; i++) {
             String file = filePaths.get(i);
             System.out.println("Processing->  " + i + "->th->Path" + file);
@@ -66,6 +61,9 @@ public class ADAParser {
         parser.setResolveBindings(true);
         parser.setStatementsRecovery(true);
         Map options = JavaCore.getOptions();
+        options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_5);
+        options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, JavaCore.VERSION_1_5);
+        options.put(JavaCore.COMPILER_SOURCE, JavaCore.VERSION_1_5);
         parser.setCompilerOptions(options);
         String[] sources = srcDirs;
         String[] classpath = {};
@@ -86,11 +84,12 @@ public class ADAParser {
 
         PackageAndImportVisitor pv = new PackageAndImportVisitor();
         cu.accept(pv);
-        TypeDeclatorVisitor tv = new TypeDeclatorVisitor();
+        TypeDeclarationVisitor tv = new TypeDeclarationVisitor();
         cu.accept(tv);
-        List<TypeDeclaration> classes = tv.getClasses();
+
+        List<AbstractTypeDeclaration> allClassAndEnums = tv.getAbstractTypeDeclaration();
         List<ADAClass> parsedClasses = new ArrayList<>();
-        for (TypeDeclaration cl : classes) {
+        for (AbstractTypeDeclaration cl : allClassAndEnums) {
             JavaClassParser jp = new JavaClassParser(pv.getPackageName(), pv.getImportedInternalClasses(), pv.getImportedExternalClasses());
             cl.accept(jp);
             ADAClass cm = jp.getExtractedClass();
@@ -133,19 +132,6 @@ public class ADAParser {
         return srcDirs;
     }
 
-
-    public List<String> getAllSourceFiles(String rootPath) {
-        File rootDir = new File(rootPath);
-        List<String> sourcesFiles = new ArrayList<>();
-        Iterator<File> files = FileUtils.iterateFiles(rootDir, null, true);
-        while (files.hasNext()) {
-            File f = files.next();
-            if (f.getAbsolutePath().endsWith(".java")) {
-                sourcesFiles.add(files.next().getAbsolutePath());
-            }
-        }
-        return sourcesFiles;
-    }
 }
 
 
