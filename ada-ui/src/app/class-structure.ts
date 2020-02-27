@@ -9,6 +9,7 @@ import {MethodInvocation} from "./method-invocation";
 import {PackageInvocation} from "./package-invocation";
 import {ClassMetricValue} from "./class-metric-value";
 import {RelationMetricValue} from "./relation-metric-value";
+import {DependenceInfo} from "./dependence-info";
 
 export interface ClassStructure {
   packageDeclaration: PackageDeclaration;
