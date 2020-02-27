@@ -11,6 +11,7 @@ import com.ucl.ADA.model.metrics.class_metrics.ClassMetricType;
 import com.ucl.ADA.model.metrics.class_metrics.ClassMetricValue;
 import com.ucl.ADA.model.metrics.relation_metrics.RelationMetricType;
 import com.ucl.ADA.model.metrics.relation_metrics.RelationMetricValue;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +22,7 @@ import java.util.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "CLASS_STRUCTURE")
 public class ClassStructure extends BaseEntity {
@@ -74,14 +76,22 @@ public class ClassStructure extends BaseEntity {
      * Information about the invocations of the elements from the other classes from this class. String is the qualified
      * name of the class.
      */
-    @Transient
+    @OneToMany
+    @JoinTable(name = "CLASS_STRUCTURE_OUTGOING_DEPENDENCE_INFO",
+            joinColumns = {@JoinColumn(name = "class_structure_id")},
+            inverseJoinColumns = {@JoinColumn(name = "dependence_info_id")})
+    @MapKeyColumn(name = "class_name")
     private Map<String, DependenceInfo> outgoingDependenceInfo = new HashMap<>();
 
     /**
      * Information about the invocations of elements from this class by the other classes. String is the qualified
      * name of the class.
      */
-    @Transient
+    @OneToMany
+    @JoinTable(name = "CLASS_STRUCTURE_INCOMING_DEPENDENCE_INFO",
+            joinColumns = {@JoinColumn(name = "class_structure_id")},
+            inverseJoinColumns = {@JoinColumn(name = "dependence_info_id")})
+    @MapKeyColumn(name = "class_name")
     private Map<String, DependenceInfo> incomingDependenceInfo = new HashMap<>();
 
 
@@ -180,15 +190,6 @@ public class ClassStructure extends BaseEntity {
     @JoinColumn(name = "class_metric_value_id")
     private ClassMetricValue classMetricValues = new ClassMetricValue();
 
-
-    /**
-     * Creates a new instance using the package name.
-     *
-     * @param packageDeclaration the name of the package corresponding to the current class
-     */
-    public ClassStructure(PackageDeclaration packageDeclaration) {
-        this.currentPackage = packageDeclaration;
-    }
 
     /**
      * Updates the package corresponding to the class.

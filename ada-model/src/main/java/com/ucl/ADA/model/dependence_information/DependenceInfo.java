@@ -1,21 +1,34 @@
 package com.ucl.ADA.model.dependence_information;
 
+import com.ucl.ADA.model.BaseEntity;
 import com.ucl.ADA.model.dependence_information.invocation_information.AttributeInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.PackageInvocation;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class DependenceInfo {
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "DEPENDENCE_INFO")
+public class DependenceInfo extends BaseEntity {
 
     // For environmental coupling:
     /**
      * Packages present in the class. They can be either declared or imported.
      */
+    @Transient
     private List<PackageInvocation> packages = new ArrayList<>();
 
 
@@ -23,21 +36,20 @@ public class DependenceInfo {
     /**
      * Attributes present in the class. They can be either declared or invoked.
      */
+    @Transient
     private List<AttributeInvocation> attributes = new ArrayList<>();
 
     /**
      * Constructors present in the class. They can be either declared or invoked.
      */
+    @Transient
     private List<ConstructorInvocation> constructors = new ArrayList<>();
 
     /**
      * Methods present in the class. They can be either declared or invoked.
      */
+    @Transient
     private List<MethodInvocation> methods = new ArrayList<>();
-
-
-    public DependenceInfo() {
-    }
 
     /**
      * Adds a new attribute to the instance.
