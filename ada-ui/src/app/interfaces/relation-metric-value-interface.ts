@@ -1,4 +1,4 @@
-export interface ClassMetricValue1 {
+export interface RelationMetricValueInterface {
   numberOfPackageImportsIncoming: number;
   numberOfPackageImportsOutgoing: number;
 

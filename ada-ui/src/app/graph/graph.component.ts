@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AnalyserService} from "../analyser.service";
 import {tap} from "rxjs/operators";
 import { sigma } from 'sigma';
-import {element} from "protractor";
+import {ProjectStructure} from "../classes/project-structure";
 
 @Component({
   selector: 'app-graph',
@@ -11,7 +11,7 @@ import {element} from "protractor";
 })
 export class GraphComponent implements OnInit {
 
-  private graphData: any;
+  private graphData: ProjectStructure;
 
   constructor(private analyserService: AnalyserService) { }
 
@@ -19,12 +19,19 @@ export class GraphComponent implements OnInit {
     this.analyserService.getAnalysis()
       .pipe(
         tap(_ => console.log('tapped'))
-      ).subscribe(data => this.populateGraph(data));
+      ).subscribe(data => this.handleRequestResponse(data));
   }
 
-  populateGraph(data: any) : void {
-    this.graphData = data;
+  private handleRequestResponse(data: ProjectStructure) {
+    this.populateGraphData(data);
+    this.populateGraph(data);
+  }
 
+  private populateGraphData(data: ProjectStructure) {
+    this.graphData = new ProjectStructure(data.classStructures)
+  }
+
+  populateGraph(data: ProjectStructure) : void {
     // Initialize sigma:
     var s = new sigma('sigma-container');
 
@@ -32,15 +39,8 @@ export class GraphComponent implements OnInit {
 
     this.addEdges(s);
 
-    // s.addEdge({
-    //   id: 'e0',
-    //   Reference extremities:
-      // source: 'n0',
-      // target: 'n1'
-    // });
-
-    // Finally, let's ask our sigma instance to refresh:
-    s.refresh();// Let's first initialize sigma:
+    // Refresh the sigma instance:
+    s.refresh();
 
   }
 
@@ -67,8 +67,15 @@ export class GraphComponent implements OnInit {
     // Then, let's add some data to display:
     let i = 0;
     for (let element in this.graphData.classStructures) {
-      console.log(this.graphData.classStructures.element);
+      console.log();
     }
-  }
 
+
+    // s.addEdge({
+    //   id: 'e0',
+    //   Reference extremities:
+    // source: 'n0',
+    // target: 'n1'
+    // });
+  }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {Observable, of} from "rxjs";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {catchError, tap} from "rxjs/operators";
-import {ProjectStructure1} from "./project-structure1";
+import {ProjectStructure} from "./classes/project-structure";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ import {ProjectStructure1} from "./project-structure1";
 export class AnalyserService {
 
   private repoFormUrl = 'http://localhost:8080/analyser';
-  private analysis: Observable<ProjectStructure1>;
+  private analysis: Observable<ProjectStructure>;
 
   constructor(private http: HttpClient) {
   }
@@ -20,14 +20,14 @@ export class AnalyserService {
       .set('url', urlForm)
       .set('branch', branchName);
 
-    this.analysis = this.http.post<ProjectStructure1>(this.repoFormUrl, params)
+    this.analysis = this.http.post<ProjectStructure>(this.repoFormUrl, params)
       .pipe(
         tap(_ => console.log('fetched analysis')),
         catchError(this.handleError<any>('doAnalysis', []))
       )
   }
 
-  public getAnalysis(): Observable<ProjectStructure1> {
+  public getAnalysis(): Observable<ProjectStructure> {
     return this.analysis;
   }
 

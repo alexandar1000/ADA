@@ -1,4 +1,4 @@
-export interface AttributeDeclaration1 {
+export interface AttributeDeclarationInterface {
   name: string;
   type: string;
   value: string;
