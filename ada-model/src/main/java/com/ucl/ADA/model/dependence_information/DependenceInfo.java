@@ -37,19 +37,34 @@ public class DependenceInfo extends BaseEntity {
     /**
      * Attributes present in the class. They can be either declared or invoked.
      */
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "DEPENDENCE_INFO_ATTRIBUTE_INVOCATION",
+            joinColumns = @JoinColumn(name = "dependence_info_id"),
+            inverseJoinColumns = @JoinColumn(name = "attribute_invocation_id")
+    )
     private List<AttributeInvocation> attributes = new ArrayList<>();
 
     /**
      * Constructors present in the class. They can be either declared or invoked.
      */
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "DEPENDENCE_INFO_CONSTRUCTOR_INVOCATION",
+            joinColumns = @JoinColumn(name = "dependence_info_id"),
+            inverseJoinColumns = @JoinColumn(name = "constructor_invocation_id")
+    )
     private List<ConstructorInvocation> constructors = new ArrayList<>();
 
     /**
      * Methods present in the class. They can be either declared or invoked.
      */
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "DEPENDENCE_INFO_METHOD_INVOCATION",
+            joinColumns = @JoinColumn(name = "dependence_info_id"),
+            inverseJoinColumns = @JoinColumn(name = "method_invocation_id")
+    )
     private List<MethodInvocation> methods = new ArrayList<>();
 
     /**
