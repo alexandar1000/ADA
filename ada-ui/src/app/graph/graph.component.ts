@@ -47,20 +47,17 @@ export class GraphComponent implements OnInit {
   private addNodes(sigma: sigma): any {
     // Then, let's add some data to display:
     let i = 0;
-    for ( let element in this.projectStructure.classStructures) {
-      // console.log(element);
-      let lastIndex = element.lastIndexOf('.');
-      let className = (lastIndex > 0 ? element.substr(lastIndex + 1, element.length - 1) : element);
-
-      sigma.graph.addNode({
-        id: element,
-        label: className,
-        x: i,
-        y: i++,
-        size: 1,
-        color: '#foo'
-      })
-    }
+    let classNames = this.projectStructure.classStructures.keys();
+    for (let className of classNames) {
+        sigma.graph.addNode({
+          id: className,
+          label: this.extractClassName(className),
+          x: i,
+          y: i++,
+          size: 1,
+          color: '#foo'
+        })
+      }
   }
 
   private addEdges(sigma: sigma): any {
@@ -74,5 +71,12 @@ export class GraphComponent implements OnInit {
     // source: 'n0',
     // target: 'n1'
     // });
+  }
+
+  public extractClassName(fullyQualifiedClassName: String): String {
+    let lastIndex = fullyQualifiedClassName.lastIndexOf('.');
+    let className = (lastIndex > 0 ? fullyQualifiedClassName.substr(lastIndex + 1, fullyQualifiedClassName.length - 1) : fullyQualifiedClassName);
+
+    return className;
   }
 }
