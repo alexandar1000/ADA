@@ -25,25 +25,11 @@ export class GraphComponent implements OnInit {
   populateGraph(data: any) : void {
     this.graphData = data;
 
-    // Let's first initialize sigma:
+    // Initialize sigma:
     var s = new sigma('sigma-container');
 
-    // Then, let's add some data to display:
-    let i = 0;
-    for ( let element in this.graphData.classStructures) {
-      console.log(element);
-      let lastIndex = element.lastIndexOf('.');
-      let className = (lastIndex > 0 ? element.substr(lastIndex + 1, element.length - 1) : element);
+    this.addNodes(s);
 
-      s.graph.addNode({
-        id: element,
-        label: className,
-        x: i,
-        y: i++,
-        size: 1,
-        color: '#foo'
-      })
-    }
     // s.addEdge({
     //   id: 'e0',
     //   Reference extremities:
@@ -54,6 +40,44 @@ export class GraphComponent implements OnInit {
     // Finally, let's ask our sigma instance to refresh:
     s.refresh();// Let's first initialize sigma:
 
+  }
+
+  private addNodes(sigma: sigma): any {
+    // Then, let's add some data to display:
+    let i = 0;
+    for ( let element in this.graphData.classStructures) {
+      console.log(element);
+      let lastIndex = element.lastIndexOf('.');
+      let className = (lastIndex > 0 ? element.substr(lastIndex + 1, element.length - 1) : element);
+
+      sigma.graph.addNode({
+        id: element,
+        label: className,
+        x: i,
+        y: i++,
+        size: 1,
+        color: '#foo'
+      })
+    }
+  }
+
+  private addEdges(sigma: sigma): any {
+    // Then, let's add some data to display:
+    let i = 0;
+    for ( let element in this.graphData.classStructures) {
+      console.log(element);
+      let lastIndex = element.lastIndexOf('.');
+      let className = (lastIndex > 0 ? element.substr(lastIndex + 1, element.length - 1) : element);
+
+      sigma.graph.addNode({
+        id: element,
+        label: className,
+        x: i,
+        y: i++,
+        size: 1,
+        color: '#foo'
+      })
+    }
   }
 
 }
