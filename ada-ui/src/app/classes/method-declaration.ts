@@ -1,7 +1,8 @@
 import {ParameterDeclaration} from "./parameter-declaration";
 
-export interface ConstructorDeclaration {
+export class MethodDeclaration {
   name: string;
-  modifierTypes: string[];
+  returnType: string;
+  modifierTypes: string;
   parameters: ParameterDeclaration[];
 }

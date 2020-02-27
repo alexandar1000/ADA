@@ -3,7 +3,7 @@ import {AttributeInvocation} from "./attribute-invocation";
 import {ConstructorInvocation} from "./constructor-invocation";
 import {MethodInvocation} from "./method-invocation";
 
-export interface DependenceInfo {
+export class DependenceInfo {
   packages: PackageInvocation[];
   attributes: AttributeInvocation[];
   constructors: ConstructorInvocation[];

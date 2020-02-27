@@ -1,6 +1,6 @@
 import {PassedParameter} from "./passed-parameter";
 
-export interface MethodInvocation {
+export class MethodInvocation {
   name: string;
   passedParameters: PassedParameter[];
 }

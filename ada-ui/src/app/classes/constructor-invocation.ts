@@ -1,6 +1,6 @@
 import {PassedParameter} from "./passed-parameter";
 
-export interface ConstructorInvocation {
+export class ConstructorInvocation {
   name: string;
   passedParameters: PassedParameter[];
 }

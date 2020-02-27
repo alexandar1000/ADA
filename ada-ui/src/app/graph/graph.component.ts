@@ -30,6 +30,8 @@ export class GraphComponent implements OnInit {
 
     this.addNodes(s);
 
+    this.addEdges(s);
+
     // s.addEdge({
     //   id: 'e0',
     //   Reference extremities:
@@ -46,7 +48,7 @@ export class GraphComponent implements OnInit {
     // Then, let's add some data to display:
     let i = 0;
     for ( let element in this.graphData.classStructures) {
-      console.log(element);
+      // console.log(element);
       let lastIndex = element.lastIndexOf('.');
       let className = (lastIndex > 0 ? element.substr(lastIndex + 1, element.length - 1) : element);
 
@@ -64,19 +66,8 @@ export class GraphComponent implements OnInit {
   private addEdges(sigma: sigma): any {
     // Then, let's add some data to display:
     let i = 0;
-    for ( let element in this.graphData.classStructures) {
-      console.log(element);
-      let lastIndex = element.lastIndexOf('.');
-      let className = (lastIndex > 0 ? element.substr(lastIndex + 1, element.length - 1) : element);
-
-      sigma.graph.addNode({
-        id: element,
-        label: className,
-        x: i,
-        y: i++,
-        size: 1,
-        color: '#foo'
-      })
+    for (let element in this.graphData.classStructures) {
+      console.log(this.graphData.classStructures.element);
     }
   }
 

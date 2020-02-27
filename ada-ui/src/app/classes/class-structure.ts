@@ -1,33 +1,34 @@
-import {CustomMap} from "./custom-map";
+import {AttributeInvocation1} from "../attribute-invocation1";
+import {MethodInvocation1} from "../method-invocation1";
 import {PackageDeclaration} from "./package-declaration";
 import {AttributeDeclaration} from "./attribute-declaration";
 import {ConstructorDeclaration} from "./constructor-declaration";
 import {MethodDeclaration} from "./method-declaration";
-import {AttributeInvocation} from "./attribute-invocation";
-import {ConstructorInvocation} from "./constructor-invocation";
-import {MethodInvocation} from "./method-invocation";
-import {PackageInvocation} from "./package-invocation";
-import {ClassMetricValue} from "./class-metric-value";
-import {RelationMetricValue} from "./relation-metric-value";
 import {DependenceInfo} from "./dependence-info";
+import {PackageInvocation} from "./package-invocation";
+import {MethodInvocation} from "./method-invocation";
+import {ConstructorInvocation} from "./constructor-invocation";
+import {AttributeInvocation} from "./attribute-invocation";
+import {RelationMetricValue} from "./relation-metric-value";
+import {ClassMetricValue} from "./class-metric-value";
 
-export interface ClassStructure {
+export class ClassStructure {
   packageDeclaration: PackageDeclaration;
   attributeDeclarations: AttributeDeclaration[];
   constructorDeclarations: ConstructorDeclaration[];
   methodDeclarations: MethodDeclaration[];
 
-  outgoingDependenceInfo: CustomMap<DependenceInfo>;
-  incomingDependenceInfo: CustomMap<DependenceInfo>;
+  outgoingDependenceInfo: Map<String, DependenceInfo>;
+  incomingDependenceInfo: Map<String, DependenceInfo>;
 
-  globalData: AttributeInvocation[];
-  globalMethods: MethodInvocation[];
+  globalData: AttributeInvocation1[];
+  globalMethods: MethodInvocation1[];
 
   externalPackageInvocations: PackageInvocation[];
   externalMethodInvocations: MethodInvocation[];
   externalConstructorInvocations: ConstructorInvocation[];
   externalAttributeInvocations: AttributeInvocation[];
 
-  relationMetricValues: CustomMap<RelationMetricValue>
-  classMetricValues: CustomMap<ClassMetricValue>
+  relationMetricValues: Map<String, RelationMetricValue>;
+  classMetricValues: Map<String, ClassMetricValue>;
 }
