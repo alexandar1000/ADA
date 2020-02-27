@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -22,7 +20,12 @@ public class ConstructorDeclaration extends ElementDeclaration {
     /**
      * The access modifier assigned to the constructor.
      */
-    @Transient
+    @ManyToMany(targetEntity = ModifierType.class)
+    @JoinTable(
+            name = "CONSTRUCTOR_DECLARATION_MODIFIER_TYPE",
+            joinColumns = @JoinColumn(name = "constructor_declaration_id"),
+            inverseJoinColumns = @JoinColumn(name = "modifier_type_id")
+    )
     private Set<ModifierType> modifierTypes = new HashSet<>();
 
     /**

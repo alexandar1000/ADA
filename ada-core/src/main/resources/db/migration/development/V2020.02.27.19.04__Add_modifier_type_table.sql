@@ -1,0 +1,15 @@
+CREATE TABLE MODIFIER_TYPE
+(
+    id   BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE
+);
+
+INSERT INTO MODIFIER_TYPE (name)
+VALUES ('PUBLIC'),
+       ('PROTECTED'),
+       ('DEFAULT'),
+       ('PRIVATE'),
+       ('STATIC'),
+       ('FINAL'),
+       ('ABSTRACT'),
+       ('UNRESOLVED')
