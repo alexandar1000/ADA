@@ -19,12 +19,12 @@ import static org.mockito.Mockito.*;
 class ProjectStructureServiceTest {
 
     @Mock
-    ProjectStructureRepository projectStructureRepository;
+    private ProjectStructureRepository projectStructureRepository;
 
     @InjectMocks
-    ProjectStructureService projectStructureService;
+    private ProjectStructureService projectStructureService;
 
-    ProjectStructure returnProjectStructure;
+    private ProjectStructure returnProjectStructure;
 
     @BeforeEach
     void setUp() {
@@ -53,6 +53,8 @@ class ProjectStructureServiceTest {
         ProjectStructure projectStructureFound = projectStructureService.findById(1L);
 
         assertThat(projectStructureFound.getId()).isEqualTo(1L);
+
+        verify(projectStructureRepository).findById(1L);
     }
 
     @Test
@@ -62,6 +64,7 @@ class ProjectStructureServiceTest {
         ProjectStructure projectStructureFound = projectStructureService.findById(1L);
 
         assertNull(projectStructureFound);
-    }
 
+        verify(projectStructureRepository).findById(1L);
+    }
 }
