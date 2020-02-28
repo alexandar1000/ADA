@@ -30,14 +30,14 @@ public class ClassStructure extends BaseEntity {
     /**
      * Fully qualified class package name (including the name of the class in the end).
      */
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "package_declaration_id")
-    private PackageDeclaration currentPackage = null;
+    private PackageDeclaration currentPackage;
 
     /**
      * Attributes declared in this class.
      */
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "CLASS_STRUCTURE_ATTRIBUTE_DECLARATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),
@@ -48,7 +48,7 @@ public class ClassStructure extends BaseEntity {
     /**
      * Constructors declared in this class.
      */
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "CLASS_STRUCTURE_CONSTRUCTOR_DECLARATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),
@@ -59,7 +59,7 @@ public class ClassStructure extends BaseEntity {
     /**
      * Methods declared in this class.
      */
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "CLASS_STRUCTURE_METHOD_DECLARATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),
@@ -74,7 +74,7 @@ public class ClassStructure extends BaseEntity {
      * Information about the invocations of the elements from the other classes from this class. String is the qualified
      * name of the class.
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "CLASS_STRUCTURE_OUTGOING_DEPENDENCE_INFO",
             joinColumns = {@JoinColumn(name = "class_structure_id")},
             inverseJoinColumns = {@JoinColumn(name = "dependence_info_id")})
@@ -85,7 +85,7 @@ public class ClassStructure extends BaseEntity {
      * Information about the invocations of elements from this class by the other classes. String is the qualified
      * name of the class.
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "CLASS_STRUCTURE_INCOMING_DEPENDENCE_INFO",
             joinColumns = {@JoinColumn(name = "class_structure_id")},
             inverseJoinColumns = {@JoinColumn(name = "dependence_info_id")})
@@ -98,7 +98,7 @@ public class ClassStructure extends BaseEntity {
     /**
      * Global Data present in the class. It can be either declared or invoked. Not really possible in Java.
      */
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "CLASS_STRUCTURE_GLOBAL_ATTRIBUTE_INVOCATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),
@@ -109,7 +109,7 @@ public class ClassStructure extends BaseEntity {
     /**
      * Global Methods present in the class. They can be either declared or invoked. Not really possible in Java.
      */
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "CLASS_STRUCTURE_GLOBAL_METHOD_INVOCATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),
@@ -124,7 +124,7 @@ public class ClassStructure extends BaseEntity {
      * External Attribute Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "CLASS_STRUCTURE_EXTERNAL_PACKAGE_INVOCATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),
@@ -136,7 +136,7 @@ public class ClassStructure extends BaseEntity {
      * External Method Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "CLASS_STRUCTURE_EXTERNAL_METHOD_INVOCATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),
@@ -148,7 +148,7 @@ public class ClassStructure extends BaseEntity {
      * External Constructor Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "CLASS_STRUCTURE_EXTERNAL_CONSTRUCTOR_INVOCATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),
@@ -160,7 +160,7 @@ public class ClassStructure extends BaseEntity {
      * External Attribute Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "CLASS_STRUCTURE_EXTERNAL_ATTRIBUTE_INVOCATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),
@@ -174,7 +174,7 @@ public class ClassStructure extends BaseEntity {
     /**
      * All of the metric values for the link between the current class and the linking classes.
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "CLASS_STRUCTURE_RELATION_METRIC_VALUE",
             joinColumns = {@JoinColumn(name = "class_structure_id")},
             inverseJoinColumns = {@JoinColumn(name = "relation_metric_value_id")})
@@ -184,7 +184,7 @@ public class ClassStructure extends BaseEntity {
     /**
      * The metrics corresponding to the current class.
      */
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "class_metric_value_id")
     private ClassMetricValue classMetricValues = new ClassMetricValue();
 

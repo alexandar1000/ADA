@@ -29,7 +29,7 @@ public class AttributeDeclaration extends ElementDeclaration {
     /**
      * The access modifier assigned to the attribute.
      */
-    @ManyToMany(targetEntity = ModifierType.class)
+    @ManyToMany(cascade = CascadeType.PERSIST, targetEntity = ModifierType.class)
     @JoinTable(
             name = "ATTRIBUTE_DECLARATION_MODIFIER_TYPE",
             joinColumns = @JoinColumn(name = "attribute_declaration_id"),

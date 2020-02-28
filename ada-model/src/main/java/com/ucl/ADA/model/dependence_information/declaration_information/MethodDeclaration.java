@@ -25,7 +25,7 @@ public class MethodDeclaration extends ElementDeclaration {
     /**
      * The access modifier assigned to the method.
      */
-    @ManyToMany(targetEntity = ModifierType.class)
+    @ManyToMany(cascade = CascadeType.PERSIST, targetEntity = ModifierType.class)
     @JoinTable(
             name = "METHOD_DECLARATION_MODIFIER_TYPE",
             joinColumns = @JoinColumn(name = "method_declaration_id"),
@@ -36,7 +36,7 @@ public class MethodDeclaration extends ElementDeclaration {
     /**
      * The parameters which the method accepts.
      */
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "METHOD_DECLARATION_PARAMETER_DECLARATION",
             joinColumns = @JoinColumn(name = "method_declaration_id"),

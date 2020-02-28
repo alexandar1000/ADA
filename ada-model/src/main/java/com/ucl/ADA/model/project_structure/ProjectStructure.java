@@ -21,8 +21,8 @@ import java.util.Map;
 @Entity
 @Table(name = "PROJECT_STRUCTURE")
 public class ProjectStructure extends BaseEntity {
-    
-    @OneToMany
+
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "PROJECT_STRUCTURE_CLASS_STRUCTURE",
             joinColumns = {@JoinColumn(name = "project_structure_id")},
             inverseJoinColumns = {@JoinColumn(name = "class_structure_id")})

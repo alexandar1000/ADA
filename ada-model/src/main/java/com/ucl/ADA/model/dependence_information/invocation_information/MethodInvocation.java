@@ -18,7 +18,7 @@ public class MethodInvocation extends ElementInvocation {
     /**
      * The list of parameters which have been passes to the method on invocation.
      */
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "METHOD_INVOCATION_PASSED_PARAMETER",
             joinColumns = @JoinColumn(name = "method_invocation_id"),
