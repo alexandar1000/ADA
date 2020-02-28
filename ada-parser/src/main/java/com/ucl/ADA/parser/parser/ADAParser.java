@@ -36,6 +36,7 @@ public class ADAParser {
         List<String> filePaths = SourceFileCollector.getJavaFilesFromSourceDirectory(new File(src_dir));
         for (int i = 0, filePathsSize = filePaths.size(); i < filePathsSize; i++) {
             String file = filePaths.get(i);
+            // if (file.equals("/home/mrhmisu/Downloads/guava-master/android/guava/src/com/google/common/collect/ImmutableList.java")) {
             System.out.println("Processing->  " + i + "->th->Path" + file);
             ASTParser parser = buildASTParser(src_dir);
             List<ADAClass> classes = parseSourceFile(parser, file);
@@ -50,14 +51,16 @@ public class ADAParser {
                 System.out.println(jsonStr);
             }
         }
+        //}
+
     }
 
     private ASTParser buildASTParser(String sourceRoot) {
         String[] srcDirs = getAllSrcDirectories(new File(sourceRoot));
 
-        String [] encoding= new String[srcDirs.length];
-        for(int i=0; i<encoding.length;i++){
-            encoding[i]= "UTF-8";
+        String[] encoding = new String[srcDirs.length];
+        for (int i = 0; i < encoding.length; i++) {
+            encoding[i] = "UTF-8";
         }
         ASTParser parser = ASTParser.newParser(AST.JLS13);
         parser.setKind(ASTParser.K_COMPILATION_UNIT);
@@ -68,8 +71,8 @@ public class ADAParser {
         parser.setCompilerOptions(options);
         String[] sources = srcDirs;
         String[] classpath = {};
-        parser.setEnvironment(classpath, sources,encoding, true);
-       // parser.setEnvironment(classpath, sources, new String[]{"UTF-8"}, true);
+        parser.setEnvironment(classpath, sources, encoding, true);
+        // parser.setEnvironment(classpath, sources, new String[]{"UTF-8"}, true);
         return parser;
     }
 
