@@ -13,6 +13,8 @@ public class ProjectStructureService {
         return projectStructureRepository.save(object);
     }
 
-
+    public ProjectStructure findById(Long id) {
+        return projectStructureRepository.findById(id).orElse(null);
+    }
 
 }

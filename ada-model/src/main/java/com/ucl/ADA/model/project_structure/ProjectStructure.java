@@ -22,6 +22,7 @@ import java.util.Map;
 @Table(name = "PROJECT_STRUCTURE")
 public class ProjectStructure extends BaseEntity {
 
+    @Transient
     @OneToMany
     @JoinTable(name = "PROJECT_STRUCTURE_CLASS_STRUCTURE",
             joinColumns = {@JoinColumn(name = "project_structure_id")},

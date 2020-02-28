@@ -7,10 +7,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProjectStructureServiceTest {
@@ -43,6 +46,22 @@ class ProjectStructureServiceTest {
         verify(projectStructureRepository).save(any());
     }
 
+    @Test
+    void findById_idExists() {
+        when(projectStructureRepository.findById(anyLong())).thenReturn(Optional.of(returnProjectStructure));
 
+        ProjectStructure projectStructureFound = projectStructureService.findById(1L);
+
+        assertThat(projectStructureFound.getId()).isEqualTo(1L);
+    }
+
+    @Test
+    void findById_notFound() {
+        when(projectStructureRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        ProjectStructure projectStructureFound = projectStructureService.findById(1L);
+
+        assertNull(projectStructureFound);
+    }
 
 }
