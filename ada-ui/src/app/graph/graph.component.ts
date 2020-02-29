@@ -33,64 +33,33 @@ export class GraphComponent implements OnInit {
 
 
   private initCytoscape() {
+    let elements = this.getElements();
     let cy = cytoscape(
       {
         container: document.getElementById('cytoscape-container'),
-        elements: [
-          { // node a
-            data: {id: 'a'}
-          },
-          { // node b
-            data: {id: 'b'}
-          },
-          { // edge ab
-            data: {id: 'ab0', source: 'a', target: 'b'}
-          },
-          { // edge ab
-            data: {id: 'ab1', source: 'a', target: 'b'}
-          }
-        ],
+        elements: elements,
         style: [
+          {
+            selector: '*',
+            style: {
+            }
+          },
+          {
+            selector: 'node',
+            style: {
+              label: 'data(label)'
+            }
+          },
           {
             selector: 'edge',
             style: {
-              'curve-style': 'bezier'
+              'curve-style': 'bezier',
+              'target-arrow-shape': 'triangle'
             }
           }
         ]
       });
   }
-
-
-  // private addNodes(sigma: sigma): any {
-    // let i = 0;
-    // let classNames = this.projectStructure.classStructures.keys();
-    // for (let className of classNames) {
-    //   sigma.graph.addNode({
-    //     id: className,
-    //     label: this.extractClassName(className),
-    //     x: Math.random()*100,
-    //     y: Math.random()*100,
-    //     size: 1
-    //   })
-    // }
-  // }
-
-  // private addEdges(sigma: sigma): any {
-    // let i = 0;
-    // let classNames = this.projectStructure.classStructures.keys();
-    // for (let className of classNames) {
-    //   for (let correspondingClassName of this.projectStructure.classStructures.get(className).outgoingDependenceInfo.keys()) {
-    //     sigma.graph.addEdge({
-    //       id: className + '1->' + correspondingClassName,
-    //       // Reference extremities:
-    //       source: className,
-    //       target: correspondingClassName,
-    //       count: 0
-    //     });
-      // }
-    // }
-  // }
 
   public extractClassName(fullyQualifiedClassName: String): String {
     let lastIndex = fullyQualifiedClassName.lastIndexOf('.');
@@ -100,4 +69,44 @@ export class GraphComponent implements OnInit {
   }
 
 
+  private getElements(): any {
+    let elements = {
+      nodes: this.getNodes(),
+      edges: this.getEdges()
+    };
+    return elements;
+  }
+
+  private getNodes() : any {
+    let nodes = [];
+    let classNames = this.projectStructure.classStructures.keys();
+    for (let className of classNames) {
+      let node = {
+        data: {
+          id: className,
+          label: this.extractClassName(className)
+        }
+      };
+      nodes.push(node);
+    }
+    return nodes;
+  }
+
+  private getEdges() : any {
+    let edges = [];
+    let classNames = this.projectStructure.classStructures.keys();
+    for (let className of classNames) {
+      for (let correspondingClassName of this.projectStructure.classStructures.get(className).outgoingDependenceInfo.keys()) {
+        let edge = {
+          data: {
+            id: className + 'To' + correspondingClassName,
+            source: className,
+            target: correspondingClassName
+          }
+        };
+        edges.push(edge);
+      }
+    }
+    return edges;
+  }
 }
