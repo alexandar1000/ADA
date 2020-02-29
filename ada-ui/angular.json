@@ -34,7 +34,11 @@
             ],
             "scripts": [
               "src/assets/lib/sigma/sigma.conf.js",
-              "node_modules/sigma/build/sigma.min.js"
+              "node_modules/sigma/build/sigma.min.js",
+              "node_modules/sigma/build/plugins/sigma.renderers.parallelEdges.min.js",
+              "node_modules/sigma/build/plugins/sigma.renderers.edgeLabels.min.js",
+              "node_modules/sigma/build/plugins/sigma.plugins.dragNodes.min.js",
+              "node_modules/testingtesting.js"
             ]
           },
           "configurations": {
