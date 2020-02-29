@@ -44,7 +44,18 @@ export class GraphComponent implements OnInit {
             data: {id: 'b'}
           },
           { // edge ab
-            data: {id: 'ab', source: 'a', target: 'b'}
+            data: {id: 'ab0', source: 'a', target: 'b'}
+          },
+          { // edge ab
+            data: {id: 'ab1', source: 'a', target: 'b'}
+          }
+        ],
+        style: [
+          {
+            selector: 'edge',
+            style: {
+              'curve-style': 'bezier'
+            }
           }
         ]
       });
