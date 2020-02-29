@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AnalyserService} from "../analyser.service";
 import {tap} from "rxjs/operators";
 import {ProjectStructure} from "../classes/project-structure";
+import * as cytoscape from 'cytoscape';
 
 @Component({
   selector: 'app-graph',
@@ -23,13 +24,34 @@ export class GraphComponent implements OnInit {
 
   private handleRequestResponse(data: JSON) {
     this.projectStructure = this.populateGraphData(data);
+    this.initCytoscape();
   }
 
   private populateGraphData(data: JSON): ProjectStructure {
     return new ProjectStructure(data)
   }
 
-  private addNodes(sigma: sigma): any {
+
+  private initCytoscape() {
+    let cy = cytoscape(
+      {
+        container: document.getElementById('cytoscape-container'),
+        elements: [
+          { // node a
+            data: {id: 'a'}
+          },
+          { // node b
+            data: {id: 'b'}
+          },
+          { // edge ab
+            data: {id: 'ab', source: 'a', target: 'b'}
+          }
+        ]
+      });
+  }
+
+
+  // private addNodes(sigma: sigma): any {
     // let i = 0;
     // let classNames = this.projectStructure.classStructures.keys();
     // for (let className of classNames) {
@@ -41,9 +63,9 @@ export class GraphComponent implements OnInit {
     //     size: 1
     //   })
     // }
-  }
+  // }
 
-  private addEdges(sigma: sigma): any {
+  // private addEdges(sigma: sigma): any {
     // let i = 0;
     // let classNames = this.projectStructure.classStructures.keys();
     // for (let className of classNames) {
@@ -57,7 +79,7 @@ export class GraphComponent implements OnInit {
     //     });
       // }
     // }
-  }
+  // }
 
   public extractClassName(fullyQualifiedClassName: String): String {
     let lastIndex = fullyQualifiedClassName.lastIndexOf('.');
@@ -65,4 +87,6 @@ export class GraphComponent implements OnInit {
 
     return className;
   }
+
+
 }
