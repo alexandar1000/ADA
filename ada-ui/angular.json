@@ -21,25 +21,13 @@
             "aot": false,
             "assets": [
               "src/favicon.ico",
-              "src/assets",
-              {
-                "glob": "**/*",
-                "input":"./node_modules/sigma/build",
-                "output": "/assets/lib"
-              }
+              "src/assets"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
-            "scripts": [
-              "src/assets/lib/sigma/sigma.conf.js",
-              "node_modules/sigma/build/sigma.min.js",
-              "node_modules/sigma/build/plugins/sigma.renderers.parallelEdges.min.js",
-              "node_modules/sigma/build/plugins/sigma.renderers.edgeLabels.min.js",
-              "node_modules/sigma/build/plugins/sigma.plugins.dragNodes.min.js",
-              "node_modules/testingtesting.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
