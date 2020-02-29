@@ -11,8 +11,8 @@ import java.io.FileNotFoundException;
 @Component
 public class DataLoader implements CommandLineRunner {
 
-    private final String test_dir = "ada-parser/src/main/resources/simple";
-//    private final String test_dir = "ada-parser/src/main/resources/source_to_parse";
+//    private final String test_dir = "ada-parser/src/main/resources/simple";
+    private final String test_dir = "ada-parser/src/main/resources/source_to_parse";
 
     private final ProjectStructureService projectStructureService;
     private final ParserServices parserServices;
@@ -31,7 +31,12 @@ public class DataLoader implements CommandLineRunner {
         ProjectStructure projectStructureToSave = parserServices.parseRepository(test_dir);
         projectStructureService.save(projectStructureToSave);
 
-        ProjectStructure projectStructureRetrieved = projectStructureService.findById(1L);
+//        ProjectStructure projectStructureRetrieved = projectStructureService.findById(1L);
+//        projectStructureRetrieved.getClassStructures().forEach((name, cs) -> {
+//            System.out.println(name);
+//            cs.
+//        });
+
 
 //        ObjectMapper objMapper = new ObjectMapper();
 //        String jsonToSave = "[]";

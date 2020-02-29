@@ -112,7 +112,7 @@ class SourceClassTransformer {
             }
         }
         // as local variables
-        for (ADAMethodOrConstructorDeclaration declaration: sourceClass.getADAMethodOrConstructorDeclaration()) {
+        for (ADAMethodOrConstructorDeclaration declaration : sourceClass.getADAMethodOrConstructorDeclaration()) {
             for (Map.Entry<String, String> entry : declaration.getLocalVariables().entrySet()) {
                 if (classNames.contains(entry.getValue())) {
                     AttributeInvocation attributeInvocation = new AttributeInvocation(entry.getKey());
@@ -124,6 +124,9 @@ class SourceClassTransformer {
 
     protected void transformConstructorInvocation() {
         for (ADAConstructorInvocation adaConstructorInvocation : sourceClass.getADAConstructorInvocations()) {
+            if (adaConstructorInvocation.getConstructorClassName().startsWith("java")) {
+                continue;
+            }
             List<PassedParameter> parameters = new ArrayList<>();
             for (String value : adaConstructorInvocation.getArguments()) {
                 parameters.add(new PassedParameter(value));
@@ -137,6 +140,9 @@ class SourceClassTransformer {
 
     protected void transformMethodInvocation() {
         for (ADAMethodInvocation adaMethodInvocation : sourceClass.getADAMethodInvocations()) {
+            if (adaMethodInvocation.getCalleeName().startsWith("java")) {
+                continue;
+            }
             List<PassedParameter> parameters = new ArrayList<>();
             for (String value : adaMethodInvocation.getArguments()) {
                 parameters.add(new PassedParameter(value));
@@ -152,11 +158,11 @@ class SourceClassTransformer {
             projectStructure.addExternalAttributeDeclarations(className, attributeInvocation);
         }
         for (String exMethodCalls : sourceClass.getExMethodCalls()) {
-            MethodInvocation methodInvocation = new MethodInvocation(exMethodCalls, null);
+            MethodInvocation methodInvocation = new MethodInvocation(exMethodCalls, new ArrayList<>(Collections.singletonList(new PassedParameter("parameter_placeholder"))));
             projectStructure.addExternalMethodInvocations(className, methodInvocation);
         }
         for (String exConstructor : sourceClass.getExConstructorInvocations()) {
-            ConstructorInvocation constructorInvocation = new ConstructorInvocation(exConstructor, null);
+            ConstructorInvocation constructorInvocation = new ConstructorInvocation(exConstructor, new ArrayList<>(Collections.singletonList(new PassedParameter("parameter_placeholder"))));
             projectStructure.addExternalConstructorInvocations(className, constructorInvocation);
         }
     }
