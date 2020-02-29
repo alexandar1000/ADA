@@ -83,8 +83,8 @@ export class GraphComponent implements OnInit {
     for (let className of classNames) {
       let node = {
         data: {
-          id: className,
-          label: this.extractClassName(className)
+          id: (className == '' ? "$" : className),
+          label: (this.extractClassName(className) == '' ? "$" : className)
         }
       };
       nodes.push(node);
@@ -94,14 +94,15 @@ export class GraphComponent implements OnInit {
 
   private getEdges() : any {
     let edges = [];
+    let i = 0;
     let classNames = this.projectStructure.classStructures.keys();
     for (let className of classNames) {
       for (let correspondingClassName of this.projectStructure.classStructures.get(className).outgoingDependenceInfo.keys()) {
         let edge = {
           data: {
-            id: className + 'To' + correspondingClassName,
-            source: className,
-            target: correspondingClassName
+            id: i++,
+            source: (className == '' ? "$" : className),
+            target: (correspondingClassName == '' ? "$" : className)
           }
         };
         edges.push(edge);
