@@ -260,7 +260,4 @@ public class ProjectStructure extends BaseEntity {
         }
     }
 
-    public int compareTo() {
-
-    }
 }
