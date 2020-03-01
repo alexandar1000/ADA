@@ -23,9 +23,8 @@ export class RepoFormComponent implements OnInit {
   }
 
   onSubmit() {
-    // this.userService.getUser(this.urlForm, this.branchName).subscribe(user => this.checkUserResponse(user));
-    // this.analyserService.doAnalysis(this.urlForm, this.branchName);
-    this.analyserService.doAnalysis('https://github.com/alexandar1000/ADA-test-simple-JAVA-project-0', 'master');
+    this.userService.getUser(this.urlForm, this.branchName).subscribe(user => this.checkUserResponse(user));
+    this.analyserService.doAnalysis(this.urlForm, this.branchName);
     this.router.navigate(['/graph']);
   }
 
