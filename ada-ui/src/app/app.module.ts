@@ -23,6 +23,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import {MatSliderModule} from "@angular/material/slider";
 import { SnapshotSliderComponent } from './snapshot-slider/snapshot-slider.component';
 import { MetricSelectorComponent } from './metric-selector/metric-selector.component';
+import {MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -35,23 +37,25 @@ import { MetricSelectorComponent } from './metric-selector/metric-selector.compo
     SnapshotSliderComponent,
     MetricSelectorComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        LayoutModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatSidenavModule,
-        MatIconModule,
-        MatListModule,
-        MatInputModule,
-        MatSnackBarModule,
-        ReactiveFormsModule,
-        FormsModule,
-        HttpClientModule,
-        MatSliderModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    MatInputModule,
+    MatSnackBarModule,
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule,
+    MatSliderModule,
+    MatOptionModule,
+    MatSelectModule
+  ],
   providers: [UserService, AnalyserService],
   bootstrap: [AppComponent]
 })

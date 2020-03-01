@@ -1,8 +1,8 @@
 <h1>Dashboard</h1>
+<app-graph [nodes]="nodes" [edges]="edges"></app-graph>
 <div>
   <app-snapshot-slider [snapshots]="snapshots"></app-snapshot-slider>
-  <app-metric-selector></app-metric-selector>
+  <app-metric-selector [metrics]="metrics"></app-metric-selector>
 </div>
 
-<app-graph [nodes]="nodes" [edges]="edges"></app-graph>
 
