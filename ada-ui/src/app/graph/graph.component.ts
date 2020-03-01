@@ -74,17 +74,21 @@ export class GraphComponent implements OnInit {
       nodes: this.getNodes(),
       edges: this.getEdges()
     };
+    console.log(elements);
     return elements;
   }
 
   private getNodes() : any {
     let nodes = [];
-    let classNames = this.projectStructure.classStructures.keys();
-    for (let className of classNames) {
+    let fullyQualifiedClassNames = this.projectStructure.classStructures.keys();
+    for (let fullyQualifiedClassName of fullyQualifiedClassNames) {
+      let extractedClassName = this.extractClassName(fullyQualifiedClassName);
+      fullyQualifiedClassName = (fullyQualifiedClassName == '' ? "$" : fullyQualifiedClassName);
+      extractedClassName = (extractedClassName == '' ? '$' : extractedClassName);
       let node = {
         data: {
-          id: (className == '' ? "$" : className),
-          label: (this.extractClassName(className) == '' ? "$" : className)
+          id: fullyQualifiedClassName,
+          label: extractedClassName
         }
       };
       nodes.push(node);
@@ -95,14 +99,14 @@ export class GraphComponent implements OnInit {
   private getEdges() : any {
     let edges = [];
     let i = 0;
-    let classNames = this.projectStructure.classStructures.keys();
-    for (let className of classNames) {
-      for (let correspondingClassName of this.projectStructure.classStructures.get(className).outgoingDependenceInfo.keys()) {
+    let fullyQualifiedClassNames = this.projectStructure.classStructures.keys();
+    for (let fullyQualifiedClassName of fullyQualifiedClassNames) {
+      for (let correspondingFullyQualifiedClassNames of this.projectStructure.classStructures.get(fullyQualifiedClassName).outgoingDependenceInfo.keys()) {
         let edge = {
           data: {
             id: i++,
-            source: (className == '' ? "$" : className),
-            target: (correspondingClassName == '' ? "$" : className)
+            source: (fullyQualifiedClassName == '' ? "$" : fullyQualifiedClassName),
+            target: (correspondingFullyQualifiedClassNames == '' ? "$" : correspondingFullyQualifiedClassNames)
           }
         };
         edges.push(edge);
