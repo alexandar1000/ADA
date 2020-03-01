@@ -19,6 +19,7 @@ import { UserService } from './user.service';
 import { AcceptedUrlDirective } from './shared/accepted-url.directive';
 import { GraphComponent } from './graph/graph.component';
 import {AnalyserService} from "./analyser.service";
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import {AnalyserService} from "./analyser.service";
     RepoFormComponent,
     AcceptedUrlDirective,
     GraphComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,

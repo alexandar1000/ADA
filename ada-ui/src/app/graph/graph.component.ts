@@ -74,7 +74,7 @@ export class GraphComponent implements OnInit {
       nodes: this.getNodes(),
       edges: this.getEdges()
     };
-    console.log(elements);
+    // console.log(elements);
     return elements;
   }
 
