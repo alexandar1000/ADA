@@ -25,7 +25,7 @@ public class MethodDeclaration extends ElementDeclaration {
     /**
      * The access modifier assigned to the method.
      */
-    @ElementCollection(targetClass = ModifierType.class)
+    @ElementCollection(targetClass = ModifierType.class, fetch = FetchType.EAGER)
     @CollectionTable(
             name = "METHOD_DECLARATION_MODIFIER_TYPE",
             joinColumns = @JoinColumn(name = "method_declaration_id")
@@ -37,7 +37,7 @@ public class MethodDeclaration extends ElementDeclaration {
     /**
      * The parameters which the method accepts.
      */
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(
             name = "METHOD_DECLARATION_PARAMETER_DECLARATION",
             joinColumns = @JoinColumn(name = "method_declaration_id"),
