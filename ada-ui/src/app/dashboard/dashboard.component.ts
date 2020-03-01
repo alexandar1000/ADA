@@ -13,6 +13,8 @@ export class DashboardComponent implements OnInit {
   private projectStructure: ProjectStructure;
   nodes: any = {};
   edges: any = {};
+  numberOfSnapshots: number = 4;
+  snapshotStepSize: number = 1;
 
   constructor(private analyserService: AnalyserService) { }
 

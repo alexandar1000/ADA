@@ -20,6 +20,7 @@ import { AcceptedUrlDirective } from './shared/accepted-url.directive';
 import { GraphComponent } from './graph/graph.component';
 import {AnalyserService} from "./analyser.service";
 import { DashboardComponent } from './dashboard/dashboard.component';
+import {MatSliderModule} from "@angular/material/slider";
 
 @NgModule({
   declarations: [
@@ -30,22 +31,23 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     GraphComponent,
     DashboardComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    LayoutModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatInputModule,
-    MatSnackBarModule,
-    ReactiveFormsModule,
-    FormsModule,
-    HttpClientModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        LayoutModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatSidenavModule,
+        MatIconModule,
+        MatListModule,
+        MatInputModule,
+        MatSnackBarModule,
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientModule,
+        MatSliderModule
+    ],
   providers: [UserService, AnalyserService],
   bootstrap: [AppComponent]
 })
