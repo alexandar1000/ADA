@@ -12,8 +12,6 @@ export class MetricSelectorComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('metrics');
-    console.log(this.metrics);
   }
 
 }
