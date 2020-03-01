@@ -13,8 +13,7 @@ export class UserService {
   user = new BehaviorSubject<User>(new User());
   currentUser = this.user.asObservable();
 
-  constructor(private http: HttpClient) { 
-    this.repoFormUrl = 'http://localhost:8080/analyser';
+  constructor(private http: HttpClient) {
     this.userListUrl = 'http://localhost:8080/users'
   }
 
@@ -22,7 +21,7 @@ export class UserService {
     let params = new HttpParams()
       .set('url', urlForm)
       .set('branch', branchName);
-    return this.http.post<any>(this.repoFormUrl, params);
+    return this.http.post<any>(this.userListUrl, params);
   }
 
   public getUserList(): Observable<User[]> {

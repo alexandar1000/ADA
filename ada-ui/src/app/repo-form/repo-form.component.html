@@ -1,14 +1,14 @@
 <div class="form-container">
 	<form (ngSubmit)="onSubmit()" #repoForm="ngForm" class="form" >
 		<mat-form-field class="full-width">
-				<input matInput placeholder="GitHub Url" 
+				<input matInput placeholder="GitHub Url"
                 name="url"
 				[(ngModel)]="urlForm"
 				appAcceptedUrl=".git"
-                required #url="ngModel">	
+                required #url="ngModel">
 		</mat-form-field>
 		<mat-form-field class="full-width">
-                <input matInput placeholder="Branch" 
+                <input matInput placeholder="Branch"
                 name="branch"
                 [(ngModel)]="branchName"
                 required #branch="ngModel">
