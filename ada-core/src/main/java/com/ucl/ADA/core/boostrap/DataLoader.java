@@ -11,8 +11,8 @@ import java.io.FileNotFoundException;
 @Component
 public class DataLoader implements CommandLineRunner {
 
-//    private final String test_dir = "ada-parser/src/main/resources/simple";
-    private final String test_dir = "ada-parser/src/main/resources/source_to_parse";
+    private final String test_dir = "ada-parser/src/main/resources/simple";
+//    private final String test_dir = "ada-parser/src/main/resources/source_to_parse";
 
     private final ProjectStructureService projectStructureService;
     private final ParserServices parserServices;

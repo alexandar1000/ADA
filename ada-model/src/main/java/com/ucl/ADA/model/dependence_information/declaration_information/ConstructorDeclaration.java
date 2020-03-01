@@ -20,12 +20,13 @@ public class ConstructorDeclaration extends ElementDeclaration {
     /**
      * The access modifier assigned to the constructor.
      */
-    @ManyToMany(cascade = CascadeType.PERSIST, targetEntity = ModifierType.class)
-    @JoinTable(
+    @ElementCollection(targetClass = ModifierType.class)
+    @CollectionTable(
             name = "CONSTRUCTOR_DECLARATION_MODIFIER_TYPE",
-            joinColumns = @JoinColumn(name = "constructor_declaration_id"),
-            inverseJoinColumns = @JoinColumn(name = "modifier_type_id")
+            joinColumns = @JoinColumn(name = "constructor_declaration_id")
     )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "modifier_type")
     private Set<ModifierType> modifierTypes = new HashSet<>();
 
     /**

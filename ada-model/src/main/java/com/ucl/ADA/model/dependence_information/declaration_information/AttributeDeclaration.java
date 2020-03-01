@@ -14,6 +14,7 @@ import java.util.Set;
 @Entity
 @Table(name = "ATTRIBUTE_DECLARATION")
 public class AttributeDeclaration extends ElementDeclaration {
+
     /**
      * The type of the attribute.
      */
@@ -29,12 +30,13 @@ public class AttributeDeclaration extends ElementDeclaration {
     /**
      * The access modifier assigned to the attribute.
      */
-    @ManyToMany(cascade = CascadeType.PERSIST, targetEntity = ModifierType.class)
-    @JoinTable(
+    @ElementCollection(targetClass = ModifierType.class)
+    @CollectionTable(
             name = "ATTRIBUTE_DECLARATION_MODIFIER_TYPE",
-            joinColumns = @JoinColumn(name = "attribute_declaration_id"),
-            inverseJoinColumns = @JoinColumn(name = "modifier_type_id")
+            joinColumns = @JoinColumn(name = "attribute_declaration_id")
     )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "modifier_type")
     private Set<ModifierType> modifierTypes = new HashSet<>();
 
     /**

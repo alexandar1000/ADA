@@ -12,4 +12,8 @@ VALUES ('PUBLIC'),
        ('STATIC'),
        ('FINAL'),
        ('ABSTRACT'),
-       ('UNRESOLVED')
+       ('UNRESOLVED');
+
+DROP TABLE MODIFIER_TYPE;
+
+

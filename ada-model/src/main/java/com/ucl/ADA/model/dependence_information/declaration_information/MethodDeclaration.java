@@ -25,12 +25,13 @@ public class MethodDeclaration extends ElementDeclaration {
     /**
      * The access modifier assigned to the method.
      */
-    @ManyToMany(cascade = CascadeType.PERSIST, targetEntity = ModifierType.class)
-    @JoinTable(
+    @ElementCollection(targetClass = ModifierType.class)
+    @CollectionTable(
             name = "METHOD_DECLARATION_MODIFIER_TYPE",
-            joinColumns = @JoinColumn(name = "method_declaration_id"),
-            inverseJoinColumns = @JoinColumn(name = "modifier_type_id")
+            joinColumns = @JoinColumn(name = "method_declaration_id")
     )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "modifier_type")
     private Set<ModifierType> modifierTypes = new HashSet<>();
 
     /**
