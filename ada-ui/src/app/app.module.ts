@@ -21,6 +21,8 @@ import { GraphComponent } from './graph/graph.component';
 import {AnalyserService} from "./analyser.service";
 import { DashboardComponent } from './dashboard/dashboard.component';
 import {MatSliderModule} from "@angular/material/slider";
+import { SnapshotSliderComponent } from './snapshot-slider/snapshot-slider.component';
+import { MetricSelectorComponent } from './metric-selector/metric-selector.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import {MatSliderModule} from "@angular/material/slider";
     AcceptedUrlDirective,
     GraphComponent,
     DashboardComponent,
+    SnapshotSliderComponent,
+    MetricSelectorComponent,
   ],
     imports: [
         BrowserModule,

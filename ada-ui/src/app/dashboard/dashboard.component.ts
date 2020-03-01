@@ -3,6 +3,7 @@ import {ProjectStructure} from "../classes/project-structure";
 import {AnalyserService} from "../analyser.service";
 import {tap} from "rxjs/operators";
 import {GraphComponent} from "../graph/graph.component";
+import {Snapshot} from "../classes/snapshot";
 
 @Component({
   selector: 'app-dashboard',
@@ -11,10 +12,13 @@ import {GraphComponent} from "../graph/graph.component";
 })
 export class DashboardComponent implements OnInit {
   private projectStructure: ProjectStructure;
-  nodes: any = {};
-  edges: any = {};
-  numberOfSnapshots: number = 4;
-  snapshotStepSize: number = 1;
+  private nodes: any = {};
+  private edges: any = {};
+  private snapshots: Snapshot[] = [
+    new Snapshot(78, '2020-03-01 15:14'),
+    new Snapshot(12, '2019-09-21 13:00'),
+    new Snapshot(0, '2019-07-28 01:02')
+    ];
 
   constructor(private analyserService: AnalyserService) { }
 
