@@ -19,10 +19,27 @@ export class OwnerService {
     return this.http.get<string[]>(this.ownersUrl);
   }
 
-  getReposList(owner: string): Observable<string[]> {
+  getReposList(owner: string): Observable<any> {
     let reposUrl = this.metaUrl + owner + '/repositories'
     let params = new HttpParams()
       .set('owner', owner);
-    return this.http.get<string[]>(reposUrl, {params});
+    return this.http.get<any>(reposUrl, {params});
+  }
+
+  getBranchesList(owner: string, repository: string): Observable<any> {
+    let branchesUrl = this.metaUrl + owner + '/repositories/' + repository + '/branches';
+    let params = new HttpParams()
+      .set('owner', owner)
+      .set('repository', repository);
+    return this.http.get<any>(branchesUrl, {params});
+  }
+
+  getSnapshotsList(owner: string, repository: string, branch:string): Observable<any> {
+    let snapshotsUrl = this.metaUrl + owner + '/repositories/' + repository + '/branches/' + branch + '/snapshots';
+    let params = new HttpParams()
+      .set('owner', owner)
+      .set('repository', repository)
+      .set('branch', branch);
+    return this.http.get<any>(snapshotsUrl, {params});
   }
 }

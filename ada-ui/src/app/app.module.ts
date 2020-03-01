@@ -17,6 +17,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { RepoFormComponent } from './repo-form/repo-form.component';
 import { UserService } from './user.service';
 import { AcceptedUrlDirective } from './shared/accepted-url.directive';
+import { OwnerComponent } from './owner/owner.component';
+import { RepositoryComponent } from './repository/repository.component';
+import { BranchComponent } from './branch/branch.component';
+import { SnapshotComponent } from './snapshot/snapshot.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +28,10 @@ import { AcceptedUrlDirective } from './shared/accepted-url.directive';
     SidenavComponent,
     RepoFormComponent,
     AcceptedUrlDirective,
+    OwnerComponent,
+    RepositoryComponent,
+    BranchComponent,
+    SnapshotComponent,
   ],
   imports: [
     BrowserModule,

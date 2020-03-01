@@ -1,0 +1,4 @@
+<a mat-list-item (click)="getBranchesList(owner, repository)">{{repository}}</a>
+<mat-nav-list> 
+    <app-branch [owner]='owner' [repository]='repository' [branch]='branch' *ngFor="let branch of branches"></app-branch>
+</mat-nav-list>

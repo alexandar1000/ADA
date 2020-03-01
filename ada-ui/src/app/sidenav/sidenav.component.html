@@ -9,7 +9,7 @@
       <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                    [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
         <mat-nav-list *ngIf="owners">
-          <a mat-list-item routerLink="/repo/{{owner.name}}" (click)="getReposList(owner.name)" *ngFor="let owner of owners">{{owner.name}}</a>
+          <app-owner *ngFor="let owner of owners" [owner] = "owner"></app-owner>
         </mat-nav-list>
       </mat-sidenav>
       <mat-sidenav-content class="sidenav-content">
