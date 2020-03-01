@@ -8,6 +8,8 @@ import com.ucl.ADA.model.dependence_information.invocation_information.PackageIn
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class DependenceInfo extends BaseEntity {
      * Packages present in the class. They can be either declared or imported.
      */
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(
             name = "DEPENDENCE_INFO_PACKAGE_INVOCATION",
             joinColumns = @JoinColumn(name = "dependence_info_id"),
@@ -38,6 +41,7 @@ public class DependenceInfo extends BaseEntity {
      * Attributes present in the class. They can be either declared or invoked.
      */
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(
             name = "DEPENDENCE_INFO_ATTRIBUTE_INVOCATION",
             joinColumns = @JoinColumn(name = "dependence_info_id"),
@@ -49,6 +53,7 @@ public class DependenceInfo extends BaseEntity {
      * Constructors present in the class. They can be either declared or invoked.
      */
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(
             name = "DEPENDENCE_INFO_CONSTRUCTOR_INVOCATION",
             joinColumns = @JoinColumn(name = "dependence_info_id"),
@@ -60,6 +65,7 @@ public class DependenceInfo extends BaseEntity {
      * Methods present in the class. They can be either declared or invoked.
      */
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(
             name = "DEPENDENCE_INFO_METHOD_INVOCATION",
             joinColumns = @JoinColumn(name = "dependence_info_id"),

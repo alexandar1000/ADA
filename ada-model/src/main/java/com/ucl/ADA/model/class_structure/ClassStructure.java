@@ -14,6 +14,8 @@ import com.ucl.ADA.model.metrics.relation_metrics.RelationMetricValue;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.*;
@@ -38,6 +40,7 @@ public class ClassStructure extends BaseEntity {
      * Attributes declared in this class.
      */
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(
             name = "CLASS_STRUCTURE_ATTRIBUTE_DECLARATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),
@@ -49,6 +52,7 @@ public class ClassStructure extends BaseEntity {
      * Constructors declared in this class.
      */
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(
             name = "CLASS_STRUCTURE_CONSTRUCTOR_DECLARATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),
@@ -60,6 +64,7 @@ public class ClassStructure extends BaseEntity {
      * Methods declared in this class.
      */
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(
             name = "CLASS_STRUCTURE_METHOD_DECLARATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),
@@ -99,6 +104,7 @@ public class ClassStructure extends BaseEntity {
      * Global Data present in the class. It can be either declared or invoked. Not really possible in Java.
      */
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(
             name = "CLASS_STRUCTURE_GLOBAL_ATTRIBUTE_INVOCATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),
@@ -110,6 +116,7 @@ public class ClassStructure extends BaseEntity {
      * Global Methods present in the class. They can be either declared or invoked. Not really possible in Java.
      */
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(
             name = "CLASS_STRUCTURE_GLOBAL_METHOD_INVOCATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),
@@ -125,6 +132,7 @@ public class ClassStructure extends BaseEntity {
      * include the dependencies and libraries.
      */
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(
             name = "CLASS_STRUCTURE_EXTERNAL_PACKAGE_INVOCATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),
@@ -137,6 +145,7 @@ public class ClassStructure extends BaseEntity {
      * include the dependencies and libraries.
      */
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(
             name = "CLASS_STRUCTURE_EXTERNAL_METHOD_INVOCATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),
@@ -149,6 +158,7 @@ public class ClassStructure extends BaseEntity {
      * include the dependencies and libraries.
      */
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(
             name = "CLASS_STRUCTURE_EXTERNAL_CONSTRUCTOR_INVOCATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),
@@ -161,6 +171,7 @@ public class ClassStructure extends BaseEntity {
      * include the dependencies and libraries.
      */
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(
             name = "CLASS_STRUCTURE_EXTERNAL_ATTRIBUTE_INVOCATION",
             joinColumns = @JoinColumn(name = "class_structure_id"),

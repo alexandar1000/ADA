@@ -259,4 +259,8 @@ public class ProjectStructure extends BaseEntity {
             classStructure.computeAllRelationMetrics();
         }
     }
+
+    public int compareTo() {
+
+    }
 }
