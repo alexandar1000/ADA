@@ -1,7 +1,5 @@
 package com.ucl.ADA.core.boostrap;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ucl.ADA.model.project_structure.ProjectStructure;
 import com.ucl.ADA.model.project_structure.ProjectStructureService;
 import com.ucl.ADA.parser.ParserServices;
@@ -36,20 +34,5 @@ public class DataLoader implements CommandLineRunner {
         ProjectStructure projectStructureRetrieved = projectStructureService.findById(1L);
 
 
-        ObjectMapper objMapper = new ObjectMapper();
-        String jsonToSave = "[]";
-        String jsonRetrieved = "[]";
-        try {
-            jsonToSave = objMapper.writeValueAsString(projectStructureToSave);
-            jsonRetrieved = objMapper.writeValueAsString(projectStructureRetrieved);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        System.out.println("compare:");
-        System.out.println(jsonToSave == jsonRetrieved);
-        System.out.println("\n\n");
-        System.out.println(jsonToSave);
-        System.out.println("\n\n");
-        System.out.println(jsonRetrieved);
     }
 }
