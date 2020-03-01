@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import {AnalyserService} from "../analyser.service";
-import {tap} from "rxjs/operators";
 import {ProjectStructure} from "../classes/project-structure";
 import * as cytoscape from 'cytoscape';
 
@@ -11,30 +10,24 @@ import * as cytoscape from 'cytoscape';
 })
 export class GraphComponent implements OnInit {
 
-  private projectStructure: ProjectStructure;
+  private cy;
+  @Input() nodes;
+  @Input() edges;
 
-  constructor(private analyserService: AnalyserService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.analyserService.getAnalysis()
-      .pipe(
-        tap(_ => console.log('tapped'))
-      ).subscribe(data => this.handleRequestResponse(data));
-  }
-
-  private handleRequestResponse(data: JSON) {
-    this.projectStructure = this.populateGraphData(data);
     this.initCytoscape();
   }
 
-  private populateGraphData(data: JSON): ProjectStructure {
-    return new ProjectStructure(data)
+  ngOnChanges(changes: SimpleChanges) {
+    this.refreshGraph();
   }
 
-
-  private initCytoscape() {
+  private initCytoscape(): void {
     let elements = this.getElements();
-    let cy = cytoscape(
+    console.log(elements);
+    this.cy = cytoscape(
       {
         container: document.getElementById('cytoscape-container'),
         elements: elements,
@@ -61,7 +54,20 @@ export class GraphComponent implements OnInit {
       });
   }
 
-  public extractClassName(fullyQualifiedClassName: String): String {
+  private refreshGraph(): void {
+    this.cy.elements().remove();
+    let elements = this.getElements();
+    this.cy.add( elements );
+
+    var layout = this.cy.layout({
+      name: 'circle'
+    });
+
+    layout.run();
+
+  }
+
+  public static extractClassName(fullyQualifiedClassName: String): String {
     let lastIndex = fullyQualifiedClassName.lastIndexOf('.');
     let className = (lastIndex > 0 ? fullyQualifiedClassName.substr(lastIndex + 1, fullyQualifiedClassName.length - 1) : fullyQualifiedClassName);
 
@@ -71,16 +77,16 @@ export class GraphComponent implements OnInit {
 
   private getElements(): any {
     let elements = {
-      nodes: this.getNodes(),
-      edges: this.getEdges()
+      nodes: this.nodes,
+      edges: this.edges
     };
     // console.log(elements);
     return elements;
   }
 
-  private getNodes() : any {
+  public static extractNodes(projectStructure: ProjectStructure) : any {
     let nodes = [];
-    let fullyQualifiedClassNames = this.projectStructure.classStructures.keys();
+    let fullyQualifiedClassNames = projectStructure.classStructures.keys();
     for (let fullyQualifiedClassName of fullyQualifiedClassNames) {
       let extractedClassName = this.extractClassName(fullyQualifiedClassName);
       fullyQualifiedClassName = (fullyQualifiedClassName == '' ? "$" : fullyQualifiedClassName);
@@ -96,12 +102,12 @@ export class GraphComponent implements OnInit {
     return nodes;
   }
 
-  private getEdges() : any {
+  public static extractEdges(projectStructure: ProjectStructure) : any {
     let edges = [];
     let i = 0;
-    let fullyQualifiedClassNames = this.projectStructure.classStructures.keys();
+    let fullyQualifiedClassNames = projectStructure.classStructures.keys();
     for (let fullyQualifiedClassName of fullyQualifiedClassNames) {
-      for (let correspondingFullyQualifiedClassNames of this.projectStructure.classStructures.get(fullyQualifiedClassName).outgoingDependenceInfo.keys()) {
+      for (let correspondingFullyQualifiedClassNames of projectStructure.classStructures.get(fullyQualifiedClassName).outgoingDependenceInfo.keys()) {
         let edge = {
           data: {
             id: i++,
