@@ -25,7 +25,7 @@ export class GraphComponent implements OnInit {
       this.repopulateGraph();
     }
     if (changes.selectedMetric && !changes.selectedMetric.firstChange) {
-      this.changeMetricRepresentedInGraph(this.selectedMetric);
+      this.changeMetricRepresentedInGraph();
     }
   }
 
@@ -64,11 +64,15 @@ export class GraphComponent implements OnInit {
     let elements = this.getElements();
     this.cy.add( elements );
 
+    this.updateArrowStyle();
+
     var layout = this.cy.layout({
       name: 'circle'
     });
 
     layout.run();
+
+
 
   }
 
@@ -147,8 +151,9 @@ export class GraphComponent implements OnInit {
     return weight;
   }
 
-  private changeMetricRepresentedInGraph(selectedMetric: String) {
-    let newMetric = this.metricNameConverter.translateMetricName(selectedMetric.toString());
+  private changeMetricRepresentedInGraph() {
+    let newMetric = this.metricNameConverter.translateMetricName(this.selectedMetric.toString());
+
     let self = this;
     if (newMetric != null) {
       this.cy.startBatch();
@@ -162,6 +167,32 @@ export class GraphComponent implements OnInit {
       this.cy.endBatch();
     } else {
       console.error('Metric name is not in the translator.');
+    }
+
+    this.updateArrowStyle();
+  }
+
+  private updateArrowStyle (): void {
+    let arrowStyle = this.metricNameConverter.getArrowStyle(this.selectedMetric.toString());
+    let arrowStyleKey = arrowStyle[0];
+    let arrowStyleValue = arrowStyle[1];
+
+    if (arrowStyleKey == 'source-arrow-shape') {
+      this.cy.style()
+        .selector('edge')
+        .style({
+          'target-arrow-shape': 'none',
+          'source-arrow-shape': arrowStyleValue
+        })
+        .update();
+    } else {
+      this.cy.style()
+        .selector('edge')
+        .style({
+          'source-arrow-shape': 'none',
+          'target-arrow-shape': arrowStyleValue
+        })
+        .update();
     }
   }
 }
