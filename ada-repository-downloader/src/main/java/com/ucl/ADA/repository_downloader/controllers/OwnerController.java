@@ -17,6 +17,7 @@ import java.util.Set;
  */
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/users")
 public class OwnerController {
 
@@ -39,6 +40,7 @@ public class OwnerController {
         return getUserByName(user_name).getRepos();
     }
 
+
     @GetMapping(value = "/{user_name}/repositories/{repo_name}")
     public GitRepository getRepoByOwnerAndName(@PathVariable String user_name,
                                                @PathVariable String repo_name){
@@ -49,6 +51,7 @@ public class OwnerController {
         return repo;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "/{user_name}/repositories/{repo_name}/branches")
     public Set<Branch> getBranchesByOwnerAndRepo(@PathVariable String user_name,
                                                  @PathVariable String repo_name){
@@ -67,6 +70,7 @@ public class OwnerController {
         return branch;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "/{user_name}/repositories/{repo_name}/branches/{branch_name}/snapshots")
     public Set<Snapshot> getSnapshotsGivenOwnerRepoAndBranch(@PathVariable String user_name,
                                                              @PathVariable String repo_name,

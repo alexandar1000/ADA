@@ -25,6 +25,10 @@ import { SnapshotSliderComponent } from './snapshot-slider/snapshot-slider.compo
 import { MetricSelectorComponent } from './metric-selector/metric-selector.component';
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
+import { OwnerComponent } from './owner/owner.component';
+import { RepositoryComponent } from './repository/repository.component';
+import { BranchComponent } from './branch/branch.component';
+import { SnapshotComponent } from './snapshot/snapshot.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +40,10 @@ import {MatSelectModule} from "@angular/material/select";
     DashboardComponent,
     SnapshotSliderComponent,
     MetricSelectorComponent,
+    OwnerComponent,
+    RepositoryComponent,
+    BranchComponent,
+    SnapshotComponent,
   ],
   imports: [
     BrowserModule,
