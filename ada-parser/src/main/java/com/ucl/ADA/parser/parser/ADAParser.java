@@ -2,7 +2,7 @@ package com.ucl.ADA.parser.parser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ucl.ADA.parser.model.ADAClass;
+import com.ucl.ADA.parser.ada_model.ADAClass;
 import com.ucl.ADA.parser.parser.visitor.PackageAndImportVisitor;
 import com.ucl.ADA.parser.parser.visitor.TypeDeclarationVisitor;
 import org.apache.commons.io.FileUtils;

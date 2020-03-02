@@ -1,8 +1,7 @@
-package com.ucl.ADA.parser.model;
+package com.ucl.ADA.parser.ada_model;
 
 import lombok.Getter;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

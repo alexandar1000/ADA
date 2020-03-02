@@ -1,7 +1,7 @@
 package com.ucl.ADA.parser.parser;
 
 
-import com.ucl.ADA.parser.model.*;
+import com.ucl.ADA.parser.ada_model.*;
 import com.ucl.ADA.parser.parser.visitor.VariableDeclarationVisitor;
 import org.eclipse.jdt.core.dom.*;
 

@@ -1,7 +1,7 @@
 package com.ucl.ADA.parser.transformer;
 
 import com.ucl.ADA.model.project_structure.ProjectStructure;
-import com.ucl.ADA.parser.model.ADAClass;
+import com.ucl.ADA.parser.ada_model.ADAClass;
 import com.ucl.ADA.parser.parser.ADAParser;
 
 import java.util.Set;
