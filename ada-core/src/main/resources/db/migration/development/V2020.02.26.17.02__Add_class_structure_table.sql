@@ -1,6 +1,6 @@
 CREATE TABLE CLASS_STRUCTURE
 (
     id                     BIGSERIAL PRIMARY KEY,
-    package_declaration_id BIGINT NOT NULL,
-    class_metric_value_id  BIGINT NOT NULL
+    package_declaration_id BIGINT NOT NULL REFERENCES PACKAGE_DECLARATION (id),
+    class_metric_value_id  BIGINT NOT NULL REFERENCES CLASS_METRIC_VALUE (id)
 )
