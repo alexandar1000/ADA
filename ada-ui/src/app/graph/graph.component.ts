@@ -1,8 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {AnalyserService} from "../analyser.service";
-import {tap} from "rxjs/operators";
-import {ProjectStructure} from "../classes/project-structure";
+import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import * as cytoscape from 'cytoscape';
+import {MetricNameConverter} from "../classes/metric-name-converter";
 
 @Component({
   selector: 'app-graph',
@@ -11,30 +9,29 @@ import * as cytoscape from 'cytoscape';
 })
 export class GraphComponent implements OnInit {
 
-  private projectStructure: ProjectStructure;
+  private cy;
+  @Input() projectStructure;
+  @Input() selectedMetric;
+  private metricNameConverter = new MetricNameConverter();
 
-  constructor(private analyserService: AnalyserService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.analyserService.getAnalysis()
-      .pipe(
-        tap(_ => console.log('tapped'))
-      ).subscribe(data => this.handleRequestResponse(data));
-  }
-
-  private handleRequestResponse(data: JSON) {
-    this.projectStructure = this.populateGraphData(data);
     this.initCytoscape();
   }
 
-  private populateGraphData(data: JSON): ProjectStructure {
-    return new ProjectStructure(data)
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.projectStructure && !changes.projectStructure.firstChange) {
+      this.repopulateGraph();
+    }
+    if (changes.selectedMetric && !changes.selectedMetric.firstChange) {
+      this.changeMetricRepresentedInGraph();
+    }
   }
 
-
-  private initCytoscape() {
-    let elements = this.getElements();
-    let cy = cytoscape(
+  private initCytoscape(): void {
+    let elements: any = {};
+    this.cy = cytoscape(
       {
         container: document.getElementById('cytoscape-container'),
         elements: elements,
@@ -54,11 +51,29 @@ export class GraphComponent implements OnInit {
             selector: 'edge',
             style: {
               'curve-style': 'bezier',
-              'target-arrow-shape': 'triangle'
+              'target-arrow-shape': 'triangle',
+              label: 'data(weight)'
             }
           }
         ]
       });
+  }
+
+  private repopulateGraph(): void {
+    this.cy.elements().remove();
+    let elements = this.getElements();
+    this.cy.add( elements );
+
+    this.updateArrowStyle();
+
+    var layout = this.cy.layout({
+      name: 'circle'
+    });
+
+    layout.run();
+
+
+
   }
 
   public extractClassName(fullyQualifiedClassName: String): String {
@@ -71,20 +86,25 @@ export class GraphComponent implements OnInit {
 
   private getElements(): any {
     let elements = {
-      nodes: this.getNodes(),
-      edges: this.getEdges()
+      nodes: this.extractNodes(),
+      edges: this.extractEdges()
     };
-    console.log(elements);
     return elements;
   }
 
-  private getNodes() : any {
+  public extractNodes() : any {
     let nodes = [];
+    // The node names will be the names in the classStructures Map of the ProjectStructure, as it contains all of the
+    // nodes of the graph
     let fullyQualifiedClassNames = this.projectStructure.classStructures.keys();
     for (let fullyQualifiedClassName of fullyQualifiedClassNames) {
+      // Extract specifically the class name in order to display it and not clutter the screen, but use the fully
+      // qualified class name as the id as it is unique.
       let extractedClassName = this.extractClassName(fullyQualifiedClassName);
+      // If the class name is empty string, then replace it with a $ symbol
       fullyQualifiedClassName = (fullyQualifiedClassName == '' ? "$" : fullyQualifiedClassName);
       extractedClassName = (extractedClassName == '' ? '$' : extractedClassName);
+      // Create the node as per cytoscape representation
       let node = {
         data: {
           id: fullyQualifiedClassName,
@@ -96,22 +116,83 @@ export class GraphComponent implements OnInit {
     return nodes;
   }
 
-  private getEdges() : any {
+  public extractEdges() : any {
     let edges = [];
     let i = 0;
+    // The edges will be drawn between all of the classes which have entries in the outgoingDependencies Map, as it will
+    // contain all the invocations which the node makes.
     let fullyQualifiedClassNames = this.projectStructure.classStructures.keys();
     for (let fullyQualifiedClassName of fullyQualifiedClassNames) {
-      for (let correspondingFullyQualifiedClassNames of this.projectStructure.classStructures.get(fullyQualifiedClassName).outgoingDependenceInfo.keys()) {
+      for (let correspondingFullyQualifiedClassName of this.projectStructure.classStructures.get(fullyQualifiedClassName).outgoingDependenceInfo.keys()) {
+        let weight = this.projectStructure.classStructures.get(fullyQualifiedClassName).relationMetricValues.get(correspondingFullyQualifiedClassName)[this.metricNameConverter.translateMetricName(this.selectedMetric)];
+        // Create the edge as per cytoscape representation
         let edge = {
           data: {
             id: i++,
             source: (fullyQualifiedClassName == '' ? "$" : fullyQualifiedClassName),
-            target: (correspondingFullyQualifiedClassNames == '' ? "$" : correspondingFullyQualifiedClassNames)
+            target: (correspondingFullyQualifiedClassName == '' ? "$" : correspondingFullyQualifiedClassName),
+            weight: weight
           }
         };
         edges.push(edge);
       }
     }
     return edges;
+  }
+
+  private getCorrespondingWeight(source: String, target: String): number {
+    if (source == '$') {
+      source = '';
+    }
+    if (target == '$') {
+      target = '';
+    }
+    let weight = this.projectStructure.classStructures.get(source).relationMetricValues.get(target)[this.metricNameConverter.translateMetricName(this.selectedMetric)];
+    return weight;
+  }
+
+  private changeMetricRepresentedInGraph() {
+    let newMetric = this.metricNameConverter.translateMetricName(this.selectedMetric.toString());
+
+    let self = this;
+    if (newMetric != null) {
+      this.cy.startBatch();
+
+      this.cy.edges().forEach(function( edge ){
+        let source = edge.data('source');
+        let target = edge.data('target');
+        edge.data('weight', self.getCorrespondingWeight(source, target));
+      });
+
+      this.cy.endBatch();
+    } else {
+      console.error('Metric name is not in the translator.');
+    }
+
+    this.updateArrowStyle();
+  }
+
+  private updateArrowStyle (): void {
+    let arrowStyle = this.metricNameConverter.getArrowStyle(this.selectedMetric.toString());
+    let arrowStyleKey = arrowStyle[0];
+    let arrowStyleValue = arrowStyle[1];
+
+    if (arrowStyleKey == 'source-arrow-shape') {
+      this.cy.style()
+        .selector('edge')
+        .style({
+          'target-arrow-shape': 'none',
+          'source-arrow-shape': arrowStyleValue
+        })
+        .update();
+    } else {
+      this.cy.style()
+        .selector('edge')
+        .style({
+          'source-arrow-shape': 'none',
+          'target-arrow-shape': arrowStyleValue
+        })
+        .update();
+    }
   }
 }

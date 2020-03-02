@@ -19,6 +19,12 @@ import { UserService } from './user.service';
 import { AcceptedUrlDirective } from './shared/accepted-url.directive';
 import { GraphComponent } from './graph/graph.component';
 import {AnalyserService} from "./analyser.service";
+import { DashboardComponent } from './dashboard/dashboard.component';
+import {MatSliderModule} from "@angular/material/slider";
+import { SnapshotSliderComponent } from './snapshot-slider/snapshot-slider.component';
+import { MetricSelectorComponent } from './metric-selector/metric-selector.component';
+import {MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -27,6 +33,9 @@ import {AnalyserService} from "./analyser.service";
     RepoFormComponent,
     AcceptedUrlDirective,
     GraphComponent,
+    DashboardComponent,
+    SnapshotSliderComponent,
+    MetricSelectorComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +51,10 @@ import {AnalyserService} from "./analyser.service";
     MatSnackBarModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSliderModule,
+    MatOptionModule,
+    MatSelectModule
   ],
   providers: [UserService, AnalyserService],
   bootstrap: [AppComponent]

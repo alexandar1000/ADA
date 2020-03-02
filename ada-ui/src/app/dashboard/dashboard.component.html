@@ -1,0 +1,6 @@
+<h1>Dashboard</h1>
+<app-graph [projectStructure]="projectStructure" [selectedMetric]="selectedMetric"></app-graph>
+<div>
+  <app-snapshot-slider [snapshots]="snapshots"></app-snapshot-slider>
+  <app-metric-selector [metrics]="metrics" [selectedMetric]="selectedMetric" (selectedMetricChanged)="updateSelectedMetric($event)"></app-metric-selector>
+</div>
