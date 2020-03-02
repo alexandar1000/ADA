@@ -137,6 +137,12 @@ export class GraphComponent implements OnInit {
   }
 
   private getCorrespondingWeight(source: String, target: String): number {
+    if (source == '$') {
+      source = '';
+    }
+    if (target == '$') {
+      target = '';
+    }
     let weight = this.projectStructure.classStructures.get(source).relationMetricValues.get(target)[this.metricNameConverter.translateMetricName(this.selectedMetric)];
     return weight;
   }

@@ -27,6 +27,7 @@ export class RepoFormComponent implements OnInit {
     // this.analyserService.doAnalysis(this.urlForm, this.branchName);
     this.analyserService.doAnalysis('https://github.com/alexandar1000/ADA-test-simple-JAVA-project-0', 'master');
     // this.analyserService.doAnalysis('https://github.com/mockito/mockito', 'master');
+    // this.analyserService.doAnalysis('https://github.com/alexandar1000/ADA', 'master');
     this.router.navigate(['/dashboard']);
   }
 
