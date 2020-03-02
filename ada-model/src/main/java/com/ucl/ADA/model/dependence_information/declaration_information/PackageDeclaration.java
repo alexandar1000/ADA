@@ -4,8 +4,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter @NoArgsConstructor
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@Entity
+@Table(name = "PACKAGE_DECLARATION")
 public class PackageDeclaration extends ElementDeclaration {
+
     /**
      * The constructor of the package declaration object. I.e.
      * "com.ucl.ADA.parser.dependence_information.declaration_information"
@@ -14,4 +22,5 @@ public class PackageDeclaration extends ElementDeclaration {
     public PackageDeclaration(String name) {
         super(name);
     }
+
 }

@@ -1,20 +1,25 @@
 package com.ucl.ADA.model.dependence_information.declaration_information;
 
+import com.ucl.ADA.model.BaseEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Getter @NoArgsConstructor
-public abstract class ElementDeclaration {
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@MappedSuperclass
+public abstract class ElementDeclaration extends BaseEntity {
+
     /**
-     * The name of the element.
+     * The name of the element declaration.
      */
+    @Column(name = "name", nullable = false)
     private String name;
 
-    /**
-     * The constructor of the element declaration object.
-     * @param name the name of the element being created
-     */
-    public ElementDeclaration(String name) {
-        this.name = name;
-    }
 }

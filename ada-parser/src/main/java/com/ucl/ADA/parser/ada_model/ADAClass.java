@@ -1,8 +1,7 @@
-package com.ucl.ADA.parser.model;
+package com.ucl.ADA.parser.ada_model;
 
 import lombok.Getter;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,9 +12,16 @@ public class ADAClass {
     private Set<String> importedInternalClasses;
     private Set<String> importedExternalClasses;
     private String className;
+
+    private boolean isInterface;
+    private boolean isEnum;
+
+
     private String parentClassName;
     private Set<String> implementedInterfaces;
     private List<ADAClassAttribute> adaClassAttributes;
+
+    private List<String> declaredEnums;
 
     private List<ADAMethodInvocation> ADAMethodInvocations;
     private List<ADAConstructorInvocation> ADAConstructorInvocations;
@@ -24,14 +30,24 @@ public class ADAClass {
     private List<String> exConstructorInvocations;
     private List<String> exFieldInvocation;
 
-    public ADAClass(String packageName, Set<String> importedInternalClasses, Set<String> importedExternalClasses, String className, String parentClassName, Set<String> implementedInterfaces, List<ADAClassAttribute> adaClassAttributes, List<ADAMethodInvocation> ADAMethodInvocations, List<ADAConstructorInvocation> ADAConstructorInvocations, List<ADAMethodOrConstructorDeclaration> ADAMethodOrConstructorDeclaration, List<String> exMethodCalls, List<String> exConstructorInvocations, List<String> exFieldInvocation) {
+
+    public ADAClass(String packageName, Set<String> importedInternalClasses, Set<String> importedExternalClasses,
+                    String className, boolean isInterface, boolean isEnum, String parentClassName,
+                    Set<String> implementedInterfaces, List<ADAClassAttribute> adaClassAttributes,
+                    List<String> declaredEnums, List<ADAMethodInvocation> ADAMethodInvocations,
+                    List<ADAConstructorInvocation> ADAConstructorInvocations,
+                    List<ADAMethodOrConstructorDeclaration> ADAMethodOrConstructorDeclaration,
+                    List<String> exMethodCalls, List<String> exConstructorInvocations, List<String> exFieldInvocation) {
         this.packageName = packageName;
         this.importedInternalClasses = importedInternalClasses;
         this.importedExternalClasses = importedExternalClasses;
         this.className = className;
+        this.isInterface = isInterface;
+        this.isEnum = isEnum;
         this.parentClassName = parentClassName;
         this.implementedInterfaces = implementedInterfaces;
         this.adaClassAttributes = adaClassAttributes;
+        this.declaredEnums = declaredEnums;
         this.ADAMethodInvocations = ADAMethodInvocations;
         this.ADAConstructorInvocations = ADAConstructorInvocations;
         this.ADAMethodOrConstructorDeclaration = ADAMethodOrConstructorDeclaration;
@@ -39,7 +55,6 @@ public class ADAClass {
         this.exConstructorInvocations = exConstructorInvocations;
         this.exFieldInvocation = exFieldInvocation;
     }
-
 
     @Override
     public boolean equals(Object sf) {
@@ -56,6 +71,7 @@ public class ADAClass {
                 && ADAClass.parentClassName.equals(this.parentClassName)
                 && ADAClass.implementedInterfaces.equals(this.implementedInterfaces)
                 && ADAClass.adaClassAttributes.equals(this.adaClassAttributes)
+                && ADAClass.declaredEnums.equals(this.declaredEnums)
                 && ADAClass.ADAMethodInvocations.equals(this.ADAMethodInvocations)
                 && ADAClass.ADAConstructorInvocations.equals(this.ADAConstructorInvocations)
                 && ADAClass.ADAMethodOrConstructorDeclaration.equals(this.ADAMethodOrConstructorDeclaration)
@@ -75,6 +91,7 @@ public class ADAClass {
         result = 31 * result + parentClassName.hashCode();
         result = 31 * result + implementedInterfaces.hashCode();
         result = 31 * result + adaClassAttributes.hashCode();
+        result = 31 * result + declaredEnums.hashCode();
         result = 31 * result + ADAMethodInvocations.hashCode();
         result = 31 * result + ADAConstructorInvocations.hashCode();
         result = 31 * result + ADAMethodOrConstructorDeclaration.hashCode();
@@ -91,9 +108,12 @@ public class ADAClass {
                 ", importedInternalClasses=" + importedInternalClasses +
                 ", importedExternalClasses=" + importedExternalClasses +
                 ", className='" + className + '\'' +
+                ", isInterface=" + isInterface +
+                ", isEnum=" + isEnum +
                 ", parentClassName='" + parentClassName + '\'' +
                 ", implementedInterfaces=" + implementedInterfaces +
                 ", adaClassAttributes=" + adaClassAttributes +
+                ", declaredEnums=" + declaredEnums +
                 ", ADAMethodInvocations=" + ADAMethodInvocations +
                 ", ADAConstructorInvocations=" + ADAConstructorInvocations +
                 ", ADAMethodOrConstructorDeclaration=" + ADAMethodOrConstructorDeclaration +

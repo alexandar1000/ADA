@@ -1,21 +1,38 @@
 package com.ucl.ADA.model.dependence_information;
 
+import com.ucl.ADA.model.BaseEntity;
 import com.ucl.ADA.model.dependence_information.invocation_information.AttributeInvocation;
-import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
+import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.PackageInvocation;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class DependenceInfo {
+@Setter
+@NoArgsConstructor
+@Entity
+@Table(name = "DEPENDENCE_INFO")
+public class DependenceInfo extends BaseEntity {
 
     // For environmental coupling:
     /**
      * Packages present in the class. They can be either declared or imported.
      */
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JoinTable(
+            name = "DEPENDENCE_INFO_PACKAGE_INVOCATION",
+            joinColumns = @JoinColumn(name = "dependence_info_id"),
+            inverseJoinColumns = @JoinColumn(name = "package_invocation_id")
+    )
     private List<PackageInvocation> packages = new ArrayList<>();
 
 
@@ -23,21 +40,38 @@ public class DependenceInfo {
     /**
      * Attributes present in the class. They can be either declared or invoked.
      */
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JoinTable(
+            name = "DEPENDENCE_INFO_ATTRIBUTE_INVOCATION",
+            joinColumns = @JoinColumn(name = "dependence_info_id"),
+            inverseJoinColumns = @JoinColumn(name = "attribute_invocation_id")
+    )
     private List<AttributeInvocation> attributes = new ArrayList<>();
 
     /**
      * Constructors present in the class. They can be either declared or invoked.
      */
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JoinTable(
+            name = "DEPENDENCE_INFO_CONSTRUCTOR_INVOCATION",
+            joinColumns = @JoinColumn(name = "dependence_info_id"),
+            inverseJoinColumns = @JoinColumn(name = "constructor_invocation_id")
+    )
     private List<ConstructorInvocation> constructors = new ArrayList<>();
 
     /**
      * Methods present in the class. They can be either declared or invoked.
      */
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JoinTable(
+            name = "DEPENDENCE_INFO_METHOD_INVOCATION",
+            joinColumns = @JoinColumn(name = "dependence_info_id"),
+            inverseJoinColumns = @JoinColumn(name = "method_invocation_id")
+    )
     private List<MethodInvocation> methods = new ArrayList<>();
-
-
-    public DependenceInfo() {
-    }
 
     /**
      * Adds a new attribute to the instance.

@@ -68,6 +68,8 @@ The project consists out of four modules:
 - ada-repository-downloader - downloads the git repository and stores the metadata
 - ada-parser - parses different languages and exposes the parsed data
 - ada-metric-calculator - calculation of the metrics based on the output from the parser component
+- ada-model - EXPLAIN THE STRUCTURE OF THE MODEL
+- ada-ui - the user interface of the project
 
 ## Deployment
 
