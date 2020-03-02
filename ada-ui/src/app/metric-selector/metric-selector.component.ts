@@ -1,4 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {MatSelectChange} from "@angular/material/select";
 
 @Component({
   selector: 'app-metric-selector',
@@ -8,10 +9,14 @@ import {Component, Input, OnInit} from '@angular/core';
 export class MetricSelectorComponent implements OnInit {
 
   @Input() metrics: any;
-  selectedMetric: string;
+  @Input() selectedMetric: String;
+  @Output() selectedMetricChanged: EventEmitter<String> = new EventEmitter();
   constructor() { }
 
   ngOnInit() {
   }
 
+  emitSelectedMetricChange($event: MatSelectChange) {
+    this.selectedMetricChanged.emit($event.value);
+  }
 }

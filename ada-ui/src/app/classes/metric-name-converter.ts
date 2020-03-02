@@ -1,5 +1,5 @@
 export class MetricNameConverter {
-  private dictionary = new Map<String, String>();
+  private dictionary = new Map<string, string>();
 
   constructor() {
     this.dictionary.set('NUMBER_OF_CLASS_PACKAGE_IMPORTS_INCOMING', 'numberOfPackageImportsIncoming');
@@ -29,7 +29,7 @@ export class MetricNameConverter {
     this.dictionary.set('BIDIRECTIONAL_NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS', 'bidirectionalNumberOfConstructorInvocations');
   }
 
-  public translateMetricName(metricDbName: String): String {
+  public translateMetricName(metricDbName: string): string {
     if (this.dictionary.has(metricDbName)) {
       return this.dictionary.get(metricDbName);
     } else {

@@ -12,8 +12,6 @@ import {Snapshot} from "../classes/snapshot";
 })
 export class DashboardComponent implements OnInit {
   private projectStructure: ProjectStructure;
-  private nodes: any = {};
-  private edges: any = {};
   private snapshots: Snapshot[] = [
     new Snapshot(78, '2020-03-01 15:14'),
     new Snapshot(12, '2019-09-21 13:00'),
@@ -33,6 +31,7 @@ export class DashboardComponent implements OnInit {
     'BIDIRECTIONAL_NUMBER_OF_RELATION_PACKAGE_IMPORTS',
     'BIDIRECTIONAL_NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS'
   ];
+  private selectedMetric = this.metrics[0];
 
   constructor(private analyserService: AnalyserService) { }
 
@@ -45,13 +44,15 @@ export class DashboardComponent implements OnInit {
 
   private handleRequestResponse(data: JSON) {
     this.projectStructure = this.populateProjectStructure(data);
-    this.nodes = GraphComponent.extractNodes(this.projectStructure);
-    this.edges = GraphComponent.extractEdges(this.projectStructure);
 
   }
 
   private populateProjectStructure(data: JSON): ProjectStructure {
     return new ProjectStructure(data)
+  }
+
+  updateSelectedMetric(newMetric: string): void {
+    this.selectedMetric = newMetric;
   }
 
 }
