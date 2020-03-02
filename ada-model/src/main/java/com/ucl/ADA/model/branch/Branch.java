@@ -2,11 +2,17 @@ package com.ucl.ADA.model.branch;
 
 import com.ucl.ADA.model.repository.GitRepository;
 import com.ucl.ADA.model.snapshot.Snapshot;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "BRANCH")
 public class Branch {
@@ -28,35 +34,4 @@ public class Branch {
     private
     Set<Snapshot> snapshots = new HashSet<>();
 
-    public Branch(){}
-
-    public Long getBranchID() {
-        return branchID;
-    }
-
-    public void setBranchID(Long branchID) {
-        this.branchID = branchID;
-    }
-
-    public void setRepository(GitRepository repository) {
-        this.repository = repository;
-    }
-
-    public String getBranchName() {
-        return branchName;
-    }
-
-    public void setBranchName(String branchName) {
-        this.branchName = branchName;
-    }
-
-    public Set<Snapshot> getSnapshots() {
-        return snapshots;
-    }
-
-    public void setSnapshots(Set<Snapshot> snapshots) {
-        this.snapshots = snapshots;
-    }
-
 }
-
