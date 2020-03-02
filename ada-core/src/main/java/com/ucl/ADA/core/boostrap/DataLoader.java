@@ -24,7 +24,8 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        loadData();
+        // TODO: This is a 'integration testing call and should be omitted for ow'
+//        loadData();
     }
 
     private void loadData() throws FileNotFoundException {

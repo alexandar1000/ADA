@@ -17,6 +17,18 @@ import { HttpClientModule } from '@angular/common/http';
 import { RepoFormComponent } from './repo-form/repo-form.component';
 import { UserService } from './user.service';
 import { AcceptedUrlDirective } from './shared/accepted-url.directive';
+import { GraphComponent } from './graph/graph.component';
+import {AnalyserService} from "./analyser.service";
+import { DashboardComponent } from './dashboard/dashboard.component';
+import {MatSliderModule} from "@angular/material/slider";
+import { SnapshotSliderComponent } from './snapshot-slider/snapshot-slider.component';
+import { MetricSelectorComponent } from './metric-selector/metric-selector.component';
+import {MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
+import { OwnerComponent } from './owner/owner.component';
+import { RepositoryComponent } from './repository/repository.component';
+import { BranchComponent } from './branch/branch.component';
+import { SnapshotComponent } from './snapshot/snapshot.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +36,14 @@ import { AcceptedUrlDirective } from './shared/accepted-url.directive';
     SidenavComponent,
     RepoFormComponent,
     AcceptedUrlDirective,
+    GraphComponent,
+    DashboardComponent,
+    SnapshotSliderComponent,
+    MetricSelectorComponent,
+    OwnerComponent,
+    RepositoryComponent,
+    BranchComponent,
+    SnapshotComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,9 +59,12 @@ import { AcceptedUrlDirective } from './shared/accepted-url.directive';
     MatSnackBarModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSliderModule,
+    MatOptionModule,
+    MatSelectModule
   ],
-  providers: [UserService],
+  providers: [UserService, AnalyserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

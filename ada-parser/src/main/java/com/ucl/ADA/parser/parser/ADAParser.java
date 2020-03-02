@@ -105,15 +105,12 @@ public class ADAParser {
         System.out.println("ADA parser is started on.........." + dtf.format(now));
         List<ADAClass> parsedClasses = new ArrayList<>();
         String[] allSrcDirectories = getSourceDirectories(new File(sourceRoot));
-        int count = 0;
         for (Map.Entry<String, String> sourceEntry : fileContents.entrySet()) {
-            count++;
             String filePath = sourceEntry.getKey();
             String sourceCode = sourceEntry.getValue();
             CompilationUnit compilationUnit = getCompilationUnit(filePath, sourceCode, allSrcDirectories);
             List<ADAClass> classes = getParsedClass(compilationUnit);
             parsedClasses.addAll(classes);
-            System.out.println("Finished-> " + count + " -> " + filePath);
         }
         System.out.println("ADAClass Model building finished on: " + dtf.format(now));
         return parsedClasses;

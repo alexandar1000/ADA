@@ -1,0 +1,12 @@
+<p>Snapshot: <span>{{ timestamp }}</span></p>
+<section *ngIf="snapshots.length > 1">
+  <mat-slider
+    [min]="minValue"
+    [max]="maxValue"
+    step="1"
+    [value]="initialValue"
+    invert
+    tickInterval="1"
+    (change)="updateTimestamp($event)">
+  </mat-slider>
+</section>
