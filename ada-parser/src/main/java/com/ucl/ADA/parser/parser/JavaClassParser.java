@@ -5,6 +5,9 @@ import com.ucl.ADA.parser.model.*;
 import com.ucl.ADA.parser.parser.visitor.VariableDeclarationVisitor;
 import org.eclipse.jdt.core.dom.*;
 
+import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
+import org.eclipse.jdt.core.dom.EnumDeclaration;
+
 
 import java.util.*;
 
@@ -13,9 +16,12 @@ public class JavaClassParser extends ASTVisitor {
     private Set<String> importedInternalClasses = new HashSet<>();
     private Set<String> importedExternalClasses = new HashSet<>();
     private String className = "";
+    private boolean isInterface = false;
+    private boolean isEnum = false;
     private String parentClassName = "";
     private Set<String> implementedInterfaces = new HashSet<>();
     private List<ADAClassAttribute> classAttributes = new ArrayList<>();
+    private List<String> declaredEnums = new ArrayList<>();
 
     private List<ADAMethodInvocation> ADAMethodInvocations = new ArrayList<>();
     private List<ADAConstructorInvocation> constructorInvocations = new ArrayList<>();
@@ -34,8 +40,8 @@ public class JavaClassParser extends ASTVisitor {
 
 
     public ADAClass getExtractedClass() {
-        ADAClass cl = new ADAClass(packageName, importedInternalClasses, importedExternalClasses, className, parentClassName, implementedInterfaces,
-                classAttributes, ADAMethodInvocations, constructorInvocations, methodConstructorDeclaration, exMethodCalls, exConstructorInvocations, exFieldInvocation);
+        ADAClass cl = new ADAClass(packageName, importedInternalClasses, importedExternalClasses, className, isInterface, isEnum, parentClassName, implementedInterfaces,
+                classAttributes, declaredEnums, ADAMethodInvocations, constructorInvocations, methodConstructorDeclaration, exMethodCalls, exConstructorInvocations, exFieldInvocation);
 
         return cl;
     }
@@ -43,10 +49,12 @@ public class JavaClassParser extends ASTVisitor {
     //variable declaration visitor
     private VariableDeclarationVisitor variableDeclaratorVisitor = new VariableDeclarationVisitor();
 
-
     //class name, parent class and implemented interfaces
     public boolean visit(TypeDeclaration typeDeclaration) {
         if (typeDeclaration.isPackageMemberTypeDeclaration()) {
+            if (typeDeclaration.isInterface()) {
+                this.isInterface = true;
+            }
             this.className = typeDeclaration.resolveBinding().getQualifiedName();
             if (typeDeclaration.getSuperclassType() != null) {
                 this.parentClassName = typeDeclaration.getSuperclassType().resolveBinding().getQualifiedName();
@@ -54,6 +62,28 @@ public class JavaClassParser extends ASTVisitor {
             List<Type> interfaces = typeDeclaration.superInterfaceTypes();
             for (Type anInterface : interfaces) {
                 implementedInterfaces.add(anInterface.resolveBinding().getQualifiedName());
+            }
+        }
+        return true;
+    }
+
+    public boolean visit(EnumDeclaration enumDeclaration) {
+        if (enumDeclaration.isPackageMemberTypeDeclaration()) {
+            this.isEnum = true;
+            this.className = enumDeclaration.resolveBinding().getQualifiedName();
+            List<Type> interfaces = enumDeclaration.superInterfaceTypes();
+            for (Type anInterface : interfaces) {
+                implementedInterfaces.add(anInterface.resolveBinding().getQualifiedName());
+            }
+            List<ASTNode> enumConstant = enumDeclaration.enumConstants();
+            if (!enumConstant.isEmpty()) {
+                for (ASTNode an : enumConstant) {
+                    if (an instanceof EnumConstantDeclaration) {
+                        EnumConstantDeclaration en = (EnumConstantDeclaration) an;
+                        declaredEnums.add(en.getName().toString());
+                    }
+
+                }
             }
         }
         return true;
