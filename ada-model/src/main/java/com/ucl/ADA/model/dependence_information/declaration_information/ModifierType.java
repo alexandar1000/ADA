@@ -1,5 +1,8 @@
 package com.ucl.ADA.model.dependence_information.declaration_information;
 
+import lombok.Getter;
+
+@Getter
 public enum ModifierType {
     PUBLIC,
     PROTECTED,
@@ -8,6 +11,5 @@ public enum ModifierType {
     STATIC,
     FINAL,
     ABSTRACT,
-    UNRESOLVED
-
+    UNRESOLVED;
 }

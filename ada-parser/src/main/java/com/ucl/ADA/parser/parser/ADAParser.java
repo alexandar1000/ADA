@@ -2,94 +2,62 @@ package com.ucl.ADA.parser.parser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ucl.ADA.parser.model.ADAClass;
+import com.ucl.ADA.parser.ada_model.ADAClass;
 import com.ucl.ADA.parser.parser.visitor.PackageAndImportVisitor;
-import com.ucl.ADA.parser.parser.visitor.TypeDeclatorVisitor;
-import com.ucl.ADA.parser.util.SourceFileCollector;
+import com.ucl.ADA.parser.parser.visitor.TypeDeclarationVisitor;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.*;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+
 
 public class ADAParser {
 
-    public Set<ADAClass> getParsedSourceFile(String src_dir) {
+    public Set<ADAClass> getParsedSourceFile(String sourceRoot) {
         Set<ADAClass> allParsedFile = new HashSet<>();
-        List<String> filePaths = SourceFileCollector.getJavaFilesFromSourceDirectory(new File(src_dir));
-        filePaths.forEach(file -> {
-            ASTParser parser = buildASTParser(src_dir);
-            List<ADAClass> parsedClasses = parseSourceFile(parser, file);
-            allParsedFile.addAll(parsedClasses);
-        });
+        List<ADAClass> classes = parseEachSourceFile(sourceRoot);
+        allParsedFile.addAll(classes);
         return allParsedFile;
     }
 
-
-    public void printParsedSourceFileInJSON(String src_dir) {
-        List<String> filePaths = SourceFileCollector.getJavaFilesFromSourceDirectory(new File(src_dir));
-        for (int i = 0, filePathsSize = filePaths.size(); i < filePathsSize; i++) {
-            String file = filePaths.get(i);
-            System.out.println("Processing->  " + i + "->th->Path" + file);
-            ASTParser parser = buildASTParser(src_dir);
-            List<ADAClass> classes = parseSourceFile(parser, file);
-            for (ADAClass aClass : classes) {
-                ObjectMapper objMapper = new ObjectMapper();
-                String jsonStr = "[]";
-                try {
-                    jsonStr = objMapper.writeValueAsString(aClass);
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-                System.out.println(jsonStr);
+    public void printParsedSourceFileInJSON(String sourceRoot) {
+        List<ADAClass> classes = parseEachSourceFile(sourceRoot);
+        for (ADAClass aClass : classes) {
+            ObjectMapper objMapper = new ObjectMapper();
+            String jsonStr = "[]";
+            try {
+                jsonStr = objMapper.writeValueAsString(aClass);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
             }
+            System.out.println(jsonStr);
         }
-    }
-
-    private ASTParser buildASTParser(String sourceRoot) {
-        String[] srcDirs = getAllSrcDirectories(new File(sourceRoot));
-
-        String [] encoding= new String[srcDirs.length];
-        for(int i=0; i<encoding.length;i++){
-            encoding[i]= "UTF-8";
-        }
-        ASTParser parser = ASTParser.newParser(AST.JLS13);
-        parser.setKind(ASTParser.K_COMPILATION_UNIT);
-        parser.setBindingsRecovery(true);
-        parser.setResolveBindings(true);
-        parser.setStatementsRecovery(true);
-        Map options = JavaCore.getOptions();
-        parser.setCompilerOptions(options);
-        String[] sources = srcDirs;
-        String[] classpath = {};
-        parser.setEnvironment(classpath, sources,encoding, true);
-       // parser.setEnvironment(classpath, sources, new String[]{"UTF-8"}, true);
-        return parser;
     }
 
     private List<ADAClass> parseSourceFile(ASTParser parser, String sourceFile) {
-        String sourceCode = getSourceFromFile(sourceFile);
+        String sourceCode = getSourceCodeFromSourcePath(sourceFile);
         String unitName = new File(sourceFile).getName();
         parser.setSource(sourceCode.toCharArray());
         parser.setUnitName(unitName);
         CompilationUnit cu = (CompilationUnit) parser.createAST(null);
         if (cu.getAST().hasBindingsRecovery()) {
-            // System.out.println("Binding activated.");
+            //System.out.println("Binding activated.");
         }
 
         PackageAndImportVisitor pv = new PackageAndImportVisitor();
         cu.accept(pv);
-        TypeDeclatorVisitor tv = new TypeDeclatorVisitor();
+        TypeDeclarationVisitor tv = new TypeDeclarationVisitor();
         cu.accept(tv);
-        List<TypeDeclaration> classes = tv.getClasses();
+
+        List<AbstractTypeDeclaration> allClassAndEnums = tv.getAbstractTypeDeclaration();
         List<ADAClass> parsedClasses = new ArrayList<>();
-        for (TypeDeclaration cl : classes) {
+        for (AbstractTypeDeclaration cl : allClassAndEnums) {
             JavaClassParser jp = new JavaClassParser(pv.getPackageName(), pv.getImportedInternalClasses(), pv.getImportedExternalClasses());
             cl.accept(jp);
             ADAClass cm = jp.getExtractedClass();
@@ -99,38 +67,191 @@ public class ADAParser {
 
     }
 
-    private static String getSourceFromFile(String filePath) {
-        File file = new File(filePath);
-        StringBuilder sb = new StringBuilder();
-        if (file.exists()) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-                String line = "";
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line + '\n');
-                }
-            } catch (IOException e) {
-                System.err.format("IOException: %s%n", e);
-            }
+    private List<ADAClass> parseAllSourceFiles(String sourceRoot) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println("Source files path  collection started on...." + dtf.format(now));
+        List<String> filePaths = getJavaSourceFilePathsFromSourceRoot(sourceRoot);
+        System.out.println("Collection is completed on: " + dtf.format(now));
+
+        System.out.println("Source file reading is started on......" + dtf.format(now));
+        Map<String, String> fileContents = getAllSourceContent(filePaths);
+        System.out.println("Reading is completed on: " + dtf.format(now));
+
+        System.out.println("Compilation unit preparation is started on....");
+        List<CompilationUnit> compilationUnits = getCompilationUnits(fileContents, sourceRoot);
+        System.out.println("Compilation Unit building finished: " + dtf.format(now));
+
+        System.out.println("ADA parser is started on.........." + dtf.format(now));
+        List<ADAClass> parsedClasses = new ArrayList<>();
+        for (CompilationUnit cu : compilationUnits) {
+            List<ADAClass> classes = getParsedClass(cu);
+            parsedClasses.addAll(classes);
         }
-        return sb.toString();
+        System.out.println("ADAClass Model building finished on: " + dtf.format(now));
+        return parsedClasses;
     }
 
-    // Recursive function to list all files in a directory with Apache Commons IO
-    public String[] getAllSrcDirectories(File rootDir) {
-        List<String> allSrcDirectories = new ArrayList<>();
+    private List<ADAClass> parseEachSourceFile(String sourceRoot) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println("Source files path  collection started on...." + dtf.format(now));
+        List<String> filePaths = getJavaSourceFilePathsFromSourceRoot(sourceRoot);
+        System.out.println("Collection is completed on: " + dtf.format(now));
+
+        System.out.println("Source file reading is started on......" + dtf.format(now));
+        Map<String, String> fileContents = getAllSourceContent(filePaths);
+        System.out.println("Reading is completed on: " + dtf.format(now));
+        System.out.println("ADA parser is started on.........." + dtf.format(now));
+        List<ADAClass> parsedClasses = new ArrayList<>();
+        String[] allSrcDirectories = getSourceDirectories(new File(sourceRoot));
+        int count = 0;
+        for (Map.Entry<String, String> sourceEntry : fileContents.entrySet()) {
+            count++;
+            String filePath = sourceEntry.getKey();
+            String sourceCode = sourceEntry.getValue();
+            CompilationUnit compilationUnit = getCompilationUnit(filePath, sourceCode, allSrcDirectories);
+            List<ADAClass> classes = getParsedClass(compilationUnit);
+            parsedClasses.addAll(classes);
+            System.out.println("Finished-> " + count + " -> " + filePath);
+        }
+        System.out.println("ADAClass Model building finished on: " + dtf.format(now));
+        return parsedClasses;
+    }
+
+    private List<ADAClass> getParsedClass(CompilationUnit compilationUnit) {
+        List<ADAClass> parsedClasses = new ArrayList<>();
+        if (compilationUnit != null) {
+            if (compilationUnit.getAST().hasBindingsRecovery()) {
+                PackageAndImportVisitor packageVisitor = new PackageAndImportVisitor();
+                compilationUnit.accept(packageVisitor);
+                TypeDeclarationVisitor typeVisitor = new TypeDeclarationVisitor();
+                compilationUnit.accept(typeVisitor);
+                List<AbstractTypeDeclaration> allClassAndEnums = typeVisitor.getAbstractTypeDeclaration();
+                for (int i = 0; i < allClassAndEnums.size(); i++) {
+                    AbstractTypeDeclaration classAndEnumType = allClassAndEnums.get(i);
+                    JavaClassParser javaClassParser = new JavaClassParser(packageVisitor.getPackageName(), packageVisitor.getImportedInternalClasses(), packageVisitor.getImportedExternalClasses());
+                    classAndEnumType.accept(javaClassParser);
+                    ADAClass extractedClass = javaClassParser.getExtractedClass();
+                    parsedClasses.add(extractedClass);
+                }
+            }
+        }
+        return parsedClasses;
+    }
+
+    private Map getParserVersion_1_5() {
+        Map options = JavaCore.getOptions();
+        options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_5);
+        options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, JavaCore.VERSION_1_5);
+        options.put(JavaCore.COMPILER_SOURCE, JavaCore.VERSION_1_5);
+        return options;
+    }
+
+    private ASTParser buildASTParser(String[] sourceDirectories, Map options) {
+        String[] encoding = new String[sourceDirectories.length];
+        Arrays.fill(encoding, "UTF-8");
+        ASTParser parser = ASTParser.newParser(AST.JLS13);
+        parser.setKind(ASTParser.K_COMPILATION_UNIT);
+        parser.setBindingsRecovery(true);
+        parser.setResolveBindings(true);
+        parser.setStatementsRecovery(true);
+        parser.setCompilerOptions(options);
+        String[] classpath = {};
+        parser.setEnvironment(classpath, sourceDirectories, encoding, true);
+        return parser;
+    }
+
+    private CompilationUnit getCompilationUnit(String filePath, String sourceCodes, String[] allSrcDirectories) {
+        Map options = getParserVersion_1_5();
+        ASTParser parser = buildASTParser(allSrcDirectories, options);
+        String unitName = new File(filePath).getName();
+        parser.setSource(sourceCodes.toCharArray());
+        parser.setUnitName(unitName);
+        CompilationUnit compilationUnit = null;
+        try {
+            compilationUnit = (CompilationUnit) parser.createAST(null);
+        } catch (Exception ex) {
+            System.err.println("Parsing Error at file-> " + filePath);
+        }
+        return compilationUnit;
+    }
+
+    private List<String> getJavaSourceFilePathsFromSourceRoot(String rootPath) {
+        List<String> sourceFiles = new ArrayList<>();
+        final String[] suffix = {"java"};
+        File rootDir = new File(rootPath);
+        Collection<File> files = FileUtils.listFiles(rootDir, suffix, true);
+        for (File file : files) {
+            if (!file.getPath().endsWith("Test.java") && !file.getPath().endsWith("Tests.java")) {
+                {
+                    sourceFiles.add(file.getAbsolutePath());
+                }
+            }
+        }
+        return sourceFiles;
+    }
+
+    private String[] getSourceDirectories(File rootDir) {
+        List<String> allSourceDirectories = new ArrayList<>();
         Collection<File> files = FileUtils.listFilesAndDirs(rootDir,
                 TrueFileFilter.INSTANCE,
                 TrueFileFilter.INSTANCE);
         for (File file : files) {
             if (file.isDirectory()) {
-                if (file.getName().equals("src"))
-                    allSrcDirectories.add(file.getAbsolutePath());
-                //System.out.println(file);
+                if (file.getName().equals("src") || file.getName().equals("Src"))
+                    allSourceDirectories.add(file.getAbsolutePath());
             }
         }
-        String[] srcDirs = allSrcDirectories.stream().toArray(String[]::new);
+        String[] srcDirs = allSourceDirectories.stream().toArray(String[]::new);
         return srcDirs;
     }
+
+    private String getSourceCodeFromSourcePath(String filePath) {
+        String sourceCode = "";
+        File sourceFile = new File(filePath);
+        if (sourceFile.exists()) {
+            try {
+                sourceCode = FileUtils.readFileToString(sourceFile, StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sourceCode;
+    }
+
+    private Map<String, String> getAllSourceContent(List<String> paths) {
+        Map<String, String> sourceContents = new HashMap<>();
+        for (String path : paths) {
+            String code = getSourceCodeFromSourcePath(path);
+            sourceContents.put(path, code);
+        }
+        return sourceContents;
+    }
+
+    private List<CompilationUnit> getCompilationUnits(Map<String, String> sourceCodes, String sourceRoot) {
+        String[] allSrcDirectories = getSourceDirectories(new File(sourceRoot));
+        List<CompilationUnit> compilationUnits = new ArrayList<>();
+        int count = 0;
+        for (String path : sourceCodes.keySet()) {
+            try {
+                count++;
+                Map options = getParserVersion_1_5();
+                ASTParser parser = buildASTParser(allSrcDirectories, options);
+                String code = sourceCodes.get(path);
+                String unitName = new File(path).getName();
+                parser.setSource(code.toCharArray());
+                parser.setUnitName(unitName);
+                System.out.println(count + "->" + path);
+                CompilationUnit cu = (CompilationUnit) parser.createAST(null);
+                compilationUnits.add(cu);
+            } catch (Exception e) {
+                System.err.println("Exception occurred in " + path);
+            }
+        }
+        return compilationUnits;
+    }
+
 }
 
 

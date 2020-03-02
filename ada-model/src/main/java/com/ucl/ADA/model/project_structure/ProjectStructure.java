@@ -1,5 +1,6 @@
 package com.ucl.ADA.model.project_structure;
 
+import com.ucl.ADA.model.BaseEntity;
 import com.ucl.ADA.model.class_structure.ClassStructure;
 import com.ucl.ADA.model.dependence_information.declaration_information.AttributeDeclaration;
 import com.ucl.ADA.model.dependence_information.declaration_information.ConstructorDeclaration;
@@ -10,11 +11,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter @Setter @NoArgsConstructor
-public class ProjectStructure {
+@Getter
+@Setter
+@NoArgsConstructor
+@Entity
+@Table(name = "PROJECT_STRUCTURE")
+public class ProjectStructure extends BaseEntity {
+
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinTable(name = "PROJECT_STRUCTURE_CLASS_STRUCTURE",
+            joinColumns = {@JoinColumn(name = "project_structure_id")},
+            inverseJoinColumns = {@JoinColumn(name = "class_structure_id")})
+    @MapKeyColumn(name = "class_name")
     private Map<String, ClassStructure> classStructures = new HashMap<>();
 
     /**
@@ -247,4 +259,5 @@ public class ProjectStructure {
             classStructure.computeAllRelationMetrics();
         }
     }
+
 }

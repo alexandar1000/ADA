@@ -1,4 +1,4 @@
-package com.ucl.ADA.parser.model;
+package com.ucl.ADA.parser.ada_model;
 
 import lombok.Getter;
 
