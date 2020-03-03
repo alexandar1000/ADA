@@ -1,4 +1,4 @@
-<a mat-list-item (click)="getSnapshotsList(owner, repository, branch)">{{branch}}</a>
+<a mat-list-item (click)="getSnapshotsList(owner, repository, branch)" class="branch-container">{{branch}}</a>
 <mat-nav-list> 
     <app-snapshot [owner]="owner" [repository]="repository" [branch]="branch" [snapshot]="snapshot" *ngFor="let snapshot of snapshots"></app-snapshot>
 </mat-nav-list>
