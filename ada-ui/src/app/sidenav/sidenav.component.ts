@@ -1,7 +1,6 @@
 import {MediaMatcher} from '@angular/cdk/layout';
 import {ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { UserService } from '../user.service';
-import { User } from '../classes/user';
+import { OwnerService } from '../owner.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -10,12 +9,11 @@ import { User } from '../classes/user';
 })
 export class SidenavComponent implements OnInit, OnDestroy {
   mobileQuery: MediaQueryList;
-
-  userList: User[];
+  private owners = []
 
   private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private userService: UserService) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private ownerService: OwnerService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -26,40 +24,17 @@ export class SidenavComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.userList = [];
-    this.getUserList();
-    this.userService.currentUser.subscribe(user => this.addUser(user));
+    this.getOwnerList();
   }
 
   shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));
 
-  getUserList(): void {
-    this.userService.getUserList().subscribe(users => this.addUsers(users));
-  }
-
-  addUsers(users): void {
-    users.forEach(user => {
-      this.userList.push(user);
+  getOwnerList(): void {
+    this.ownerService.getOwnersList().subscribe(ownerNames => {
+      ownerNames.forEach(ownerName => {
+        this.owners.push(ownerName);
+      });
     });
-  }
-
-  addUser(user: User) {
-    if (user.userName) {
-      if (!this.checkExistingUsers(user)) {
-        this.userList.push(user);
-      }
-    }
-  }
-
-  checkExistingUsers(user: User): boolean {
-    for (let index = 0; index < this.userList.length; index++) {
-      const element = this.userList[index];
-      if (user.userName === element.userName) {
-        this.userList.splice(index, 1, user);
-        return true;
-      }
-    }
-    return false
   }
 }
 
