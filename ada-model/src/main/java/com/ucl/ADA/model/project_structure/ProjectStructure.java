@@ -59,7 +59,7 @@ public class ProjectStructure extends BaseEntity {
         if (this.classStructures.containsKey(declaringClass)) {
             this.classStructures.get(declaringClass).addAttributeDeclaration(attributeDeclaration);
         } else {
-            ClassStructure classStructure = new ClassStructure();
+            ClassStructure classStructure = getNewClassStructure(declaringClass);
             classStructure.addAttributeDeclaration(attributeDeclaration);
             this.classStructures.put(declaringClass, classStructure);
         }
@@ -75,7 +75,7 @@ public class ProjectStructure extends BaseEntity {
         if (this.classStructures.containsKey(declaringClass)) {
             this.classStructures.get(declaringClass).addConstructorDeclaration(constructorDeclaration);
         } else {
-            ClassStructure classStructure = new ClassStructure();
+            ClassStructure classStructure = getNewClassStructure(declaringClass);
             classStructure.addConstructorDeclaration(constructorDeclaration);
             this.classStructures.put(declaringClass, classStructure);
         }
@@ -91,7 +91,7 @@ public class ProjectStructure extends BaseEntity {
         if (this.classStructures.containsKey(declaringClass)) {
             this.classStructures.get(declaringClass).addMethodDeclaration(methodDeclaration);
         } else {
-            ClassStructure classStructure = new ClassStructure();
+            ClassStructure classStructure = getNewClassStructure(declaringClass);
             classStructure.addMethodDeclaration(methodDeclaration);
             this.classStructures.put(declaringClass, classStructure);
         }
@@ -110,7 +110,7 @@ public class ProjectStructure extends BaseEntity {
         if (this.classStructures.containsKey(consumingClassName)) {
             this.classStructures.get(consumingClassName).addPackageInvocationElement(declaringClassName, InvocationType.OUTGOING, packageInvocation);
         } else {
-            ClassStructure classStructure = new ClassStructure();
+            ClassStructure classStructure = getNewClassStructure(consumingClassName);
             classStructure.addPackageInvocationElement(declaringClassName, InvocationType.OUTGOING, packageInvocation);
             this.classStructures.put(consumingClassName, classStructure);
         }
@@ -118,7 +118,7 @@ public class ProjectStructure extends BaseEntity {
         if (this.classStructures.containsKey(declaringClassName)) {
             this.classStructures.get(declaringClassName).addPackageInvocationElement(consumingClassName, InvocationType.INCOMING, packageInvocation);
         } else {
-            ClassStructure classStructure = new ClassStructure();
+            ClassStructure classStructure = getNewClassStructure(declaringClassName);
             classStructure.addPackageInvocationElement(consumingClassName, InvocationType.INCOMING, packageInvocation);
             this.classStructures.put(declaringClassName, classStructure);
         }
@@ -136,7 +136,7 @@ public class ProjectStructure extends BaseEntity {
         if (this.classStructures.containsKey(consumingClassName)) {
             this.classStructures.get(consumingClassName).addAttributeInvocationElement(declaringClassName, InvocationType.OUTGOING, attributeInvocation);
         } else {
-            ClassStructure classStructure = new ClassStructure();
+            ClassStructure classStructure = getNewClassStructure(consumingClassName);
             classStructure.addAttributeInvocationElement(declaringClassName, InvocationType.OUTGOING, attributeInvocation);
             this.classStructures.put(consumingClassName, classStructure);
         }
@@ -144,7 +144,7 @@ public class ProjectStructure extends BaseEntity {
         if (this.classStructures.containsKey(declaringClassName)) {
             this.classStructures.get(declaringClassName).addAttributeInvocationElement(consumingClassName, InvocationType.INCOMING, attributeInvocation);
         } else {
-            ClassStructure classStructure = new ClassStructure();
+            ClassStructure classStructure = getNewClassStructure(declaringClassName);
             classStructure.addAttributeInvocationElement(consumingClassName, InvocationType.INCOMING, attributeInvocation);
             this.classStructures.put(declaringClassName, classStructure);
         }
@@ -162,7 +162,7 @@ public class ProjectStructure extends BaseEntity {
         if (this.classStructures.containsKey(consumingClassName)) {
             this.classStructures.get(consumingClassName).addConstructorInvocationElement(declaringClassName, InvocationType.OUTGOING, constructorInvocation);
         } else {
-            ClassStructure classStructure = new ClassStructure();
+            ClassStructure classStructure = getNewClassStructure(consumingClassName);
             classStructure.addConstructorInvocationElement(declaringClassName, InvocationType.OUTGOING, constructorInvocation);
             this.classStructures.put(consumingClassName, classStructure);
         }
@@ -170,7 +170,7 @@ public class ProjectStructure extends BaseEntity {
         if (this.classStructures.containsKey(declaringClassName)) {
             this.classStructures.get(declaringClassName).addConstructorInvocationElement(consumingClassName, InvocationType.INCOMING, constructorInvocation);
         } else {
-            ClassStructure classStructure = new ClassStructure();
+            ClassStructure classStructure = getNewClassStructure(declaringClassName);
             classStructure.addConstructorInvocationElement(consumingClassName, InvocationType.INCOMING, constructorInvocation);
             this.classStructures.put(declaringClassName, classStructure);
         }
@@ -188,7 +188,7 @@ public class ProjectStructure extends BaseEntity {
         if (this.classStructures.containsKey(consumingClassName)) {
             this.classStructures.get(consumingClassName).addMethodInvocationElement(declaringClassName, InvocationType.OUTGOING, methodInvocation);
         } else {
-            ClassStructure classStructure = new ClassStructure();
+            ClassStructure classStructure = getNewClassStructure(consumingClassName);
             classStructure.addMethodInvocationElement(declaringClassName, InvocationType.OUTGOING, methodInvocation);
             this.classStructures.put(consumingClassName, classStructure);
         }
@@ -196,7 +196,7 @@ public class ProjectStructure extends BaseEntity {
         if (this.classStructures.containsKey(declaringClassName)) {
             this.classStructures.get(declaringClassName).addMethodInvocationElement(consumingClassName, InvocationType.INCOMING, methodInvocation);
         } else {
-            ClassStructure classStructure = new ClassStructure();
+            ClassStructure classStructure = getNewClassStructure(declaringClassName);
             classStructure.addMethodInvocationElement(consumingClassName, InvocationType.INCOMING, methodInvocation);
             this.classStructures.put(declaringClassName, classStructure);
         }
@@ -212,7 +212,7 @@ public class ProjectStructure extends BaseEntity {
         if (this.classStructures.containsKey(consumingClass)) {
             this.classStructures.get(consumingClass).addExternalPackageImport(externalPackageImport);
         } else {
-            ClassStructure classStructure = new ClassStructure();
+            ClassStructure classStructure = getNewClassStructure(consumingClass);
             classStructure.addExternalPackageImport(externalPackageImport);
             this.classStructures.put(consumingClass, classStructure);
         }
@@ -228,7 +228,7 @@ public class ProjectStructure extends BaseEntity {
         if (this.classStructures.containsKey(consumingClass)) {
             this.classStructures.get(consumingClass).addExternalAttributeInvocation(externalAttributeDeclarations);
         } else {
-            ClassStructure classStructure = new ClassStructure();
+            ClassStructure classStructure = getNewClassStructure(consumingClass);
             classStructure.addExternalAttributeInvocation(externalAttributeDeclarations);
             this.classStructures.put(consumingClass, classStructure);
         }
@@ -260,7 +260,7 @@ public class ProjectStructure extends BaseEntity {
         if (this.classStructures.containsKey(consumingClass)) {
             this.classStructures.get(consumingClass).addExternalMethodInvocation(externalMethodInvocations);
         } else {
-            ClassStructure classStructure = new ClassStructure();
+            ClassStructure classStructure = getNewClassStructure(consumingClass);
             classStructure.addExternalMethodInvocation(externalMethodInvocations);
             this.classStructures.put(consumingClass, classStructure);
         }
@@ -274,6 +274,19 @@ public class ProjectStructure extends BaseEntity {
             classStructure.computeAllClassMetrics();
             classStructure.computeAllRelationMetrics();
         }
+    }
+
+    private ClassStructure getNewClassStructure(String className) {
+        ClassStructure classStructure = new ClassStructure();
+        classStructure.setCurrentPackage(new PackageDeclaration(getDefaultPackageName(className)));
+        return classStructure;
+    }
+
+
+    private String getDefaultPackageName(String className) {
+        int p = className.lastIndexOf(".");
+        String packageName = (p == -1 ? "" : className.substring(0, p));
+        return packageName;
     }
 
 }

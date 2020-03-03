@@ -34,7 +34,7 @@ public class ClassStructure extends BaseEntity {
      */
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "package_declaration_id")
-    private PackageDeclaration currentPackage;
+    private PackageDeclaration currentPackage = new PackageDeclaration("$");
 
     /**
      * Attributes declared in this class.
@@ -90,11 +90,12 @@ public class ClassStructure extends BaseEntity {
      * Information about the invocations of elements from this class by the other classes. String is the qualified
      * name of the class.
      */
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinTable(name = "CLASS_STRUCTURE_INCOMING_DEPENDENCE_INFO",
-            joinColumns = {@JoinColumn(name = "class_structure_id")},
-            inverseJoinColumns = {@JoinColumn(name = "dependence_info_id")})
-    @MapKeyColumn(name = "class_name")
+    @Transient
+//    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+//    @JoinTable(name = "CLASS_STRUCTURE_INCOMING_DEPENDENCE_INFO",
+//            joinColumns = {@JoinColumn(name = "class_structure_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "dependence_info_id")})
+//    @MapKeyColumn(name = "class_name")
     private Map<String, DependenceInfo> incomingDependenceInfo = new HashMap<>();
 
 

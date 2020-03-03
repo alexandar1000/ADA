@@ -1,7 +1,7 @@
 CREATE TABLE REPOSITORY
 (
     repo_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY (START 1),
-    repo_name VARCHAR(255) NOT NULL,
+    repo_name VARCHAR NOT NULL,
     owner_id BIGINT NOT NULL,
     CONSTRAINT repositories_pkey PRIMARY KEY (repo_id),
     CONSTRAINT repositories_fkey FOREIGN KEY (owner_id)
