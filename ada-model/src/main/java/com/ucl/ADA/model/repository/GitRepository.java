@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Getter
 @Setter
 @NoArgsConstructor
 @Table(name = "REPOSITORY")
@@ -20,20 +19,16 @@ public class GitRepository {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "repo_id", nullable = false)
-    private Long repoID;
+    @Getter private Long repoID;
 
     @Column(name = "repo_name", nullable = false)
-    private String repoName;
+    @Getter private String repoName;
 
     @OneToMany(mappedBy = "repository",targetEntity = Branch.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<Branch> branches = new HashSet<>();
+    @Getter Set<Branch> branches = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
 
-    public GitRepository(String repoName, Owner owner) {
-        this.repoName = repoName;
-        this.owner = owner;
-    }
 }

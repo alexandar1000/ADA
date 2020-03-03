@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Getter
 @Setter
 @NoArgsConstructor
 @Table(name = "SNAPSHOT")
@@ -21,17 +20,16 @@ public class Snapshot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "snapshot_id")
-    private Long snapshotID;
+    @Getter private Long snapshotID;
 
     @ManyToOne
     @JoinColumn(name = "branch_id")
     private Branch branch;
 
     @OneToMany(mappedBy = "snapshot", targetEntity = SourceFile.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    private
-    Set<Branch> sourceFiles = new HashSet<>();
+    @Getter private Set<Branch> sourceFiles = new HashSet<>();
 
     @Column(name = "timestamp")
-    private LocalDateTime timestamp;
+    @Getter private LocalDateTime timestamp;
 
 }

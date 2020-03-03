@@ -10,7 +10,6 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter
 @Setter
 @NoArgsConstructor
 @Entity
@@ -20,18 +19,16 @@ public class Branch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "branch_id")
-    private Long branchID;
-
+    @Getter private Long branchID;
 
     @Column(name = "branch_name", nullable = false)
-    private String branchName;
+    @Getter private String branchName;
 
     @ManyToOne
     @JoinColumn(name = "repo_id", nullable = false)
     private GitRepository repository;
 
     @OneToMany(mappedBy = "branch", targetEntity = Snapshot.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    private
-    Set<Snapshot> snapshots = new HashSet<>();
+    @Getter private Set<Snapshot> snapshots = new HashSet<>();
 
 }

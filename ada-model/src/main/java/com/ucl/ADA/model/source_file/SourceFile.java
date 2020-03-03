@@ -8,7 +8,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Getter
 @Setter
 @NoArgsConstructor
 @Entity
@@ -17,14 +16,14 @@ public class SourceFile {
 
     @Id
     @Column(name = "file_hash")
-    private int fileHash;
+    @Getter private int fileHash;
 
     @ManyToOne
     @JoinColumn(name = "snapshot_id")
     private Snapshot snapshot;
 
     @Column(name = "file_name", nullable = false)
-    private String fileName;
+    @Getter private String fileName;
 
     @Override
     public boolean equals(Object o) {
