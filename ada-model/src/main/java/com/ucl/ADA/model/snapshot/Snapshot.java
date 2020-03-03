@@ -1,6 +1,7 @@
 package com.ucl.ADA.model.snapshot;
 
 import com.ucl.ADA.model.branch.Branch;
+import com.ucl.ADA.model.project_structure.ProjectStructure;
 import com.ucl.ADA.model.source_file.SourceFile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,5 +33,14 @@ public class Snapshot {
 
     @Column(name = "timestamp")
     @Getter private LocalDateTime timestamp;
+
+    @OneToOne(mappedBy = "snapshot", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ProjectStructure projectStructure;
+
+    public void setProjectStructure(ProjectStructure projectStructure) {
+        assert projectStructure != null;
+        this.projectStructure = projectStructure;
+        projectStructure.setSnapshot(this);
+    }
 
 }
