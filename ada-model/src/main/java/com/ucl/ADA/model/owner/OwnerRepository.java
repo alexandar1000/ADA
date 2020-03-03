@@ -11,4 +11,6 @@ public interface OwnerRepository extends CrudRepository<Owner, Long> {
     List<String> fetchUserNames();
 
     Owner findByUserName(String userName);
+
+    List<Owner> findAllByOrderByOwnerIDAsc();
 }

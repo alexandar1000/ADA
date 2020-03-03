@@ -1,11 +1,16 @@
 package com.ucl.ADA.model.owner;
 
 import com.ucl.ADA.model.repository.GitRepository;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "OWNER")
 public class Owner {
@@ -20,36 +25,10 @@ public class Owner {
     private String userName;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = GitRepository.class)
-    Set<GitRepository> repos = new HashSet<>();
-
-    public Owner(){};
+    Set<GitRepository> repos = new LinkedHashSet<>();
 
     public Owner(String userName) {
         this.userName = userName;
-    }
-
-    public Long getOwnerID() {
-        return ownerID;
-    }
-
-    public void setOwnerID(Long ownerID) {
-        this.ownerID = ownerID;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public Set<GitRepository> getRepos() {
-        return repos;
-    }
-
-    public void setRepos(Set<GitRepository> repos) {
-        this.repos = repos;
     }
 
 }
