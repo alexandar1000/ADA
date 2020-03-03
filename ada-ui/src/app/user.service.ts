@@ -9,8 +9,8 @@ import { Observable } from 'rxjs';
 export class UserService {
   private repoFormUrl: string;
 
-  constructor(private http: HttpClient) { 
-    this.repoFormUrl = 'http://localhost:8080/analyser';
+  constructor(private http: HttpClient) {
+    this.repoFormUrl = 'http://localhost:8080/users'
   }
 
   public sendRepoForm(urlForm: string, branchName: string): Observable<any> {
