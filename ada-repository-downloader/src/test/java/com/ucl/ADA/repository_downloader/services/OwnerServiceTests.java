@@ -2,7 +2,6 @@ package com.ucl.ADA.repository_downloader.services;
 
 import com.ucl.ADA.model.owner.Owner;
 import com.ucl.ADA.model.owner.OwnerRepository;
-import com.ucl.ADA.repository_downloader.services.OwnerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -30,7 +29,7 @@ public class OwnerServiceTests {
     }
 
     @Test
-    void getAllUsers(){
+    void getAllOwners(){
 
         Owner owner = new Owner("naum");
         Owner owner2 = new Owner("nina");
@@ -44,7 +43,7 @@ public class OwnerServiceTests {
 
         when(ownerRepository.findAll()).thenReturn(owners);
 
-        List<Owner> retrievedRepos = ownerService.listUsers();
+        List<Owner> retrievedRepos = ownerService.listOwners();
 
         verify(ownerRepository).findAll();
 
@@ -80,12 +79,12 @@ public class OwnerServiceTests {
     }
 
     @Test
-    void getUser(){
+    void getOwner(){
         Owner owner = new Owner("naum");
         owner.setOwnerID(122L);
         when(ownerRepository.findById(122L)).thenReturn(Optional.of(owner));
 
-        Owner retrievedOwner = ownerService.getUser(122L);
+        Owner retrievedOwner = ownerService.getOwner(122L);
 
         verify(ownerRepository).findById(122L);
 
@@ -94,11 +93,11 @@ public class OwnerServiceTests {
     }
 
     @Test
-    void getNonExistingUser(){
+    void getNonExistingOwner(){
 
         when(ownerRepository.findById(122L)).thenReturn(Optional.empty());
 
-        Owner retrievedOwner = ownerService.getUser(122L);
+        Owner retrievedOwner = ownerService.getOwner(122L);
 
         verify(ownerRepository).findById(122L);
 
@@ -107,13 +106,13 @@ public class OwnerServiceTests {
 
     @Test
     void testDeleteOwner(){
-        ownerService.deleteUser(12L);
+        ownerService.deleteOwner(12L);
         verify(ownerRepository, times(1)).deleteById(12L);
     }
 
     @Test
     void testDeleteAllOwners(){
-        ownerService.deleteAllUsers();
+        ownerService.deleteAllOwners();
         verify(ownerRepository, times(1)).deleteAll();
     }
 
@@ -124,7 +123,7 @@ public class OwnerServiceTests {
 
         when(ownerRepository.save(any(Owner.class))).thenReturn(owner);
 
-        Owner returnedOwner = ownerService.addUser(owner);
+        Owner returnedOwner = ownerService.addOwner(owner);
         verify(ownerRepository, times(1)).save(owner);
 
         assertThat(returnedOwner).isNotNull();
@@ -138,7 +137,7 @@ public class OwnerServiceTests {
         owner.setOwnerID(122L);
         when(ownerRepository.findByUserName(any(String.class))).thenReturn(owner);
 
-        Owner retrievedOwner = ownerService.getUserByName("naum");
+        Owner retrievedOwner = ownerService.getOwnerByName("naum");
 
         verify(ownerRepository).findByUserName("naum");
 
@@ -147,11 +146,11 @@ public class OwnerServiceTests {
     }
 
     @Test
-    void getNonExistingUserByUserName(){
+    void getNonExistingOwnerByUserName(){
 
         when(ownerRepository.findByUserName(any(String.class))).thenReturn(null);
 
-        Owner retrievedOwner = ownerService.getUserByName("naum");
+        Owner retrievedOwner = ownerService.getOwnerByName("naum");
 
         verify(ownerRepository).findByUserName("naum");
 

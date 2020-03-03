@@ -3,7 +3,6 @@ package com.ucl.ADA.repository_downloader.services;
 import com.ucl.ADA.model.branch.Branch;
 import com.ucl.ADA.model.branch.BranchRepository;
 import com.ucl.ADA.model.owner.Owner;
-import com.ucl.ADA.model.owner.OwnerRepository;
 import com.ucl.ADA.model.repository.GitRepository;
 import com.ucl.ADA.model.repository.RepoEntityRepository;
 import com.ucl.ADA.model.snapshot.Snapshot;
@@ -19,7 +18,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -68,7 +66,7 @@ public class RepoServiceTests {
         Owner owner = new Owner();
         owner.setUserName(repoDbPopulator.getName());
 
-        when(ownerService.addUser(any(Owner.class))).thenReturn(owner);
+        when(ownerService.addOwner(any(Owner.class))).thenReturn(owner);
 
         GitRepository repo = new GitRepository();
         repo.setOwner(owner);
@@ -97,8 +95,8 @@ public class RepoServiceTests {
 
         assertThat(retDbPopulator.equals(repoDbPopulator));
 
-        verify(ownerService).listUsers();
-        verify(ownerService).addUser(any());
+        verify(ownerService).listOwners();
+        verify(ownerService).addOwner(any());
         verify(repoEntityRepository).save(any());
         verify(branchRepository).save(any());
         verify(snapshotRepository).save(any());

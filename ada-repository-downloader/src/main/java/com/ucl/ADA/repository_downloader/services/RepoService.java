@@ -47,7 +47,7 @@ public class RepoService {
 
     /**
      * Download Git repository and populate database, following the hierarchical database model of
-     * User -*> GitRepo -*> Branch -*> Snapshot -*> SourceFiles
+     * Owner -*> GitRepo -*> Branch -*> Snapshot -*> SourceFiles
      * @param repoInfoUI - instance of RepoDbPopulator which initially holds the git URL and branch name
      *
      * */
@@ -146,9 +146,9 @@ public class RepoService {
     }
 
     /**
-     * Initialize a GitRepository entity by searching for existing repo associated with a given user, and returning it if found.
+     * Initialize a GitRepository entity by searching for existing repo associated with a given owner, and returning it if found.
      * Otherwise, create, initialize and return a new GitRepository entity.
-     * @param owner corresponding user
+     * @param owner corresponding owner
      * @param downloadedRepo object containing metadata of Git repository
      * @return an existing (or new) GitRepository
      */
@@ -168,14 +168,14 @@ public class RepoService {
     }
 
     /**
-     * Initialize a User entity by searching for existing User in the database, and returning it if found.
-     * Otherwise, create, initialize and return a new User entity.
+     * Initialize a Owner entity by searching for existing Owner in the database, and returning it if found.
+     * Otherwise, create, initialize and return a new Owner entity.
      * @param downloadedRepo object containining metadata of Git repository
-     * @return an existing (or new) User
+     * @return an existing (or new) Owner
      */
     private Owner initOwner(RepoDbPopulator downloadedRepo) {
 
-        List<Owner> owners = ownerService.listUsers();
+        List<Owner> owners = ownerService.listOwners();
         String testUserName = downloadedRepo.getOwner();
 
         // Search and return existing user, if found
@@ -188,7 +188,7 @@ public class RepoService {
         // If not found, create and return a new user
         Owner owner = new Owner();
         owner.setUserName(downloadedRepo.getOwner());
-        return ownerService.addUser(owner);
+        return ownerService.addOwner(owner);
     }
 
     public List<GitRepository> listRepositories(){
