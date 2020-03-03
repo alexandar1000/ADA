@@ -5,11 +5,14 @@ import com.ucl.ADA.model.project_structure.ProjectStructure;
 import com.ucl.ADA.parser.ParserServices;
 import com.ucl.ADA.repository_downloader.helpers.RepoDbPopulator;
 import com.ucl.ADA.repository_downloader.services.RepoService;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 @Service
 public class RepositoryAnalyserServices {
@@ -53,6 +56,13 @@ public class RepositoryAnalyserServices {
         // Calculate the metrics for the parsed repository.
         if (parsedRepositoryProjectStructure != null) {
             parsedRepositoryProjectStructure.computeAllMetrics();
+        }
+
+        // Delete downloaded repository since it's been parsed
+        try {
+            FileUtils.deleteDirectory(new File(populator.getDirectoryPath()));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return parsedRepositoryProjectStructure;
