@@ -2,58 +2,36 @@ package com.ucl.ADA.model.repository;
 
 import com.ucl.ADA.model.branch.Branch;
 import com.ucl.ADA.model.owner.Owner;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Entity
+@Setter
+@NoArgsConstructor
 @Table(name = "REPOSITORY")
 public class GitRepository {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "repo_id", nullable = false)
-    private Long repoID;
+    @Getter private Long repoID;
 
     @Column(name = "repo_name", nullable = false)
-    private String repoName;
+    @Getter private String repoName;
 
     @OneToMany(mappedBy = "repository",targetEntity = Branch.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<Branch> branches = new HashSet<>();
+    @OrderBy("branch_id ASC")
+    @Getter Set<Branch> branches = new LinkedHashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
 
-    public GitRepository(){}
-
-    public GitRepository(String repoName, Owner owner) {
-        this.repoName = repoName;
-        this.owner = owner;
-    }
-
-    public Long getRepoID() {
-        return repoID;
-    }
-
-    public void setRepoID(Long repoID) {
-        this.repoID = repoID;
-    }
-
-    public String getRepoName() {
-        return repoName;
-    }
-
-    public void setRepoName(String repoName) {
-        this.repoName = repoName;
-    }
-
-    public void setOwner(Owner owner) {
-        this.owner = owner;
-    }
-
-    public Set<Branch> getBranches() {
-        return branches;
-    }
 }

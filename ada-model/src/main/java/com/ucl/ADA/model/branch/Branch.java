@@ -2,11 +2,16 @@ package com.ucl.ADA.model.branch;
 
 import com.ucl.ADA.model.repository.GitRepository;
 import com.ucl.ADA.model.snapshot.Snapshot;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "BRANCH")
 public class Branch {
@@ -14,49 +19,17 @@ public class Branch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "branch_id")
-    private Long branchID;
-
+    @Getter private Long branchID;
 
     @Column(name = "branch_name", nullable = false)
-    private String branchName;
+    @Getter private String branchName;
 
     @ManyToOne
     @JoinColumn(name = "repo_id", nullable = false)
     private GitRepository repository;
 
     @OneToMany(mappedBy = "branch", targetEntity = Snapshot.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    private
-    Set<Snapshot> snapshots = new HashSet<>();
-
-    public Branch(){}
-
-    public Long getBranchID() {
-        return branchID;
-    }
-
-    public void setBranchID(Long branchID) {
-        this.branchID = branchID;
-    }
-
-    public void setRepository(GitRepository repository) {
-        this.repository = repository;
-    }
-
-    public String getBranchName() {
-        return branchName;
-    }
-
-    public void setBranchName(String branchName) {
-        this.branchName = branchName;
-    }
-
-    public Set<Snapshot> getSnapshots() {
-        return snapshots;
-    }
-
-    public void setSnapshots(Set<Snapshot> snapshots) {
-        this.snapshots = snapshots;
-    }
+    @OrderBy("snapshot_id ASC")
+    @Getter private Set<Snapshot> snapshots = new LinkedHashSet<>();
 
 }
-

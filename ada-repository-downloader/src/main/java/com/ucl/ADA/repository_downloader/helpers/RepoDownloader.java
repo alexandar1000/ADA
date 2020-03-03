@@ -17,32 +17,38 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
+/**
+ * Helper class for downloading a Git repository and setting up a RepoDbPopulator object.
+ */
+
 public class RepoDownloader {
 
-    public static RepoDbPopulator downloadRepository(RepoDbPopulator repoInfoUI) throws GitAPIException {
+    /**
+     * Download a Git repository given a URL and a branch name and initialize a RepoDbPopulator object.
+     * @see RepoDbPopulator
+     * @param url Git url of the repository
+     * @param branch Branch name
+     * @return Initialized RepoDbPopulator object
+     * @throws GitAPIException if download fails
+     */
+    public static RepoDbPopulator downloadRepository(String url, String branch) throws GitAPIException {
 
-        if (repoInfoUI.getBranch().equals("")) {
-            repoInfoUI.setBranch("master");
+        if (branch.equals("")) {
+            branch = "master";
         }
 
-        RepoDbPopulator repo = setup(repoInfoUI);
+        RepoDbPopulator repo = setup(url, branch);
 
-        String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
-        String clone_path = System.getProperty("user.dir") + "/temp/"
-                + repo.getOwner() + "/" + repo.getName() + "/" + repo.getBranch() + "/" + timeStamp;
-
-        repo.setDirectoryPath(clone_path);
-
-
-        File file = new File(clone_path);
+        File repoDir = new File(repo.getDirectoryPath());
 
         Git git = Git.cloneRepository()
                 .setURI( repo.getUrl() )
-                .setDirectory( file )
+                .setDirectory( repoDir )
                 .setCloneAllBranches( true )
                 .call();
 
         if (!repo.getBranch().equals("master")) {
+
             Ref ref = git.checkout().
                     setCreateBranch(true).
                     setName(repo.getBranch()).
@@ -51,15 +57,24 @@ public class RepoDownloader {
                     call();
         }
 
-        List<String> fileNames = getSourceFileNames(clone_path);
+        List<String> fileNames = getSourceFileNames(repo.getDirectoryPath());
         repo.setFileNames(fileNames);
         git.close();
 
         return repo;
     }
 
-    private static RepoDbPopulator setup(RepoDbPopulator repo) {
-        String[] data = repo.getUrl().split("/|//");
+    /**
+     * Parse the url string to get the owner and name of the Git repository and construct a RepoDbPopulator object.
+     * @param url of the Git repository
+     * @param branch name
+     * @return initialized RepoDbPopulator object
+     */
+    private static RepoDbPopulator setup(String url, String branch) {
+
+        RepoDbPopulator repoDbPopulator = new RepoDbPopulator();
+        repoDbPopulator.setUrl(url);
+        String[] data = url.split("/|//");
         String owner = data[3];
         String name;
         if (data[4].indexOf(".") > 0) {
@@ -67,15 +82,27 @@ public class RepoDownloader {
         } else {
             name = data[4];
         }
-        repo.setName(name);
-        repo.setOwner(owner);
-        return repo;
+        repoDbPopulator.setName(name);
+        repoDbPopulator.setOwner(owner);
+        repoDbPopulator.setBranch(branch);
+
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
+        String clone_path = System.getProperty("user.dir") + "/temp/"
+                + owner + "/" + name + "/" + branch + "/" + timeStamp;
+
+        repoDbPopulator.setDirectoryPath(clone_path);
+
+        return repoDbPopulator;
     }
 
-
-    private static List<String> getSourceFileNames(String clone_path) {
+    /**
+     * Utility method to list all source files (.java) in a given repository.
+     * @param directoryPath path to the source directory
+     * @return a list containing all file names ending with .java
+     */
+    private static List<String> getSourceFileNames(String directoryPath) {
         List<String> result = null;
-        try (Stream<Path> walk = Files.walk(Paths.get(clone_path))) {
+        try (Stream<Path> walk = Files.walk(Paths.get(directoryPath))) {
 
             result = walk.map(Path::toString)
                     .filter(f -> f.endsWith(".java")).collect(Collectors.toList());

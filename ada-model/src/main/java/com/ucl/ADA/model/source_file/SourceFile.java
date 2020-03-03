@@ -1,46 +1,29 @@
 package com.ucl.ADA.model.source_file;
 
 import com.ucl.ADA.model.snapshot.Snapshot;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Objects;
 
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "SOURCEFILE")
 public class SourceFile {
 
     @Id
     @Column(name = "file_hash")
-    private int fileHash;
+    @Getter private int fileHash;
 
     @ManyToOne
     @JoinColumn(name = "snapshot_id")
     private Snapshot snapshot;
 
     @Column(name = "file_name", nullable = false)
-    private String fileName;
-
-    public SourceFile(){}
-
-    public void setFileHash(int fileHash) {
-        this.fileHash = fileHash;
-    }
-
-    public void setSnapshot(Snapshot snapshot) {
-        this.snapshot = snapshot;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public int getFileHash() {
-        return fileHash;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
+    @Getter private String fileName;
 
     @Override
     public boolean equals(Object o) {

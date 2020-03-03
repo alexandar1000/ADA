@@ -24,20 +24,20 @@ public class OwnerController {
     @Autowired private OwnerService ownerService;
 
     @DeleteMapping
-    public void deleteAll(){ ownerService.deleteAllUsers();}
+    public void deleteAll(){ ownerService.deleteAllOwners();}
 
     @DeleteMapping(value = "/{id}")
-    public void deleteUserById(@PathVariable Long id){ ownerService.deleteUser(id);}
+    public void deleteOwnerById(@PathVariable Long id){ ownerService.deleteOwner(id);}
 
 
     @GetMapping(value = "/{user_name}")
-    public Owner getUserByName(@PathVariable String user_name){
-        return ownerService.getUserByName(user_name);
+    public Owner getOwnerByName(@PathVariable String user_name){
+        return ownerService.getOwnerByName(user_name);
     }
 
     @GetMapping(value = "/{user_name}/repositories")
     public Set<GitRepository> getAllReposForUser(@PathVariable String user_name){
-        return getUserByName(user_name).getRepos();
+        return getOwnerByName(user_name).getRepos();
     }
 
 
@@ -97,7 +97,7 @@ public class OwnerController {
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping
     public List<Owner> listAllUsers() {
-        return ownerService.listUsers();
+        return ownerService.listOwners();
     }
 
     @GetMapping("/names")
