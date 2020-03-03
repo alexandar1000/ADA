@@ -23,4 +23,6 @@ public class RepoDbPopulator {
     private List<String> fileNames = new ArrayList<>();
     private String directoryPath;
 
+    // newly created
+    private Long snapshot_id;
 }

@@ -34,13 +34,12 @@ public class Snapshot {
     @Column(name = "timestamp")
     @Getter private LocalDateTime timestamp;
 
-    @OneToOne(mappedBy = "snapshot", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private ProjectStructure projectStructure;
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_structure_id")
+    @Getter private ProjectStructure projectStructure;
 
     public void setProjectStructure(ProjectStructure projectStructure) {
-        assert projectStructure != null;
         this.projectStructure = projectStructure;
-        projectStructure.setSnapshot(this);
     }
 
 }

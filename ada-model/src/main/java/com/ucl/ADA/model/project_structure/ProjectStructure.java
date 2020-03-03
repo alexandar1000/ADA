@@ -7,7 +7,6 @@ import com.ucl.ADA.model.dependence_information.declaration_information.Construc
 import com.ucl.ADA.model.dependence_information.declaration_information.MethodDeclaration;
 import com.ucl.ADA.model.dependence_information.declaration_information.PackageDeclaration;
 import com.ucl.ADA.model.dependence_information.invocation_information.*;
-import com.ucl.ADA.model.snapshot.Snapshot;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,9 +29,9 @@ public class ProjectStructure extends BaseEntity {
     @MapKeyColumn(name = "class_name")
     private Map<String, ClassStructure> classStructures = new HashMap<>();
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "snapshot_id", nullable = false)
-    private Snapshot snapshot;
+//    @OneToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "snapshot_id", nullable = false)
+//    private Snapshot snapshot;
 
     /**
      * Adds package declaration for the corresponding declaring class where it is declared.

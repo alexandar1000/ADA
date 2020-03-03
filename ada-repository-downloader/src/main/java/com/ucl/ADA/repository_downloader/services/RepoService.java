@@ -21,9 +21,9 @@ import java.util.Set;
 
 /**
  * Service class for downloading and storing the Git repository metadata in the DB (owner, repoName, branch, timestamp, .java files etc..)
+ *
  * @see RepoDbPopulator
  * @see RepoDownloader
- *
  */
 @Service
 public class RepoService {
@@ -47,19 +47,21 @@ public class RepoService {
     /**
      * Download Git repository and populate database, following the hierarchical database model of
      * Owner -*> GitRepo -*> Branch -*> Snapshot -*> SourceFiles
-     * @param url  url of the Git repository
+     *
+     * @param url        url of the Git repository
      * @param branchName branch name of the Git repository
      * @return RepoDbPopulator object to be used by the parser
-     * */
+     */
     public RepoDbPopulator downloadAndStoreRepo(String url, String branchName) throws GitAPIException {
 
-        RepoDbPopulator repoDbPopulator = RepoDownloader.downloadRepository(url,branchName);
+        RepoDbPopulator repoDbPopulator = RepoDownloader.downloadRepository(url, branchName);
 
         return populateDatabase(repoDbPopulator);
     }
 
     /**
      * Populate database with the metadata of the git repository.
+     *
      * @param repoDbPopulator helper object containing the name, owner, branch and path to source files
      *                        of the downloaded Git Repository
      * @return the same RepoDbPopulator object, to be used by the the parser.
@@ -76,6 +78,8 @@ public class RepoService {
 
         Snapshot snapshot = initSnapshot(timestamp, branchEntity);
 
+        repoDbPopulator.setSnapshot_id(snapshot.getSnapshotID());
+
         initSourceFiles(repoDbPopulator, snapshot);
 
         return repoDbPopulator;
@@ -83,15 +87,16 @@ public class RepoService {
 
     /**
      * Create, initalize and store a new SourceFile entity in the DB.
+     *
      * @param repoDbPopulator helper object containing the source file names of the downloaded repository
+     * @param snapshot        corresponding Snapshot entity
      * @see RepoDbPopulator#getFileNames()
-     * @param snapshot corresponding Snapshot entity
      */
 
     private void initSourceFiles(RepoDbPopulator repoDbPopulator, Snapshot snapshot) {
         List<String> fileNames = repoDbPopulator.getFileNames();
 
-        for(String file : fileNames){
+        for (String file : fileNames) {
 
             SourceFile sourceFile = new SourceFile();
             sourceFile.setSnapshot(snapshot);
@@ -106,7 +111,8 @@ public class RepoService {
 
     /**
      * Create, initalize and save a new Snapshot entity in the DB.
-     * @param timestamp timestamp of request
+     *
+     * @param timestamp    timestamp of request
      * @param branchEntity corresponding Branch entity
      * @return saved Snapshot entity
      */
@@ -122,18 +128,19 @@ public class RepoService {
     /**
      * Initialize a Branch entity by searching for existing branch within a repository, and returning it if found.
      * Otherwise, create, initialize and save a new Branch entity in the DB.
-     * @param repo corresponding Git repository
+     *
+     * @param repo           corresponding Git repository
      * @param downloadedRepo object containing metadata of Git repository
-     * @see RepoDbPopulator#getBranch()
      * @return an existing (or new) Branch entity.
+     * @see RepoDbPopulator#getBranch()
      */
     private Branch initBranch(GitRepository repo, RepoDbPopulator downloadedRepo) {
         Set<Branch> branches = repo.getBranches();
         String branchName = downloadedRepo.getBranch();
 
-        for(Branch b : branches){
+        for (Branch b : branches) {
 
-            if(b.getBranchName().equals(branchName)){
+            if (b.getBranchName().equals(branchName)) {
                 return b;
             }
         }
@@ -148,7 +155,8 @@ public class RepoService {
     /**
      * Initialize a GitRepository entity by searching for existing repo associated with a given owner, and returning it if found.
      * Otherwise, create, initialize and return a new GitRepository entity.
-     * @param owner corresponding owner
+     *
+     * @param owner          corresponding owner
      * @param downloadedRepo object containing metadata of Git repository
      * @return an existing (or new) GitRepository
      */
@@ -156,8 +164,8 @@ public class RepoService {
 
         Set<GitRepository> repos = owner.getRepos();
         String repoName = downloadedRepo.getName();
-        for(GitRepository r : repos){
-            if(r.getRepoName().equals(repoName)){
+        for (GitRepository r : repos) {
+            if (r.getRepoName().equals(repoName)) {
                 return r;
             }
         }
@@ -170,6 +178,7 @@ public class RepoService {
     /**
      * Initialize a Owner entity by searching for existing Owner in the database, and returning it if found.
      * Otherwise, create, initialize and return a new Owner entity.
+     *
      * @param downloadedRepo object containining metadata of Git repository
      * @return an existing (or new) Owner
      */
@@ -179,8 +188,8 @@ public class RepoService {
         String testUserName = downloadedRepo.getOwner();
 
         // Search and return existing user, if found
-        for(Owner u : owners){
-            if(u.getUserName().equals(testUserName)){
+        for (Owner u : owners) {
+            if (u.getUserName().equals(testUserName)) {
                 return u;
             }
         }
@@ -191,11 +200,15 @@ public class RepoService {
         return ownerService.addOwner(owner);
     }
 
-    public List<GitRepository> listRepositories(){
+    public List<GitRepository> listRepositories() {
         return repoEntityRepository.findAllByOrderByRepoIDAsc();
     }
 
-    public List<String> listRepoNames(){
+    public List<String> listRepoNames() {
         return repoEntityRepository.fetchRepoNames();
+    }
+
+    public Snapshot getSnapshotById(Long id) {
+        return snapshotRepository.findById(id).orElse(null);
     }
 }
