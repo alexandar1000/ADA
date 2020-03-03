@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="250" height="250" src="ada-core/src/main/resources/logos/LogoMakr_8rK051.png">
+</p>
+
 # ADA - The Architectural Design Advisor
 
 ### The repository of ADA, the Architectural Design Advisor
@@ -64,6 +68,8 @@ The project consists out of four modules:
 - ada-repository-downloader - downloads the git repository and stores the metadata
 - ada-parser - parses different languages and exposes the parsed data
 - ada-metric-calculator - calculation of the metrics based on the output from the parser component
+- ada-model - EXPLAIN THE STRUCTURE OF THE MODEL
+- ada-ui - the user interface of the project
 
 ## Deployment
 
