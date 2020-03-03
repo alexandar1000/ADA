@@ -18,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -43,7 +44,7 @@ public class RepoServiceTests {
     private SourceFileRepository sourceFileRepository;
 
 
-    public RepoDbPopulator repoDbPopulator;
+    private RepoDbPopulator repoDbPopulator;
 
     @BeforeEach
     void setup(){
@@ -54,9 +55,6 @@ public class RepoServiceTests {
         repoDbPopulator.setDirectoryPath("/some/dir/path");
         repoDbPopulator.setUrl("www.github.com");
         repoDbPopulator.setFileNames(new ArrayList<>(Arrays.asList("/some/dir/path/Main.java", "/some/dir/path/Test.java")));
-    }
-    @BeforeEach
-    void init() {
         MockitoAnnotations.initMocks(this);
     }
 
@@ -102,5 +100,40 @@ public class RepoServiceTests {
         verify(snapshotRepository).save(any());
         verify(sourceFileRepository,times(repoDbPopulator.getFileNames().size())).save(any());
 
+    }
+
+    @Test
+    public void testListRepositories(){
+        List<GitRepository> repos = new ArrayList<>();
+        repos.add(new GitRepository());
+        repos.add(new GitRepository());
+
+        when(repoEntityRepository.findAllByOrderByRepoIDAsc()).thenReturn(repos);
+        List<GitRepository> retrievedRepos = repoService.listRepositories();
+        verify(repoEntityRepository).findAllByOrderByRepoIDAsc();
+
+        assertThat(repos.size() == retrievedRepos.size());
+        assertThat(repos.equals(retrievedRepos));
+    }
+
+    @Test
+    public void testListRepoNames(){
+        List<GitRepository> repos = new ArrayList<>();
+        GitRepository repo1 = new GitRepository();
+        repo1.setRepoName("name1");
+
+        GitRepository repo2 = new GitRepository();
+        repo2.setRepoName("name2");
+        repos.add(repo1);
+        repos.add(repo2);
+
+        List<String> names = new ArrayList<>(Arrays.asList("name1", "name2"));
+
+        when(repoEntityRepository.fetchRepoNames()).thenReturn(names);
+        List<String> retrievedNames = repoService.listRepoNames();
+        verify(repoEntityRepository).fetchRepoNames();
+
+        assertThat(repos.size() == retrievedNames.size());
+        assertThat(names.equals(retrievedNames));
     }
 }

@@ -2,12 +2,15 @@ package com.ucl.ADA.repository_downloader.services;
 
 import com.ucl.ADA.model.owner.Owner;
 import com.ucl.ADA.model.owner.OwnerRepository;
+import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +29,12 @@ public class OwnerServiceTests {
     @BeforeEach
     void init() {
         MockitoAnnotations.initMocks(this);
+    }
+
+    @AfterAll
+    static void deleteDir(){
+        String path = System.getProperty("user.dir")+"/temp";
+        FileUtils.deleteQuietly(new File(path));
     }
 
     @Test

@@ -28,7 +28,6 @@ import java.util.Set;
 @Service
 public class RepoService {
 
-    //TODO: refactor this class.
 
     @Autowired
     private OwnerService ownerService;
