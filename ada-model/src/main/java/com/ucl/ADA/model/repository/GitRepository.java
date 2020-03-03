@@ -8,7 +8,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Entity
 @Setter
@@ -25,7 +27,8 @@ public class GitRepository {
     @Getter private String repoName;
 
     @OneToMany(mappedBy = "repository",targetEntity = Branch.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    @Getter Set<Branch> branches = new HashSet<>();
+    @OrderBy("branch_id ASC")
+    @Getter Set<Branch> branches = new LinkedHashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)

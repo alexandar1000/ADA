@@ -8,7 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -27,7 +27,8 @@ public class Snapshot {
     private Branch branch;
 
     @OneToMany(mappedBy = "snapshot", targetEntity = SourceFile.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    @Getter private Set<Branch> sourceFiles = new HashSet<>();
+    @OrderBy("file_hash ASC")
+    @Getter private Set<SourceFile> sourceFiles = new LinkedHashSet<>();
 
     @Column(name = "timestamp")
     @Getter private LocalDateTime timestamp;

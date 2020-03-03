@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Setter
@@ -29,6 +29,7 @@ public class Branch {
     private GitRepository repository;
 
     @OneToMany(mappedBy = "branch", targetEntity = Snapshot.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    @Getter private Set<Snapshot> snapshots = new HashSet<>();
+    @OrderBy("snapshot_id ASC")
+    @Getter private Set<Snapshot> snapshots = new LinkedHashSet<>();
 
 }

@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -26,7 +25,7 @@ public class Owner {
     private String userName;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = GitRepository.class)
-    Set<GitRepository> repos = new HashSet<>();
+    Set<GitRepository> repos = new LinkedHashSet<>();
 
     public Owner(String userName) {
         this.userName = userName;

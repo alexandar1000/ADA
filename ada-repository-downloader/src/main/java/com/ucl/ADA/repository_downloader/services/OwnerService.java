@@ -21,7 +21,7 @@ public class OwnerService {
      * @return a list of Owners
      */
     public List<Owner> listOwners(){
-        return (List<Owner>) ownerRepository.findAll();
+        return ownerRepository.findAllByOrderByOwnerIDAsc();
     }
 
     /**

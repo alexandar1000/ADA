@@ -41,11 +41,11 @@ public class OwnerServiceTests {
         owners.add(owner);
         owners.add(owner2);
 
-        when(ownerRepository.findAll()).thenReturn(owners);
+        when(ownerRepository.findAllByOrderByOwnerIDAsc()).thenReturn(owners);
 
         List<Owner> retrievedRepos = ownerService.listOwners();
 
-        verify(ownerRepository).findAll();
+        verify(ownerRepository).findAllByOrderByOwnerIDAsc();
 
         assertThat(retrievedRepos).hasSize(2);
 

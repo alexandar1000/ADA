@@ -192,7 +192,7 @@ public class RepoService {
     }
 
     public List<GitRepository> listRepositories(){
-        return (List<GitRepository>) repoEntityRepository.findAll();
+        return repoEntityRepository.findAllByOrderByRepoIDAsc();
     }
 
     public List<String> listRepoNames(){
