@@ -48,12 +48,13 @@ public class RepoService {
     /**
      * Download Git repository and populate database, following the hierarchical database model of
      * Owner -*> GitRepo -*> Branch -*> Snapshot -*> SourceFiles
-     * @param repoInfoUI - instance of RepoDbPopulator which initially holds the git URL and branch name
-     *
+     * @param url  url of the Git repository
+     * @param branchName branch name of the Git repository
+     * @return RepoDbPopulator object to be used by the parser
      * */
-    public RepoDbPopulator downloadAndStoreRepo(RepoDbPopulator repoInfoUI) throws GitAPIException {
+    public RepoDbPopulator downloadAndStoreRepo(String url, String branchName) throws GitAPIException {
 
-        RepoDbPopulator repoDbPopulator = RepoDownloader.downloadRepository(repoInfoUI);
+        RepoDbPopulator repoDbPopulator = RepoDownloader.downloadRepository(url,branchName);
 
         return populateDatabase(repoDbPopulator);
     }

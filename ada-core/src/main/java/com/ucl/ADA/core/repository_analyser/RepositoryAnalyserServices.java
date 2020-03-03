@@ -5,7 +5,7 @@ import com.ucl.ADA.model.project_structure.ProjectStructure;
 import com.ucl.ADA.parser.ParserServices;
 import com.ucl.ADA.repository_downloader.helpers.RepoDbPopulator;
 import com.ucl.ADA.repository_downloader.services.RepoService;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,17 +34,17 @@ public class RepositoryAnalyserServices {
 
     public ProjectStructure analyseRepositoryService(String url, String branchName) {
 
-        RepoDbPopulator populator = new RepoDbPopulator();
-        populator.setUrl(url);
-        populator.setBranch(branchName);
-
         // Download repository and store metadata in DB
         // Also set the path to the downloaded directory, to be used by the parser
+        RepoDbPopulator populator;
         try {
-            repoService.downloadAndStoreRepo(populator);
+            populator = repoService.downloadAndStoreRepo(url, branchName);
         } catch (GitAPIException e) {
-            e.printStackTrace();
+            populator = null;
         }
+
+        if(populator == null) return null;
+
         // Parse the downloaded repository.
         ProjectStructure parsedRepositoryProjectStructure;
         try {
@@ -59,11 +59,7 @@ public class RepositoryAnalyserServices {
         }
 
         // Delete downloaded repository since it's been parsed
-        try {
-            FileUtils.deleteDirectory(new File(populator.getDirectoryPath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FileUtils.deleteQuietly(new File(populator.getDirectoryPath()));
 
         return parsedRepositoryProjectStructure;
     }
