@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { OwnerService } from '../owner.service';
+import { FilterPipe } from '../filter.pipe';
 
 @Component({
   selector: 'app-owner',
@@ -32,6 +33,5 @@ export class OwnerComponent implements OnInit {
       this.repositories = [];
       this.clicked = false;
     }
-    
   }
 }
