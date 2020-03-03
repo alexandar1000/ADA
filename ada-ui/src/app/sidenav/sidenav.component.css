@@ -34,6 +34,11 @@ h1.app-name {
   text-align: center;
 }
 
+.search-form {
+  padding: 10px 16px 5px;
+  align-items: center;
+  position: relative;
+}
 /* mat-sidenav {
   width: 200px;
 } */

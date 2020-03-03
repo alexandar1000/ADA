@@ -8,8 +8,14 @@
                            [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
       <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                    [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+        <form class="search-form">
+          <mat-form-field>
+            <mat-label>Search owner</mat-label>
+            <input matInput [(ngModel)]="searchedOwner" name="searchedOwner">
+          </mat-form-field>
+        </form>
         <mat-nav-list *ngIf="owners">
-          <app-owner *ngFor="let owner of owners" [owner]="owner"></app-owner>
+          <app-owner *ngFor="let owner of owners | filter : searchedOwner" [owner]="owner"></app-owner>
         </mat-nav-list>
       </mat-sidenav>
       <mat-sidenav-content class="sidenav-content">
