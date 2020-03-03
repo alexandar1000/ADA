@@ -18,17 +18,33 @@ export class RepoFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.userService.sendRepoForm(this.urlForm, this.branchName).subscribe(response => this.checkFormReponse(response));
+    this.urlForm = this.urlForm.trim();
+    this.branchName = this.branchName.trim();
+    if (this.branchError()) {
+      this._snackBar.open('Error: No spaces allowed in the name of the branch', 'Close', {
+        duration: 10000,
+      });
+    }
+    else {
+      this.userService.sendRepoForm(this.urlForm, this.branchName).subscribe(response => this.checkFormReponse(response));
+    }
   }
 
   checkFormReponse(response) {
     if (response) {
-       
+       console.log(response);
     }
     else { 
       this._snackBar.open('Error: Incorrect url or branch', 'Close', {
         duration: 10000,
       });
     }
+  }
+
+  branchError(): boolean {
+    if (this.branchName.split(' ').length > 1) {
+      return true;
+    }
+    return false;
   }
 }

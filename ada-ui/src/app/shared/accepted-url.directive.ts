@@ -8,7 +8,6 @@ import { NG_VALIDATORS, AbstractControl, ValidatorFn } from '@angular/forms';
 export class AcceptedUrlDirective {
   @Input('appAcceptedUrl') acceptedUrl: string;
 
-  
   validate(control: AbstractControl): {[key: string]: any} | null {
     return this.acceptedUrl ? acceptedUrlValidator(new RegExp(this.acceptedUrl, 'i'))(control)
                               : null;
