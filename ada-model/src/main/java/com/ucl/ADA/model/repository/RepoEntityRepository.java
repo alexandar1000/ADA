@@ -19,5 +19,4 @@ public interface RepoEntityRepository extends CrudRepository<GitRepository, Long
     Set<GitRepository> findAllByOwner(Owner owner);
 
     GitRepository findByOwnerAndRepoName(Owner owner, String repoName);
-
 }

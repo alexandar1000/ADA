@@ -29,13 +29,17 @@ public class RepoService {
     public Set<GitRepository> findAllReposByOwner(String user_name) {
         Owner owner = ownerService.getOwnerByName(user_name);
 
-        return repoEntityRepository.findAllByOwner(owner);
+        Set<GitRepository> gitRepositories = repoEntityRepository.findAllByOwner(owner);
+
+        return gitRepositories;
     }
 
     public GitRepository findRepoByOwnerAndRepoName(String user_name, String repo_name) {
         Owner owner = ownerService.getOwnerByName(user_name);
 
-        return repoEntityRepository.findByOwnerAndRepoName(owner, repo_name);
+        GitRepository gitRepository = repoEntityRepository.findByOwnerAndRepoName(owner, repo_name);
+
+        return gitRepository;
     }
 
 }

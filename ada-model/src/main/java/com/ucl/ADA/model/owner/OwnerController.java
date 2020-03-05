@@ -13,9 +13,10 @@ public class OwnerController {
     @Autowired
     private OwnerService ownerService;
 
-    @GetMapping(value = "/{user_name}")
-    public Owner getOwnerByName(@PathVariable String user_name) {
-        return ownerService.getOwnerByName(user_name);
+    @CrossOrigin("http://localhost:4200")
+    @GetMapping(value = "/{owner}")
+    public Owner getOwnerByName(@PathVariable String owner) {
+        return ownerService.getOwnerByName(owner);
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
@@ -24,6 +25,7 @@ public class OwnerController {
         return ownerService.listOwners();
     }
 
+    @CrossOrigin("http://localhost:4200")
     @GetMapping("/names")
     public List<String> listAllUserNames() {
         return ownerService.listUserNames();
