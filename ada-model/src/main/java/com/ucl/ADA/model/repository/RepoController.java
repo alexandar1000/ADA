@@ -36,16 +36,16 @@ public class RepoController {
     }
 
     @CrossOrigin("http://localhost:4200")
-    @GetMapping("/owners/{user_name}/repositories")
-    public Set<GitRepository> getAllReposForUser(@PathVariable String user_name) {
-        Set<GitRepository> gitRepositories = repoService.findAllReposByOwner(user_name);
+    @GetMapping("/owners/{owner}/repositories")
+    public Set<GitRepository> getAllReposForUser(@PathVariable String owner) {
+        Set<GitRepository> gitRepositories = repoService.findAllReposByOwner(owner);
         return gitRepositories;
     }
 
     @CrossOrigin("http://localhost:4200")
-    @GetMapping("/owners/{user_name}/repositories/{repo_name}")
-    public GitRepository getRepoByOwnerAndName(@PathVariable String user_name,
-                                               @PathVariable String repo_name) {
-        return repoService.findRepoByOwnerAndRepoName(user_name, repo_name);
+    @GetMapping("/owners/{owner}/repositories/{repository}")
+    public GitRepository getRepoByOwnerAndName(@PathVariable String owner,
+                                               @PathVariable String repository) {
+        return repoService.findRepoByOwnerAndRepoName(owner, repository);
     }
 }

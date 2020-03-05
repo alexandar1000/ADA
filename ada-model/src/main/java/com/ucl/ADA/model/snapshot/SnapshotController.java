@@ -8,7 +8,7 @@ import java.util.Set;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/{user_name}/repositories/{repo_name}/branches/{branch_name}/snapshots")
+@RequestMapping("owners/{owner}/repositories/{repository}/branches/{branch}/snapshots")
 public class SnapshotController {
 
     @Autowired
@@ -17,21 +17,21 @@ public class SnapshotController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping
-    public Set<Snapshot> getSnapshotsGivenOwnerRepoAndBranch(@PathVariable String user_name,
-                                                             @PathVariable String repo_name,
-                                                             @PathVariable String branch_name) {
-        return snapshotService.getSnapshotsGivenOwnerRepoAndBranch(user_name, repo_name, branch_name);
+    public Set<Snapshot> getSnapshotsGivenOwnerRepoAndBranch(@PathVariable String owner,
+                                                             @PathVariable String repository,
+                                                             @PathVariable String branch) {
+        return snapshotService.getSnapshotsGivenOwnerRepoAndBranch(owner, repository, branch);
     }
 
     // not sure if last parameter should be id or timestamp, set it as id for now
 
     @CrossOrigin("http://localhost:4200")
     @GetMapping("/{timestamp}")
-    public Snapshot getSnapshotGivenOwnerRepoBranchAndTimestamp(@PathVariable String user_name,
-                                                                @PathVariable String repo_name,
-                                                                @PathVariable String branch_name,
+    public Snapshot getSnapshotGivenOwnerRepoBranchAndTimestamp(@PathVariable String owner,
+                                                                @PathVariable String repository,
+                                                                @PathVariable String branch,
                                                                 @PathVariable LocalDateTime timestamp) {
-        return snapshotService.getSnapshotGivenOwnerRepoBranchAndTimestamp(user_name, repo_name, branch_name, timestamp);
+        return snapshotService.getSnapshotGivenOwnerRepoBranchAndTimestamp(owner, repository, branch, timestamp);
     }
 
 }

@@ -31,6 +31,7 @@ public class OwnerController {
         return ownerService.listUserNames();
     }
 
+    @CrossOrigin("http://localhost:4200")
     @DeleteMapping
     public void deleteAll() {
         ownerService.deleteAllOwners();
