@@ -21,6 +21,7 @@ public class BranchController {
         return branchService.getBranchesByOwnerAndRepo(user_name, repo_name);
     }
 
+    @CrossOrigin("http://localhost:4200")
     @GetMapping("/{branch_name}")
     public Branch getBranchGivenOwnerRepoAndName(@PathVariable String user_name,
                                                  @PathVariable String repo_name,
