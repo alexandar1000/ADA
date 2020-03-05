@@ -1,9 +1,17 @@
 package com.ucl.ADA.model.snapshot;
 
+import com.ucl.ADA.model.branch.Branch;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.Set;
 
+@Repository
 public interface SnapshotRepository extends CrudRepository<Snapshot, Long> {
-        List<Snapshot> findAllByOrderBySnapshotIDAsc();
+
+    Set<Snapshot> findAllByBranch(Branch branch);
+
+    Snapshot findByBranchAndTimestamp(Branch branch, LocalDateTime timestamp);
+
 }
