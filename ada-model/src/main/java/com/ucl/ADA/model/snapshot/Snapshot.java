@@ -12,16 +12,17 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Entity
+@Getter
 @Setter
 @NoArgsConstructor
+@Entity
 @Table(name = "SNAPSHOT")
 public class Snapshot {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "snapshot_id")
-    @Getter private Long snapshotID;
+    private Long snapshotID;
 
     @ManyToOne
     @JoinColumn(name = "branch_id")
@@ -29,17 +30,19 @@ public class Snapshot {
 
     @OneToMany(mappedBy = "snapshot", targetEntity = SourceFile.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("file_hash ASC")
-    @Getter private Set<SourceFile> sourceFiles = new LinkedHashSet<>();
+    private Set<SourceFile> sourceFiles = new LinkedHashSet<>();
 
     @Column(name = "timestamp")
-    @Getter private LocalDateTime timestamp;
+    private LocalDateTime timestamp;
 
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "project_structure_id")
-    @Getter private ProjectStructure projectStructure;
+    private ProjectStructure projectStructure;
+
 
     public void setProjectStructure(ProjectStructure projectStructure) {
         this.projectStructure = projectStructure;
+        projectStructure.setSnapshot(this);
     }
 
 }

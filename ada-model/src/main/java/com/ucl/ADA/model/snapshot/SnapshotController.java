@@ -26,10 +26,10 @@ public class SnapshotController {
     // not sure if last parameter should be id or timestamp, set it as id for now
 
     @GetMapping("/{timestamp}")
-    public Snapshot getSnapshotGivenOwnerRepoBranchAndId(@PathVariable String user_name,
-                                                         @PathVariable String repo_name,
-                                                         @PathVariable String branch_name,
-                                                         @PathVariable LocalDateTime timestamp) {
+    public Snapshot getSnapshotGivenOwnerRepoBranchAndTimestamp(@PathVariable String user_name,
+                                                                @PathVariable String repo_name,
+                                                                @PathVariable String branch_name,
+                                                                @PathVariable LocalDateTime timestamp) {
         return snapshotService.getSnapshotGivenOwnerRepoBranchAndTimestamp(user_name, repo_name, branch_name, timestamp);
     }
 
