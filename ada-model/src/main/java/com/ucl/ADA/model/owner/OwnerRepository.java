@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface OwnerRepository extends CrudRepository<Owner, Long> {
+    //TODO use DSL
     @Query(value = "SELECT user_name FROM public.owner ORDER BY owner_id ASC", nativeQuery = true)
     List<String> fetchUserNames();
 
