@@ -8,4 +8,5 @@ public interface BranchRepository extends CrudRepository<Branch, Long> {
 
     List<Branch> findAllByOrderByBranchIDAsc();
 
+
 }
