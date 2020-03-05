@@ -15,7 +15,7 @@ class TransformerTest {
 
     @Test
     void transform() {
-        String src_dir = "ada-parser/src/main/resources/source_to_parse";
+        String src_dir = System.getProperty("user.dir")+"/src/main/resources/source_to_parse";
         assert transformer.transform(src_dir).getClass() == ProjectStructure.class;
     }
 }
