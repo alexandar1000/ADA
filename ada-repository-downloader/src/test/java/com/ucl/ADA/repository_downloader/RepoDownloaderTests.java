@@ -40,7 +40,7 @@ public class RepoDownloaderTests {
 
         Exception exception = assertThrows(GitAPIException.class,()->{
             String branch = "master";
-            String url = "https://github.com/alexandar1000/ADA-test-simple-JAVA-project-0.git";
+            String url = "https://github.com/alexandar1000/ADA-test-simple-JAVasdfaA-project-0.git";
             RepoDbPopulator populator = RepoDownloader.downloadRepository(url, branch);
         });
 
