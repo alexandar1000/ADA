@@ -20,13 +20,13 @@ public class BranchController {
     @GetMapping(value = "/{user_name}/repositories/{repo_name}/branches")
     public Set<Branch> getBranchesByOwnerAndRepo(@PathVariable String user_name,
                                                  @PathVariable String repo_name) {
-
+        return branchService.getBranchesByOwnerAndRepo(user_name, repo_name);
     }
 
     @GetMapping(value = "/{user_name}/repositories/{repo_name}/branches/{branch_name}")
     public Branch getBranchGivenOwnerRepoAndName(@PathVariable String user_name,
                                                  @PathVariable String repo_name,
                                                  @PathVariable String branch_name) {
-
+        return branchService.getBranchGivenOwnerRepoAndName(user_name, repo_name, branch_name);
     }
 }
