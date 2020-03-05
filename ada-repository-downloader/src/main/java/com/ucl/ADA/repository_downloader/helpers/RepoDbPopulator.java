@@ -1,5 +1,6 @@
 package com.ucl.ADA.repository_downloader.helpers;
 
+import com.ucl.ADA.model.snapshot.Snapshot;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +24,6 @@ public class RepoDbPopulator {
     private List<String> fileNames = new ArrayList<>();
     private String directoryPath;
 
-    // newly created
-    private Long snapshot_id;
+    // TODO: replace it later
+    private Snapshot snapshot;
 }

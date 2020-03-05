@@ -3,10 +3,9 @@ package com.ucl.ADA.core.repository_analyser;
 import com.ucl.ADA.metric_calculator.metrics.MetricServices;
 import com.ucl.ADA.model.project_structure.ProjectStructure;
 import com.ucl.ADA.model.project_structure.ProjectStructureService;
-import com.ucl.ADA.model.snapshot.Snapshot;
 import com.ucl.ADA.parser.ParserServices;
+import com.ucl.ADA.repository_downloader.RepositoryDownloaderService;
 import com.ucl.ADA.repository_downloader.helpers.RepoDbPopulator;
-import com.ucl.ADA.repository_downloader.services.RepoService;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public class RepositoryAnalyserServices {
     ParserServices parserServices;
 
     @Autowired
-    RepoService repoService;
+    RepositoryDownloaderService repositoryDownloaderService;
 
     @Autowired
     MetricServices metricServices;
@@ -43,21 +42,21 @@ public class RepositoryAnalyserServices {
         // Also set the path to the downloaded directory, to be used by the parser
         RepoDbPopulator populator;
         try {
-            populator = repoService.downloadAndStoreRepo(url, branchName);
+            populator = repositoryDownloaderService.downloadAndStoreRepo(url, branchName);
         } catch (GitAPIException e) {
             populator = null;
         }
 
         if (populator == null) return null;
 
-        // retrieve snapshot by id
-        Snapshot snapshot = repoService.getSnapshotById(populator.getSnapshot_id());
 
         // Parse the downloaded repository.
         ProjectStructure parsedRepositoryProjectStructure;
         try {
             parsedRepositoryProjectStructure = parserServices.parseRepository(populator.getDirectoryPath());
-            snapshot.setProjectStructure(parsedRepositoryProjectStructure);
+            // connect snapshot to project structure
+            populator.getSnapshot().setProjectStructure(parsedRepositoryProjectStructure);
+//            parsedRepositoryProjectStructure.setSnapshot(populator.getSnapshot());
             projectStructureService.save(parsedRepositoryProjectStructure);
         } catch (FileNotFoundException e) {
             parsedRepositoryProjectStructure = null;
