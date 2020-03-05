@@ -1,7 +1,7 @@
 package com.ucl.ADA.model.repository;
 
 import com.ucl.ADA.model.owner.Owner;
-import com.ucl.ADA.model.owner.OwnerRepository;
+import com.ucl.ADA.model.owner.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class RepoService {
     private RepoEntityRepository repoEntityRepository;
 
     @Autowired
-    private OwnerRepository ownerRepository;
+    private OwnerService ownerService;
 
 
     public List<GitRepository> listRepositories() {
@@ -27,13 +27,13 @@ public class RepoService {
     }
 
     public Set<GitRepository> findAllReposByOwner(String user_name) {
-        Owner owner = ownerRepository.findByUserName(user_name);
+        Owner owner = ownerService.getOwnerByName(user_name);
 
         return repoEntityRepository.findAllByOwner(owner);
     }
 
     public GitRepository findRepoByOwnerAndRepoName(String user_name, String repo_name) {
-        Owner owner = ownerRepository.findByUserName(user_name);
+        Owner owner = ownerService.getOwnerByName(user_name);
 
         return repoEntityRepository.findByOwnerAndRepoName(owner, user_name);
     }

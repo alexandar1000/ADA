@@ -14,11 +14,10 @@ public interface RepoEntityRepository extends CrudRepository<GitRepository, Long
     @Query(value = "SELECT repo_name FROM public.repository ORDER BY repo_id ASC", nativeQuery = true)
     List<String> fetchRepoNames();
 
-    GitRepository findByRepoName(String repoName);
-
     List<GitRepository> findAllByOrderByRepoIDAsc();
 
     Set<GitRepository> findAllByOwner(Owner owner);
 
     GitRepository findByOwnerAndRepoName(Owner owner, String repoName);
+
 }
