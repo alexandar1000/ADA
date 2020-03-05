@@ -15,10 +15,23 @@
     <dependencies>
         <dependency>
             <groupId>com.ucl</groupId>
+            <artifactId>ada-repository-downloader</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ucl</groupId>
             <artifactId>ada-metric-calculator</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.ucl</groupId>
+            <artifactId>ada-parser</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
