@@ -35,7 +35,7 @@ public class RepoService {
     public GitRepository findRepoByOwnerAndRepoName(String user_name, String repo_name) {
         Owner owner = ownerService.getOwnerByName(user_name);
 
-        return repoEntityRepository.findByOwnerAndRepoName(owner, user_name);
+        return repoEntityRepository.findByOwnerAndRepoName(owner, repo_name);
     }
 
 }
