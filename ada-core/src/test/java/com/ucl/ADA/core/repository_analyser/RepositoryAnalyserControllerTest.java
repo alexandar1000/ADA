@@ -2,7 +2,7 @@ package com.ucl.ADA.core.repository_analyser;
 
 import com.ucl.ADA.metric_calculator.metrics.MetricServices;
 import com.ucl.ADA.parser.ParserServices;
-import com.ucl.ADA.repository_downloader.services.RepoService;
+import com.ucl.ADA.repository_downloader.RepositoryDownloaderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,7 +23,7 @@ class RepositoryAnalyserControllerTest {
     ParserServices parserServices;
 
     @Mock
-    RepoService repoService;
+    RepositoryDownloaderService repositoryDownloaderService;
 
     @Mock
     MetricServices metricServices;

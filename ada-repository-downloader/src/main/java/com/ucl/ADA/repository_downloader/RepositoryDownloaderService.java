@@ -1,8 +1,9 @@
-package com.ucl.ADA.repository_downloader.services;
+package com.ucl.ADA.repository_downloader;
 
 import com.ucl.ADA.model.branch.Branch;
 import com.ucl.ADA.model.branch.BranchRepository;
 import com.ucl.ADA.model.owner.Owner;
+import com.ucl.ADA.model.owner.OwnerService;
 import com.ucl.ADA.model.repository.GitRepository;
 import com.ucl.ADA.model.repository.RepoEntityRepository;
 import com.ucl.ADA.model.snapshot.Snapshot;
@@ -26,7 +27,7 @@ import java.util.Set;
  * @see RepoDownloader
  */
 @Service
-public class RepoService {
+public class RepositoryDownloaderService {
 
 
     @Autowired
@@ -78,7 +79,7 @@ public class RepoService {
 
         Snapshot snapshot = initSnapshot(timestamp, branchEntity);
 
-        repoDbPopulator.setSnapshot_id(snapshot.getSnapshotID());
+        repoDbPopulator.setSnapshot(snapshot);
 
         initSourceFiles(repoDbPopulator, snapshot);
 
@@ -200,14 +201,7 @@ public class RepoService {
         return ownerService.addOwner(owner);
     }
 
-    public List<GitRepository> listRepositories() {
-        return repoEntityRepository.findAllByOrderByRepoIDAsc();
-    }
-
-    public List<String> listRepoNames() {
-        return repoEntityRepository.fetchRepoNames();
-    }
-
+    // TODO: this method is temporarily setup to connect snapshot with projectstructure
     public Snapshot getSnapshotById(Long id) {
         return snapshotRepository.findById(id).orElse(null);
     }

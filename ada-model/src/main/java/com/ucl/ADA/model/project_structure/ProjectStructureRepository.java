@@ -6,4 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface ProjectStructureRepository extends CrudRepository<ProjectStructure, Long> {
 
     ProjectStructure findBySnapshot(Snapshot snapshot);
+
 }

@@ -30,7 +30,7 @@ public class ProjectStructure extends BaseEntity {
     @MapKeyColumn(name = "class_name")
     private Map<String, ClassStructure> classStructures = new HashMap<>();
 
-    @OneToOne(mappedBy = "projectStructure")
+    @OneToOne(mappedBy = "projectStructure", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Snapshot snapshot;
 
     /**

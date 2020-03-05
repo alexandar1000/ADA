@@ -35,14 +35,8 @@ public class Snapshot {
     @Column(name = "timestamp")
     private LocalDateTime timestamp;
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "project_structure_id")
     private ProjectStructure projectStructure;
-
-
-    public void setProjectStructure(ProjectStructure projectStructure) {
-        this.projectStructure = projectStructure;
-        projectStructure.setSnapshot(this);
-    }
 
 }
