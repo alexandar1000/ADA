@@ -1,5 +1,6 @@
 package com.ucl.ADA.model.owner;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ucl.ADA.model.repository.GitRepository;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class Owner {
     private String userName;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = GitRepository.class)
+    @JsonBackReference
     Set<GitRepository> repos = new LinkedHashSet<>();
 
     public Owner(String userName) {

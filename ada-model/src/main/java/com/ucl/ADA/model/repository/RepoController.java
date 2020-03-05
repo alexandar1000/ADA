@@ -35,7 +35,8 @@ public class RepoController {
 
     @GetMapping("/owners/{user_name}/repositories")
     public Set<GitRepository> getAllReposForUser(@PathVariable String user_name) {
-        return repoService.findAllReposByOwner(user_name);
+        Set<GitRepository> gitRepositories = repoService.findAllReposByOwner(user_name);
+        return gitRepositories;
     }
 
     @GetMapping("/owners/{user_name}/repositories/{repo_name}")
