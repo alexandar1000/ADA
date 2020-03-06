@@ -29,6 +29,7 @@ import { OwnerComponent } from './owner/owner.component';
 import { RepositoryComponent } from './repository/repository.component';
 import { BranchComponent } from './branch/branch.component';
 import { SnapshotComponent } from './snapshot/snapshot.component';
+import { FilterPipe } from './filter.pipe';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { SnapshotComponent } from './snapshot/snapshot.component';
     RepositoryComponent,
     BranchComponent,
     SnapshotComponent,
+    FilterPipe,
   ],
   imports: [
     BrowserModule,

@@ -1,20 +1,15 @@
-package com.ucl.ADA.repository_downloader.services;
+package com.ucl.ADA.model.owner;
 
-import com.ucl.ADA.model.owner.Owner;
-import com.ucl.ADA.model.owner.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Service class for adding, listing and deleting Owner entities in the database.
- */
-
 @Service
 public class OwnerService {
 
-    @Autowired private OwnerRepository ownerRepository;
+    @Autowired
+    private OwnerRepository ownerRepository;
 
     /**
      * List all owners as Owner  entities, including their Repositories, Branches, Snapshots and SourceFiles.

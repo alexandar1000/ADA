@@ -21,6 +21,8 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
+    "@types/cytoscape": "^3.14.0",
+    "cytoscape": "^3.14.0",
     "hammerjs": "^2.0.8",
     "rxjs": "~6.4.0",
     "save": "^2.4.0",

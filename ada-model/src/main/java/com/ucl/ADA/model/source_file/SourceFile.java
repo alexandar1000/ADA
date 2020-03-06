@@ -1,5 +1,6 @@
 package com.ucl.ADA.model.source_file;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ucl.ADA.model.snapshot.Snapshot;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,14 +17,17 @@ public class SourceFile {
 
     @Id
     @Column(name = "file_hash")
-    @Getter private int fileHash;
+    @Getter
+    private int fileHash;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "snapshot_id")
+    @JsonManagedReference
     private Snapshot snapshot;
 
     @Column(name = "file_name", nullable = false)
-    @Getter private String fileName;
+    @Getter
+    private String fileName;
 
     @Override
     public boolean equals(Object o) {

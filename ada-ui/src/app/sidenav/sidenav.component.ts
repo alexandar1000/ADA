@@ -1,6 +1,7 @@
 import {MediaMatcher} from '@angular/cdk/layout';
 import {ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { OwnerService } from '../owner.service';
+import { FilterPipe } from '../filter.pipe';
 
 @Component({
   selector: 'app-sidenav',
@@ -13,7 +14,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
   private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private ownerService: OwnerService) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, 
+    private ownerService: OwnerService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);

@@ -32,7 +32,7 @@ public class DataLoader implements CommandLineRunner {
         ProjectStructure projectStructureToSave = parserServices.parseRepository(test_dir);
         projectStructureService.save(projectStructureToSave);
 
-        ProjectStructure projectStructureRetrieved = projectStructureService.findById(1L);
+//        ProjectStructure projectStructureRetrieved = projectStructureService.findById(1L);
 
 
     }
