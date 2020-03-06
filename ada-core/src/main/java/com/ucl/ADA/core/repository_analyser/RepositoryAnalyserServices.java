@@ -2,9 +2,10 @@ package com.ucl.ADA.core.repository_analyser;
 
 import com.ucl.ADA.metric_calculator.metrics.MetricServices;
 import com.ucl.ADA.model.project_structure.ProjectStructure;
+import com.ucl.ADA.model.project_structure.ProjectStructureService;
 import com.ucl.ADA.parser.ParserServices;
+import com.ucl.ADA.repository_downloader.RepositoryDownloaderService;
 import com.ucl.ADA.repository_downloader.helpers.RepoDbPopulator;
-import com.ucl.ADA.repository_downloader.services.RepoService;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 @Service
 public class RepositoryAnalyserServices {
@@ -21,13 +21,17 @@ public class RepositoryAnalyserServices {
     ParserServices parserServices;
 
     @Autowired
-    RepoService repoService;
+    RepositoryDownloaderService repositoryDownloaderService;
 
     @Autowired
     MetricServices metricServices;
 
+    @Autowired
+    ProjectStructureService projectStructureService;
+
     /**
      * Handles the entire analysis of the repository and unifies the remaining three modules.
+     *
      * @return ProjectMetrics object containing the resulting metric values between the objects, or null if there was
      * an error
      */
@@ -38,17 +42,22 @@ public class RepositoryAnalyserServices {
         // Also set the path to the downloaded directory, to be used by the parser
         RepoDbPopulator populator;
         try {
-            populator = repoService.downloadAndStoreRepo(url, branchName);
+            populator = repositoryDownloaderService.downloadAndStoreRepo(url, branchName);
         } catch (GitAPIException e) {
             populator = null;
         }
 
-        if(populator == null) return null;
+        if (populator == null) return null;
+
 
         // Parse the downloaded repository.
         ProjectStructure parsedRepositoryProjectStructure;
         try {
             parsedRepositoryProjectStructure = parserServices.parseRepository(populator.getDirectoryPath());
+            // connect snapshot to project structure
+            populator.getSnapshot().setProjectStructure(parsedRepositoryProjectStructure);
+//            parsedRepositoryProjectStructure.setSnapshot(populator.getSnapshot());
+            projectStructureService.save(parsedRepositoryProjectStructure);
         } catch (FileNotFoundException e) {
             parsedRepositoryProjectStructure = null;
         }

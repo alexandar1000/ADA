@@ -1,6 +1,6 @@
 CREATE TABLE METHOD_DECLARATION
 (
     id          BIGSERIAL PRIMARY KEY,
-    name        VARCHAR(255) NOT NULL,
-    return_type VARCHAR(255) NOT NULL
+    name        VARCHAR NOT NULL,
+    return_type VARCHAR NOT NULL
 )

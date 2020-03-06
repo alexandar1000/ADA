@@ -17,3 +17,7 @@
 .form-button {
     float: right;
 }
+
+.repository-container {
+    padding-left: 15px;
+}

@@ -21,12 +21,21 @@ export class RepoFormComponent implements OnInit {
   }
 
   onSubmit() {
-    // this.userService.sendRepoForm(this.urlForm, this.branchName).subscribe(response => this.checkFormReponse(response));
+    this.urlForm = this.urlForm.trim();
+    this.branchName = this.branchName.trim();
+    if (this.branchError()) {
+      this._snackBar.open('Error: No spaces allowed in the name of the branch', 'Close', {
+        duration: 10000,
+      });
+    }
+    else {
+      // this.userService.sendRepoForm(this.urlForm, this.branchName).subscribe(response => this.checkFormReponse(response));
     this.analyserService.doAnalysis(this.urlForm, this.branchName);
     // this.analyserService.doAnalysis('https://github.com/alexandar1000/ADA-test-simple-JAVA-project-0', 'master');
     // this.analyserService.doAnalysis('https://github.com/mockito/mockito', 'master');
     // this.analyserService.doAnalysis('https://github.com/alexandar1000/ADA', 'master');
     this.router.navigate(['/dashboard']);
+    }
   }
 
   checkFormReponse(response) {
@@ -38,5 +47,12 @@ export class RepoFormComponent implements OnInit {
         duration: 10000,
       });
     }
+  }
+
+  branchError(): boolean {
+    if (this.branchName.split(' ').length > 1) {
+      return true;
+    }
+    return false;
   }
 }

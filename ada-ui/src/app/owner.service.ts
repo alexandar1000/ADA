@@ -10,9 +10,9 @@ export class OwnerService {
   private ownersUrl: string;
   private metaUrl: string;
 
-  constructor(private http: HttpClient) { 
-    this.ownersUrl = 'http://localhost:8080/users/names';
-    this.metaUrl = 'http://localhost:8080/users/';
+  constructor(private http: HttpClient) {
+    this.ownersUrl = 'http://localhost:8080/owners/names';
+    this.metaUrl = 'http://localhost:8080/owners/';
   }
 
   getOwnersList(): Observable<string[]> {
@@ -20,7 +20,7 @@ export class OwnerService {
   }
 
   getReposList(owner: string): Observable<any> {
-    let reposUrl = this.metaUrl + owner + '/repositories'
+    let reposUrl = this.metaUrl + owner + '/repositories';
     let params = new HttpParams()
       .set('owner', owner);
     return this.http.get<any>(reposUrl, {params});

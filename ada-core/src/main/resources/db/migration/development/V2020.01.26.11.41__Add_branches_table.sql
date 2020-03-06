@@ -1,7 +1,7 @@
 CREATE TABLE BRANCH
 (
     branch_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY (START 1),
-    branch_name VARCHAR(255) NOT NULL,
+    branch_name VARCHAR NOT NULL,
     repo_id BIGINT NOT NULL,
     CONSTRAINT branches_pkey PRIMARY KEY (branch_id),
     CONSTRAINT branches_fkey FOREIGN KEY (repo_id)
