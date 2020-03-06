@@ -184,14 +184,17 @@ public class ADAParser {
     }
 
     private List<String> getJavaSourceFilePathsFromSourceRoot(String rootPath) {
+        String[] allSrcDirectories = getSourceDirectories(new File(rootPath));
         List<String> sourceFiles = new ArrayList<>();
         final String[] suffix = {"java"};
-        File rootDir = new File(rootPath);
-        Collection<File> files = FileUtils.listFiles(rootDir, suffix, true);
-        for (File file : files) {
-            if (!file.getPath().endsWith("Test.java") && !file.getPath().endsWith("Tests.java")) {
-                {
-                    sourceFiles.add(file.getAbsolutePath());
+        for (String srcDir : allSrcDirectories) {
+            File rootDir = new File(srcDir);
+            Collection<File> files = FileUtils.listFiles(rootDir, suffix, true);
+            for (File file : files) {
+                if (!file.getPath().endsWith("Test.java") && !file.getPath().endsWith("Tests.java")) {
+                    {
+                        sourceFiles.add(file.getAbsolutePath());
+                    }
                 }
             }
         }
@@ -257,8 +260,6 @@ public class ADAParser {
         }
         return compilationUnits;
     }
-
-
 
 
 }
