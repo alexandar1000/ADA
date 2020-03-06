@@ -1,5 +1,6 @@
 package com.ucl.ADA.model.project_structure;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ucl.ADA.model.BaseEntity;
 import com.ucl.ADA.model.class_structure.ClassStructure;
 import com.ucl.ADA.model.dependence_information.declaration_information.AttributeDeclaration;
@@ -30,6 +31,7 @@ public class ProjectStructure extends BaseEntity {
     @MapKeyColumn(name = "class_name")
     private Map<String, ClassStructure> classStructures = new HashMap<>();
 
+    @JsonIgnore
     @OneToOne(mappedBy = "projectStructure", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Snapshot snapshot;
 

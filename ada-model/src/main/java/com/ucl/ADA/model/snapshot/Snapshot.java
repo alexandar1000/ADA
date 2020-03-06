@@ -1,6 +1,7 @@
 package com.ucl.ADA.model.snapshot;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ucl.ADA.model.branch.Branch;
 import com.ucl.ADA.model.project_structure.ProjectStructure;
@@ -41,7 +42,7 @@ public class Snapshot {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "project_structure_id")
-    @JsonManagedReference
+    @JsonIgnore
     private ProjectStructure projectStructure;
 
 }
