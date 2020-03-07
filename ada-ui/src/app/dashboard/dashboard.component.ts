@@ -4,6 +4,7 @@ import {AnalyserService} from "../analyser.service";
 import {tap} from "rxjs/operators";
 import {GraphComponent} from "../graph/graph.component";
 import {Snapshot} from "../classes/snapshot";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-dashboard',
@@ -33,13 +34,19 @@ export class DashboardComponent implements OnInit {
   ];
   private selectedMetric = this.metrics[0];
 
-  constructor(private analyserService: AnalyserService) { }
+  constructor(private analyserService: AnalyserService,
+              private route: ActivatedRoute,
+              private router: Router,) { }
 
   ngOnInit() {
-    this.analyserService.getAnalysis()
-      .pipe(
-        tap(_ => console.log('tapped'))
-      ).subscribe(data => this.handleRequestResponse(data));
+    if (this.router.url == '/dashboard/current') {
+      this.analyserService.getAnalysis()
+        .pipe(
+          tap(_ => console.log('tapped'))
+        ).subscribe(data => this.handleRequestResponse(data));
+    } else {
+      console.log('Previous')
+    }
   }
 
   private handleRequestResponse(data: JSON) {
