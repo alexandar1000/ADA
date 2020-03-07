@@ -11,6 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,22 +42,13 @@ public class RepoDownloader {
         RepoDbPopulator repo = setup(url, branch);
 
         File repoDir = new File(repo.getDirectoryPath());
-
+        
         Git git = Git.cloneRepository()
                 .setURI( repo.getUrl() )
                 .setDirectory( repoDir )
-                .setCloneAllBranches( true )
+                .setBranchesToClone(Collections.singletonList("refs/heads/" + branch))
+                .setBranch("refs/heads/" + branch)
                 .call();
-
-        if (!repo.getBranch().equals("master")) {
-
-            Ref ref = git.checkout().
-                    setCreateBranch(true).
-                    setName(repo.getBranch()).
-                    setUpstreamMode(CreateBranchCommand.SetupUpstreamMode.TRACK).
-                    setStartPoint("origin/" + repo.getBranch()).
-                    call();
-        }
 
         List<String> fileNames = getSourceFileNames(repo.getDirectoryPath());
         repo.setFileNames(fileNames);

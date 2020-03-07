@@ -10,11 +10,11 @@ import { FilterPipe } from '../filter.pipe';
 })
 export class SidenavComponent implements OnInit, OnDestroy {
   mobileQuery: MediaQueryList;
-  private owners = []
+  private owners = [];
 
   private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, 
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
     private ownerService: OwnerService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
