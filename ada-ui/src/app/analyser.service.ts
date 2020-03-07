@@ -39,6 +39,7 @@ export class AnalyserService {
     return 'http://localhost:8080/owners/' + owner +
       '/repositories/' + repository +
       '/branches/' + branch +
-      '/snapshots/' + snapshot;
+      '/snapshots/' + snapshot +
+      '/project-structure';
   }
 }
