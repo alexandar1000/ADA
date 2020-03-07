@@ -34,4 +34,11 @@ export class AnalyserService {
 
   constructor() {
   }
+
+  public buildFetchPreviousSnapshotAPIUrl(owner: string, repository: string, branch: string, snapshot: string): string {
+    return 'http://localhost:8080/owners/' + owner +
+      '/repositories/' + repository +
+      '/branches/' + branch +
+      '/snapshots/' + snapshot;
+  }
 }

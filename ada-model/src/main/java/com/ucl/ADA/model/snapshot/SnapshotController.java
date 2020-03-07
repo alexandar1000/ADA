@@ -26,7 +26,7 @@ public class SnapshotController {
     // not sure if last parameter should be id or timestamp, set it as id for now
 
     @CrossOrigin("http://localhost:4200")
-    @GetMapping("/{timestamp}")
+    @PostMapping("/{timestamp}")
     public Snapshot getSnapshotGivenOwnerRepoBranchAndTimestamp(@PathVariable String owner,
                                                                 @PathVariable String repository,
                                                                 @PathVariable String branch,
