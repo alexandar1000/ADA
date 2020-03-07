@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/{user_name}/repositories/{repo_name}/branches/{branch_name}/snapshots/{timestamp}/project_structure")
+@RequestMapping("owners/{owner}/repositories/{repository}/branches/{branch}/snapshots/{timestamp}/projectStructure")
 public class ProjectStructureController {
 
     @Autowired
@@ -16,11 +16,11 @@ public class ProjectStructureController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping
-    public ProjectStructure getProjectStructureGivenOwnerRepoBranchAndTimestamp(@PathVariable String user_name,
-                                                                                @PathVariable String repo_name,
-                                                                                @PathVariable String branch_name,
+    public ProjectStructure getProjectStructureGivenOwnerRepoBranchAndTimestamp(@PathVariable String owner,
+                                                                                @PathVariable String repository,
+                                                                                @PathVariable String branch,
                                                                                 @PathVariable LocalDateTime timestamp) {
-        return projectStructureService.findByOwnerGitRepositoryBranchSnapshotTimestamp(user_name, repo_name, branch_name, timestamp);
+        return projectStructureService.findByOwnerGitRepositoryBranchSnapshotTimestamp(owner, repository, branch, timestamp);
     }
 
 }
