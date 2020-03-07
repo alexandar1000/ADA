@@ -3,7 +3,9 @@ package com.ucl.ADA.model.snapshot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 @RestController
@@ -30,8 +32,12 @@ public class SnapshotController {
     public Snapshot getSnapshotGivenOwnerRepoBranchAndTimestamp(@PathVariable String owner,
                                                                 @PathVariable String repository,
                                                                 @PathVariable String branch,
-                                                                @PathVariable LocalDateTime timestamp) {
-        return snapshotService.getSnapshotGivenOwnerRepoBranchAndTimestamp(owner, repository, branch, timestamp);
+                                                                @PathVariable String timestamp) throws ParseException {
+
+        DateTimeFormatter fIn = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+        LocalDateTime ldt = LocalDateTime.parse( timestamp , fIn );
+
+        return snapshotService.getSnapshotGivenOwnerRepoBranchAndTimestamp(owner, repository, branch, ldt);
     }
 
 }
