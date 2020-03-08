@@ -15,6 +15,15 @@ public class ProjectStructureController {
     private ProjectStructureService projectStructureService;
 
 
+    /**
+     * get ProjectStructure object given username, repository name, branch name and timestamp when ADA received request for the snapshot
+     *
+     * @param owner      username
+     * @param repository repository name
+     * @param branch     branch name
+     * @param timestamp  time when ADA received request for the snapshot
+     * @return a ProjectStructure object
+     */
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping
     public ProjectStructure getProjectStructureGivenOwnerRepoBranchAndTimestamp(@PathVariable String owner,
