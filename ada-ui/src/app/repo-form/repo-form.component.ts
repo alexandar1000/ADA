@@ -29,18 +29,18 @@ export class RepoFormComponent implements OnInit {
       });
     }
     else {
-      // this.userService.sendRepoForm(this.urlForm, this.branchName).subscribe(response => this.checkFormReponse(response));
-    this.analyserService.doAnalysis(this.urlForm, this.branchName);
+    this.analyserService.repoUrl = this.urlForm;
+    this.analyserService.repoBranch = this.branchName;
     // this.analyserService.doAnalysis('https://github.com/alexandar1000/ADA-test-simple-JAVA-project-0', 'master');
     // this.analyserService.doAnalysis('https://github.com/mockito/mockito', 'master');
     // this.analyserService.doAnalysis('https://github.com/alexandar1000/ADA', 'master');
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/dashboard/current']);
     }
   }
 
   checkFormReponse(response) {
     if (response) {
-       
+
     }
     else {
       this._snackBar.open('Error: Incorrect url or branch', 'Close', {

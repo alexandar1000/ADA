@@ -5,7 +5,7 @@ import com.ucl.ADA.model.snapshot.SnapshotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Service
 public class ProjectStructureService {
@@ -21,7 +21,7 @@ public class ProjectStructureService {
         return projectStructureRepository.save(object);
     }
 
-    public ProjectStructure findByOwnerGitRepositoryBranchSnapshotTimestamp(String user_name, String repo_name, String branch_name, LocalDateTime timestamp) {
+    public ProjectStructure findByOwnerGitRepositoryBranchSnapshotTimestamp(String user_name, String repo_name, String branch_name, OffsetDateTime timestamp) {
         Snapshot snapshot = snapshotService.getSnapshotGivenOwnerRepoBranchAndTimestamp(user_name, repo_name, branch_name, timestamp);
 
         return projectStructureRepository.findBySnapshot(snapshot);

@@ -5,7 +5,7 @@ import com.ucl.ADA.model.branch.BranchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Set;
 
 @Service
@@ -24,7 +24,7 @@ public class SnapshotService {
         return snapshotRepository.findAllByBranch(branch);
     }
 
-    public Snapshot getSnapshotGivenOwnerRepoBranchAndTimestamp(String user_name, String repo_name, String branch_name, LocalDateTime timestamp) {
+    public Snapshot getSnapshotGivenOwnerRepoBranchAndTimestamp(String user_name, String repo_name, String branch_name, OffsetDateTime timestamp) {
         Branch branch = branchService.getBranchGivenOwnerRepoAndName(user_name, repo_name, branch_name);
 
         return snapshotRepository.findByBranchAndTimestamp(branch, timestamp);

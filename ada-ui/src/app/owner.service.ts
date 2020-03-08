@@ -16,14 +16,14 @@ export class OwnerService {
   }
 
   getOwnersList(): Observable<string[]> {
-    return this.http.get<string[]>(this.ownersUrl);
+    return this.http.post<string[]>(this.ownersUrl, new HttpParams());
   }
 
   getReposList(owner: string): Observable<any> {
     let reposUrl = this.metaUrl + owner + '/repositories';
     let params = new HttpParams()
       .set('owner', owner);
-    return this.http.get<any>(reposUrl, {params});
+    return this.http.post<any>(reposUrl, {params});
   }
 
   getBranchesList(owner: string, repository: string): Observable<any> {
@@ -31,7 +31,7 @@ export class OwnerService {
     let params = new HttpParams()
       .set('owner', owner)
       .set('repository', repository);
-    return this.http.get<any>(branchesUrl, {params});
+    return this.http.post<any>(branchesUrl, {params});
   }
 
   getSnapshotsList(owner: string, repository: string, branch:string): Observable<any> {
@@ -40,6 +40,6 @@ export class OwnerService {
       .set('owner', owner)
       .set('repository', repository)
       .set('branch', branch);
-    return this.http.get<any>(snapshotsUrl, {params});
+    return this.http.post<any>(snapshotsUrl, {params});
   }
 }

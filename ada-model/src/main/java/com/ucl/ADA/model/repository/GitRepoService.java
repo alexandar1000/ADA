@@ -9,35 +9,35 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class RepoService {
+public class GitRepoService {
 
     @Autowired
-    private RepoEntityRepository repoEntityRepository;
+    private GitRepoRepository gitRepoRepository;
 
     @Autowired
     private OwnerService ownerService;
 
 
-    public List<GitRepository> listRepositories() {
-        return repoEntityRepository.findAllByOrderByRepoIDAsc();
+    public List<GitRepo> listRepositories() {
+        return gitRepoRepository.findAllByOrderByIdAsc();
     }
 
     public List<String> listRepoNames() {
-        return repoEntityRepository.fetchRepoNames();
+        return gitRepoRepository.fetchRepoNames();
     }
 
-    public Set<GitRepository> findAllReposByOwner(String user_name) {
+    public Set<GitRepo> findAllReposByOwner(String user_name) {
         Owner owner = ownerService.getOwnerByName(user_name);
 
-        Set<GitRepository> gitRepositories = repoEntityRepository.findAllByOwner(owner);
+        Set<GitRepo> gitRepositories = gitRepoRepository.findAllByOwner(owner);
 
         return gitRepositories;
     }
 
-    public GitRepository findRepoByOwnerAndRepoName(String user_name, String repo_name) {
+    public GitRepo findRepoByOwnerAndRepoName(String user_name, String repo_name) {
         Owner owner = ownerService.getOwnerByName(user_name);
 
-        GitRepository gitRepository = repoEntityRepository.findByOwnerAndRepoName(owner, repo_name);
+        GitRepo gitRepository = gitRepoRepository.findByOwnerAndRepoName(owner, repo_name);
 
         return gitRepository;
     }

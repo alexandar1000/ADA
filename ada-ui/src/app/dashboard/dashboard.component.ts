@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {ProjectStructure} from "../classes/project-structure";
 import {AnalyserService} from "../analyser.service";
 import {tap} from "rxjs/operators";
-import {GraphComponent} from "../graph/graph.component";
-import {Snapshot} from "../classes/snapshot";
+import {ActivatedRoute, ParamMap, Router} from "@angular/router";
+import {HttpClient, HttpParams} from "@angular/common/http";
 
 @Component({
   selector: 'app-dashboard',
@@ -12,47 +12,53 @@ import {Snapshot} from "../classes/snapshot";
 })
 export class DashboardComponent implements OnInit {
   private projectStructure: ProjectStructure;
-  private snapshots: Snapshot[] = [
-    new Snapshot(78, '2020-03-01 15:14'),
-    new Snapshot(12, '2019-09-21 13:00'),
-    new Snapshot(0, '2019-07-28 01:02')
-    ];
-  private metrics = [
-    'NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_INCOMING',
-    'NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_OUTGOING',
-    'NUMBER_OF_RELATION_METHOD_INVOCATIONS_INCOMING',
-    'NUMBER_OF_RELATION_METHOD_INVOCATIONS_OUTGOING',
-    'NUMBER_OF_RELATION_PACKAGE_IMPORTS_INCOMING',
-    'NUMBER_OF_RELATION_PACKAGE_IMPORTS_OUTGOING',
-    'NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS_INCOMING',
-    'NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS_OUTGOING',
-    'BIDIRECTIONAL_NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS',
-    'BIDIRECTIONAL_NUMBER_OF_RELATION_METHOD_INVOCATIONS',
-    'BIDIRECTIONAL_NUMBER_OF_RELATION_PACKAGE_IMPORTS',
-    'BIDIRECTIONAL_NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS'
-  ];
+  private snapshots = this.analyserService.snapshots;
+  private metrics = this.analyserService.metrics;
   private selectedMetric = this.metrics[0];
 
-  constructor(private analyserService: AnalyserService) { }
+  constructor(private analyserService: AnalyserService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private http: HttpClient) { }
 
   ngOnInit() {
-    this.analyserService.getAnalysis()
-      .pipe(
-        tap(_ => console.log('tapped'))
-      ).subscribe(data => this.handleRequestResponse(data));
-  }
-
-  private handleRequestResponse(data: JSON) {
-    this.projectStructure = this.populateProjectStructure(data);
-
-  }
-
-  private populateProjectStructure(data: JSON): ProjectStructure {
-    return new ProjectStructure(data)
+    if (this.router.url == '/dashboard/current') {
+      this.doAnalysis();
+    } else {
+      this.route.paramMap.subscribe(
+        (params: ParamMap) =>
+          this.fetchPreviousAnalysis(params.get('owner'), params.get('repository'), params.get('branch'), params.get('snapshot'))
+      );
+    }
   }
 
   updateSelectedMetric(newMetric: string): void {
     this.selectedMetric = newMetric;
   }
 
+  private doAnalysis(): void {
+    let params = new HttpParams()
+      .set('url', this.analyserService.repoUrl)
+      .set('branch', this.analyserService.repoBranch);
+
+    this.http.post<JSON>(this.analyserService.analysisEndpointUrl, params)
+      .pipe(
+        tap(_ => console.log('fetched analysis'))
+      )
+      .subscribe(dataJson => this.updateProjectStructure(dataJson));
+  }
+
+  private fetchPreviousAnalysis(owner: string, repository: string, branch: string, snapshot: string): void {
+    let apiUrl = this.analyserService.buildFetchPreviousSnapshotAPIUrl(owner, repository, branch, snapshot);
+
+    this.http.post<JSON>(apiUrl, new HttpParams())
+      .pipe(
+        tap(_ => console.log('fetched analysis'))
+      )
+      .subscribe(dataJson => this.updateProjectStructure(dataJson));
+  }
+
+  private updateProjectStructure(data: JSON) {
+    this.projectStructure = new ProjectStructure(data);
+  }
 }

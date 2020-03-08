@@ -15,14 +15,14 @@ public class BranchController {
 
 
     @CrossOrigin("http://localhost:4200")
-    @GetMapping
+    @PostMapping
     public Set<Branch> getBranchesByOwnerAndRepo(@PathVariable String owner,
                                                  @PathVariable String repo_name) {
         return branchService.getBranchesByOwnerAndRepo(owner, repo_name);
     }
 
     @CrossOrigin("http://localhost:4200")
-    @GetMapping("/{branch_name}")
+    @PostMapping("/{branch_name}")
     public Branch getBranchGivenOwnerRepoAndName(@PathVariable String owner,
                                                  @PathVariable String repo_name,
                                                  @PathVariable String branch_name) {

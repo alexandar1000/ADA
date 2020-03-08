@@ -1,6 +1,6 @@
 CREATE TABLE RELATION_METRIC_VALUE
 (
-    id                                              BIGSERIAL PRIMARY KEY,
+    id                                              BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY (START 1) PRIMARY KEY,
 
     number_of_package_imports_incoming              FLOAT4 NOT NULL,
     number_of_package_imports_outgoing              FLOAT4 NOT NULL,
