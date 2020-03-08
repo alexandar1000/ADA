@@ -35,7 +35,7 @@ public class SnapshotController {
                                                                 @PathVariable String timestamp) throws ParseException {
 
         DateTimeFormatter fIn = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-        OffsetDateTime odt = OffsetDateTime.parse( timestamp , fIn );
+        OffsetDateTime odt = OffsetDateTime.parse(timestamp, fIn);
 
         return snapshotService.getSnapshotGivenOwnerRepoBranchAndTimestamp(owner, repository, branch, odt);
     }
