@@ -207,8 +207,4 @@ public class RepositoryDownloaderService {
         return ownerService.addOwner(owner);
     }
 
-    // TODO: this method is temporarily setup to connect snapshot with projectstructure
-    public Snapshot getSnapshotById(Long id) {
-        return snapshotRepository.findById(id).orElse(null);
-    }
 }
