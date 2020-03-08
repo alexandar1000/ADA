@@ -22,7 +22,7 @@ public class ProjectStructureController {
                                                                                 @PathVariable String branch,
                                                                                 @PathVariable String timestamp) {
 
-        DateTimeFormatter fIn = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+        DateTimeFormatter fIn = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
         OffsetDateTime odt = OffsetDateTime.parse( timestamp , fIn );
 
         return projectStructureService.findByOwnerGitRepositoryBranchSnapshotTimestamp(owner, repository, branch, odt);
