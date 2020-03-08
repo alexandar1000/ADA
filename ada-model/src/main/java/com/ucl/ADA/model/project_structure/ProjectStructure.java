@@ -35,6 +35,10 @@ public class ProjectStructure extends BaseEntity {
     @OneToOne(mappedBy = "projectStructure", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Snapshot snapshot;
 
+    @Transient
+    private RepoDbPopulator repoDbPopulator;
+
+
     /**
      * Adds package declaration for the corresponding declaring class where it is declared.
      *

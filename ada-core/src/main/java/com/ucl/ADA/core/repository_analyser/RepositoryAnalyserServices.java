@@ -5,7 +5,7 @@ import com.ucl.ADA.model.project_structure.ProjectStructure;
 import com.ucl.ADA.model.project_structure.ProjectStructureService;
 import com.ucl.ADA.parser.ParserServices;
 import com.ucl.ADA.repository_downloader.RepositoryDownloaderService;
-import com.ucl.ADA.repository_downloader.helpers.RepoDbPopulator;
+import com.ucl.ADA.model.project_structure.RepoDbPopulator;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +56,9 @@ public class RepositoryAnalyserServices {
             parsedRepositoryProjectStructure = parserServices.parseRepository(populator.getDirectoryPath());
             // connect snapshot to project structure
             populator.getSnapshot().setProjectStructure(parsedRepositoryProjectStructure);
-//            parsedRepositoryProjectStructure.setSnapshot(populator.getSnapshot());
             projectStructureService.save(parsedRepositoryProjectStructure);
+            // set populator
+            parsedRepositoryProjectStructure.setRepoDbPopulator(populator);
         } catch (FileNotFoundException e) {
             parsedRepositoryProjectStructure = null;
         }

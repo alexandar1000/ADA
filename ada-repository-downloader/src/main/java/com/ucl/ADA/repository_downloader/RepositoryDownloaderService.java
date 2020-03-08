@@ -4,19 +4,17 @@ import com.ucl.ADA.model.branch.Branch;
 import com.ucl.ADA.model.branch.BranchRepository;
 import com.ucl.ADA.model.owner.Owner;
 import com.ucl.ADA.model.owner.OwnerService;
+import com.ucl.ADA.model.project_structure.RepoDbPopulator;
 import com.ucl.ADA.model.repository.GitRepository;
 import com.ucl.ADA.model.repository.RepoEntityRepository;
 import com.ucl.ADA.model.snapshot.Snapshot;
 import com.ucl.ADA.model.snapshot.SnapshotRepository;
 import com.ucl.ADA.model.source_file.SourceFile;
 import com.ucl.ADA.model.source_file.SourceFileRepository;
-import com.ucl.ADA.repository_downloader.helpers.RepoDbPopulator;
-import com.ucl.ADA.repository_downloader.helpers.RepoDownloader;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -69,15 +67,13 @@ public class RepositoryDownloaderService {
      */
     RepoDbPopulator populateDatabase(RepoDbPopulator repoDbPopulator) {
 
-        LocalDateTime timestamp = LocalDateTime.now();
-
         Owner owner = initOwner(repoDbPopulator);
 
         GitRepository repo = initRepo(owner, repoDbPopulator);
 
         Branch branchEntity = initBranch(repo, repoDbPopulator);
 
-        Snapshot snapshot = initSnapshot(timestamp, branchEntity);
+        Snapshot snapshot = initSnapshot(repoDbPopulator, branchEntity);
 
         repoDbPopulator.setSnapshot(snapshot);
 
@@ -113,15 +109,15 @@ public class RepositoryDownloaderService {
     /**
      * Create, initalize and save a new Snapshot entity in the DB.
      *
-     * @param timestamp    timestamp of request
-     * @param branchEntity corresponding Branch entity
+     * @param repoDbPopulator helper object containing the source file names of the downloaded repository
+     * @param branchEntity    corresponding Branch entity
      * @return saved Snapshot entity
      */
-    private Snapshot initSnapshot(LocalDateTime timestamp, Branch branchEntity) {
+    private Snapshot initSnapshot(RepoDbPopulator repoDbPopulator, Branch branchEntity) {
         Snapshot snapshot = new Snapshot();
 
         snapshot.setBranch(branchEntity);
-        snapshot.setTimestamp(timestamp);
+        snapshot.setTimestamp(repoDbPopulator.getTimestamp());
 
         return snapshotRepository.save(snapshot);
     }
@@ -164,7 +160,7 @@ public class RepositoryDownloaderService {
     private GitRepository initRepo(Owner owner, RepoDbPopulator downloadedRepo) {
 
         Set<GitRepository> repos = owner.getRepos();
-        String repoName = downloadedRepo.getName();
+        String repoName = downloadedRepo.getRepository();
         for (GitRepository r : repos) {
             if (r.getRepoName().equals(repoName)) {
                 return r;

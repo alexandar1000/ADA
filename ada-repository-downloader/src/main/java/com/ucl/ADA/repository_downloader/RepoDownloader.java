@@ -1,5 +1,6 @@
-package com.ucl.ADA.repository_downloader.helpers;
+package com.ucl.ADA.repository_downloader;
 
+import com.ucl.ADA.model.project_structure.RepoDbPopulator;
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -10,10 +11,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -42,13 +41,22 @@ public class RepoDownloader {
         RepoDbPopulator repo = setup(url, branch);
 
         File repoDir = new File(repo.getDirectoryPath());
-        
+
         Git git = Git.cloneRepository()
                 .setURI( repo.getUrl() )
                 .setDirectory( repoDir )
-                .setBranchesToClone(Collections.singletonList("refs/heads/" + branch))
-                .setBranch("refs/heads/" + branch)
+                .setCloneAllBranches( true )
                 .call();
+
+        if (!repo.getBranch().equals("master")) {
+
+            Ref ref = git.checkout().
+                    setCreateBranch(true).
+                    setName(repo.getBranch()).
+                    setUpstreamMode(CreateBranchCommand.SetupUpstreamMode.TRACK).
+                    setStartPoint("origin/" + repo.getBranch()).
+                    call();
+        }
 
         List<String> fileNames = getSourceFileNames(repo.getDirectoryPath());
         repo.setFileNames(fileNames);
@@ -75,11 +83,18 @@ public class RepoDownloader {
         } else {
             name = data[4];
         }
-        repoDbPopulator.setName(name);
+        repoDbPopulator.setRepository(name);
         repoDbPopulator.setOwner(owner);
         repoDbPopulator.setBranch(branch);
 
-        String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
+        LocalDateTime localDateTime = LocalDateTime.now();
+
+        repoDbPopulator.setTimestamp(localDateTime);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
+
+        String timeStamp = localDateTime.format(formatter);
+
         String clone_path = System.getProperty("user.dir") + "/temp/"
                 + owner + "/" + name + "/" + branch + "/" + timeStamp;
 

@@ -1,8 +1,7 @@
 package com.ucl.ADA.repository_downloader;
 
 
-import com.ucl.ADA.repository_downloader.helpers.RepoDbPopulator;
-import com.ucl.ADA.repository_downloader.helpers.RepoDownloader;
+import com.ucl.ADA.model.project_structure.RepoDbPopulator;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.jupiter.api.AfterAll;
@@ -32,7 +31,7 @@ public class RepoDownloaderTests {
 
         assertEquals("sebastianvburlacu",populator.getOwner());
         assertEquals("master",populator.getBranch());
-        assertEquals("Fitbit-JSON-Data-Generator",populator.getName());
+        assertEquals("Fitbit-JSON-Data-Generator",populator.getRepository());
     }
 
     @Test
@@ -55,7 +54,7 @@ public class RepoDownloaderTests {
 
         assertEquals("alexandar1000",populator.getOwner());
         assertEquals(branch,populator.getBranch());
-        assertEquals("ADA-test-simple-JAVA-project-0",populator.getName());
+        assertEquals("ADA-test-simple-JAVA-project-0",populator.getRepository());
     }
 
     @Test
