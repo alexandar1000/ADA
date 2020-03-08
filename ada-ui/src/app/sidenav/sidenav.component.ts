@@ -31,6 +31,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
   shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));
 
   getOwnerList(): void {
+    this.owners = [];
     this.ownerService.getOwnersList().subscribe(ownerNames => {
       ownerNames.forEach(ownerName => {
         this.owners.push(ownerName);
