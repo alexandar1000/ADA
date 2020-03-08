@@ -1,9 +1,11 @@
-package com.ucl.ADA.repository_downloader.helpers;
+package com.ucl.ADA.model.project_structure;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ucl.ADA.model.snapshot.Snapshot;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,15 +17,25 @@ import java.util.List;
 
 @Getter
 @Setter
-public class RepoDbPopulator {
+public class GitRepoInfo {
 
+    @JsonIgnore
     private String url;
-    private String name;
+
     private String owner;
+
+    private String repository;
+
     private String branch;
+
+    private OffsetDateTime timestamp;
+
+    @JsonIgnore
     private List<String> fileNames = new ArrayList<>();
+
+    @JsonIgnore
     private String directoryPath;
 
-    // TODO: replace it later
+    @JsonIgnore
     private Snapshot snapshot;
 }

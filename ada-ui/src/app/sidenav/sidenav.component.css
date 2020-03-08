@@ -41,6 +41,7 @@ h1.app-name {
   display: flex;
 }
 
-/* mat-sidenav {
-  width: 200px;
-} */
+.mat-toolbar a {
+  text-decoration: none;
+  color: #FFFFFF;
+}

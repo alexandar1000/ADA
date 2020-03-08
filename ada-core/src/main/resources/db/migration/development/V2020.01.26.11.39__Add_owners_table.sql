@@ -1,7 +1,0 @@
-CREATE TABLE OWNER
-(
-    owner_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY (START 1),
-    user_name VARCHAR NOT NULL,
-    CONSTRAINT users_pkey PRIMARY KEY (owner_id),
-    CONSTRAINT uk_username UNIQUE (user_name)
-)

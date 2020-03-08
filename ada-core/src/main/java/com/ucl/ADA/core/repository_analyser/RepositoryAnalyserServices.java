@@ -5,7 +5,7 @@ import com.ucl.ADA.model.project_structure.ProjectStructure;
 import com.ucl.ADA.model.project_structure.ProjectStructureService;
 import com.ucl.ADA.parser.ParserServices;
 import com.ucl.ADA.repository_downloader.RepositoryDownloaderService;
-import com.ucl.ADA.repository_downloader.helpers.RepoDbPopulator;
+import com.ucl.ADA.model.project_structure.GitRepoInfo;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class RepositoryAnalyserServices {
 
         // Download repository and store metadata in DB
         // Also set the path to the downloaded directory, to be used by the parser
-        RepoDbPopulator populator;
+        GitRepoInfo populator;
         try {
             populator = repositoryDownloaderService.downloadAndStoreRepo(url, branchName);
         } catch (GitAPIException e) {
@@ -56,8 +56,8 @@ public class RepositoryAnalyserServices {
             parsedRepositoryProjectStructure = parserServices.parseRepository(populator.getDirectoryPath());
             // connect snapshot to project structure
             populator.getSnapshot().setProjectStructure(parsedRepositoryProjectStructure);
-//            parsedRepositoryProjectStructure.setSnapshot(populator.getSnapshot());
-            projectStructureService.save(parsedRepositoryProjectStructure);
+            // set populator
+            parsedRepositoryProjectStructure.setGitRepoInfo(populator);
         } catch (FileNotFoundException e) {
             parsedRepositoryProjectStructure = null;
         }
@@ -65,6 +65,7 @@ public class RepositoryAnalyserServices {
         // Calculate the metrics for the parsed repository.
         if (parsedRepositoryProjectStructure != null) {
             parsedRepositoryProjectStructure.computeAllMetrics();
+            projectStructureService.save(parsedRepositoryProjectStructure);
         }
 
         // Delete downloaded repository since it's been parsed

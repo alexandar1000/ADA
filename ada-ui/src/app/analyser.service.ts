@@ -1,43 +1,45 @@
 import { Injectable } from '@angular/core';
 import {Observable, of} from "rxjs";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {catchError, tap} from "rxjs/operators";
-import {ProjectStructure} from "./classes/project-structure";
+import {Snapshot} from "./classes/snapshot";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnalyserService {
 
-  private repoFormUrl = 'http://localhost:8080/analyser';
-  private analysis: Observable<JSON>;
+  public analysisEndpointUrl = 'http://localhost:8080/analyser';
+  public repoUrl: string;
+  public repoBranch: string;
 
-  constructor(private http: HttpClient) {
+  public snapshots: Snapshot[] = [
+    new Snapshot(78, '2020-03-01 15:14'),
+    new Snapshot(12, '2019-09-21 13:00'),
+    new Snapshot(0, '2019-07-28 01:02')
+  ];
+  public metrics = [
+    'NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_INCOMING',
+    'NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_OUTGOING',
+    'NUMBER_OF_RELATION_METHOD_INVOCATIONS_INCOMING',
+    'NUMBER_OF_RELATION_METHOD_INVOCATIONS_OUTGOING',
+    'NUMBER_OF_RELATION_PACKAGE_IMPORTS_INCOMING',
+    'NUMBER_OF_RELATION_PACKAGE_IMPORTS_OUTGOING',
+    'NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS_INCOMING',
+    'NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS_OUTGOING',
+    'BIDIRECTIONAL_NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS',
+    'BIDIRECTIONAL_NUMBER_OF_RELATION_METHOD_INVOCATIONS',
+    'BIDIRECTIONAL_NUMBER_OF_RELATION_PACKAGE_IMPORTS',
+    'BIDIRECTIONAL_NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS'
+  ];
+
+  constructor() {
   }
 
-  public doAnalysis(urlForm: string, branchName: string): void {
-    let params = new HttpParams()
-      .set('url', urlForm)
-      .set('branch', branchName);
-
-    this.analysis = this.http.post<ProjectStructure>(this.repoFormUrl, params)
-      .pipe(
-        tap(_ => console.log('fetched analysis')),
-        catchError(this.handleError<any>('doAnalysis', []))
-      )
-  }
-
-  public getAnalysis(): Observable<JSON> {
-    return this.analysis;
-  }
-
-  private handleError<T> (operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      console.error(error); // log to console instead
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
+  public buildFetchPreviousSnapshotAPIUrl(owner: string, repository: string, branch: string, snapshot: string): string {
+    return 'http://localhost:8080/owners/' + owner +
+      '/repositories/' + repository +
+      '/branches/' + branch +
+      '/snapshots/' + snapshot +
+      '/project-structure';
   }
 }
