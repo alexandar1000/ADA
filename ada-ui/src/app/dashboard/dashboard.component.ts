@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {ProjectStructure} from "../classes/project-structure";
 import {AnalyserService} from "../analyser.service";
-import {catchError, switchMap, tap} from "rxjs/operators";
-import {Snapshot} from "../classes/snapshot";
+import {tap} from "rxjs/operators";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {parseErrorsFromMarkup} from "tslint/lib/verify/parse";
 
 @Component({
   selector: 'app-dashboard',
@@ -31,11 +29,6 @@ export class DashboardComponent implements OnInit {
         (params: ParamMap) =>
           this.fetchPreviousAnalysis(params.get('owner'), params.get('repository'), params.get('branch'), params.get('snapshot'))
       );
-
-      //   .pipe(
-      //   switchMap((params: ParamMap) =>
-      //     this.fetchPreviousAnalysis(params.get('owner'), params.get('repository'), params.get('branch'), params.get('snapshot')))
-      // );
     }
   }
 
