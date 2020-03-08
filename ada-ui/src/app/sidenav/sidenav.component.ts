@@ -1,7 +1,6 @@
 import {MediaMatcher} from '@angular/cdk/layout';
 import {ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { OwnerService } from '../owner.service';
-import { FilterPipe } from '../filter.pipe';
 
 @Component({
   selector: 'app-sidenav',
