@@ -30,6 +30,7 @@ import { BranchComponent } from './branch/branch.component';
 import { SnapshotComponent } from './snapshot/snapshot.component';
 import { FilterPipe } from './filter.pipe';
 import { OwnerService } from './owner.service';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -47,25 +48,26 @@ import { OwnerService } from './owner.service';
     SnapshotComponent,
     FilterPipe,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    LayoutModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatInputModule,
-    MatSnackBarModule,
-    ReactiveFormsModule,
-    FormsModule,
-    HttpClientModule,
-    MatSliderModule,
-    MatOptionModule,
-    MatSelectModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        LayoutModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatSidenavModule,
+        MatIconModule,
+        MatListModule,
+        MatInputModule,
+        MatSnackBarModule,
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientModule,
+        MatSliderModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatProgressSpinnerModule
+    ],
   providers: [AnalyserService, OwnerService],
   bootstrap: [AppComponent]
 })
