@@ -14,7 +14,7 @@ public interface RepoEntityRepository extends CrudRepository<GitRepository, Long
     @Query(value = "SELECT repo_name FROM public.repository ORDER BY repo_id ASC", nativeQuery = true)
     List<String> fetchRepoNames();
 
-    List<GitRepository> findAllByOrderByRepoIDAsc();
+    List<GitRepository> findAllByOrderByIdAsc();
 
     Set<GitRepository> findAllByOwner(Owner owner);
 

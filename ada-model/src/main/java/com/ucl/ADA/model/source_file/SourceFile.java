@@ -1,6 +1,7 @@
 package com.ucl.ADA.model.source_file;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ucl.ADA.model.BaseEntity;
 import com.ucl.ADA.model.snapshot.Snapshot;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +13,9 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "SOURCEFILE")
-public class SourceFile {
+@Table(name = "SOURCE_FILE")
+public class SourceFile extends BaseEntity {
 
-    @Id
     @Column(name = "file_hash")
     @Getter
     private int fileHash;

@@ -19,7 +19,7 @@ public class RepoService {
 
 
     public List<GitRepository> listRepositories() {
-        return repoEntityRepository.findAllByOrderByRepoIDAsc();
+        return repoEntityRepository.findAllByOrderByIdAsc();
     }
 
     public List<String> listRepoNames() {

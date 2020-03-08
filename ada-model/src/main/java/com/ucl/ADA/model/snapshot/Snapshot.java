@@ -3,6 +3,7 @@ package com.ucl.ADA.model.snapshot;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ucl.ADA.model.BaseEntity;
 import com.ucl.ADA.model.branch.Branch;
 import com.ucl.ADA.model.project_structure.ProjectStructure;
 import com.ucl.ADA.model.source_file.SourceFile;
@@ -20,12 +21,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "SNAPSHOT")
-public class Snapshot {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "snapshot_id")
-    private Long snapshotID;
+public class Snapshot extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id")

@@ -1,0 +1,6 @@
+CREATE TABLE SNAPSHOT
+(
+    id          BIGINT                      NOT NULL GENERATED ALWAYS AS IDENTITY (START 1) PRIMARY KEY,
+    branch_id   BIGINT                      NOT NULL REFERENCES BRANCH (id),
+    "timestamp" TIMESTAMP WITHOUT TIME ZONE NOT NULL
+)

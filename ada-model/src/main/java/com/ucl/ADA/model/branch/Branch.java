@@ -2,6 +2,7 @@ package com.ucl.ADA.model.branch;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ucl.ADA.model.BaseEntity;
 import com.ucl.ADA.model.repository.GitRepository;
 import com.ucl.ADA.model.snapshot.Snapshot;
 import lombok.Getter;
@@ -16,12 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "BRANCH")
-public class Branch {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "branch_id")
-    @Getter private Long branchID;
+public class Branch extends BaseEntity {
 
     @Column(name = "branch_name", nullable = false)
     @Getter private String branchName;
