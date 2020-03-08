@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {Observable, of} from "rxjs";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Snapshot} from "./classes/snapshot";
+import {Router} from "@angular/router";
+import {tap} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +34,7 @@ export class AnalyserService {
     'BIDIRECTIONAL_NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS'
   ];
 
-  constructor() {
+  constructor(private http: HttpClient) {
   }
 
   public buildFetchPreviousSnapshotAPIUrl(owner: string, repository: string, branch: string, snapshot: string): string {
@@ -42,4 +44,20 @@ export class AnalyserService {
       '/snapshots/' + snapshot +
       '/project-structure';
   }
+
+  public doAnalysis(): Observable<JSON> {
+    let params = new HttpParams()
+      .set('url', this.repoUrl)
+      .set('branch', this.repoBranch);
+
+    return this.http.post<JSON>(this.analysisEndpointUrl, params);
+  }
+
+
+
+  public getPreviousAnalysis(owner: string, repository: string, branch: string, snapshot: string): Observable<JSON> {
+    let apiUrl = this.buildFetchPreviousSnapshotAPIUrl(owner, repository, branch, snapshot);
+    return this.http.post<JSON>(apiUrl, new HttpParams());
+  }
+
 }
