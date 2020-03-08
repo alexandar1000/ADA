@@ -1,5 +1,7 @@
 package com.ucl.ADA.model.project_structure;
 
+import com.ucl.ADA.model.snapshot.Snapshot;
+import com.ucl.ADA.model.snapshot.SnapshotService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -7,6 +9,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.OffsetDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -20,6 +25,10 @@ class ProjectStructureServiceTest {
 
     @InjectMocks
     private ProjectStructureService projectStructureService;
+
+    @Mock
+    private SnapshotService snapshotService;
+
 
     private ProjectStructure returnProjectStructure;
 
@@ -43,25 +52,25 @@ class ProjectStructureServiceTest {
         verify(projectStructureRepository).save(any());
     }
 
-//    @Test
-//    void findById_idExists() {
-//        when(projectStructureRepository.findById(anyLong())).thenReturn(Optional.of(returnProjectStructure));
-//
-//        ProjectStructure projectStructureFound = projectStructureService.findById(1L);
-//
-//        assertThat(projectStructureFound.getId()).isEqualTo(1L);
-//
-//        verify(projectStructureRepository).findById(1L);
-//    }
-//
-//    @Test
-//    void findById_notFound() {
-//        when(projectStructureRepository.findById(anyLong())).thenReturn(Optional.empty());
-//
-//        ProjectStructure projectStructureFound = projectStructureService.findById(1L);
-//
-//        assertNull(projectStructureFound);
-//
-//        verify(projectStructureRepository).findById(1L);
-//    }
+    @Test
+    void findByOwnerGitRepositoryBranchSnapshotTimestamp() {
+        ProjectStructure projectStructure = new ProjectStructure();
+
+        Snapshot snapshot = new Snapshot();
+
+        projectStructure.setSnapshot(snapshot);
+
+        when(snapshotService.getSnapshotGivenOwnerRepoBranchAndTimestamp(any(), any(), any(), any())).thenReturn(snapshot);
+        when(projectStructureRepository.findBySnapshot(snapshot)).thenReturn(projectStructure);
+
+        OffsetDateTime timestamp = OffsetDateTime.now();
+
+        ProjectStructure retrievedProjectStructure = projectStructureService.findByOwnerGitRepositoryBranchSnapshotTimestamp("bzq", "ada", "master", timestamp);
+
+        verify(snapshotService).getSnapshotGivenOwnerRepoBranchAndTimestamp("bzq", "ada", "master", timestamp);
+        verify(projectStructureRepository).findBySnapshot(snapshot);
+
+        assertThat(retrievedProjectStructure).isEqualTo(projectStructure);
+
+    }
 }

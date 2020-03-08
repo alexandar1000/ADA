@@ -28,7 +28,8 @@ public class MethodInvocation extends ElementInvocation {
 
     /**
      * The constructor of the method invocation object.
-     * @param name name of the constructor being invoked
+     *
+     * @param name             name of the constructor being invoked
      * @param passedParameters The list of parameters with which the constructor has been invoked with, possibly null if it is empty
      */
     public MethodInvocation(String name, List<PassedParameter> passedParameters) {

@@ -19,23 +19,47 @@ import java.util.List;
 @Setter
 public class GitRepoInfo {
 
+    /**
+     * GitHub url
+     */
     @JsonIgnore
     private String url;
 
+    /**
+     * owner or organization that owns the repo
+     */
     private String owner;
 
+    /**
+     * repo name
+     */
     private String repository;
 
+    /**
+     * branch name
+     */
     private String branch;
 
+    /**
+     * time that ADA receives request for processing repo
+     */
     private OffsetDateTime timestamp;
 
+    /**
+     * a list of file names
+     */
     @JsonIgnore
     private List<String> fileNames = new ArrayList<>();
 
+    /**
+     * directory path where downloaded project is stored
+     */
     @JsonIgnore
     private String directoryPath;
 
+    /**
+     * the snapshot project for connecting ProjectStructure
+     */
     @JsonIgnore
     private Snapshot snapshot;
 }
