@@ -15,9 +15,18 @@ import javax.persistence.Table;
 @Table(name = "PARAMETER_DECLARATION")
 public class ParameterDeclaration extends ElementDeclaration {
 
+    /**
+     * parameter type
+     */
     @Column(name = "type", nullable = false)
     private String type;
 
+    /**
+     * Constructor of parameter declaration
+     *
+     * @param type parameter type
+     * @param name parameter name
+     */
     public ParameterDeclaration(String type, String name) {
         super(name);
         this.type = type;

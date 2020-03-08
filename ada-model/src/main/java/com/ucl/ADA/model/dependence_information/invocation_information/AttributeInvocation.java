@@ -16,6 +16,7 @@ public class AttributeInvocation extends ElementInvocation {
 
     /**
      * The constructor of the attribute invocation object.
+     *
      * @param name name of the attribute being invoked
      */
     public AttributeInvocation(String name) {
