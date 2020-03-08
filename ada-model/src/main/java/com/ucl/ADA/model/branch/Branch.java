@@ -28,7 +28,6 @@ public class Branch extends BaseEntity {
     private GitRepo repository;
 
     @OneToMany(mappedBy = "branch", targetEntity = Snapshot.class, cascade = CascadeType.ALL, orphanRemoval = true)
-//    @OrderBy("snapshot_id ASC")
     @JsonBackReference
     @Getter private Set<Snapshot> snapshots = new LinkedHashSet<>();
 
