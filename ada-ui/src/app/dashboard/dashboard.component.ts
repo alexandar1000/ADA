@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ProjectStructure} from "../classes/project-structure";
 import {AnalyserService} from "../analyser.service";
-import {tap} from "rxjs/operators";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
-import {HttpClient, HttpParams} from "@angular/common/http";
 
 @Component({
   selector: 'app-dashboard',
@@ -18,44 +16,22 @@ export class DashboardComponent implements OnInit {
 
   constructor(private analyserService: AnalyserService,
               private route: ActivatedRoute,
-              private router: Router,
-              private http: HttpClient) { }
+              private router: Router) { }
 
   ngOnInit() {
     if (this.router.url == '/dashboard/current') {
-      this.doAnalysis();
+      this.analyserService.doAnalysis().subscribe(dataJson => this.updateProjectStructure(dataJson));
     } else {
       this.route.paramMap.subscribe(
         (params: ParamMap) =>
-          this.fetchPreviousAnalysis(params.get('owner'), params.get('repository'), params.get('branch'), params.get('snapshot'))
+          this.analyserService.getPreviousAnalysis(params.get('owner'), params.get('repository'), params.get('branch'), params.get('snapshot'))
+            .subscribe(dataJson => this.updateProjectStructure(dataJson))
       );
     }
   }
 
   updateSelectedMetric(newMetric: string): void {
     this.selectedMetric = newMetric;
-  }
-
-  private doAnalysis(): void {
-    let params = new HttpParams()
-      .set('url', this.analyserService.repoUrl)
-      .set('branch', this.analyserService.repoBranch);
-
-    this.http.post<JSON>(this.analyserService.analysisEndpointUrl, params)
-      .pipe(
-        tap(_ => console.log('fetched analysis'))
-      )
-      .subscribe(dataJson => this.updateProjectStructure(dataJson));
-  }
-
-  private fetchPreviousAnalysis(owner: string, repository: string, branch: string, snapshot: string): void {
-    let apiUrl = this.analyserService.buildFetchPreviousSnapshotAPIUrl(owner, repository, branch, snapshot);
-
-    this.http.post<JSON>(apiUrl, new HttpParams())
-      .pipe(
-        tap(_ => console.log('fetched analysis'))
-      )
-      .subscribe(dataJson => this.updateProjectStructure(dataJson));
   }
 
   private updateProjectStructure(data: JSON) {
