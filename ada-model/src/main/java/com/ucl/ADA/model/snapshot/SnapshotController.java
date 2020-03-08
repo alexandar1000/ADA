@@ -18,7 +18,7 @@ public class SnapshotController {
 
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping
+    @PostMapping
     public Set<Snapshot> getSnapshotsGivenOwnerRepoAndBranch(@PathVariable String owner,
                                                              @PathVariable String repository,
                                                              @PathVariable String branch) {
