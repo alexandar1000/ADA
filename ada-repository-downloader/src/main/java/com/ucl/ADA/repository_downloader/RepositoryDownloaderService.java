@@ -15,8 +15,12 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+
+import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
 
 /**
  * Service class for downloading and storing the Git repository metadata in the DB (owner, repoName, branch, timestamp, .java files etc..)
@@ -99,8 +103,14 @@ public class RepositoryDownloaderService {
             sourceFile.setSnapshot(snapshot);
             sourceFile.setFileName(file);
 
-            // Not sure if this is the right way to hash file names!
-            sourceFile.setFileHash(sourceFile.hashCode());
+            String filehash;
+            try {
+                filehash = sha1Hex(new FileInputStream(file));
+            } catch (IOException e) {
+                filehash = null;
+            }
+
+            sourceFile.setFileHash(filehash);
 
             sourceFileRepository.save(sourceFile);
         }
