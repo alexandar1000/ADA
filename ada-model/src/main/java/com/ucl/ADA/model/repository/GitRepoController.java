@@ -8,10 +8,10 @@ import java.util.Set;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-public class RepoController {
+public class GitRepoController {
 
     @Autowired
-    private RepoService repoService;
+    private GitRepoService gitRepoService;
 
     /**
      * Endpoint for listing all GitRepository entities in the DB.
@@ -20,8 +20,8 @@ public class RepoController {
      */
     @CrossOrigin("http://localhost:4200")
     @GetMapping("/repositories")
-    public List<GitRepository> listAllRepositories() {
-        return repoService.listRepositories();
+    public List<GitRepo> listAllRepositories() {
+        return gitRepoService.listRepositories();
     }
 
     /**
@@ -32,20 +32,20 @@ public class RepoController {
     @CrossOrigin("http://localhost:4200")
     @GetMapping("/repositories/names")
     public List<String> listAllRepoNames() {
-        return repoService.listRepoNames();
+        return gitRepoService.listRepoNames();
     }
 
     @CrossOrigin("http://localhost:4200")
     @GetMapping("/owners/{owner}/repositories")
-    public Set<GitRepository> getAllReposForUser(@PathVariable String owner) {
-        Set<GitRepository> gitRepositories = repoService.findAllReposByOwner(owner);
+    public Set<GitRepo> getAllReposForUser(@PathVariable String owner) {
+        Set<GitRepo> gitRepositories = gitRepoService.findAllReposByOwner(owner);
         return gitRepositories;
     }
 
     @CrossOrigin("http://localhost:4200")
     @GetMapping("/owners/{owner}/repositories/{repository}")
-    public GitRepository getRepoByOwnerAndName(@PathVariable String owner,
-                                               @PathVariable String repository) {
-        return repoService.findRepoByOwnerAndRepoName(owner, repository);
+    public GitRepo getRepoByOwnerAndName(@PathVariable String owner,
+                                         @PathVariable String repository) {
+        return gitRepoService.findRepoByOwnerAndRepoName(owner, repository);
     }
 }

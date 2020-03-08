@@ -14,5 +14,5 @@ public interface OwnerRepository extends CrudRepository<Owner, Long> {
 
     Owner findByUserName(String userName);
 
-    List<Owner> findAllByOrderByOwnerIDAsc();
+    List<Owner> findAllByOrderByIdAsc();
 }

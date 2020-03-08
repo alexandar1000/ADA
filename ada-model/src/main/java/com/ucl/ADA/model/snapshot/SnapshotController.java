@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
@@ -34,10 +34,10 @@ public class SnapshotController {
                                                                 @PathVariable String branch,
                                                                 @PathVariable String timestamp) throws ParseException {
 
-        DateTimeFormatter fIn = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
-        LocalDateTime ldt = LocalDateTime.parse( timestamp , fIn );
+        DateTimeFormatter fIn = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+        OffsetDateTime odt = OffsetDateTime.parse( timestamp , fIn );
 
-        return snapshotService.getSnapshotGivenOwnerRepoBranchAndTimestamp(owner, repository, branch, ldt);
+        return snapshotService.getSnapshotGivenOwnerRepoBranchAndTimestamp(owner, repository, branch, odt);
     }
 
 }
