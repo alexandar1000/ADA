@@ -56,7 +56,6 @@ public class RepositoryAnalyserServices {
             parsedRepositoryProjectStructure = parserServices.parseRepository(populator.getDirectoryPath());
             // connect snapshot to project structure
             populator.getSnapshot().setProjectStructure(parsedRepositoryProjectStructure);
-            projectStructureService.save(parsedRepositoryProjectStructure);
             // set populator
             parsedRepositoryProjectStructure.setGitRepoInfo(populator);
         } catch (FileNotFoundException e) {
@@ -66,6 +65,7 @@ public class RepositoryAnalyserServices {
         // Calculate the metrics for the parsed repository.
         if (parsedRepositoryProjectStructure != null) {
             parsedRepositoryProjectStructure.computeAllMetrics();
+            projectStructureService.save(parsedRepositoryProjectStructure);
         }
 
         // Delete downloaded repository since it's been parsed
