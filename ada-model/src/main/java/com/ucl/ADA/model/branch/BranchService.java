@@ -17,15 +17,15 @@ public class BranchService {
     private BranchRepository branchRepository;
 
 
-    public Set<Branch> getBranchesByOwnerAndRepo(String user_name, String repo_name) {
-        GitRepo gitRepo = gitRepoService.findRepoByOwnerAndRepoName(user_name, repo_name);
+    public Set<Branch> getBranchesByOwnerAndRepo(String username, String repository) {
+        GitRepo gitRepo = gitRepoService.findRepoByOwnerAndRepoName(username, repository);
 
         return branchRepository.findAllByRepository(gitRepo);
     }
 
-    public Branch getBranchGivenOwnerRepoAndName(String user_name, String repo_name, String branch_name) {
-        GitRepo gitRepo = gitRepoService.findRepoByOwnerAndRepoName(user_name, repo_name);
+    public Branch getBranchGivenOwnerRepoAndName(String username, String repository, String branch) {
+        GitRepo gitRepo = gitRepoService.findRepoByOwnerAndRepoName(username, repository);
 
-        return branchRepository.findByRepositoryAndBranchName(gitRepo, branch_name);
+        return branchRepository.findByRepositoryAndBranchName(gitRepo, branch);
     }
 }

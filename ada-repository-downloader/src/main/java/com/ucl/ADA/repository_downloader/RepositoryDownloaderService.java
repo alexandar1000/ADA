@@ -196,14 +196,14 @@ public class RepositoryDownloaderService {
 
         // Search and return existing user, if found
         for (Owner u : owners) {
-            if (u.getUserName().equals(testUserName)) {
+            if (u.getUsername().equals(testUserName)) {
                 return u;
             }
         }
 
         // If not found, create and return a new user
         Owner owner = new Owner();
-        owner.setUserName(downloadedRepo.getOwner());
+        owner.setUsername(downloadedRepo.getOwner());
         return ownerService.addOwner(owner);
     }
 
