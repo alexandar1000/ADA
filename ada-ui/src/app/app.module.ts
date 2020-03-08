@@ -15,7 +15,6 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RepoFormComponent } from './repo-form/repo-form.component';
-import { UserService } from './user.service';
 import { AcceptedUrlDirective } from './shared/accepted-url.directive';
 import { GraphComponent } from './graph/graph.component';
 import {AnalyserService} from "./analyser.service";
@@ -30,6 +29,7 @@ import { RepositoryComponent } from './repository/repository.component';
 import { BranchComponent } from './branch/branch.component';
 import { SnapshotComponent } from './snapshot/snapshot.component';
 import { FilterPipe } from './filter.pipe';
+import { OwnerService } from './owner.service';
 
 @NgModule({
   declarations: [
@@ -66,7 +66,7 @@ import { FilterPipe } from './filter.pipe';
     MatOptionModule,
     MatSelectModule
   ],
-  providers: [UserService, AnalyserService],
+  providers: [AnalyserService, OwnerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

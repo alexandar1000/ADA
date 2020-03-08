@@ -12,16 +12,17 @@ export class BranchComponent implements OnInit {
   @Input() branch: string;
   private snapshots: string[];
   private clicked: boolean;
+  private cashed: boolean;
 
   constructor(private ownerService: OwnerService) { }
 
   ngOnInit() {
-    this.snapshots = [];
     this.clicked = false;
+    this.cashed = false;
   }
 
   getSnapshotsList(owner: string, repository: string, branch: string): void {
-    if (!this.clicked) {
+    if (!this.clicked && !this.cashed) {
       this.ownerService.getSnapshotsList(owner, repository, branch).subscribe(snapshots => {
         this.snapshots = [];
         snapshots.forEach(snapshot => {
@@ -29,12 +30,13 @@ export class BranchComponent implements OnInit {
         });
       });
       this.clicked = true;
+      this.cashed = true;
     }
-    else {
-      this.snapshots = [];
+    else if (this.cashed && this.clicked) {
       this.clicked = false;
     }
-    
+    else if (this.cashed && !this.clicked) {
+      this.clicked = true;
+    }
   }
-
 }

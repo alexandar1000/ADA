@@ -18,6 +18,10 @@
             <mat-label>Search owner</mat-label>
             <input matInput [(ngModel)]="searchedOwner" name="searchedOwner">
           </mat-form-field>
+          <mat-icon aria-hidden="false" color="primary">search</mat-icon>
+          <button mat-icon-button color="primary" (click)="getOwnerList()">
+            <mat-icon aria-hidden="false">refresh</mat-icon>
+          </button>
         </form>
         <mat-nav-list *ngIf="owners">
           <app-owner *ngFor="let owner of owners | filter : searchedOwner" [owner]="owner"></app-owner>

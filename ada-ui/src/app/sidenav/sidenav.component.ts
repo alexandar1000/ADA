@@ -1,7 +1,6 @@
 import {MediaMatcher} from '@angular/cdk/layout';
 import {ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { OwnerService } from '../owner.service';
-import { FilterPipe } from '../filter.pipe';
 
 @Component({
   selector: 'app-sidenav',
@@ -32,6 +31,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
   shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));
 
   getOwnerList(): void {
+    this.owners = [];
     this.ownerService.getOwnersList().subscribe(ownerNames => {
       ownerNames.forEach(ownerName => {
         this.owners.push(ownerName);

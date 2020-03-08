@@ -38,6 +38,7 @@ h1.app-name {
   padding: 10px 16px 5px;
   align-items: center;
   position: relative;
+  display: flex;
 }
 
 .mat-toolbar a {

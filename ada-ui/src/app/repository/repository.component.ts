@@ -11,16 +11,17 @@ export class RepositoryComponent implements OnInit {
   @Input() repository: string;
   private branches: string[];
   private clicked: boolean;
+  private cashed: boolean;
 
   constructor(private ownerService: OwnerService) { }
 
   ngOnInit() {
-    this.branches = [];
     this.clicked = false;
+    this.cashed = false;
   }
 
   getBranchesList(owner: string, repository: string): void {
-    if (!this.clicked) {
+    if (!this.clicked && !this.cashed) {
       this.ownerService.getBranchesList(owner, repository).subscribe(branches => {
         this.branches = [];
         branches.forEach(branch => {
@@ -28,12 +29,13 @@ export class RepositoryComponent implements OnInit {
         });
       })
       this.clicked = true;
+      this.cashed = true;
     }
-    else {
-      this.branches = [];
+    else if (this.cashed && this.clicked) {
       this.clicked = false;
     }
-    
+    else if (this.cashed && !this.clicked) {
+      this.clicked = true;
+    }
   }
-
 }
