@@ -23,7 +23,7 @@ public class GitRepo extends BaseEntity {
     @Getter private String repoName;
 
     @OneToMany(mappedBy = "repository", targetEntity = Branch.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderBy("branch_id ASC")
+//    @OrderBy("branch_id ASC")
     @JsonBackReference
     @Getter Set<Branch> branches = new LinkedHashSet<>();
 

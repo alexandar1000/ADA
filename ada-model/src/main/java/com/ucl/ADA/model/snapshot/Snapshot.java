@@ -29,7 +29,7 @@ public class Snapshot extends BaseEntity {
     private Branch branch;
 
     @OneToMany(mappedBy = "snapshot", targetEntity = SourceFile.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderBy("file_hash ASC")
+//    @OrderBy("file_hash ASC")
     @JsonBackReference
     private Set<SourceFile> sourceFiles = new LinkedHashSet<>();
 

@@ -11,7 +11,7 @@ import java.util.Set;
 @Repository
 public interface GitRepoRepository extends CrudRepository<GitRepo, Long> {
 
-    @Query(value = "SELECT repo_name FROM public.repository ORDER BY id ASC", nativeQuery = true)
+    @Query(value = "SELECT repo_name FROM public.repository ORDER BY owner_id ASC", nativeQuery = true)
     List<String> fetchRepoNames();
 
     List<GitRepo> findAllByOrderByIdAsc();
