@@ -5,7 +5,7 @@ import com.ucl.ADA.model.snapshot.Snapshot;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class RepoDbPopulator {
+public class GitRepoInfo {
 
     @JsonIgnore
     private String url;
@@ -28,7 +28,7 @@ public class RepoDbPopulator {
 
     private String branch;
 
-    private LocalDateTime timestamp;
+    private OffsetDateTime timestamp;
 
     @JsonIgnore
     private List<String> fileNames = new ArrayList<>();

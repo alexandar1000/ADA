@@ -36,7 +36,7 @@ public class ProjectStructure extends BaseEntity {
     private Snapshot snapshot;
 
     @Transient
-    private RepoDbPopulator repoDbPopulator;
+    private GitRepoInfo gitRepoInfo;
 
 
     /**

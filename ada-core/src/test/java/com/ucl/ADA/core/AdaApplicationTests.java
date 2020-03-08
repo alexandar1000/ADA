@@ -43,7 +43,7 @@ class AdaApplicationTests {
 //	 void getDownloadResponse() throws Exception {
 //		String url = "https://github.com/alexandar1000/ADA-test-simple-JAVA-project-0.git";
 //		String branch = "master";
-//		RepoDbPopulator repoInfoUI = new RepoDbPopulator();
+//		GitRepoInfo repoInfoUI = new GitRepoInfo();
 //		repoInfoUI.setUrl(url);
 //		repoInfoUI.setBranch(branch);
 //

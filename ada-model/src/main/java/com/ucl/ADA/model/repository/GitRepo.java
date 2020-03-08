@@ -17,7 +17,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Table(name = "REPOSITORY")
-public class GitRepository extends BaseEntity {
+public class GitRepo extends BaseEntity {
 
     @Column(name = "repo_name", nullable = false)
     @Getter private String repoName;

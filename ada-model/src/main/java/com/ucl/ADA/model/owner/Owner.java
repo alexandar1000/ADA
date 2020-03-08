@@ -2,7 +2,7 @@ package com.ucl.ADA.model.owner;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ucl.ADA.model.BaseEntity;
-import com.ucl.ADA.model.repository.GitRepository;
+import com.ucl.ADA.model.repository.GitRepo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,9 +21,9 @@ public class Owner extends BaseEntity {
     @Column(name = "user_name", nullable = false, unique = true)
     private String userName;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = GitRepository.class)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = GitRepo.class)
     @JsonBackReference
-    Set<GitRepository> repos = new LinkedHashSet<>();
+    Set<GitRepo> repos = new LinkedHashSet<>();
 
     public Owner(String userName) {
         this.userName = userName;

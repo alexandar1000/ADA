@@ -1,7 +1,7 @@
 package com.ucl.ADA.model.branch;
 
-import com.ucl.ADA.model.repository.GitRepository;
-import com.ucl.ADA.model.repository.RepoService;
+import com.ucl.ADA.model.repository.GitRepo;
+import com.ucl.ADA.model.repository.GitRepoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,21 +11,21 @@ import java.util.Set;
 public class BranchService {
 
     @Autowired
-    private RepoService repoService;
+    private GitRepoService gitRepoService;
 
     @Autowired
     private BranchRepository branchRepository;
 
 
     public Set<Branch> getBranchesByOwnerAndRepo(String user_name, String repo_name) {
-        GitRepository gitRepository = repoService.findRepoByOwnerAndRepoName(user_name, repo_name);
+        GitRepo gitRepo = gitRepoService.findRepoByOwnerAndRepoName(user_name, repo_name);
 
-        return branchRepository.findAllByRepository(gitRepository);
+        return branchRepository.findAllByRepository(gitRepo);
     }
 
     public Branch getBranchGivenOwnerRepoAndName(String user_name, String repo_name, String branch_name) {
-        GitRepository gitRepository = repoService.findRepoByOwnerAndRepoName(user_name, repo_name);
+        GitRepo gitRepo = gitRepoService.findRepoByOwnerAndRepoName(user_name, repo_name);
 
-        return branchRepository.findByRepositoryAndBranchName(gitRepository, branch_name);
+        return branchRepository.findByRepositoryAndBranchName(gitRepo, branch_name);
     }
 }

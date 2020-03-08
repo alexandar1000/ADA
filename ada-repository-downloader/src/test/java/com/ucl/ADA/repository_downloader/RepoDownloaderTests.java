@@ -1,7 +1,7 @@
 package com.ucl.ADA.repository_downloader;
 
 
-import com.ucl.ADA.model.project_structure.RepoDbPopulator;
+import com.ucl.ADA.model.project_structure.GitRepoInfo;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.jupiter.api.AfterAll;
@@ -23,7 +23,7 @@ public class RepoDownloaderTests {
 
     @Test
     void testDownloadingRepositoryWithCorrectGitURL() throws GitAPIException {
-        RepoDbPopulator populator;
+        GitRepoInfo populator;
         String branch = "";
         String url = "https://github.com/sebastianvburlacu/Fitbit-JSON-Data-Generator.git";
 
@@ -40,13 +40,13 @@ public class RepoDownloaderTests {
         Exception exception = assertThrows(GitAPIException.class,()->{
             String branch = "master";
             String url = "https://github.com/alexandar1000/ADA-test-simple-JAVasdfaA-project-0.git";
-            RepoDbPopulator populator = RepoDownloader.downloadRepository(url, branch);
+            GitRepoInfo populator = RepoDownloader.downloadRepository(url, branch);
         });
 
     }
     @Test
     void testDownloadingRepositoryWithCorrectGitURLAndBranch() throws GitAPIException {
-        RepoDbPopulator populator;
+        GitRepoInfo populator;
         String branch = "testing";
         String url = "https://github.com/alexandar1000/ADA-test-simple-JAVA-project-0.git";
 
@@ -63,7 +63,7 @@ public class RepoDownloaderTests {
         Exception exception = assertThrows(GitAPIException.class,()->{
             String branch = "not-existing-branch";
             String url = "https://github.com/alexandar1000/ADA-test-simple-JAVA-project-0.git";
-            RepoDbPopulator populator = RepoDownloader.downloadRepository(url, branch);
+            GitRepoInfo populator = RepoDownloader.downloadRepository(url, branch);
         });
 
     }

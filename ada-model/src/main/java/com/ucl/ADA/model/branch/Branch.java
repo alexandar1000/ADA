@@ -3,7 +3,7 @@ package com.ucl.ADA.model.branch;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ucl.ADA.model.BaseEntity;
-import com.ucl.ADA.model.repository.GitRepository;
+import com.ucl.ADA.model.repository.GitRepo;
 import com.ucl.ADA.model.snapshot.Snapshot;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,7 @@ public class Branch extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "repo_id", nullable = false)
     @JsonManagedReference
-    private GitRepository repository;
+    private GitRepo repository;
 
     @OneToMany(mappedBy = "branch", targetEntity = Snapshot.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("snapshot_id ASC")

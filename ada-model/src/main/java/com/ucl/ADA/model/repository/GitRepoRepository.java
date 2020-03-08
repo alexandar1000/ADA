@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-public interface RepoEntityRepository extends CrudRepository<GitRepository, Long> {
+public interface GitRepoRepository extends CrudRepository<GitRepo, Long> {
 
     @Query(value = "SELECT repo_name FROM public.repository ORDER BY repo_id ASC", nativeQuery = true)
     List<String> fetchRepoNames();
 
-    List<GitRepository> findAllByOrderByIdAsc();
+    List<GitRepo> findAllByOrderByIdAsc();
 
-    Set<GitRepository> findAllByOwner(Owner owner);
+    Set<GitRepo> findAllByOwner(Owner owner);
 
-    GitRepository findByOwnerAndRepoName(Owner owner, String repoName);
+    GitRepo findByOwnerAndRepoName(Owner owner, String repoName);
 }

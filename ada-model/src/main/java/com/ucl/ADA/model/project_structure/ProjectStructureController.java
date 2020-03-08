@@ -3,7 +3,7 @@ package com.ucl.ADA.model.project_structure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 @RestController
@@ -23,9 +23,9 @@ public class ProjectStructureController {
                                                                                 @PathVariable String timestamp) {
 
         DateTimeFormatter fIn = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
-        LocalDateTime ldt = LocalDateTime.parse( timestamp , fIn );
+        OffsetDateTime odt = OffsetDateTime.parse( timestamp , fIn );
 
-        return projectStructureService.findByOwnerGitRepositoryBranchSnapshotTimestamp(owner, repository, branch, ldt);
+        return projectStructureService.findByOwnerGitRepositoryBranchSnapshotTimestamp(owner, repository, branch, odt);
     }
 
 }

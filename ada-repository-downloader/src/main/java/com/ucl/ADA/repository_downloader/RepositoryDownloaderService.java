@@ -4,9 +4,9 @@ import com.ucl.ADA.model.branch.Branch;
 import com.ucl.ADA.model.branch.BranchRepository;
 import com.ucl.ADA.model.owner.Owner;
 import com.ucl.ADA.model.owner.OwnerService;
-import com.ucl.ADA.model.project_structure.RepoDbPopulator;
-import com.ucl.ADA.model.repository.GitRepository;
-import com.ucl.ADA.model.repository.RepoEntityRepository;
+import com.ucl.ADA.model.project_structure.GitRepoInfo;
+import com.ucl.ADA.model.repository.GitRepo;
+import com.ucl.ADA.model.repository.GitRepoRepository;
 import com.ucl.ADA.model.snapshot.Snapshot;
 import com.ucl.ADA.model.snapshot.SnapshotRepository;
 import com.ucl.ADA.model.source_file.SourceFile;
@@ -21,7 +21,7 @@ import java.util.Set;
 /**
  * Service class for downloading and storing the Git repository metadata in the DB (owner, repoName, branch, timestamp, .java files etc..)
  *
- * @see RepoDbPopulator
+ * @see GitRepoInfo
  * @see RepoDownloader
  */
 @Service
@@ -32,7 +32,7 @@ public class RepositoryDownloaderService {
     private OwnerService ownerService;
 
     @Autowired
-    private RepoEntityRepository repoEntityRepository;
+    private GitRepoRepository gitRepoRepository;
 
     @Autowired
     private BranchRepository branchRepository;
@@ -49,49 +49,49 @@ public class RepositoryDownloaderService {
      *
      * @param url        url of the Git repository
      * @param branchName branch name of the Git repository
-     * @return RepoDbPopulator object to be used by the parser
+     * @return GitRepoInfo object to be used by the parser
      */
-    public RepoDbPopulator downloadAndStoreRepo(String url, String branchName) throws GitAPIException {
+    public GitRepoInfo downloadAndStoreRepo(String url, String branchName) throws GitAPIException {
 
-        RepoDbPopulator repoDbPopulator = RepoDownloader.downloadRepository(url, branchName);
+        GitRepoInfo gitRepoInfo = RepoDownloader.downloadRepository(url, branchName);
 
-        return populateDatabase(repoDbPopulator);
+        return populateDatabase(gitRepoInfo);
     }
 
     /**
      * Populate database with the metadata of the git repository.
      *
-     * @param repoDbPopulator helper object containing the name, owner, branch and path to source files
+     * @param gitRepoInfo helper object containing the name, owner, branch and path to source files
      *                        of the downloaded Git Repository
-     * @return the same RepoDbPopulator object, to be used by the the parser.
+     * @return the same GitRepoInfo object, to be used by the the parser.
      */
-    RepoDbPopulator populateDatabase(RepoDbPopulator repoDbPopulator) {
+    GitRepoInfo populateDatabase(GitRepoInfo gitRepoInfo) {
 
-        Owner owner = initOwner(repoDbPopulator);
+        Owner owner = initOwner(gitRepoInfo);
 
-        GitRepository repo = initRepo(owner, repoDbPopulator);
+        GitRepo repo = initRepo(owner, gitRepoInfo);
 
-        Branch branchEntity = initBranch(repo, repoDbPopulator);
+        Branch branchEntity = initBranch(repo, gitRepoInfo);
 
-        Snapshot snapshot = initSnapshot(repoDbPopulator, branchEntity);
+        Snapshot snapshot = initSnapshot(gitRepoInfo, branchEntity);
 
-        repoDbPopulator.setSnapshot(snapshot);
+        gitRepoInfo.setSnapshot(snapshot);
 
-        initSourceFiles(repoDbPopulator, snapshot);
+        initSourceFiles(gitRepoInfo, snapshot);
 
-        return repoDbPopulator;
+        return gitRepoInfo;
     }
 
     /**
      * Create, initalize and store a new SourceFile entity in the DB.
      *
-     * @param repoDbPopulator helper object containing the source file names of the downloaded repository
+     * @param gitRepoInfo helper object containing the source file names of the downloaded repository
      * @param snapshot        corresponding Snapshot entity
-     * @see RepoDbPopulator#getFileNames()
+     * @see GitRepoInfo#getFileNames()
      */
 
-    private void initSourceFiles(RepoDbPopulator repoDbPopulator, Snapshot snapshot) {
-        List<String> fileNames = repoDbPopulator.getFileNames();
+    private void initSourceFiles(GitRepoInfo gitRepoInfo, Snapshot snapshot) {
+        List<String> fileNames = gitRepoInfo.getFileNames();
 
         for (String file : fileNames) {
 
@@ -109,15 +109,15 @@ public class RepositoryDownloaderService {
     /**
      * Create, initalize and save a new Snapshot entity in the DB.
      *
-     * @param repoDbPopulator helper object containing the source file names of the downloaded repository
+     * @param gitRepoInfo helper object containing the source file names of the downloaded repository
      * @param branchEntity    corresponding Branch entity
      * @return saved Snapshot entity
      */
-    private Snapshot initSnapshot(RepoDbPopulator repoDbPopulator, Branch branchEntity) {
+    private Snapshot initSnapshot(GitRepoInfo gitRepoInfo, Branch branchEntity) {
         Snapshot snapshot = new Snapshot();
 
         snapshot.setBranch(branchEntity);
-        snapshot.setTimestamp(repoDbPopulator.getTimestamp());
+        snapshot.setTimestamp(gitRepoInfo.getTimestamp());
 
         return snapshotRepository.save(snapshot);
     }
@@ -129,9 +129,9 @@ public class RepositoryDownloaderService {
      * @param repo           corresponding Git repository
      * @param downloadedRepo object containing metadata of Git repository
      * @return an existing (or new) Branch entity.
-     * @see RepoDbPopulator#getBranch()
+     * @see GitRepoInfo#getBranch()
      */
-    private Branch initBranch(GitRepository repo, RepoDbPopulator downloadedRepo) {
+    private Branch initBranch(GitRepo repo, GitRepoInfo downloadedRepo) {
         Set<Branch> branches = repo.getBranches();
         String branchName = downloadedRepo.getBranch();
 
@@ -157,19 +157,19 @@ public class RepositoryDownloaderService {
      * @param downloadedRepo object containing metadata of Git repository
      * @return an existing (or new) GitRepository
      */
-    private GitRepository initRepo(Owner owner, RepoDbPopulator downloadedRepo) {
+    private GitRepo initRepo(Owner owner, GitRepoInfo downloadedRepo) {
 
-        Set<GitRepository> repos = owner.getRepos();
+        Set<GitRepo> repos = owner.getRepos();
         String repoName = downloadedRepo.getRepository();
-        for (GitRepository r : repos) {
+        for (GitRepo r : repos) {
             if (r.getRepoName().equals(repoName)) {
                 return r;
             }
         }
-        GitRepository repo = new GitRepository();
+        GitRepo repo = new GitRepo();
         repo.setOwner(owner);
         repo.setRepoName(repoName);
-        return repoEntityRepository.save(repo);
+        return gitRepoRepository.save(repo);
     }
 
     /**
@@ -179,7 +179,7 @@ public class RepositoryDownloaderService {
      * @param downloadedRepo object containining metadata of Git repository
      * @return an existing (or new) Owner
      */
-    private Owner initOwner(RepoDbPopulator downloadedRepo) {
+    private Owner initOwner(GitRepoInfo downloadedRepo) {
 
         List<Owner> owners = ownerService.listOwners();
         String testUserName = downloadedRepo.getOwner();
