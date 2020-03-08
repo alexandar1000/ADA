@@ -39,9 +39,6 @@ h1.app-name {
   align-items: center;
   position: relative;
 }
-/* mat-sidenav {
-  width: 200px;
-} */
 
 .mat-toolbar a {
   text-decoration: none;
