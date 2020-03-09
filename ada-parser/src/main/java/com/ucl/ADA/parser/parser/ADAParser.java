@@ -3,10 +3,9 @@ package com.ucl.ADA.parser.parser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ucl.ADA.parser.ada_model.ADAClass;
+import com.ucl.ADA.parser.parser.visitor.ADAClassVisitor;
 import com.ucl.ADA.parser.parser.visitor.PackageAndImportVisitor;
 import com.ucl.ADA.parser.parser.visitor.TypeDeclarationVisitor;
-import org.apache.commons.collections4.ListUtils;
-import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.eclipse.jdt.core.JavaCore;
@@ -17,9 +16,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 
 public class ADAParser {
@@ -63,7 +59,7 @@ public class ADAParser {
         List<AbstractTypeDeclaration> allClassAndEnums = tv.getAbstractTypeDeclaration();
         List<ADAClass> parsedClasses = new ArrayList<>();
         for (AbstractTypeDeclaration cl : allClassAndEnums) {
-            JavaClassParser jp = new JavaClassParser(pv.getPackageName(), pv.getImportedInternalClasses(), pv.getImportedExternalClasses());
+            ADAClassVisitor jp = new ADAClassVisitor(pv.getPackageName(), pv.getImportedInternalClasses(), pv.getImportedExternalClasses());
             cl.accept(jp);
             ADAClass cm = jp.getExtractedClass();
             parsedClasses.add(cm);
@@ -136,9 +132,9 @@ public class ADAParser {
                 List<AbstractTypeDeclaration> allClassAndEnums = typeVisitor.getAbstractTypeDeclaration();
                 for (int i = 0; i < allClassAndEnums.size(); i++) {
                     AbstractTypeDeclaration classAndEnumType = allClassAndEnums.get(i);
-                    JavaClassParser javaClassParser = new JavaClassParser(packageVisitor.getPackageName(), packageVisitor.getImportedInternalClasses(), packageVisitor.getImportedExternalClasses());
-                    classAndEnumType.accept(javaClassParser);
-                    ADAClass extractedClass = javaClassParser.getExtractedClass();
+                    ADAClassVisitor ADAClassVisitor = new ADAClassVisitor(packageVisitor.getPackageName(), packageVisitor.getImportedInternalClasses(), packageVisitor.getImportedExternalClasses());
+                    classAndEnumType.accept(ADAClassVisitor);
+                    ADAClass extractedClass = ADAClassVisitor.getExtractedClass();
                     parsedClasses.add(extractedClass);
                 }
             }

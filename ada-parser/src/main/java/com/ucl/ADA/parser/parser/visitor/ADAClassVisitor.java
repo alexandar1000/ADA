@@ -1,4 +1,4 @@
-package com.ucl.ADA.parser.parser;
+package com.ucl.ADA.parser.parser.visitor;
 
 
 import com.ucl.ADA.parser.ada_model.*;
@@ -11,7 +11,7 @@ import org.eclipse.jdt.core.dom.EnumDeclaration;
 
 import java.util.*;
 
-public class JavaClassParser extends ASTVisitor {
+public class ADAClassVisitor extends ASTVisitor {
     private String packageName = "";
     private Set<String> importedInternalClasses = new HashSet<>();
     private Set<String> importedExternalClasses = new HashSet<>();
@@ -31,7 +31,7 @@ public class JavaClassParser extends ASTVisitor {
     private List<String> exFieldInvocation = new ArrayList<>();
 
 
-    public JavaClassParser(String packageName, Set<String> importedInternalClasses, Set<String> importedExternalClasses) {
+    public ADAClassVisitor(String packageName, Set<String> importedInternalClasses, Set<String> importedExternalClasses) {
 
         this.packageName = packageName;
         this.importedInternalClasses.addAll(importedInternalClasses);
