@@ -20,15 +20,15 @@ public class CompilationUnitBuilder {
     /**
      * It makes the compilation unit for a given file.
      *
-     * @param filePath                 : Source file path
-     * @param sourceCode               :Source content that needs to make compilation unit.
-     * @param allSrcDirectories:Source directories for configuring the bildings
+     * @param filePath          Source file path
+     * @param sourceCode        Source content that needs to make compilation unit.
+     * @param sourceDirectories Source directories for configuring the bildings
      * @return A compilation unit for the given source file.
+     * @Exception if error occurs while making the compilation unit
      */
-
-    protected CompilationUnit getCompilationUnit(String filePath, String sourceCode, String[] allSrcDirectories) {
+    protected CompilationUnit getCompilationUnit(String filePath, String sourceCode, String[] sourceDirectories) {
         Map options = getParserVersion_1_5();
-        ASTParser parser = buildASTParser(allSrcDirectories, options);
+        ASTParser parser = buildASTParser(sourceDirectories, options);
         String unitName = new File(filePath).getName();
         parser.setSource(sourceCode.toCharArray());
         parser.setUnitName(unitName);
@@ -61,11 +61,10 @@ public class CompilationUnitBuilder {
     /**
      * It builds the ASTParser for a given configuration.
      *
-     * @param sourceDirectories: A list of source directories that contains *.java source files
-     * @param options            A Map containing configuration of JDT parser
+     * @param sourceDirectories A list of source directories that contains *.java source files
+     * @param options           A Map containing configuration of JDT parser
      * @return An instance of ASTParser with the given configurations and source directories for type binding.
      */
-
     protected ASTParser buildASTParser(String[] sourceDirectories, Map options) {
         String[] encoding = new String[sourceDirectories.length];
         Arrays.fill(encoding, "UTF-8");

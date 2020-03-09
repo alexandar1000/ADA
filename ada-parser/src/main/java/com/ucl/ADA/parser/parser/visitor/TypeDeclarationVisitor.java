@@ -27,7 +27,6 @@ public class TypeDeclarationVisitor extends ASTVisitor {
      *
      * @return A list of AbstractTypeDeclaration containing all class types and Enum types
      */
-
     public List<AbstractTypeDeclaration> getAbstractTypeDeclaration() {
         List<AbstractTypeDeclaration> absList = new ArrayList<>();
         absList.addAll(this.classes);
@@ -41,10 +40,9 @@ public class TypeDeclarationVisitor extends ASTVisitor {
      * check weather it is an TypeDeclaration (class) type or
      * not and populate a list of class type Declaration.
      *
-     * @param node : A TypeDeclaration node derived from the AST.
+     * @param node  A TypeDeclaration node derived from the AST.
      * @return true if it is required to visit the children node otherwise false
      */
-
     public boolean visit(TypeDeclaration node) {
         if (node.isPackageMemberTypeDeclaration()) {
             this.classes.add(node);
@@ -57,7 +55,7 @@ public class TypeDeclarationVisitor extends ASTVisitor {
      * It visits the EnumDeclaration node from the AST, then
      * check weather it is an Enum type or not and populate a list of Enum type declaration.
      *
-     * @param node : A EnumDeclaration node derived from the AST.
+     * @param node  A EnumDeclaration node derived from the AST.
      * @return true if it is required to visit the children node otherwise false
      */
     public boolean visit(EnumDeclaration node) {

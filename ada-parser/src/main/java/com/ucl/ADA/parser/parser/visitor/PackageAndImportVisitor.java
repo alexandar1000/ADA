@@ -19,7 +19,6 @@ public class PackageAndImportVisitor extends ASTVisitor {
     /**
      * A constructor of PackageAndImportVisitor.
      */
-
     public PackageAndImportVisitor() {
         importedInternalClasses = new HashSet<>();
         importedExternalClasses = new HashSet<>();
@@ -29,7 +28,7 @@ public class PackageAndImportVisitor extends ASTVisitor {
      * It visits the PackageDeclaration node from the AST and
      * retrieves the declared package name
      *
-     * @param node : A PackageDeclaration node derived from the AST.
+     * @param node  A PackageDeclaration node derived from the AST.
      * @return true if it is required to visit the children node otherwise false
      */
     public boolean visit(PackageDeclaration node) {
@@ -44,7 +43,7 @@ public class PackageAndImportVisitor extends ASTVisitor {
      * It visits the ImportDeclaration node from the AST and
      * retrieves the required imported packages names.
      *
-     * @param node : A ImportDeclaration node derived from the AST.
+     * @param node  A ImportDeclaration node derived from the AST.
      * @return true if it is required to visit the children node otherwise false
      */
     public boolean visit(ImportDeclaration node) {

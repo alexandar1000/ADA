@@ -28,7 +28,7 @@ public class VariableDeclarationVisitor extends ASTVisitor {
      * It visits the VariableDeclarationStatement node from the AST,
      * and populate a list of local variables.
      *
-     * @param node : A VariableDeclarationStatement node derived from the AST.
+     * @param node  A VariableDeclarationStatement node derived from the AST.
      * @return true if it is required to visit the children node otherwise false
      */
     public boolean visit(VariableDeclarationStatement node) {

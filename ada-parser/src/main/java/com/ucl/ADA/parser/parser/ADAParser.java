@@ -34,7 +34,7 @@ public class ADAParser {
     /**
      * It parses all the .*java source files and populates a set of ADAClass model.
      *
-     * @param rootDirectory :  Source repository path
+     * @param rootDirectory Source repository path
      * @return A set of parsed class in from of ADAClass model
      */
     public Set<ADAClass> getParsedSourceFile(String rootDirectory) {
@@ -49,7 +49,8 @@ public class ADAParser {
      * It parses all the .*java source files and populates a set of ADAClass model.
      * It then prints the parsed ADAClasses in JSON format.
      *
-     * @param rootDirectory :Source repository path
+     * @param rootDirectory Source repository path
+     * @JsonProcessingException if error occurs while preparing the JSON
      */
     public void printParsedSourceFileInJSON(String rootDirectory) {
         Set<ADAClass> classes = getParsedSourceFile(rootDirectory);
@@ -70,8 +71,9 @@ public class ADAParser {
      * This method parsed all source *.java files for a given source repository and make a list of ADAClass models
      * It performs thread pooling to parsing the source files and populate list of ADAClass models concurrently.
      *
-     * @param rootDirectory: :Source repository path
+     * @param rootDirectory Source repository path
      * @return A list of parsed class in from of ADAClass model
+     * @InterruptedException if errors occur in thread pooling.
      */
     private List<ADAClass> parsingSourceFilesConcurrently(String rootDirectory) {
         List<ADAClass> parsedClasses = new ArrayList<>();
@@ -109,8 +111,8 @@ public class ADAParser {
     /**
      * It parses a given list of files and populates a list of ADAClass model.
      *
-     * @param filePathContentPair : A map containing file path->file contents
-     * @param sourceDirectories   : All the source directories (src/) insider the repository.
+     * @param filePathContentPair A map containing file path->file contents
+     * @param sourceDirectories   All the source directories (src/) insider the repository.
      * @return A list of ADAClass model with parsed data.
      */
     private List<ADAClass> parseSourceFiles(Map<String, String> filePathContentPair, String[] sourceDirectories) {
@@ -129,7 +131,7 @@ public class ADAParser {
     /**
      * It takes a prepared CompilationUnit and generates a list of parsed ADAClass model.
      *
-     * @param compilationUnit : A compilation unit derived from CompilationUnit builder.
+     * @param compilationUnit A compilation unit derived from CompilationUnit builder.
      * @return A list of parsed ADAClass model.
      */
     private List<ADAClass> getParsedClass(CompilationUnit compilationUnit) {
