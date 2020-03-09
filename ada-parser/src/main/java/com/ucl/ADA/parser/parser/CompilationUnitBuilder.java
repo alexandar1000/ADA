@@ -11,7 +11,9 @@ import java.util.Map;
 
 public class CompilationUnitBuilder {
 
-
+    /**
+     * Default constructor for SourceFileProcessor
+     */
     protected CompilationUnitBuilder() {
     }
 
