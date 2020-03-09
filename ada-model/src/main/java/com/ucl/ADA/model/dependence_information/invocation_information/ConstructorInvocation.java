@@ -28,7 +28,8 @@ public class ConstructorInvocation extends ElementInvocation {
 
     /**
      * The constructor of the attribute invocation object.
-     * @param name name of the constructor being invoked
+     *
+     * @param name             name of the constructor being invoked
      * @param passedParameters The list of parameters whit which the constructor has been invoked with
      */
     public ConstructorInvocation(String name, List<PassedParameter> passedParameters) {

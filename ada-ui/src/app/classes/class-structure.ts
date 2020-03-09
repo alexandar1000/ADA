@@ -38,24 +38,31 @@ export class ClassStructure {
     for (let attributeDeclarationJSON of attributeDeclarationsJSON) {
       this.attributeDeclarations.push(new AttributeDeclaration(attributeDeclarationJSON));
     }
+
     for (let constructorDeclaration of classDeclaration['constructorDeclarations']) {
       this.constructorDeclarations.push(new ConstructorDeclaration(constructorDeclaration));
     }
+
     for (let methodDeclaration of classDeclaration['methodsDeclarations']) {
       this.methodDeclarations.push(new MethodDeclaration(methodDeclaration));
     }
 
-    let outgoingDependenceInfoJSON = classDeclaration['outgoingDependenceInfo'];
-    for (let outgoingDependenceInfoClassName in outgoingDependenceInfoJSON) {
-      if (outgoingDependenceInfoJSON.hasOwnProperty(outgoingDependenceInfoClassName)) {
-        this.outgoingDependenceInfo.set(outgoingDependenceInfoClassName, new DependenceInfo(outgoingDependenceInfoJSON[outgoingDependenceInfoClassName]));
+    if (classDeclaration.hasOwnProperty('incomingDependenceInfo')) {
+      let outgoingDependenceInfoJSON = classDeclaration['outgoingDependenceInfo'];
+      for (let outgoingDependenceInfoClassName in outgoingDependenceInfoJSON) {
+        if (outgoingDependenceInfoJSON.hasOwnProperty(outgoingDependenceInfoClassName)) {
+          this.outgoingDependenceInfo.set(outgoingDependenceInfoClassName, new DependenceInfo(outgoingDependenceInfoJSON[outgoingDependenceInfoClassName]));
+        }
       }
     }
 
-    let incomingDependenceInfoJSON = classDeclaration['incomingDependenceInfo'];
-    for (let incomingDependenceInfoClassName in incomingDependenceInfoJSON) {
-      if (incomingDependenceInfoJSON.hasOwnProperty(incomingDependenceInfoClassName)) {
-        this.incomingDependenceInfo.set(incomingDependenceInfoClassName, new DependenceInfo(incomingDependenceInfoJSON[incomingDependenceInfoClassName]));
+
+    if (classDeclaration.hasOwnProperty('incomingDependenceInfo')) {
+      let incomingDependenceInfoJSON = classDeclaration['incomingDependenceInfo'];
+      for (let incomingDependenceInfoClassName in incomingDependenceInfoJSON) {
+        if (incomingDependenceInfoJSON.hasOwnProperty(incomingDependenceInfoClassName)) {
+          this.incomingDependenceInfo.set(incomingDependenceInfoClassName, new DependenceInfo(incomingDependenceInfoJSON[incomingDependenceInfoClassName]));
+        }
       }
     }
 

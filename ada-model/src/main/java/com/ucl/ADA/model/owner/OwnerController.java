@@ -14,21 +14,21 @@ public class OwnerController {
     private OwnerService ownerService;
 
     @CrossOrigin("http://localhost:4200")
-    @GetMapping(value = "/{owner}")
+    @PostMapping(value = "/{owner}")
     public Owner getOwnerByName(@PathVariable String owner) {
         return ownerService.getOwnerByName(owner);
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping
+    @PostMapping
     public List<Owner> listAllUsers() {
         return ownerService.listOwners();
     }
 
     @CrossOrigin("http://localhost:4200")
-    @GetMapping("/names")
-    public List<String> listAllUserNames() {
-        return ownerService.listUserNames();
+    @PostMapping("/names")
+    public List<String> listAllUsername() {
+        return ownerService.listAllUsername();
     }
 
     @CrossOrigin("http://localhost:4200")

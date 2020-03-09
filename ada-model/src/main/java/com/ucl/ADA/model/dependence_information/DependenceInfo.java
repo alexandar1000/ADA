@@ -75,6 +75,7 @@ public class DependenceInfo extends BaseEntity {
 
     /**
      * Adds a new attribute to the instance.
+     *
      * @param attributeInvocationInformation an attribute invocation information object containing all of the
      *                                       corresponding information about the attribute being added
      */
@@ -84,8 +85,9 @@ public class DependenceInfo extends BaseEntity {
 
     /**
      * Adds a new constructor to the instance.
+     *
      * @param constructorInvocationInformation a constructor invocation information object containing all of the
-     *                                       corresponding information about the constructor being added
+     *                                         corresponding information about the constructor being added
      */
     public void addNewConstructor(ConstructorInvocation constructorInvocationInformation) {
         this.constructors.add(constructorInvocationInformation);
@@ -93,8 +95,9 @@ public class DependenceInfo extends BaseEntity {
 
     /**
      * Adds a new method to the instance.
+     *
      * @param methodInvocationInformation a method invocation information object containing all of the
-     *                                       corresponding information about the method being added
+     *                                    corresponding information about the method being added
      */
     public void addNewMethod(MethodInvocation methodInvocationInformation) {
         this.methods.add(methodInvocationInformation);
@@ -102,8 +105,9 @@ public class DependenceInfo extends BaseEntity {
 
     /**
      * Adds a new package to the instance.
+     *
      * @param packageInvocationInformation a package invocation information object containing all of the
-     *                                       corresponding information about the package being added
+     *                                     corresponding information about the package being added
      */
     public void addNewPackage(PackageInvocation packageInvocationInformation) {
         this.packages.add(packageInvocationInformation);

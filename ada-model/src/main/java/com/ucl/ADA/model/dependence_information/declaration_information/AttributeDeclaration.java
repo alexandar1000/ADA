@@ -41,10 +41,11 @@ public class AttributeDeclaration extends ElementDeclaration {
 
     /**
      * The constructor of the attribute declaration object.
+     *
      * @param modifierTypes the set of access modifiers associated with the attribute
-     * @param type the type of the attribute
-     * @param name name of the attribute
-     * @param value the value assigned to the attribute
+     * @param type          the type of the attribute
+     * @param name          name of the attribute
+     * @param value         the value assigned to the attribute
      */
     public AttributeDeclaration(Set<ModifierType> modifierTypes, String type, String name, String value) {
         super(name);

@@ -91,11 +91,6 @@ public class ClassStructure extends BaseEntity {
      * name of the class.
      */
     @Transient
-//    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-//    @JoinTable(name = "CLASS_STRUCTURE_INCOMING_DEPENDENCE_INFO",
-//            joinColumns = {@JoinColumn(name = "class_structure_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "dependence_info_id")})
-//    @MapKeyColumn(name = "class_name")
     private Map<String, DependenceInfo> incomingDependenceInfo = new HashMap<>();
 
 
@@ -257,18 +252,38 @@ public class ClassStructure extends BaseEntity {
         this.globalMethods.add(methodInvocationInformation);
     }
 
+    /**
+     * Adds a new external package import
+     *
+     * @param packageInvocation an external package invocation object containing all of the related information about the package invocation being added
+     */
     public void addExternalPackageImport(PackageInvocation packageInvocation) {
         this.externalPackageImports.add(packageInvocation);
     }
 
+    /**
+     * Adds a new external attribute invocation
+     *
+     * @param attributeInvocation an external attribute invocation object containing all of the related information about the attribute invocation being added
+     */
     public void addExternalAttributeInvocation(AttributeInvocation attributeInvocation) {
         this.externalAttributeInvocations.add(attributeInvocation);
     }
 
+    /**
+     * Adds a new external constructor invocation
+     *
+     * @param constructorInvocation an external constructor invocation object containing all of the related information about the constructor invocation being added
+     */
     public void addExternalConstructorInvocation(ConstructorInvocation constructorInvocation) {
         this.externalConstructorInvocations.add(constructorInvocation);
     }
 
+    /**
+     * Adds a new external method invocation
+     *
+     * @param methodInvocation an external method invocation object containing all of the related information about the method invocation being added
+     */
     public void addExternalMethodInvocation(MethodInvocation methodInvocation) {
         this.externalMethodInvocations.add(methodInvocation);
     }
@@ -499,6 +514,11 @@ public class ClassStructure extends BaseEntity {
         }
     }
 
+    /**
+     * compute relation metric which collects detailed invocation information from dependence info
+     *
+     * @param relationMetricType outgoing or incoming relation metric
+     */
     public void computeRelationMetric(RelationMetricType relationMetricType) {
         float metricValue = 0F;
         // TODO: This could be made nicer by extracting the for loop around the switch. However, the switch would then
@@ -717,12 +737,18 @@ public class ClassStructure extends BaseEntity {
         }
     }
 
+    /**
+     * compute class metrics for all class metric type
+     */
     public void computeAllClassMetrics() {
         for (ClassMetricType classMetricType : ClassMetricType.values()) {
             this.computeClassMetric(classMetricType);
         }
     }
 
+    /**
+     * compute relation metrics for all relation types
+     */
     public void computeAllRelationMetrics() {
         for (RelationMetricType relationMetricType : RelationMetricType.values()) {
             this.computeRelationMetric(relationMetricType);

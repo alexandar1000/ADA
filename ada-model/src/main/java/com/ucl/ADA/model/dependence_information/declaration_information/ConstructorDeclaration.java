@@ -42,9 +42,10 @@ public class ConstructorDeclaration extends ElementDeclaration {
 
     /**
      * The constructor of the constructor declaration object.
+     *
      * @param modifierTypes the set of access modifiers associated with the constructor
-     * @param name name of the constructor
-     * @param parameters the parameters in the constructor
+     * @param name          name of the constructor
+     * @param parameters    the parameters in the constructor
      */
     public ConstructorDeclaration(Set<ModifierType> modifierTypes, String name, List<ParameterDeclaration> parameters) {
         super(name);

@@ -1,7 +1,8 @@
 package com.ucl.ADA.model.owner;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.ucl.ADA.model.repository.GitRepository;
+import com.ucl.ADA.model.BaseEntity;
+import com.ucl.ADA.model.repository.GitRepo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,23 +15,18 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "OWNER")
-public class Owner {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "owner_id")
-    private Long ownerID;
+public class Owner extends BaseEntity {
 
     // There are no duplicates in Github usernames, hence the uniqueness of the column
     @Column(name = "user_name", nullable = false, unique = true)
-    private String userName;
+    private String username;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = GitRepository.class)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = GitRepo.class)
     @JsonBackReference
-    Set<GitRepository> repos = new LinkedHashSet<>();
+    Set<GitRepo> repos = new LinkedHashSet<>();
 
-    public Owner(String userName) {
-        this.userName = userName;
+    public Owner(String username) {
+        this.username = username;
     }
 
 }

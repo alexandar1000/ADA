@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class ParserServicesTest {
 
     private ParserServices parserServices;
@@ -18,6 +20,6 @@ class ParserServicesTest {
     @Test
     void parseRepository() throws FileNotFoundException {
         String src_dir = System.getProperty("user.dir")+"/src/main/resources/source_to_parse";
-        assert parserServices.parseRepository(src_dir).getClass() == ProjectStructure.class;
+        assertEquals(parserServices.parseRepository(src_dir).getClass(), ProjectStructure.class);
     }
 }

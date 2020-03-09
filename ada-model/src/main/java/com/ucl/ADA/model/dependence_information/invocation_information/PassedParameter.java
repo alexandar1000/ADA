@@ -16,9 +16,17 @@ import javax.persistence.Table;
 @Table(name = "PASSED_PARAMETER")
 public class PassedParameter extends BaseEntity {
 
+    /**
+     * the message of the passed parameter
+     */
     @Column(name = "name", nullable = false)
     private String name;
 
+    /**
+     * Constructor of the passed parameter
+     *
+     * @param name message of the passed parameter
+     */
     public PassedParameter(String name) {
         this.name = name;
     }

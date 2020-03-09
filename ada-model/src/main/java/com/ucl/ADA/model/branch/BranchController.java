@@ -7,7 +7,7 @@ import java.util.Set;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("owners/{owner}/repositories/{repo_name}/branches")
+@RequestMapping("owners/{owner}/repositories/{repository}/branches")
 public class BranchController {
 
     @Autowired
@@ -15,17 +15,17 @@ public class BranchController {
 
 
     @CrossOrigin("http://localhost:4200")
-    @GetMapping
+    @PostMapping
     public Set<Branch> getBranchesByOwnerAndRepo(@PathVariable String owner,
-                                                 @PathVariable String repo_name) {
-        return branchService.getBranchesByOwnerAndRepo(owner, repo_name);
+                                                 @PathVariable String repository) {
+        return branchService.getBranchesByOwnerAndRepo(owner, repository);
     }
 
     @CrossOrigin("http://localhost:4200")
-    @GetMapping("/{branch_name}")
+    @PostMapping("/{branch}")
     public Branch getBranchGivenOwnerRepoAndName(@PathVariable String owner,
-                                                 @PathVariable String repo_name,
-                                                 @PathVariable String branch_name) {
-        return branchService.getBranchGivenOwnerRepoAndName(owner, repo_name, branch_name);
+                                                 @PathVariable String repository,
+                                                 @PathVariable String branch) {
+        return branchService.getBranchGivenOwnerRepoAndName(owner, repository, branch);
     }
 }

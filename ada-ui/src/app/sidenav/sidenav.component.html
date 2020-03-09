@@ -1,8 +1,12 @@
 <div class="container" [class.example-is-mobile]="mobileQuery.matches">
     <mat-toolbar color="primary" class="toolbar">
       <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-      <img src="../../assets/logos/LogoMakr_8rK051.png" style="height: 40px; padding-left: 15px" alt="Ada logo">
-      <h1 class="app-name">Architectural Design Advisor</h1>
+      <a routerLink="/" >
+        <img src="../../assets/logos/LogoMakr_8rK051.png" style="height: 40px; padding-left: 15px" alt="Ada logo">
+      </a>
+      <a routerLink="/">
+        <h1 class="app-name">Architectural Design Advisor</h1>
+      </a>
     </mat-toolbar>
 
     <mat-sidenav-container class="sidenav-container"
@@ -14,6 +18,10 @@
             <mat-label>Search owner</mat-label>
             <input matInput [(ngModel)]="searchedOwner" name="searchedOwner">
           </mat-form-field>
+          <mat-icon aria-hidden="false" color="primary">search</mat-icon>
+          <button mat-icon-button color="primary" (click)="getOwnerList()">
+            <mat-icon aria-hidden="false">refresh</mat-icon>
+          </button>
         </form>
         <mat-nav-list *ngIf="owners">
           <app-owner *ngFor="let owner of owners | filter : searchedOwner" [owner]="owner"></app-owner>

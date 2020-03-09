@@ -16,15 +16,15 @@ public class OwnerService {
      * @return a list of Owners
      */
     public List<Owner> listOwners(){
-        return ownerRepository.findAllByOrderByOwnerIDAsc();
+        return ownerRepository.findAllByOrderByIdAsc();
     }
 
     /**
      * List only the usernames of each Owner in the database.
      * @return list of strings containing the usernames of each owner
      */
-    public List<String> listUserNames(){
-        return ownerRepository.fetchUserNames();
+    public List<String> listAllUsername(){
+        return ownerRepository.fetchAllUsername();
     }
 
     public Owner getOwner(Long id){
@@ -44,6 +44,6 @@ public class OwnerService {
     }
 
     public Owner getOwnerByName(String name) {
-        return ownerRepository.findByUserName(name);
+        return ownerRepository.findByUsername(name);
     }
 }

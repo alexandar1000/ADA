@@ -8,6 +8,12 @@ import java.util.Set;
 
 public class Transformer {
 
+    /**
+     * transform a project into a ProjectStructure object given its directory path
+     *
+     * @param src_dir directory path of the project
+     * @return a ProjectStructure object that contains all information of a project
+     */
     public ProjectStructure transform(String src_dir) {
 
         ProjectStructure projectStructure = new ProjectStructure();

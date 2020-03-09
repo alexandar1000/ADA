@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { OwnerService } from '../owner.service';
-import { FilterPipe } from '../filter.pipe';
 
 @Component({
   selector: 'app-owner',
@@ -11,16 +10,17 @@ export class OwnerComponent implements OnInit {
   @Input() owner: string;
   private repositories: string[];
   private clicked: boolean;
+  private cashed: boolean;
 
   constructor(private ownerService: OwnerService) { }
 
   ngOnInit() {
-    this.repositories = [];
     this.clicked = false;
+    this.cashed = false;
   }
 
   getReposList(ownerName: string): void {
-    if (!this.clicked) {
+    if (!this.cashed && !this.clicked) {
       this.ownerService.getReposList(ownerName).subscribe(repositories => {
         this.repositories = [];
         repositories.forEach(repository => {
@@ -28,10 +28,13 @@ export class OwnerComponent implements OnInit {
         });
       });
       this.clicked = true;
+      this.cashed = true;
     }
-    else {
-      this.repositories = [];
+    else if (this.cashed && this.clicked) {
       this.clicked = false;
+    }
+    else if (this.cashed && !this.clicked) {
+      this.clicked = true;
     }
   }
 }
