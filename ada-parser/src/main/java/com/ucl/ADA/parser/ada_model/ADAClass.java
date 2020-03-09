@@ -12,17 +12,12 @@ public class ADAClass {
     private Set<String> importedInternalClasses;
     private Set<String> importedExternalClasses;
     private String className;
-
     private boolean isInterface;
     private boolean isEnum;
-
-
     private String parentClassName;
     private Set<String> implementedInterfaces;
     private List<ADAClassAttribute> adaClassAttributes;
-
     private List<String> declaredEnums;
-
     private List<ADAMethodInvocation> ADAMethodInvocations;
     private List<ADAConstructorInvocation> ADAConstructorInvocations;
     private List<ADAMethodOrConstructorDeclaration> ADAMethodOrConstructorDeclaration;

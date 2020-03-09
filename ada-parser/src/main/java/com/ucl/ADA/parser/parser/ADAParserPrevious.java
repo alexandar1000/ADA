@@ -6,33 +6,29 @@ import com.ucl.ADA.parser.ada_model.ADAClass;
 import com.ucl.ADA.parser.parser.visitor.ADAClassVisitor;
 import com.ucl.ADA.parser.parser.visitor.PackageAndImportVisitor;
 import com.ucl.ADA.parser.parser.visitor.TypeDeclarationVisitor;
-import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.*;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.*;
 
-public class ExecutorParser {
 
-    final static int numberOfThreads = 10;
-    static int count = 0;
+public class ADAParserPrevious {
+
+    public Set<ADAClass> getParsedSourceFile(String sourceRoot) {
+        Set<ADAClass> allParsedFile = new HashSet<>();
+        List<ADAClass> classes = parseEachSourceFile(sourceRoot);
+        allParsedFile.addAll(classes);
+        return allParsedFile;
+    }
 
     public void printParsedSourceFileInJSON(String sourceRoot) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        System.out.println("Started on...." + dtf.format(LocalDateTime.now()));
-        List<ADAClass> classes = parallelParser(sourceRoot);
-        System.out.println("Ends on...." + dtf.format(LocalDateTime.now()));
+        List<ADAClass> classes = parseEachSourceFile(sourceRoot);
         for (ADAClass aClass : classes) {
             ObjectMapper objMapper = new ObjectMapper();
             String jsonStr = "[]";
@@ -45,44 +41,82 @@ public class ExecutorParser {
         }
     }
 
-    private List<ADAClass> parallelParser(String sourceRoot) {
+    private List<ADAClass> parseSourceFile(ASTParser parser, String sourceFile) {
+        String sourceCode = getSourceCodeFromSourcePath(sourceFile);
+        String unitName = new File(sourceFile).getName();
+        parser.setSource(sourceCode.toCharArray());
+        parser.setUnitName(unitName);
+        CompilationUnit cu = (CompilationUnit) parser.createAST(null);
+        if (cu.getAST().hasBindingsRecovery()) {
+            //System.out.println("Binding activated.");
+        }
+
+        PackageAndImportVisitor pv = new PackageAndImportVisitor();
+        cu.accept(pv);
+        TypeDeclarationVisitor tv = new TypeDeclarationVisitor();
+        cu.accept(tv);
+
+        List<AbstractTypeDeclaration> allClassAndEnums = tv.getAbstractTypeDeclaration();
         List<ADAClass> parsedClasses = new ArrayList<>();
+        for (AbstractTypeDeclaration cl : allClassAndEnums) {
+            ADAClassVisitor jp = new ADAClassVisitor(pv.getPackageName(), pv.getImportedInternalClasses(), pv.getImportedExternalClasses());
+            cl.accept(jp);
+            ADAClass cm = jp.getExtractedClass();
+            parsedClasses.add(cm);
+        }
+        return parsedClasses;
+
+    }
+
+    private List<ADAClass> parseAllSourceFiles(String sourceRoot) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println("Source files path  collection started on...." + dtf.format(now));
         List<String> filePaths = getJavaSourceFilePathsFromSourceRoot(sourceRoot);
-        List<List<String>> filePathBatches = ListUtils.partition(filePaths, 100);
-        List<Map<String, String>> allFileContents = getSourceContentsInChunks(filePathBatches);
-        String[] allSrcDirectories = getSourceDirectories(new File(sourceRoot));
-        ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
-        // Callable, return a future, submit and run the task async
-        List<Callable<List<ADAClass>>> listOfCallable = new ArrayList<>();
-        for (Map<String, String> filePathBatch : allFileContents) {
-            Callable<List<ADAClass>> c = () -> {
-                return parseSourceFiles(filePathBatch, allSrcDirectories);
-            };
-            listOfCallable.add(c);
+        System.out.println("Collection is completed on: " + dtf.format(now));
+
+        System.out.println("Source file reading is started on......" + dtf.format(now));
+        Map<String, String> fileContents = getAllSourceContent(filePaths);
+        System.out.println("Reading is completed on: " + dtf.format(now));
+
+        System.out.println("Compilation unit preparation is started on....");
+        List<CompilationUnit> compilationUnits = getCompilationUnits(fileContents, sourceRoot);
+        System.out.println("Compilation Unit building finished: " + dtf.format(now));
+
+        System.out.println("ADA parser is started on.........." + dtf.format(now));
+        List<ADAClass> parsedClasses = new ArrayList<>();
+        for (CompilationUnit cu : compilationUnits) {
+            List<ADAClass> classes = getParsedClass(cu);
+            parsedClasses.addAll(classes);
         }
-        try {
-            List<Future<List<ADAClass>>> futures = executor.invokeAll(listOfCallable);
-            for (Future<List<ADAClass>> future : futures) {
-                if (future.isDone()) {
-                    parsedClasses.addAll(future.get());
-                }
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            // thread was interrupted
-            e.printStackTrace();
-        } finally {
-            // shut down the executor manually
-            executor.shutdown();
-        }
+        System.out.println("ADAClass Model building finished on: " + dtf.format(now));
         return parsedClasses;
     }
 
-    private List<ADAClass> parseSourceFiles(Map<String, String> fileContents, String[] allSrcDirectories) {
+
+
+
+
+    private Map<String, String> getFileContents(String sourceRoot) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println("Source files path  collection started on...." + dtf.format(now));
+        List<String> filePaths = getJavaSourceFilePathsFromSourceRoot(sourceRoot);
+        System.out.println("Collection is completed on: " + dtf.format(now));
+        System.out.println("Source file reading is started on......" + dtf.format(now));
+        Map<String, String> fileContents = new HashMap<>();
+        fileContents.putAll(getAllSourceContent(filePaths));
+        System.out.println("Reading is completed on: " + dtf.format(now));
+        System.out.println("ADA parser is started on.........." + dtf.format(now));
+        return fileContents;
+    }
+
+    private List<ADAClass> parseEachSourceFile(String sourceRoot) {
+        Map<String, String> fileContents = getFileContents(sourceRoot);
         List<ADAClass> parsedClasses = new ArrayList<>();
+        String[] allSrcDirectories = getSourceDirectories(new File(sourceRoot));
         for (Map.Entry<String, String> sourceEntry : fileContents.entrySet()) {
             String filePath = sourceEntry.getKey();
-            count++;
-            System.out.println("Processing-> " + count + "->" + filePath);
             String sourceCode = sourceEntry.getValue();
             CompilationUnit compilationUnit = getCompilationUnit(filePath, sourceCode, allSrcDirectories);
             List<ADAClass> classes = getParsedClass(compilationUnit);
@@ -111,11 +145,6 @@ public class ExecutorParser {
         }
         return parsedClasses;
     }
-
-
-
-
-
 
     private Map getParserVersion_1_5() {
         Map options = JavaCore.getOptions();
@@ -154,39 +183,6 @@ public class ExecutorParser {
         return compilationUnit;
     }
 
-
-    private List<Map<String, String>> getSourceContentsInChunks(List<List<String>> listsOfFilePaths) {
-        List<Map<String, String>> allFileContents = new ArrayList<>();
-        for (List<String> listOfFilePaths : listsOfFilePaths) {
-            Map<String, String> fileContents = new HashMap<>();
-            fileContents.putAll(getAllSourceContent(listOfFilePaths));
-            allFileContents.add(fileContents);
-        }
-        return allFileContents;
-    }
-
-    private String getSourceCodeFromSourcePath(String filePath) {
-        String sourceCode = "";
-        File sourceFile = new File(filePath);
-        if (sourceFile.exists()) {
-            try {
-                sourceCode = FileUtils.readFileToString(sourceFile, StandardCharsets.UTF_8);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return sourceCode;
-    }
-
-    private Map<String, String> getAllSourceContent(List<String> paths) {
-        Map<String, String> sourceContents = new HashMap<>();
-        for (String path : paths) {
-            String code = getSourceCodeFromSourcePath(path);
-            sourceContents.put(path, code);
-        }
-        return sourceContents;
-    }
-
     private List<String> getJavaSourceFilePathsFromSourceRoot(String rootPath) {
         String[] allSrcDirectories = getSourceDirectories(new File(rootPath));
         List<String> sourceFiles = new ArrayList<>();
@@ -220,4 +216,52 @@ public class ExecutorParser {
         return srcDirs;
     }
 
+    private String getSourceCodeFromSourcePath(String filePath) {
+        String sourceCode = "";
+        File sourceFile = new File(filePath);
+        if (sourceFile.exists()) {
+            try {
+                sourceCode = FileUtils.readFileToString(sourceFile, StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sourceCode;
+    }
+
+    private Map<String, String> getAllSourceContent(List<String> paths) {
+        Map<String, String> sourceContents = new HashMap<>();
+        for (String path : paths) {
+            String code = getSourceCodeFromSourcePath(path);
+            sourceContents.put(path, code);
+        }
+        return sourceContents;
+    }
+
+    private List<CompilationUnit> getCompilationUnits(Map<String, String> sourceCodes, String sourceRoot) {
+        String[] allSrcDirectories = getSourceDirectories(new File(sourceRoot));
+        List<CompilationUnit> compilationUnits = new ArrayList<>();
+        int count = 0;
+        for (String path : sourceCodes.keySet()) {
+            try {
+                count++;
+                Map options = getParserVersion_1_5();
+                ASTParser parser = buildASTParser(allSrcDirectories, options);
+                String code = sourceCodes.get(path);
+                String unitName = new File(path).getName();
+                parser.setSource(code.toCharArray());
+                parser.setUnitName(unitName);
+                System.out.println(count + "->" + path);
+                CompilationUnit cu = (CompilationUnit) parser.createAST(null);
+                compilationUnits.add(cu);
+            } catch (Exception e) {
+                System.err.println("Exception occurred in " + path);
+            }
+        }
+        return compilationUnits;
+    }
+
+
 }
+
+

@@ -11,7 +11,6 @@ public class ADAMethodOrConstructorDeclaration {
     private String name;
     private String returnType;
     private Set<String> modifiers;
-    // name->type
     private Map<String, String> parameters;
     private Map<String, String> localVariables;
     private boolean isConstructor;

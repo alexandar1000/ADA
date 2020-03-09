@@ -11,7 +11,19 @@ import java.util.*;
 public class SourceFileProcessor {
 
 
-    private List<Map<String, String>> getSourceContentsInChunks(List<List<String>> listsOfFilePaths) {
+    protected SourceFileProcessor() {
+    }
+
+
+    /**
+     * It takes list of file paths and reads the file contents
+     * and forms a map of paths->contents for each list.
+     *
+     * @param listsOfFilePaths : A list of string containing the *.java source file paths
+     * @return A list of map where each contains (source file path-> contents
+     */
+
+    protected List<Map<String, String>> getSourceContentsInChunks(List<List<String>> listsOfFilePaths) {
         List<Map<String, String>> allFileContents = new ArrayList<>();
         for (List<String> listOfFilePaths : listsOfFilePaths) {
             Map<String, String> fileContents = new HashMap<>();
@@ -72,7 +84,7 @@ public class SourceFileProcessor {
      * @return: A list of string containing file path of all *.java files except the *Test.java and *Tests.java files
      */
 
-    protected List<String> getJavaSourceFilePathsFromSourceRoot(String rootDirectory) {
+    protected List<String> getSourceFilePaths(String rootDirectory) {
         String[] sourceDirectories = getSourceDirectories(new File(rootDirectory));
         List<String> sourceFiles = new ArrayList<>();
         final String[] suffix = {"java"};
