@@ -36,7 +36,6 @@ public class Transformer {
             sourceClassTransformer.transformMethodInvocation();
             sourceClassTransformer.transformExternalInvocation();
         }
-
         return projectStructure;
     }
 
