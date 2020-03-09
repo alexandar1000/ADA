@@ -19,13 +19,22 @@ import java.util.Set;
 @Table(name = "REPOSITORY")
 public class GitRepo extends BaseEntity {
 
+    /**
+     * Name of the git repository
+     */
     @Column(name = "repo_name", nullable = false)
     @Getter private String repoName;
 
+    /**
+     * Set of branches corresponding to this repository entity
+     */
     @OneToMany(mappedBy = "repository", targetEntity = Branch.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     @Getter Set<Branch> branches = new LinkedHashSet<>();
 
+    /**
+     * Owner of this repository entity
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     @JsonManagedReference

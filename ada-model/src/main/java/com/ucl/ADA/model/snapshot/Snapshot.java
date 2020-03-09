@@ -23,18 +23,30 @@ import java.util.Set;
 @Table(name = "SNAPSHOT")
 public class Snapshot extends BaseEntity {
 
+    /**
+     * Branch entity corresponding to this snapshot
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id")
     @JsonManagedReference
     private Branch branch;
 
+    /**
+     * Set of source files contained in this snapshot
+     */
     @OneToMany(mappedBy = "snapshot", targetEntity = SourceFile.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     private Set<SourceFile> sourceFiles = new LinkedHashSet<>();
 
+    /**
+     * Timestamp of when the snapshot was created, in UTC time standard
+     */
     @Column(name = "timestamp")
     private OffsetDateTime timestamp;
 
+    /**
+     * Project structure entity corresponding to this snapshot
+     */
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "project_structure_id")
     @JsonIgnore

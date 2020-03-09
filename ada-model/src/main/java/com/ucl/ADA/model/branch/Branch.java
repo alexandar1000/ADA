@@ -19,14 +19,23 @@ import java.util.Set;
 @Table(name = "BRANCH")
 public class Branch extends BaseEntity {
 
+    /**
+     * Name of branch
+     */
     @Column(name = "branch_name", nullable = false)
     @Getter private String branchName;
 
+    /**
+     * Corresponding GitRepo entity
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "repo_id", nullable = false)
     @JsonManagedReference
     private GitRepo repository;
 
+    /**
+     * A LinkedHashSet of all snapshots corresponding to this branch
+     */
     @OneToMany(mappedBy = "branch", targetEntity = Snapshot.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     @Getter private Set<Snapshot> snapshots = new LinkedHashSet<>();

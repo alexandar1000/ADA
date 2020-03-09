@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Set;
 
 @RestController
@@ -16,7 +17,14 @@ public class SnapshotController {
     @Autowired
     private SnapshotService snapshotService;
 
-
+    /**
+     * Endpoint for getting all snapshots given the name of a Git repository, the username of
+     * its owner and name of the branch
+     * @param owner username of owner
+     * @param repository name of Git repository
+     * @param branch name of branch
+     * @return set of all corresponding snapshots
+     */
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping
     public Set<Snapshot> getSnapshotsGivenOwnerRepoAndBranch(@PathVariable String owner,
@@ -25,14 +33,22 @@ public class SnapshotController {
         return snapshotService.getSnapshotsGivenOwnerRepoAndBranch(owner, repository, branch);
     }
 
-    // not sure if last parameter should be id or timestamp, set it as id for now
-
+    /**
+     * Endpoint for getting a snapshot give the name of a Git repository, the username of
+     * its owner, name of branch and timestamp of request
+     * @param owner username of owner
+     * @param repository name of Git repository
+     * @param branch name of branch
+     * @param timestamp timestamp of request
+     * @return the corresponding Snapshot
+     * @throws DateTimeParseException if the timestamp string cannot be parsed
+     */
     @CrossOrigin("http://localhost:4200")
     @PostMapping("/{timestamp}")
     public Snapshot getSnapshotGivenOwnerRepoBranchAndTimestamp(@PathVariable String owner,
                                                                 @PathVariable String repository,
                                                                 @PathVariable String branch,
-                                                                @PathVariable String timestamp) throws ParseException {
+                                                                @PathVariable String timestamp) throws DateTimeParseException {
 
         DateTimeFormatter fIn = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
         OffsetDateTime odt = OffsetDateTime.parse(timestamp, fIn);
