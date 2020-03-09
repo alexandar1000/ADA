@@ -4,6 +4,8 @@ import com.ucl.ADA.model.project_structure.ProjectStructure;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class TransformerTest {
 
     private Transformer transformer;
@@ -16,6 +18,6 @@ class TransformerTest {
     @Test
     void transform() {
         String src_dir = System.getProperty("user.dir")+"/src/main/resources/source_to_parse";
-        assert transformer.transform(src_dir).getClass() == ProjectStructure.class;
+        assertEquals(transformer.transform(src_dir).getClass(), ProjectStructure.class);
     }
 }
