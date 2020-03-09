@@ -10,9 +10,9 @@ import java.util.List;
 public interface OwnerRepository extends CrudRepository<Owner, Long> {
     //TODO use DSL
     @Query(value = "SELECT user_name FROM public.owner ORDER BY id ASC", nativeQuery = true)
-    List<String> fetchUserNames();
+    List<String> fetchAllUsername();
 
-    Owner findByUserName(String userName);
+    Owner findByUsername(String userName);
 
     List<Owner> findAllByOrderByIdAsc();
 }

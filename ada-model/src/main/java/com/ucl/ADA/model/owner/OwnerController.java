@@ -27,8 +27,8 @@ public class OwnerController {
 
     @CrossOrigin("http://localhost:4200")
     @PostMapping("/names")
-    public List<String> listAllUserNames() {
-        return ownerService.listUserNames();
+    public List<String> listAllUsername() {
+        return ownerService.listAllUsername();
     }
 
     @CrossOrigin("http://localhost:4200")

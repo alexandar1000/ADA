@@ -21,8 +21,8 @@ public class ProjectStructureService {
         return projectStructureRepository.save(object);
     }
 
-    public ProjectStructure findByOwnerGitRepositoryBranchSnapshotTimestamp(String user_name, String repo_name, String branch_name, OffsetDateTime timestamp) {
-        Snapshot snapshot = snapshotService.getSnapshotGivenOwnerRepoBranchAndTimestamp(user_name, repo_name, branch_name, timestamp);
+    public ProjectStructure findByOwnerGitRepositoryBranchSnapshotTimestamp(String username, String repository, String branch, OffsetDateTime timestamp) {
+        Snapshot snapshot = snapshotService.getSnapshotGivenOwnerRepoBranchAndTimestamp(username, repository, branch, timestamp);
 
         return projectStructureRepository.findBySnapshot(snapshot);
     }
