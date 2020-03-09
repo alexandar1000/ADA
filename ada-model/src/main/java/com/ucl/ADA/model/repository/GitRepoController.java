@@ -35,12 +35,23 @@ public class GitRepoController {
         return gitRepoService.listRepoNames();
     }
 
+    /**
+     * Endpoint for getting all repositories owned by a given owner
+     * @param owner username of the owner
+     * @return set of repositories owned by the owner
+     */
     @CrossOrigin("http://localhost:4200")
     @PostMapping("/owners/{owner}/repositories")
     public Set<GitRepo> getAllReposForUser(@PathVariable String owner) {
         return gitRepoService.findAllReposByOwner(owner);
     }
 
+    /**
+     * Endpoint for getting a Git repository given its name and the username of its owner
+     * @param owner username of the owner
+     * @param repository name of the repository
+     * @return the corresponding Git repository
+     */
     @CrossOrigin("http://localhost:4200")
     @PostMapping("/owners/{owner}/repositories/{repository}")
     public GitRepo getRepoByOwnerAndName(@PathVariable String owner,

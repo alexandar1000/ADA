@@ -17,14 +17,23 @@ import java.util.*;
 @Table(name = "OWNER")
 public class Owner extends BaseEntity {
 
-    // There are no duplicates in Github usernames, hence the uniqueness of the column
+    /**
+     * Name of the user or organisation. Has to be unique since GitHub usernames are unique
+     */
     @Column(name = "user_name", nullable = false, unique = true)
     private String username;
 
+    /**
+     * Set of Git repositories owned by this owner
+     */
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = GitRepo.class)
     @JsonBackReference
     Set<GitRepo> repos = new LinkedHashSet<>();
 
+    /**
+     * Constructor used for testing purposes
+     * @param username name of the owner
+     */
     public Owner(String username) {
         this.username = username;
     }
