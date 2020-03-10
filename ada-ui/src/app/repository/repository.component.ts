@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { OwnerService } from '../owner.service';
+import { SidebarService } from '../sidebar.service';
 
 @Component({
   selector: 'app-repository',
@@ -12,8 +12,21 @@ export class RepositoryComponent implements OnInit {
   private branches: string[];
   private clicked: boolean;
   private cashed: boolean;
+  private entry: string[];
 
-  constructor(private ownerService: OwnerService) { }
+  @Input()
+  set newEntryBranch(entry: string[]) {
+    this.entry = entry;
+    let repository = entry[1];
+    let branch = entry[2];
+    if (repository === this.repository && this.branches) {
+      if (!this.isBranchInList(branch)) {
+        this.branches.push(branch);
+      }
+    }
+  }
+
+  constructor(private sidebarService: SidebarService) { }
 
   ngOnInit() {
     this.clicked = false;
@@ -22,7 +35,7 @@ export class RepositoryComponent implements OnInit {
 
   getBranchesList(owner: string, repository: string): void {
     if (!this.clicked && !this.cashed) {
-      this.ownerService.getBranchesList(owner, repository).subscribe(branches => {
+      this.sidebarService.getBranchesList(owner, repository).subscribe(branches => {
         this.branches = [];
         branches.forEach(branch => {
           this.branches.push(branch.branchName);
@@ -37,5 +50,14 @@ export class RepositoryComponent implements OnInit {
     else if (this.cashed && !this.clicked) {
       this.clicked = true;
     }
+  }
+
+  isBranchInList(branch: string): boolean {
+    for (let index=0; index<this.branches.length; index++) {
+      if (this.branches[index] === branch) {
+        return true;
+      }
+    }
+    return false;
   }
 }

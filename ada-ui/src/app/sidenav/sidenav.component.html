@@ -24,7 +24,7 @@
           </button>
         </form>
         <mat-nav-list *ngIf="owners">
-          <app-owner *ngFor="let owner of owners | filter : searchedOwner" [owner]="owner"></app-owner>
+          <app-owner *ngFor="let owner of owners | filter : searchedOwner" [owner]="owner" [newEntryRepository]="entry"></app-owner>
         </mat-nav-list>
       </mat-sidenav>
       <mat-sidenav-content class="sidenav-content">

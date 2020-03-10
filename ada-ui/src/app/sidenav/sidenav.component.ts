@@ -1,6 +1,7 @@
 import {MediaMatcher} from '@angular/cdk/layout';
 import {ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { OwnerService } from '../owner.service';
+import { SidebarService } from '../sidebar.service';
+import { NewEntryService } from '../new-entry.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -10,14 +11,21 @@ import { OwnerService } from '../owner.service';
 export class SidenavComponent implements OnInit, OnDestroy {
   mobileQuery: MediaQueryList;
   private owners = [];
+  private entry = [];
 
   private _mobileQueryListener: () => void;
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
-    private ownerService: OwnerService) {
+    private sidebarService: SidebarService, private newEntryService: NewEntryService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+
+    newEntryService.newEntryConfirmed$.subscribe(
+      entry => {
+        this.addNewEntry(entry);
+      }
+    );
   }
 
   ngOnDestroy(): void {
@@ -32,11 +40,32 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
   getOwnerList(): void {
     this.owners = [];
-    this.ownerService.getOwnersList().subscribe(ownerNames => {
+    this.sidebarService.getOwnersList().subscribe(ownerNames => {
       ownerNames.forEach(ownerName => {
         this.owners.push(ownerName);
       });
     });
+  }
+
+  addOwnerToList(owner: string): void {
+    if (!this.checkIfOwnerInList(owner)) {
+      this.owners.push(owner);
+    }
+  }
+
+  checkIfOwnerInList(owner: string): boolean {
+    for (let index=0; index < this.owners.length; index++) {
+      if (owner === this.owners[index]) {
+        return true;
+      }
+    }
+    return false
+  }
+
+  addNewEntry(entry: string[]): void {
+    this.entry = entry;
+    let owner = entry[0];
+    this.addOwnerToList(owner)
   }
 }
 

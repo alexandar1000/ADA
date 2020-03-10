@@ -29,7 +29,7 @@ import { RepositoryComponent } from './repository/repository.component';
 import { BranchComponent } from './branch/branch.component';
 import { SnapshotComponent } from './snapshot/snapshot.component';
 import { FilterPipe } from './filter.pipe';
-import { OwnerService } from './owner.service';
+import { SidebarService } from './sidebar.service';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
@@ -48,27 +48,27 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     SnapshotComponent,
     FilterPipe,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        LayoutModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatSidenavModule,
-        MatIconModule,
-        MatListModule,
-        MatInputModule,
-        MatSnackBarModule,
-        ReactiveFormsModule,
-        FormsModule,
-        HttpClientModule,
-        MatSliderModule,
-        MatOptionModule,
-        MatSelectModule,
-        MatProgressSpinnerModule
-    ],
-  providers: [AnalyserService, OwnerService],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    MatInputModule,
+    MatSnackBarModule,
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule,
+    MatSliderModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatProgressSpinnerModule
+  ],
+  providers: [AnalyserService, SidebarService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
