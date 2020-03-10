@@ -19,7 +19,7 @@ class ParserServicesTest {
 
     @Test
     void parseRepository() throws FileNotFoundException {
-        String src_dir = System.getProperty("user.dir")+"/src/main/resources/source_to_parse";
+        String src_dir = System.getProperty("user.dir")+ "/src/test/test-resources/src/main/resources/source_to_parse";
         assertEquals(parserServices.parseRepository(src_dir).getClass(), ProjectStructure.class);
     }
 }

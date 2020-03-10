@@ -17,7 +17,7 @@ class TransformerTest {
 
     @Test
     void transform() {
-        String src_dir = System.getProperty("user.dir")+"/src/main/resources/source_to_parse";
+        String src_dir = System.getProperty("user.dir")+ "/src/test/test-resources/src/main/resources/source_to_parse";
         assertEquals(transformer.transform(src_dir).getClass(), ProjectStructure.class);
     }
 }
