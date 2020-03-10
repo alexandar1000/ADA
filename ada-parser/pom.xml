@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>com.ucl</groupId>
-            <artifactId>ada-repository-downloader</artifactId>
+            <artifactId>ada-model</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
@@ -34,6 +34,12 @@
             <artifactId>commons-io</artifactId>
             <version>2.6</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
+        </dependency>
+
     </dependencies>
 
 

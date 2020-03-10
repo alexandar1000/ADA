@@ -3,22 +3,45 @@ package com.ucl.ADA.parser.transformer;
 import com.ucl.ADA.model.dependence_information.declaration_information.*;
 import com.ucl.ADA.model.dependence_information.invocation_information.*;
 import com.ucl.ADA.model.project_structure.ProjectStructure;
-import com.ucl.ADA.parser.model.*;
+import com.ucl.ADA.parser.ada_model.*;
 
 import java.util.*;
 
 class SourceClassTransformer {
 
+    /**
+     * the ProjectStructure object to hold all information of a source class
+     */
     private ProjectStructure projectStructure;
 
+    /**
+     * parsed source class that contains raw information that needs to be processed
+     */
     private ADAClass sourceClass;
 
+    /**
+     * source class qualified name
+     */
     private String className;
 
+    /**
+     * all qualified class names under a project
+     */
     private Set<String> classNames;
 
+    /**
+     * a utility class that read package names from qualified class names
+     */
     private PackageBreaker packageBreaker;
 
+    /**
+     * Constructor of source class transformer
+     *
+     * @param projectStructure the ProjectStructure object to hold all data
+     * @param sourceClass      the source class which holds parsed data
+     * @param classNames       all qualified class names of a project
+     * @param packageBreaker   a utility class
+     */
     protected SourceClassTransformer(ProjectStructure projectStructure, ADAClass sourceClass, Set<String> classNames, PackageBreaker packageBreaker) {
         this.projectStructure = projectStructure;
         this.sourceClass = sourceClass;
@@ -27,6 +50,12 @@ class SourceClassTransformer {
         this.packageBreaker = packageBreaker;
     }
 
+    /**
+     * get all class names from source classes
+     *
+     * @param sourceClasses all source classes
+     * @return a set of class names
+     */
     protected static Set<String> getClassNames(Set<ADAClass> sourceClasses) {
         Set<String> classNames = new HashSet<>();
         for (ADAClass sourceClass : sourceClasses) {
@@ -35,11 +64,17 @@ class SourceClassTransformer {
         return classNames;
     }
 
+    /**
+     * read package declaration from source class and add into the ProjectStructure object
+     */
     protected void transformPackageDeclaration() {
         PackageDeclaration packageDeclaration = new PackageDeclaration(sourceClass.getPackageName());
         projectStructure.addPackageDeclaration(sourceClass.getClassName(), packageDeclaration);
     }
 
+    /**
+     * read attribute declaration from source class and add into the ProjectStructure object
+     */
     protected void transformAttributeDeclaration() {
         for (ADAClassAttribute adaClassAttribute : sourceClass.getAdaClassAttributes()) {
             Set<ModifierType> modifierTypes = ModifierTransformer.getModifierTypes(adaClassAttribute.getModifiers());
@@ -49,6 +84,9 @@ class SourceClassTransformer {
         }
     }
 
+    /**
+     * read constructor and method declaration from source class and add into the ProjectStructure object
+     */
     protected void transformConstructorAndMethodDeclaration() {
         for (ADAMethodOrConstructorDeclaration declaration : sourceClass.getADAMethodOrConstructorDeclaration()) {
             // get modifiers and parameters
@@ -72,6 +110,9 @@ class SourceClassTransformer {
         }
     }
 
+    /**
+     * read internal and external package declaration from source class and add into the ProjectStructure object
+     */
     protected void transformInAndExPackageInvocation() {
         Set<String> importedClasses = sourceClass.getImportedInternalClasses();
 
@@ -102,6 +143,9 @@ class SourceClassTransformer {
         }
     }
 
+    /**
+     * read attribute invocation from source class and add into the ProjectStructure object
+     */
     protected void transformAttributeInvocation() {
         // as class attributes
         for (ADAClassAttribute adaClassAttribute : sourceClass.getAdaClassAttributes()) {
@@ -112,7 +156,7 @@ class SourceClassTransformer {
             }
         }
         // as local variables
-        for (ADAMethodOrConstructorDeclaration declaration: sourceClass.getADAMethodOrConstructorDeclaration()) {
+        for (ADAMethodOrConstructorDeclaration declaration : sourceClass.getADAMethodOrConstructorDeclaration()) {
             for (Map.Entry<String, String> entry : declaration.getLocalVariables().entrySet()) {
                 if (classNames.contains(entry.getValue())) {
                     AttributeInvocation attributeInvocation = new AttributeInvocation(entry.getKey());
@@ -122,8 +166,14 @@ class SourceClassTransformer {
         }
     }
 
+    /**
+     * read constructor invocation from source class and add into the ProjectStructure object
+     */
     protected void transformConstructorInvocation() {
         for (ADAConstructorInvocation adaConstructorInvocation : sourceClass.getADAConstructorInvocations()) {
+            if (adaConstructorInvocation.getConstructorClassName().startsWith("java")) {
+                continue;
+            }
             List<PassedParameter> parameters = new ArrayList<>();
             for (String value : adaConstructorInvocation.getArguments()) {
                 parameters.add(new PassedParameter(value));
@@ -135,8 +185,14 @@ class SourceClassTransformer {
         }
     }
 
+    /**
+     * read method invocation from source class and add into the ProjectStructure object
+     */
     protected void transformMethodInvocation() {
         for (ADAMethodInvocation adaMethodInvocation : sourceClass.getADAMethodInvocations()) {
+            if (adaMethodInvocation.getCalleeName().startsWith("java")) {
+                continue;
+            }
             List<PassedParameter> parameters = new ArrayList<>();
             for (String value : adaMethodInvocation.getArguments()) {
                 parameters.add(new PassedParameter(value));
@@ -146,17 +202,20 @@ class SourceClassTransformer {
         }
     }
 
+    /**
+     * read external attribute, method and constructor invocation from source class and add into the ProjectStructure object
+     */
     protected void transformExternalInvocation() {
         for (String exAttribute : sourceClass.getExFieldInvocation()) {
             AttributeInvocation attributeInvocation = new AttributeInvocation(exAttribute);
             projectStructure.addExternalAttributeDeclarations(className, attributeInvocation);
         }
         for (String exMethodCalls : sourceClass.getExMethodCalls()) {
-            MethodInvocation methodInvocation = new MethodInvocation(exMethodCalls, null);
+            MethodInvocation methodInvocation = new MethodInvocation(exMethodCalls, new ArrayList<>(Collections.singletonList(new PassedParameter("parameter_placeholder"))));
             projectStructure.addExternalMethodInvocations(className, methodInvocation);
         }
         for (String exConstructor : sourceClass.getExConstructorInvocations()) {
-            ConstructorInvocation constructorInvocation = new ConstructorInvocation(exConstructor, null);
+            ConstructorInvocation constructorInvocation = new ConstructorInvocation(exConstructor, new ArrayList<>(Collections.singletonList(new PassedParameter("parameter_placeholder"))));
             projectStructure.addExternalConstructorInvocations(className, constructorInvocation);
         }
     }

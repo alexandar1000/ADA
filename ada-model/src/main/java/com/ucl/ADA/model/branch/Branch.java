@@ -1,62 +1,43 @@
 package com.ucl.ADA.model.branch;
 
-import com.ucl.ADA.model.repository.GitRepository;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ucl.ADA.model.BaseEntity;
+import com.ucl.ADA.model.repository.GitRepo;
 import com.ucl.ADA.model.snapshot.Snapshot;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "BRANCH")
-public class Branch {
+public class Branch extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "branch_id")
-    private Long branchID;
-
-
+    /**
+     * Name of branch
+     */
     @Column(name = "branch_name", nullable = false)
-    private String branchName;
+    @Getter private String branchName;
 
-    @ManyToOne
+    /**
+     * Corresponding GitRepo entity
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "repo_id", nullable = false)
-    private GitRepository repository;
+    @JsonManagedReference
+    private GitRepo repository;
 
+    /**
+     * A LinkedHashSet of all snapshots corresponding to this branch
+     */
     @OneToMany(mappedBy = "branch", targetEntity = Snapshot.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    private
-    Set<Snapshot> snapshots = new HashSet<>();
-
-    public Branch(){}
-
-    public Long getBranchID() {
-        return branchID;
-    }
-
-    public void setBranchID(Long branchID) {
-        this.branchID = branchID;
-    }
-
-    public void setRepository(GitRepository repository) {
-        this.repository = repository;
-    }
-
-    public String getBranchName() {
-        return branchName;
-    }
-
-    public void setBranchName(String branchName) {
-        this.branchName = branchName;
-    }
-
-    public Set<Snapshot> getSnapshots() {
-        return snapshots;
-    }
-
-    public void setSnapshots(Set<Snapshot> snapshots) {
-        this.snapshots = snapshots;
-    }
+    @JsonBackReference
+    @Getter private Set<Snapshot> snapshots = new LinkedHashSet<>();
 
 }
-

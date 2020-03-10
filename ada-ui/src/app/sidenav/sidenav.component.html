@@ -1,20 +1,34 @@
 <div class="container" [class.example-is-mobile]="mobileQuery.matches">
     <mat-toolbar color="primary" class="toolbar">
       <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-      <h1 class="app-name">Architectural Design Advisor</h1>
+      <a routerLink="/" >
+        <img src="../../assets/logos/LogoMakr_8rK051.png" style="height: 40px; padding-left: 15px" alt="Ada logo">
+      </a>
+      <a routerLink="/">
+        <h1 class="app-name">Architectural Design Advisor</h1>
+      </a>
     </mat-toolbar>
 
     <mat-sidenav-container class="sidenav-container"
                            [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
       <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                    [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-        <mat-nav-list *ngIf="userList">
-          <a mat-list-item routerLink="." *ngFor="let owner of userList">{{owner.userName}} </a>
+        <form class="search-form">
+          <mat-form-field>
+            <mat-label>Search owner</mat-label>
+            <input matInput [(ngModel)]="searchedOwner" name="searchedOwner">
+          </mat-form-field>
+          <mat-icon aria-hidden="false" color="primary">search</mat-icon>
+          <button mat-icon-button color="primary" (click)="getOwnerList()">
+            <mat-icon aria-hidden="false">refresh</mat-icon>
+          </button>
+        </form>
+        <mat-nav-list *ngIf="owners">
+          <app-owner *ngFor="let owner of owners | filter : searchedOwner" [owner]="owner" [newEntryRepository]="entry"></app-owner>
         </mat-nav-list>
       </mat-sidenav>
-
       <mat-sidenav-content class="sidenav-content">
-          <app-repo-form></app-repo-form>
+        <router-outlet></router-outlet>
       </mat-sidenav-content>
     </mat-sidenav-container>
 </div>

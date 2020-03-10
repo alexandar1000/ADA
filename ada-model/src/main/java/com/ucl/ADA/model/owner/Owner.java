@@ -1,55 +1,41 @@
 package com.ucl.ADA.model.owner;
 
-import com.ucl.ADA.model.repository.GitRepository;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.ucl.ADA.model.BaseEntity;
+import com.ucl.ADA.model.repository.GitRepo;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "OWNER")
-public class Owner {
+public class Owner extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "owner_id")
-    private Long ownerID;
-
-    // There are no duplicates in Github usernames, hence the uniqueness of the column
+    /**
+     * Name of the user or organisation. Has to be unique since GitHub usernames are unique
+     */
     @Column(name = "user_name", nullable = false, unique = true)
-    private String userName;
+    private String username;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = GitRepository.class)
-    Set<GitRepository> repos = new HashSet<>();
+    /**
+     * Set of Git repositories owned by this owner
+     */
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = GitRepo.class)
+    @JsonBackReference
+    Set<GitRepo> repos = new LinkedHashSet<>();
 
-    public Owner(){};
-
-    public Owner(String userName) {
-        this.userName = userName;
-    }
-
-    public Long getOwnerID() {
-        return ownerID;
-    }
-
-    public void setOwnerID(Long ownerID) {
-        this.ownerID = ownerID;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public Set<GitRepository> getRepos() {
-        return repos;
-    }
-
-    public void setRepos(Set<GitRepository> repos) {
-        this.repos = repos;
+    /**
+     * Constructor used for testing purposes
+     * @param username name of the owner
+     */
+    public Owner(String username) {
+        this.username = username;
     }
 
 }

@@ -1,0 +1,6 @@
+#cytoscape-container {
+  width:80%;
+  height:60vh;
+  border: solid red 2px;
+  position: relative;
+}

@@ -15,8 +15,22 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RepoFormComponent } from './repo-form/repo-form.component';
-import { UserService } from './user.service';
 import { AcceptedUrlDirective } from './shared/accepted-url.directive';
+import { GraphComponent } from './graph/graph.component';
+import {AnalyserService} from "./analyser.service";
+import { DashboardComponent } from './dashboard/dashboard.component';
+import {MatSliderModule} from "@angular/material/slider";
+import { SnapshotSliderComponent } from './snapshot-slider/snapshot-slider.component';
+import { MetricSelectorComponent } from './metric-selector/metric-selector.component';
+import {MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
+import { OwnerComponent } from './owner/owner.component';
+import { RepositoryComponent } from './repository/repository.component';
+import { BranchComponent } from './branch/branch.component';
+import { SnapshotComponent } from './snapshot/snapshot.component';
+import { FilterPipe } from './filter.pipe';
+import { SidebarService } from './sidebar.service';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -24,6 +38,15 @@ import { AcceptedUrlDirective } from './shared/accepted-url.directive';
     SidenavComponent,
     RepoFormComponent,
     AcceptedUrlDirective,
+    GraphComponent,
+    DashboardComponent,
+    SnapshotSliderComponent,
+    MetricSelectorComponent,
+    OwnerComponent,
+    RepositoryComponent,
+    BranchComponent,
+    SnapshotComponent,
+    FilterPipe,
   ],
   imports: [
     BrowserModule,
@@ -39,9 +62,13 @@ import { AcceptedUrlDirective } from './shared/accepted-url.directive';
     MatSnackBarModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSliderModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatProgressSpinnerModule
   ],
-  providers: [UserService],
+  providers: [AnalyserService, SidebarService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
