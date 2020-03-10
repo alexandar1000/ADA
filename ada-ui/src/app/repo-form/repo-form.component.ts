@@ -2,7 +2,6 @@ import { Component, OnInit} from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {AnalyserService} from "../analyser.service";
 import {Router} from "@angular/router";
-import { OwnerService } from '../owner.service';
 
 @Component({
   selector: 'app-repo-form',
@@ -13,7 +12,7 @@ export class RepoFormComponent implements OnInit {
   private urlForm: string;
   private branchName: string;
 
-  constructor(private _snackBar: MatSnackBar, private analyserService: AnalyserService, private router: Router, private ownerService: OwnerService) {
+  constructor(private _snackBar: MatSnackBar, private analyserService: AnalyserService, private router: Router) {
   }
 
   ngOnInit() {

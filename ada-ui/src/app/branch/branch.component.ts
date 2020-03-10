@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { OwnerService } from '../owner.service';
+import { SidebarService } from '../sidebar.service';
 
 @Component({
   selector: 'app-branch',
@@ -14,7 +14,18 @@ export class BranchComponent implements OnInit {
   private clicked: boolean;
   private cashed: boolean;
 
-  constructor(private ownerService: OwnerService) { }
+  @Input()
+  set newEntrySnapshot(entry: string[]) {
+    let branch = entry[2];
+    let snapshot = entry[3];
+    if (branch === this.branch && this.snapshots) {
+      if (!this.isSnapshotInList(snapshot)) {
+        this.snapshots.push(snapshot);
+      }
+    }
+  }
+
+  constructor(private sidebarService: SidebarService) { }
 
   ngOnInit() {
     this.clicked = false;
@@ -23,7 +34,7 @@ export class BranchComponent implements OnInit {
 
   getSnapshotsList(owner: string, repository: string, branch: string): void {
     if (!this.clicked && !this.cashed) {
-      this.ownerService.getSnapshotsList(owner, repository, branch).subscribe(snapshots => {
+      this.sidebarService.getSnapshotsList(owner, repository, branch).subscribe(snapshots => {
         this.snapshots = [];
         snapshots.forEach(snapshot => {
           this.snapshots.push(snapshot.timestamp);
@@ -39,4 +50,14 @@ export class BranchComponent implements OnInit {
       this.clicked = true;
     }
   }
+
+  isSnapshotInList(snapshot: string): boolean {
+    for (let index=0; index<this.snapshots.length; index++) {
+      if (this.snapshots[index] === snapshot) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }

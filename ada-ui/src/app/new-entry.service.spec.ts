@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { OwnerService } from './owner.service';
+import { NewEntryService } from './new-entry.service';
 
-describe('OwnerService', () => {
+describe('NewEntryService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: OwnerService = TestBed.get(OwnerService);
+    const service: NewEntryService = TestBed.get(NewEntryService);
     expect(service).toBeTruthy();
   });
 });

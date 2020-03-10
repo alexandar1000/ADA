@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class OwnerService {
+export class SidebarService {
 
   private ownersUrl: string;
   private metaUrl: string;
@@ -41,5 +41,9 @@ export class OwnerService {
       .set('repository', repository)
       .set('branch', branch);
     return this.http.post<any>(snapshotsUrl, {params});
+  }
+
+  addNewEntry(owner: string, repository: string, branch: string) {
+    
   }
 }
