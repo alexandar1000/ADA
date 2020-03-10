@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
+
 import java.util.*;
 
 
@@ -92,21 +93,37 @@ public class ADAClassVisitor extends ASTVisitor {
      * @return true if it is required to visit the children node otherwise false
      */
     public boolean visit(EnumDeclaration node) {
+        ITypeBinding binding = node.resolveBinding();
         if (node.isPackageMemberTypeDeclaration()) {
             this.isEnum = true;
-            this.className = node.resolveBinding().getQualifiedName();
-            List<Type> interfaces = node.superInterfaceTypes();
-            for (Type anInterface : interfaces) {
-                implementedInterfaces.add(anInterface.resolveBinding().getQualifiedName());
-            }
-            List<ASTNode> enumConstant = node.enumConstants();
-            if (!enumConstant.isEmpty()) {
-                for (ASTNode an : enumConstant) {
-                    if (an instanceof EnumConstantDeclaration) {
-                        EnumConstantDeclaration en = (EnumConstantDeclaration) an;
-                        declaredEnums.add(en.getName().toString());
-                    }
+            if (binding != null) {
+                this.className = binding.getQualifiedName();
+                List<Type> interfaces = node.superInterfaceTypes();
+                for (Type anInterface : interfaces) {
+                    implementedInterfaces.add(anInterface.resolveBinding().getQualifiedName());
+                }
+                List<ASTNode> enumConstant = node.enumConstants();
+                if (!enumConstant.isEmpty()) {
+                    for (ASTNode an : enumConstant) {
+                        if (an instanceof EnumConstantDeclaration) {
+                            EnumConstantDeclaration en = (EnumConstantDeclaration) an;
+                            declaredEnums.add(en.getName().toString());
+                        }
 
+                    }
+                }
+            }
+        } else {
+            if (binding != null) {
+                String enumName = node.resolveBinding().getName();
+                List<ASTNode> enumConstant = node.enumConstants();
+                if (!enumConstant.isEmpty()) {
+                    for (ASTNode an : enumConstant) {
+                        if (an instanceof EnumConstantDeclaration) {
+                            EnumConstantDeclaration en = (EnumConstantDeclaration) an;
+                            declaredEnums.add(enumName + "." + en.getName().toString());
+                        }
+                    }
                 }
             }
         }
