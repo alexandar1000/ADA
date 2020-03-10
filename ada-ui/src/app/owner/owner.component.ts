@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { OwnerService } from '../owner.service';
+import { SidebarService } from '../sidebar.service';
 
 @Component({
   selector: 'app-owner',
@@ -11,8 +11,21 @@ export class OwnerComponent implements OnInit {
   private repositories: string[];
   private clicked: boolean;
   private cashed: boolean;
+  private entry: string[];
 
-  constructor(private ownerService: OwnerService) { }
+  @Input()
+  set newEntryRepository(entry: string[]) {
+    this.entry = entry;
+    let owner = entry[0];
+    let repository = entry[1];
+    if (owner === this.owner && this.repositories) {
+      if (!this.isRepositoryInList(repository)) {
+        this.repositories.push(repository);
+      }
+    }
+  }
+
+  constructor(private sidebarService: SidebarService) { }
 
   ngOnInit() {
     this.clicked = false;
@@ -21,7 +34,7 @@ export class OwnerComponent implements OnInit {
 
   getReposList(ownerName: string): void {
     if (!this.cashed && !this.clicked) {
-      this.ownerService.getReposList(ownerName).subscribe(repositories => {
+      this.sidebarService.getReposList(ownerName).subscribe(repositories => {
         this.repositories = [];
         repositories.forEach(repository => {
           this.repositories.push(repository.repoName);
@@ -36,5 +49,14 @@ export class OwnerComponent implements OnInit {
     else if (this.cashed && !this.clicked) {
       this.clicked = true;
     }
+  }
+
+  isRepositoryInList(repository: string): boolean {
+    for (let index=0; index<this.repositories.length; index++) {
+      if (this.repositories[index] === repository) {
+        return true;
+      }
+    }
+    return false;
   }
 }

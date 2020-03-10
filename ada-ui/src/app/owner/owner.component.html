@@ -1,4 +1,4 @@
 <a mat-list-item (click)="getReposList(owner)">{{owner}}</a>
 <mat-nav-list > 
-    <app-repository *ngFor="let repository of repositories" [owner]="owner" [repository]="repository" [hidden]="!clicked" class="owner-container"></app-repository>
+    <app-repository *ngFor="let repository of repositories" [owner]="owner" [repository]="repository" [newEntryBranch]="entry" [hidden]="!clicked" class="owner-container"></app-repository>
 </mat-nav-list>
