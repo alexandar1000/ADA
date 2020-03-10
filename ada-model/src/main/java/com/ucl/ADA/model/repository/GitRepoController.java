@@ -38,8 +38,7 @@ public class GitRepoController {
     @CrossOrigin("http://localhost:4200")
     @PostMapping("/owners/{owner}/repositories")
     public Set<GitRepo> getAllReposForUser(@PathVariable String owner) {
-        Set<GitRepo> gitRepositories = gitRepoService.findAllReposByOwner(owner);
-        return gitRepositories;
+        return gitRepoService.findAllReposByOwner(owner);
     }
 
     @CrossOrigin("http://localhost:4200")

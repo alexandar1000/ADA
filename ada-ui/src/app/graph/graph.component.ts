@@ -1,6 +1,7 @@
 import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import * as cytoscape from 'cytoscape';
 import {MetricNameConverter} from "../classes/metric-name-converter";
+import {ProjectStructure} from "../classes/project-structure";
 
 @Component({
   selector: 'app-graph',
@@ -10,20 +11,18 @@ import {MetricNameConverter} from "../classes/metric-name-converter";
 export class GraphComponent implements OnInit {
 
   private cy;
-  @Input() projectStructure;
-  @Input() selectedMetric;
+  @Input() projectStructure: ProjectStructure;
+  @Input() selectedMetric: string;
   private metricNameConverter = new MetricNameConverter();
 
   constructor() { }
 
   ngOnInit() {
     this.initCytoscape();
+    this.repopulateGraph();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.projectStructure && !changes.projectStructure.firstChange) {
-      this.repopulateGraph();
-    }
     if (changes.selectedMetric && !changes.selectedMetric.firstChange) {
       this.changeMetricRepresentedInGraph();
     }
@@ -62,7 +61,7 @@ export class GraphComponent implements OnInit {
   private repopulateGraph(): void {
     this.cy.elements().remove();
     let elements = this.getElements();
-    this.cy.add( elements );
+    this.cy.add(elements);
 
     this.updateArrowStyle();
 
@@ -71,9 +70,6 @@ export class GraphComponent implements OnInit {
     });
 
     layout.run();
-
-
-
   }
 
   public extractClassName(fullyQualifiedClassName: String): String {

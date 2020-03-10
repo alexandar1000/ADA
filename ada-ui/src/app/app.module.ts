@@ -30,6 +30,7 @@ import { BranchComponent } from './branch/branch.component';
 import { SnapshotComponent } from './snapshot/snapshot.component';
 import { FilterPipe } from './filter.pipe';
 import { SidebarService } from './sidebar.service';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { SidebarService } from './sidebar.service';
     HttpClientModule,
     MatSliderModule,
     MatOptionModule,
-    MatSelectModule
+    MatSelectModule,
+    MatProgressSpinnerModule
   ],
   providers: [AnalyserService, SidebarService],
   bootstrap: [AppComponent]

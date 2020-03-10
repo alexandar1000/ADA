@@ -22,6 +22,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     if (this.router.url == '/dashboard/current') {
+      this.analyserService.isLoading = true;
       this.analyserService.doAnalysis().subscribe(dataJson => {
         this.updateProjectStructure(dataJson)
         let owner = dataJson['gitRepoInfo'].owner;
@@ -33,17 +34,23 @@ export class DashboardComponent implements OnInit {
     } else {
       this.route.paramMap.subscribe(
         (params: ParamMap) =>
-          this.analyserService.getPreviousAnalysis(params.get('owner'), params.get('repository'), params.get('branch'), params.get('snapshot'))
-            .subscribe(dataJson => this.updateProjectStructure(dataJson))
+          this.getPreviousAnalysis(params.get('owner'), params.get('repository'), params.get('branch'), params.get('snapshot'))
       );
     }
+  }
+
+  getPreviousAnalysis(owner: string, repository: string, branch: string, snapshot: string): void {
+    this.analyserService.isLoading = true;
+    this.analyserService.getPreviousAnalysis(owner, repository, branch, snapshot)
+      .subscribe(dataJson => this.updateProjectStructure(dataJson))
   }
 
   updateSelectedMetric(newMetric: string): void {
     this.selectedMetric = newMetric;
   }
 
-  private updateProjectStructure(data: JSON) {
+  private updateProjectStructure(data: JSON): void {
+    this.analyserService.isLoading = false;
     this.projectStructure = new ProjectStructure(data);
   }
 

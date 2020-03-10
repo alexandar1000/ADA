@@ -19,14 +19,14 @@ public class Owner extends BaseEntity {
 
     // There are no duplicates in Github usernames, hence the uniqueness of the column
     @Column(name = "user_name", nullable = false, unique = true)
-    private String userName;
+    private String username;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = GitRepo.class)
     @JsonBackReference
     Set<GitRepo> repos = new LinkedHashSet<>();
 
-    public Owner(String userName) {
-        this.userName = userName;
+    public Owner(String username) {
+        this.username = username;
     }
 
 }

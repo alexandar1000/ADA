@@ -11,6 +11,6 @@ public interface BranchRepository extends CrudRepository<Branch, Long> {
 
     Set<Branch> findAllByRepository(GitRepo gitRepo);
 
-    Branch findByRepositoryAndBranchName(GitRepo gitRepo, String branch_name);
+    Branch findByRepositoryAndBranchName(GitRepo gitRepo, String branch);
 
 }
