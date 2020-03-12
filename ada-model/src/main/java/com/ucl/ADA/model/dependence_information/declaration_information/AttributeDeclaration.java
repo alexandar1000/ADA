@@ -4,39 +4,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-@Table(name = "ATTRIBUTE_DECLARATION")
 public class AttributeDeclaration extends ElementDeclaration {
 
     /**
      * The type of the attribute.
      */
-    @Column(name = "type", nullable = false)
     private String type;
 
     /**
      * The value assigned to the attribute.
      */
-    @Column(name = "value")
     private String value;
 
     /**
      * The access modifier assigned to the attribute.
      */
-    @ElementCollection(targetClass = ModifierType.class, fetch = FetchType.EAGER)
-    @CollectionTable(
-            name = "ATTRIBUTE_DECLARATION_MODIFIER_TYPE",
-            joinColumns = @JoinColumn(name = "attribute_declaration_id")
-    )
-    @Enumerated(EnumType.STRING)
-    @Column(name = "modifier_type")
     private Set<ModifierType> modifierTypes = new HashSet<>();
 
     /**

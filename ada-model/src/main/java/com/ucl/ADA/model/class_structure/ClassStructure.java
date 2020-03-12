@@ -14,17 +14,12 @@ import com.ucl.ADA.model.metrics.relation_metrics.RelationMetricValue;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.*;
 import java.util.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-@Table(name = "CLASS_STRUCTURE")
 public class ClassStructure extends BaseEntity {
 
     // Declaration information corresponding to this class:
@@ -32,44 +27,21 @@ public class ClassStructure extends BaseEntity {
     /**
      * Fully qualified class package name (including the name of the class in the end).
      */
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinColumn(name = "package_declaration_id")
     private PackageDeclaration currentPackage = new PackageDeclaration("$");
 
     /**
      * Attributes declared in this class.
      */
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
-    @JoinTable(
-            name = "CLASS_STRUCTURE_ATTRIBUTE_DECLARATION",
-            joinColumns = @JoinColumn(name = "class_structure_id"),
-            inverseJoinColumns = @JoinColumn(name = "attribute_declaration_id")
-    )
     private List<AttributeDeclaration> attributeDeclarations = new ArrayList<>();
 
     /**
      * Constructors declared in this class.
      */
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
-    @JoinTable(
-            name = "CLASS_STRUCTURE_CONSTRUCTOR_DECLARATION",
-            joinColumns = @JoinColumn(name = "class_structure_id"),
-            inverseJoinColumns = @JoinColumn(name = "constructor_declaration_id")
-    )
     private List<ConstructorDeclaration> constructorDeclarations = new ArrayList<>();
 
     /**
      * Methods declared in this class.
      */
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
-    @JoinTable(
-            name = "CLASS_STRUCTURE_METHOD_DECLARATION",
-            joinColumns = @JoinColumn(name = "class_structure_id"),
-            inverseJoinColumns = @JoinColumn(name = "method_declaration_id")
-    )
     private List<MethodDeclaration> methodsDeclarations = new ArrayList<>();
 
 
@@ -79,46 +51,13 @@ public class ClassStructure extends BaseEntity {
      * Information about the invocations of the elements from the other classes from this class. String is the qualified
      * name of the class.
      */
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinTable(name = "CLASS_STRUCTURE_OUTGOING_DEPENDENCE_INFO",
-            joinColumns = {@JoinColumn(name = "class_structure_id")},
-            inverseJoinColumns = {@JoinColumn(name = "dependence_info_id")})
-    @MapKeyColumn(name = "class_name")
     private Map<String, DependenceInfo> outgoingDependenceInfo = new HashMap<>();
 
     /**
      * Information about the invocations of elements from this class by the other classes. String is the qualified
      * name of the class.
      */
-    @Transient
     private Map<String, DependenceInfo> incomingDependenceInfo = new HashMap<>();
-
-
-    // Global invocations:
-
-    /**
-     * Global Data present in the class. It can be either declared or invoked. Not really possible in Java.
-     */
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
-    @JoinTable(
-            name = "CLASS_STRUCTURE_GLOBAL_ATTRIBUTE_INVOCATION",
-            joinColumns = @JoinColumn(name = "class_structure_id"),
-            inverseJoinColumns = @JoinColumn(name = "attribute_invocation_id")
-    )
-    private List<AttributeInvocation> globalData = new ArrayList<>();
-
-    /**
-     * Global Methods present in the class. They can be either declared or invoked. Not really possible in Java.
-     */
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
-    @JoinTable(
-            name = "CLASS_STRUCTURE_GLOBAL_METHOD_INVOCATION",
-            joinColumns = @JoinColumn(name = "class_structure_id"),
-            inverseJoinColumns = @JoinColumn(name = "method_invocation_id")
-    )
-    private List<MethodInvocation> globalMethods = new ArrayList<>();
 
 
     // External invocations (from outside of the project):
@@ -127,52 +66,25 @@ public class ClassStructure extends BaseEntity {
      * External Attribute Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
-    @JoinTable(
-            name = "CLASS_STRUCTURE_EXTERNAL_PACKAGE_INVOCATION",
-            joinColumns = @JoinColumn(name = "class_structure_id"),
-            inverseJoinColumns = @JoinColumn(name = "package_invocation_id")
-    )
     private List<PackageInvocation> externalPackageImports = new ArrayList<>();
 
     /**
      * External Method Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
-    @JoinTable(
-            name = "CLASS_STRUCTURE_EXTERNAL_METHOD_INVOCATION",
-            joinColumns = @JoinColumn(name = "class_structure_id"),
-            inverseJoinColumns = @JoinColumn(name = "method_invocation_id")
-    )
+
     private List<MethodInvocation> externalMethodInvocations = new ArrayList<>();
 
     /**
      * External Constructor Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
-    @JoinTable(
-            name = "CLASS_STRUCTURE_EXTERNAL_CONSTRUCTOR_INVOCATION",
-            joinColumns = @JoinColumn(name = "class_structure_id"),
-            inverseJoinColumns = @JoinColumn(name = "constructor_invocation_id")
-    )
     private List<ConstructorInvocation> externalConstructorInvocations = new ArrayList<>();
 
     /**
      * External Attribute Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
-    @JoinTable(
-            name = "CLASS_STRUCTURE_EXTERNAL_ATTRIBUTE_INVOCATION",
-            joinColumns = @JoinColumn(name = "class_structure_id"),
-            inverseJoinColumns = @JoinColumn(name = "attribute_invocation_id")
-    )
     private List<AttributeInvocation> externalAttributeInvocations = new ArrayList<>();
 
 
@@ -181,18 +93,11 @@ public class ClassStructure extends BaseEntity {
     /**
      * All of the metric values for the link between the current class and the linking classes.
      */
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinTable(name = "CLASS_STRUCTURE_RELATION_METRIC_VALUE",
-            joinColumns = {@JoinColumn(name = "class_structure_id")},
-            inverseJoinColumns = {@JoinColumn(name = "relation_metric_value_id")})
-    @MapKeyColumn(name = "class_name")
     private Map<String, RelationMetricValue> relationMetricValues = new HashMap<>();
 
     /**
      * The metrics corresponding to the current class.
      */
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "class_metric_value_id")
     private ClassMetricValue classMetricValues = new ClassMetricValue();
 
 
@@ -230,26 +135,6 @@ public class ClassStructure extends BaseEntity {
      */
     public void addConstructorDeclaration(ConstructorDeclaration constructorDeclaration) {
         this.constructorDeclarations.add(constructorDeclaration);
-    }
-
-    /**
-     * Adds a new global data to the instance.
-     *
-     * @param attributeInvocationInformation a global data invocation information object containing all of the
-     *                                       corresponding information about the method being added
-     */
-    public void addNewGlobalData(AttributeInvocation attributeInvocationInformation) {
-        this.globalData.add(attributeInvocationInformation);
-    }
-
-    /**
-     * Adds a new global method to the instance.
-     *
-     * @param methodInvocationInformation a global method invocation information object containing all of the
-     *                                    corresponding information about the global method being added
-     */
-    public void addGlobalMethod(MethodInvocation methodInvocationInformation) {
-        this.globalMethods.add(methodInvocationInformation);
     }
 
     /**

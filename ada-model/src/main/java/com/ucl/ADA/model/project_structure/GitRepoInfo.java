@@ -1,6 +1,5 @@
 package com.ucl.ADA.model.project_structure;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ucl.ADA.model.snapshot.Snapshot;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +21,6 @@ public class GitRepoInfo {
     /**
      * GitHub url
      */
-    @JsonIgnore
     private String url;
 
     /**
@@ -48,18 +46,15 @@ public class GitRepoInfo {
     /**
      * a list of file names
      */
-    @JsonIgnore
     private List<String> fileNames = new ArrayList<>();
 
     /**
      * directory path where downloaded project is stored
      */
-    @JsonIgnore
     private String directoryPath;
 
     /**
      * the snapshot project for connecting ProjectStructure
      */
-    @JsonIgnore
     private Snapshot snapshot;
 }

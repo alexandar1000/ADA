@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 @Getter
@@ -19,7 +18,6 @@ public abstract class ElementInvocation extends BaseEntity {
     /**
      * The name of the invoked element.
      */
-    @Column(name = "name", nullable = false)
     private String name;
 
 }

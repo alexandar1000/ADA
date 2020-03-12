@@ -1,6 +1,5 @@
 package com.ucl.ADA.model.project_structure;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ucl.ADA.model.BaseEntity;
 import com.ucl.ADA.model.class_structure.ClassStructure;
 import com.ucl.ADA.model.dependence_information.declaration_information.AttributeDeclaration;
@@ -13,38 +12,28 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-@Table(name = "PROJECT_STRUCTURE")
+
 public class ProjectStructure extends BaseEntity {
 
     /**
      * a map of ClassStructures, the key is qualified class name
      */
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinTable(name = "PROJECT_STRUCTURE_CLASS_STRUCTURE",
-            joinColumns = {@JoinColumn(name = "project_structure_id")},
-            inverseJoinColumns = {@JoinColumn(name = "class_structure_id")})
-    @MapKeyColumn(name = "class_name")
     private Map<String, ClassStructure> classStructures = new HashMap<>();
 
     /**
      * the snapshot object that it belong to
      */
-    @JsonIgnore
-    @OneToOne(mappedBy = "projectStructure", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Snapshot snapshot;
 
     /**
      * basic information on the snapshot
      */
-    @Transient
     private GitRepoInfo gitRepoInfo;
 
 

@@ -2,7 +2,6 @@ package com.ucl.ADA.core.repository_analyser;
 
 import com.ucl.ADA.metric_calculator.metrics.MetricServices;
 import com.ucl.ADA.model.project_structure.ProjectStructure;
-import com.ucl.ADA.model.project_structure.ProjectStructureService;
 import com.ucl.ADA.parser.ParserServices;
 import com.ucl.ADA.repository_downloader.RepositoryDownloaderService;
 import com.ucl.ADA.model.project_structure.GitRepoInfo;
