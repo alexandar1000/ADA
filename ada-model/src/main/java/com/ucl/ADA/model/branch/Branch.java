@@ -36,7 +36,7 @@ public class Branch extends BaseEntity {
     /**
      * A LinkedHashSet of all snapshots corresponding to this branch
      */
-    @OneToMany(mappedBy = "branch", targetEntity = Snapshot.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "branch", targetEntity = Snapshot.class, cascade = CascadeType.PERSIST)
     @JsonBackReference
     @Getter private Set<Snapshot> snapshots = new LinkedHashSet<>();
 
