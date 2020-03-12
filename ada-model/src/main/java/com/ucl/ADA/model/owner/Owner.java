@@ -26,7 +26,7 @@ public class Owner extends BaseEntity {
     /**
      * Set of Git repositories owned by this owner
      */
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = GitRepo.class)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.PERSIST, targetEntity = GitRepo.class)
     @JsonBackReference
     Set<GitRepo> repos = new LinkedHashSet<>();
 
