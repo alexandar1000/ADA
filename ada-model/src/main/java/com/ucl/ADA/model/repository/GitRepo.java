@@ -28,7 +28,7 @@ public class GitRepo extends BaseEntity {
     /**
      * Set of branches corresponding to this repository entity
      */
-    @OneToMany(mappedBy = "repository", targetEntity = Branch.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "repository", targetEntity = Branch.class, cascade = CascadeType.PERSIST)
     @JsonBackReference
     @Getter Set<Branch> branches = new LinkedHashSet<>();
 
