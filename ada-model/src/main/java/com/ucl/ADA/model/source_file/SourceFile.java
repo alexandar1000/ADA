@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,9 +19,9 @@ public class SourceFile extends BaseEntity {
     private String fileHash;
 
     /**
-     * Snapshot corresponding to this source file
+     * Set of snapshots contains this source file
      */
-    private Snapshot snapshot;
+    private Set<Snapshot> snapshots;
 
     /**
      * Fully qualified file name of this source file
