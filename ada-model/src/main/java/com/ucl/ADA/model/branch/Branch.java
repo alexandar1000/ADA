@@ -31,12 +31,12 @@ public class Branch extends BaseEntity {
     /**
      * A LinkedHashSet of all snapshots corresponding to this branch
      */
-    private Set<Snapshot> snapshots = new LinkedHashSet<>();
+    private Set<Snapshot> snapshots = new HashSet<>();
 
     /**
      * Set of analysis request that retrieved this snapshot
      */
-    private Set<AnalysisRequest> analysisRequests = new HashSet<>();
+    private Set<AnalysisRequest> analysisRequests = new LinkedHashSet<>();
 
     /**
      * Timestamp of last snapshot, in UTC time standard

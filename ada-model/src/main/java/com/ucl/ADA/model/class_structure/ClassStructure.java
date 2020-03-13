@@ -2,6 +2,8 @@ package com.ucl.ADA.model.class_structure;
 
 import com.ucl.ADA.model.BaseEntity;
 import com.ucl.ADA.model.dependence_information.DependenceInfo;
+import com.ucl.ADA.model.dependence_information.IncomingDependenceInfo;
+import com.ucl.ADA.model.dependence_information.OutgoingDependenceInfo;
 import com.ucl.ADA.model.dependence_information.declaration_information.AttributeDeclaration;
 import com.ucl.ADA.model.dependence_information.declaration_information.ConstructorDeclaration;
 import com.ucl.ADA.model.dependence_information.declaration_information.MethodDeclaration;
@@ -22,73 +24,85 @@ import java.util.*;
 @NoArgsConstructor
 public class ClassStructure extends BaseEntity {
 
-    // Declaration information corresponding to this class:
+    /* ************************************************************************
+     *
+     *  Declaration information corresponding to this class
+     *
+     **************************************************************************/
 
     /**
      * Fully qualified class package name (including the name of the class in the end).
      */
-    private PackageDeclaration currentPackage = new PackageDeclaration("$");
+    private PackageDeclaration currentPackage = new PackageDeclaration();
 
     /**
      * Attributes declared in this class.
      */
-    private List<AttributeDeclaration> attributeDeclarations = new ArrayList<>();
+    private Set<AttributeDeclaration> attributeDeclarations = new HashSet<>();
 
     /**
      * Constructors declared in this class.
      */
-    private List<ConstructorDeclaration> constructorDeclarations = new ArrayList<>();
+    private Set<ConstructorDeclaration> constructorDeclarations = new HashSet<>();
 
     /**
      * Methods declared in this class.
      */
-    private List<MethodDeclaration> methodsDeclarations = new ArrayList<>();
+    private Set<MethodDeclaration> methodsDeclarations = new HashSet<>();
 
-
-    // Dependence relations to other classes:
+    /* ************************************************************************
+     *
+     *  Dependence relations to other classes
+     *
+     **************************************************************************/
 
     /**
      * Information about the invocations of the elements from the other classes from this class. String is the qualified
      * name of the class.
      */
-    private Map<String, DependenceInfo> outgoingDependenceInfo = new HashMap<>();
+    private Map<String, OutgoingDependenceInfo> outgoingDependenceInfos = new HashMap<>();
 
     /**
      * Information about the invocations of elements from this class by the other classes. String is the qualified
      * name of the class.
      */
-    private Map<String, DependenceInfo> incomingDependenceInfo = new HashMap<>();
+    private Map<String, IncomingDependenceInfo> incomingDependenceInfos = new HashMap<>();
 
-
-    // External invocations (from outside of the project):
+    /* ************************************************************************
+     *
+     *  External invocations (from outside of the project)
+     *
+     **************************************************************************/
 
     /**
      * External Attribute Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    private List<PackageInvocation> externalPackageImports = new ArrayList<>();
+    private Set<PackageInvocation> externalPackageImports = new HashSet<>();
 
     /**
      * External Method Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-
-    private List<MethodInvocation> externalMethodInvocations = new ArrayList<>();
+    private Set<MethodInvocation> externalMethodInvocations = new HashSet<>();
 
     /**
      * External Constructor Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    private List<ConstructorInvocation> externalConstructorInvocations = new ArrayList<>();
+    private Set<ConstructorInvocation> externalConstructorInvocations = new HashSet<>();
 
     /**
      * External Attribute Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    private List<AttributeInvocation> externalAttributeInvocations = new ArrayList<>();
+    private Set<AttributeInvocation> externalAttributeInvocations = new HashSet<>();
 
-
-    // Metrics:
+    /* ************************************************************************
+     *
+     *  Metrics
+     *
+     **************************************************************************/
 
     /**
      * All of the metric values for the link between the current class and the linking classes.
@@ -100,6 +114,11 @@ public class ClassStructure extends BaseEntity {
      */
     private ClassMetricValue classMetricValues = new ClassMetricValue();
 
+    /* ************************************************************************
+     *
+     *  functions that update information of class structure
+     *
+     **************************************************************************/
 
     /**
      * Updates the package corresponding to the class.
@@ -185,20 +204,20 @@ public class ClassStructure extends BaseEntity {
      */
     public void addPackageInvocationElement(String relatingClass, InvocationType invocationType, PackageInvocation packageInvocation) {
         if (invocationType == InvocationType.OUTGOING) {
-            if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
-                this.outgoingDependenceInfo.get(relatingClass).addNewPackage(packageInvocation);
+            if (this.outgoingDependenceInfos.containsKey(relatingClass)) {
+                this.outgoingDependenceInfos.get(relatingClass).addNewPackage(packageInvocation);
             } else {
                 DependenceInfo dependenceInfo = new DependenceInfo();
                 dependenceInfo.addNewPackage(packageInvocation);
-                this.outgoingDependenceInfo.put(relatingClass, dependenceInfo);
+                this.outgoingDependenceInfos.put(relatingClass, dependenceInfo);
             }
         } else {
-            if (this.incomingDependenceInfo.containsKey(relatingClass)) {
-                this.incomingDependenceInfo.get(relatingClass).addNewPackage(packageInvocation);
+            if (this.incomingDependenceInfos.containsKey(relatingClass)) {
+                this.incomingDependenceInfos.get(relatingClass).addNewPackage(packageInvocation);
             } else {
                 DependenceInfo dependenceInfo = new DependenceInfo();
                 dependenceInfo.addNewPackage(packageInvocation);
-                this.incomingDependenceInfo.put(relatingClass, dependenceInfo);
+                this.incomingDependenceInfos.put(relatingClass, dependenceInfo);
             }
         }
     }
@@ -215,20 +234,20 @@ public class ClassStructure extends BaseEntity {
      */
     public void addAttributeInvocationElement(String relatingClass, InvocationType invocationType, AttributeInvocation attributeInvocation) {
         if (invocationType == InvocationType.OUTGOING) {
-            if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
-                this.outgoingDependenceInfo.get(relatingClass).addNewAttribute(attributeInvocation);
+            if (this.outgoingDependenceInfos.containsKey(relatingClass)) {
+                this.outgoingDependenceInfos.get(relatingClass).addNewAttribute(attributeInvocation);
             } else {
                 DependenceInfo dependenceInfo = new DependenceInfo();
                 dependenceInfo.addNewAttribute(attributeInvocation);
-                this.outgoingDependenceInfo.put(relatingClass, dependenceInfo);
+                this.outgoingDependenceInfos.put(relatingClass, dependenceInfo);
             }
         } else {
-            if (this.incomingDependenceInfo.containsKey(relatingClass)) {
-                this.incomingDependenceInfo.get(relatingClass).addNewAttribute(attributeInvocation);
+            if (this.incomingDependenceInfos.containsKey(relatingClass)) {
+                this.incomingDependenceInfos.get(relatingClass).addNewAttribute(attributeInvocation);
             } else {
                 DependenceInfo dependenceInfo = new DependenceInfo();
                 dependenceInfo.addNewAttribute(attributeInvocation);
-                this.incomingDependenceInfo.put(relatingClass, dependenceInfo);
+                this.incomingDependenceInfos.put(relatingClass, dependenceInfo);
             }
         }
     }
@@ -245,20 +264,20 @@ public class ClassStructure extends BaseEntity {
      */
     public void addConstructorInvocationElement(String relatingClass, InvocationType invocationType, ConstructorInvocation constructorInvocation) {
         if (invocationType == InvocationType.OUTGOING) {
-            if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
-                this.outgoingDependenceInfo.get(relatingClass).addNewConstructor(constructorInvocation);
+            if (this.outgoingDependenceInfos.containsKey(relatingClass)) {
+                this.outgoingDependenceInfos.get(relatingClass).addNewConstructor(constructorInvocation);
             } else {
                 DependenceInfo dependenceInfo = new DependenceInfo();
                 dependenceInfo.addNewConstructor(constructorInvocation);
-                this.outgoingDependenceInfo.put(relatingClass, dependenceInfo);
+                this.outgoingDependenceInfos.put(relatingClass, dependenceInfo);
             }
         } else {
-            if (this.incomingDependenceInfo.containsKey(relatingClass)) {
-                this.incomingDependenceInfo.get(relatingClass).addNewConstructor(constructorInvocation);
+            if (this.incomingDependenceInfos.containsKey(relatingClass)) {
+                this.incomingDependenceInfos.get(relatingClass).addNewConstructor(constructorInvocation);
             } else {
                 DependenceInfo dependenceInfo = new DependenceInfo();
                 dependenceInfo.addNewConstructor(constructorInvocation);
-                this.incomingDependenceInfo.put(relatingClass, dependenceInfo);
+                this.incomingDependenceInfos.put(relatingClass, dependenceInfo);
             }
         }
     }
@@ -275,20 +294,20 @@ public class ClassStructure extends BaseEntity {
      */
     public void addMethodInvocationElement(String relatingClass, InvocationType invocationType, MethodInvocation methodInvocation) {
         if (invocationType == InvocationType.OUTGOING) {
-            if (this.outgoingDependenceInfo.containsKey(relatingClass)) {
-                this.outgoingDependenceInfo.get(relatingClass).addNewMethod(methodInvocation);
+            if (this.outgoingDependenceInfos.containsKey(relatingClass)) {
+                this.outgoingDependenceInfos.get(relatingClass).addNewMethod(methodInvocation);
             } else {
                 DependenceInfo dependenceInfo = new DependenceInfo();
                 dependenceInfo.addNewMethod(methodInvocation);
-                this.outgoingDependenceInfo.put(relatingClass, dependenceInfo);
+                this.outgoingDependenceInfos.put(relatingClass, dependenceInfo);
             }
         } else {
-            if (this.incomingDependenceInfo.containsKey(relatingClass)) {
-                this.incomingDependenceInfo.get(relatingClass).addNewMethod(methodInvocation);
+            if (this.incomingDependenceInfos.containsKey(relatingClass)) {
+                this.incomingDependenceInfos.get(relatingClass).addNewMethod(methodInvocation);
             } else {
                 DependenceInfo dependenceInfo = new DependenceInfo();
                 dependenceInfo.addNewMethod(methodInvocation);
-                this.incomingDependenceInfo.put(relatingClass, dependenceInfo);
+                this.incomingDependenceInfos.put(relatingClass, dependenceInfo);
             }
         }
     }
@@ -297,8 +316,8 @@ public class ClassStructure extends BaseEntity {
         float metricValue = 0F;
         // TODO: This could be made nicer by extracting the for loop around the switch. However, the switch would then
         //  be executed for each item, which would make it less efficient.
-        Collection<DependenceInfo> incomingDependencyValues = incomingDependenceInfo.values();
-        Collection<DependenceInfo> outgoingDependencyValues = outgoingDependenceInfo.values();
+        Collection<DependenceInfo> incomingDependencyValues = incomingDependenceInfos.values();
+        Collection<DependenceInfo> outgoingDependencyValues = outgoingDependenceInfos.values();
 
         switch (classMetricType) {
             case NUMBER_OF_CLASS_ATTRIBUTE_INVOCATIONS_INCOMING:
@@ -413,8 +432,8 @@ public class ClassStructure extends BaseEntity {
             case NUMBER_OF_RELATION_PACKAGE_IMPORTS_INCOMING:
 
                 // For all of the relating classes get the corresponding metrics
-                for (String key : incomingDependenceInfo.keySet()) {
-                    metricValue = (float) incomingDependenceInfo.get(key).getPackages().size();
+                for (String key : incomingDependenceInfos.keySet()) {
+                    metricValue = (float) incomingDependenceInfos.get(key).getPackages().size();
 
                     // Check if the relation metrics for the class have already been computed
                     if (!relationMetricValues.containsKey(key)) {
@@ -428,8 +447,8 @@ public class ClassStructure extends BaseEntity {
 
             case NUMBER_OF_RELATION_PACKAGE_IMPORTS_OUTGOING:
                 // For all of the relating classes get the corresponding metrics
-                for (String key : outgoingDependenceInfo.keySet()) {
-                    metricValue = (float) outgoingDependenceInfo.get(key).getPackages().size();
+                for (String key : outgoingDependenceInfos.keySet()) {
+                    metricValue = (float) outgoingDependenceInfos.get(key).getPackages().size();
 
                     // Check if the relation metrics for the class have already been computed
                     if (!relationMetricValues.containsKey(key)) {
@@ -442,8 +461,8 @@ public class ClassStructure extends BaseEntity {
 
             case NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_INCOMING:
                 // For all of the relating classes get the corresponding metrics
-                for (String key : incomingDependenceInfo.keySet()) {
-                    metricValue = (float) incomingDependenceInfo.get(key).getAttributes().size();
+                for (String key : incomingDependenceInfos.keySet()) {
+                    metricValue = (float) incomingDependenceInfos.get(key).getAttributes().size();
 
                     // Check if the relation metrics for the class have already been computed
                     if (!relationMetricValues.containsKey(key)) {
@@ -457,8 +476,8 @@ public class ClassStructure extends BaseEntity {
 
             case NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_OUTGOING:
                 // For all of the relating classes get the corresponding metrics
-                for (String key : outgoingDependenceInfo.keySet()) {
-                    metricValue = (float) outgoingDependenceInfo.get(key).getAttributes().size();
+                for (String key : outgoingDependenceInfos.keySet()) {
+                    metricValue = (float) outgoingDependenceInfos.get(key).getAttributes().size();
 
                     // Check if the relation metrics for the class have already been computed
                     if (!relationMetricValues.containsKey(key)) {
@@ -471,8 +490,8 @@ public class ClassStructure extends BaseEntity {
 
             case NUMBER_OF_RELATION_METHOD_INVOCATIONS_INCOMING:
                 // For all of the relating classes get the corresponding metrics
-                for (String key : incomingDependenceInfo.keySet()) {
-                    metricValue = (float) incomingDependenceInfo.get(key).getMethods().size();
+                for (String key : incomingDependenceInfos.keySet()) {
+                    metricValue = (float) incomingDependenceInfos.get(key).getMethods().size();
 
 
                     // Check if the relation metrics for the class have already been computed
@@ -486,8 +505,8 @@ public class ClassStructure extends BaseEntity {
 
             case NUMBER_OF_RELATION_METHOD_INVOCATIONS_OUTGOING:
                 // For all of the relating classes get the corresponding metrics
-                for (String key : outgoingDependenceInfo.keySet()) {
-                    metricValue = (float) outgoingDependenceInfo.get(key).getMethods().size();
+                for (String key : outgoingDependenceInfos.keySet()) {
+                    metricValue = (float) outgoingDependenceInfos.get(key).getMethods().size();
 
                     // Check if the relation metrics for the class have already been computed
                     if (!relationMetricValues.containsKey(key)) {
@@ -501,8 +520,8 @@ public class ClassStructure extends BaseEntity {
 
             case NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS_INCOMING:
                 // For all of the relating classes get the corresponding metrics
-                for (String key : incomingDependenceInfo.keySet()) {
-                    metricValue = (float) incomingDependenceInfo.get(key).getConstructors().size();
+                for (String key : incomingDependenceInfos.keySet()) {
+                    metricValue = (float) incomingDependenceInfos.get(key).getConstructors().size();
 
 
                     // Check if the relation metrics for the class have already been computed
@@ -516,8 +535,8 @@ public class ClassStructure extends BaseEntity {
 
             case NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS_OUTGOING:
                 // For all of the relating classes get the corresponding metrics
-                for (String key : outgoingDependenceInfo.keySet()) {
-                    metricValue = (float) outgoingDependenceInfo.get(key).getConstructors().size();
+                for (String key : outgoingDependenceInfos.keySet()) {
+                    metricValue = (float) outgoingDependenceInfos.get(key).getConstructors().size();
 
                     // Check if the relation metrics for the class have already been computed
                     if (!relationMetricValues.containsKey(key)) {
@@ -530,8 +549,8 @@ public class ClassStructure extends BaseEntity {
 
             case BIDIRECTIONAL_NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS:
                 // For all of the relating classes get the corresponding metrics
-                for (String key : outgoingDependenceInfo.keySet()) {
-                    metricValue = (float) outgoingDependenceInfo.get(key).getAttributes().size();
+                for (String key : outgoingDependenceInfos.keySet()) {
+                    metricValue = (float) outgoingDependenceInfos.get(key).getAttributes().size();
                     // Check if the relation metrics for the class have already been computed
                     if (!relationMetricValues.containsKey(key)) {
                         RelationMetricValue relationMetricValueObject = new RelationMetricValue();
@@ -539,8 +558,8 @@ public class ClassStructure extends BaseEntity {
                     }
                     relationMetricValues.get(key).setBidirectionalNumberOfAttributeInvocations(metricValue);
                 }
-                for (String key : incomingDependenceInfo.keySet()) {
-                    metricValue = (float) incomingDependenceInfo.get(key).getAttributes().size();
+                for (String key : incomingDependenceInfos.keySet()) {
+                    metricValue = (float) incomingDependenceInfos.get(key).getAttributes().size();
                     // Check if the relation metrics for the class have already been computed
                     if (!relationMetricValues.containsKey(key)) {
                         RelationMetricValue relationMetricValueObject = new RelationMetricValue();
@@ -553,8 +572,8 @@ public class ClassStructure extends BaseEntity {
 
             case BIDIRECTIONAL_NUMBER_OF_RELATION_METHOD_INVOCATIONS:
                 // For all of the relating classes get the corresponding metrics
-                for (String key : outgoingDependenceInfo.keySet()) {
-                    metricValue = (float) outgoingDependenceInfo.get(key).getMethods().size();
+                for (String key : outgoingDependenceInfos.keySet()) {
+                    metricValue = (float) outgoingDependenceInfos.get(key).getMethods().size();
                     // Check if the relation metrics for the class have already been computed
                     if (!relationMetricValues.containsKey(key)) {
                         RelationMetricValue relationMetricValueObject = new RelationMetricValue();
@@ -562,8 +581,8 @@ public class ClassStructure extends BaseEntity {
                     }
                     relationMetricValues.get(key).setBidirectionalNumberOfMethodInvocations(metricValue);
                 }
-                for (String key : incomingDependenceInfo.keySet()) {
-                    metricValue = (float) incomingDependenceInfo.get(key).getMethods().size();
+                for (String key : incomingDependenceInfos.keySet()) {
+                    metricValue = (float) incomingDependenceInfos.get(key).getMethods().size();
                     // Check if the relation metrics for the class have already been computed
                     if (!relationMetricValues.containsKey(key)) {
                         RelationMetricValue relationMetricValueObject = new RelationMetricValue();
@@ -576,8 +595,8 @@ public class ClassStructure extends BaseEntity {
 
             case BIDIRECTIONAL_NUMBER_OF_RELATION_PACKAGE_IMPORTS:
                 // For all of the relating classes get the corresponding metrics
-                for (String key : outgoingDependenceInfo.keySet()) {
-                    metricValue = (float) outgoingDependenceInfo.get(key).getPackages().size();
+                for (String key : outgoingDependenceInfos.keySet()) {
+                    metricValue = (float) outgoingDependenceInfos.get(key).getPackages().size();
                     // Check if the relation metrics for the class have already been computed
                     if (!relationMetricValues.containsKey(key)) {
                         RelationMetricValue relationMetricValueObject = new RelationMetricValue();
@@ -585,8 +604,8 @@ public class ClassStructure extends BaseEntity {
                     }
                     relationMetricValues.get(key).setBidirectionalNumberOfPackageImports(metricValue);
                 }
-                for (String key : incomingDependenceInfo.keySet()) {
-                    metricValue = (float) incomingDependenceInfo.get(key).getPackages().size();
+                for (String key : incomingDependenceInfos.keySet()) {
+                    metricValue = (float) incomingDependenceInfos.get(key).getPackages().size();
                     // Check if the relation metrics for the class have already been computed
                     if (!relationMetricValues.containsKey(key)) {
                         RelationMetricValue relationMetricValueObject = new RelationMetricValue();
@@ -599,8 +618,8 @@ public class ClassStructure extends BaseEntity {
 
             case BIDIRECTIONAL_NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS:
                 // For all of the relating classes get the corresponding metrics
-                for (String key : outgoingDependenceInfo.keySet()) {
-                    metricValue = (float) outgoingDependenceInfo.get(key).getConstructors().size();
+                for (String key : outgoingDependenceInfos.keySet()) {
+                    metricValue = (float) outgoingDependenceInfos.get(key).getConstructors().size();
                     // Check if the relation metrics for the class have already been computed
                     if (!relationMetricValues.containsKey(key)) {
                         RelationMetricValue relationMetricValueObject = new RelationMetricValue();
@@ -608,8 +627,8 @@ public class ClassStructure extends BaseEntity {
                     }
                     relationMetricValues.get(key).setBidirectionalNumberOfConstructorInvocations(metricValue);
                 }
-                for (String key : incomingDependenceInfo.keySet()) {
-                    metricValue = (float) incomingDependenceInfo.get(key).getConstructors().size();
+                for (String key : incomingDependenceInfos.keySet()) {
+                    metricValue = (float) incomingDependenceInfos.get(key).getConstructors().size();
                     // Check if the relation metrics for the class have already been computed
                     if (!relationMetricValues.containsKey(key)) {
                         RelationMetricValue relationMetricValueObject = new RelationMetricValue();

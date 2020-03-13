@@ -2,7 +2,6 @@ package com.ucl.ADA.repository_downloader;
 
 import com.ucl.ADA.model.branch.Branch;
 import com.ucl.ADA.model.owner.Owner;
-import com.ucl.ADA.model.project_structure.GitRepoInfo;
 import com.ucl.ADA.model.repository.GitRepo;
 import com.ucl.ADA.model.snapshot.Snapshot;
 import com.ucl.ADA.model.source_file.SourceFile;

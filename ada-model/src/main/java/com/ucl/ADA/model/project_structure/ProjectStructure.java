@@ -7,7 +7,6 @@ import com.ucl.ADA.model.dependence_information.declaration_information.Construc
 import com.ucl.ADA.model.dependence_information.declaration_information.MethodDeclaration;
 import com.ucl.ADA.model.dependence_information.declaration_information.PackageDeclaration;
 import com.ucl.ADA.model.dependence_information.invocation_information.*;
-import com.ucl.ADA.model.snapshot.Snapshot;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,17 +24,6 @@ public class ProjectStructure extends BaseEntity {
      * a map of ClassStructures, the key is qualified class name
      */
     private Map<String, ClassStructure> classStructures = new HashMap<>();
-
-    /**
-     * the snapshot object that it belong to
-     */
-    private Snapshot snapshot;
-
-    /**
-     * basic information on the snapshot
-     */
-    private GitRepoInfo gitRepoInfo;
-
 
     /**
      * Adds package declaration for the corresponding declaring class where it is declared.

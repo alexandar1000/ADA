@@ -10,7 +10,6 @@ import lombok.Setter;
 
 import java.time.OffsetDateTime;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
@@ -26,7 +25,7 @@ public class Snapshot extends BaseEntity {
     /**
      * Set of source files contained in this snapshot
      */
-    private Set<SourceFile> sourceFiles = new LinkedHashSet<>();
+    private Set<SourceFile> sourceFiles = new HashSet<>();
 
     /**
      * Set of analysis request that retrieved this snapshot
