@@ -18,7 +18,16 @@ export class OwnerComponent implements OnInit {
     this.entry = entry;
     let owner = entry[0];
     let repository = entry[1];
-    if (owner === this.owner && this.repositories) {
+    if (!this.repositories) {
+      this.repositories = [];
+    }
+    if (owner === this.owner) {
+      if (!this.cashed) {
+        this.getReposList(owner);
+      }
+      else {
+        this.clicked = true;
+      }
       if (!this.isRepositoryInList(repository)) {
         this.repositories.push(repository);
       }
@@ -39,9 +48,9 @@ export class OwnerComponent implements OnInit {
         repositories.forEach(repository => {
           this.repositories.push(repository.repoName);
         });
+        this.clicked = true;
+        this.cashed = true;
       });
-      this.clicked = true;
-      this.cashed = true;
     }
     else if (this.cashed && this.clicked) {
       this.clicked = false;
