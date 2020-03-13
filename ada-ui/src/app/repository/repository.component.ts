@@ -17,9 +17,19 @@ export class RepositoryComponent implements OnInit {
   @Input()
   set newEntryBranch(entry: string[]) {
     this.entry = entry;
+    let owner = entry[0];
     let repository = entry[1];
     let branch = entry[2];
-    if (repository === this.repository && this.branches) {
+    if (!this.branches) {
+      this.branches = [];
+    }
+    if (repository === this.repository) {
+      if (!this.cashed) {
+        this.getBranchesList(owner, repository);
+      }
+      else {
+        this.clicked = true;
+      }
       if (!this.isBranchInList(branch)) {
         this.branches.push(branch);
       }
@@ -40,9 +50,10 @@ export class RepositoryComponent implements OnInit {
         branches.forEach(branch => {
           this.branches.push(branch.branchName);
         });
+        this.clicked = true;
+        this.cashed = true;
       })
-      this.clicked = true;
-      this.cashed = true;
+
     }
     else if (this.cashed && this.clicked) {
       this.clicked = false;

@@ -16,9 +16,20 @@ export class BranchComponent implements OnInit {
 
   @Input()
   set newEntrySnapshot(entry: string[]) {
+    let owner = entry[0];
+    let repository = entry[1];
     let branch = entry[2];
     let snapshot = entry[3];
-    if (branch === this.branch && this.snapshots) {
+    if (!this.snapshots) {
+      this.snapshots = [];
+    }
+    if (branch === this.branch) {
+      if (!this.cashed) {
+        this.getSnapshotsList(owner, repository, branch);
+      }
+      else {
+        this.clicked = true;
+      }
       if (!this.isSnapshotInList(snapshot)) {
         this.snapshots.push(snapshot);
       }
@@ -39,9 +50,9 @@ export class BranchComponent implements OnInit {
         snapshots.forEach(snapshot => {
           this.snapshots.push(snapshot.timestamp);
         });
+        this.clicked = true;
+        this.cashed = true;
       });
-      this.clicked = true;
-      this.cashed = true;
     }
     else if (this.cashed && this.clicked) {
       this.clicked = false;
