@@ -1,4 +1,8 @@
-<a mat-list-item (click)="getReposList(owner)">{{owner}}</a>
+<a mat-list-item (click)="getReposList(owner)">
+    <mat-icon *ngIf="!clicked">arrow_right</mat-icon>
+    <mat-icon *ngIf="clicked">arrow_drop_down</mat-icon>
+    {{owner}}
+</a>
 <mat-nav-list> 
     <app-repository *ngFor="let repository of repositories" [owner]="owner" [repository]="repository" [newEntryBranch]="entry" [hidden]="!clicked" class="owner-container"></app-repository>
 </mat-nav-list>
