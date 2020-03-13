@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {ProjectStructure} from "../classes/project-structure";
 
 @Component({
   selector: 'app-element-insight',
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ElementInsightComponent implements OnInit {
 
+  @Input() projectStructure: ProjectStructure;
   constructor() { }
 
   ngOnInit() {
