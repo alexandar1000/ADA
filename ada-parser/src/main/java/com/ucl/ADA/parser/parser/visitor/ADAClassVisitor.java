@@ -1,17 +1,15 @@
-package com.ucl.ADA.parser.parser;
+package com.ucl.ADA.parser.parser.visitor;
 
 
 import com.ucl.ADA.parser.ada_model.*;
-import com.ucl.ADA.parser.parser.visitor.VariableDeclarationVisitor;
 import org.eclipse.jdt.core.dom.*;
-
 import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
 
 
 import java.util.*;
 
-public class JavaClassParser extends ASTVisitor {
+public class ADAClassVisitor extends ASTVisitor {
     private String packageName = "";
     private Set<String> importedInternalClasses = new HashSet<>();
     private Set<String> importedExternalClasses = new HashSet<>();
@@ -31,7 +29,14 @@ public class JavaClassParser extends ASTVisitor {
     private List<String> exFieldInvocation = new ArrayList<>();
 
 
-    public JavaClassParser(String packageName, Set<String> importedInternalClasses, Set<String> importedExternalClasses) {
+    /**
+     * A constructor of ADAClassVisitor
+     *
+     * @param packageName              Packages name of the Class
+     * @param importedInternalClasses  Imported internal classes that are declared in the project
+     * @param importedExternalClasses  Imported external classes that are utilized from the external libraries.
+     */
+    public ADAClassVisitor(String packageName, Set<String> importedInternalClasses, Set<String> importedExternalClasses) {
 
         this.packageName = packageName;
         this.importedInternalClasses.addAll(importedInternalClasses);
@@ -39,6 +44,11 @@ public class JavaClassParser extends ASTVisitor {
     }
 
 
+    /**
+     * This creates an ADAClass model using the parsed information.
+     *
+     * @return A ADAClass model containing the extracted class information.
+     */
     public ADAClass getExtractedClass() {
         ADAClass cl = new ADAClass(packageName, importedInternalClasses, importedExternalClasses, className, isInterface, isEnum, parentClassName, implementedInterfaces,
                 classAttributes, declaredEnums, ADAMethodInvocations, constructorInvocations, methodConstructorDeclaration, exMethodCalls, exConstructorInvocations, exFieldInvocation);
@@ -46,20 +56,26 @@ public class JavaClassParser extends ASTVisitor {
         return cl;
     }
 
-    //variable declaration visitor
     private VariableDeclarationVisitor variableDeclaratorVisitor = new VariableDeclarationVisitor();
 
-    //class name, parent class and implemented interfaces
-    public boolean visit(TypeDeclaration typeDeclaration) {
-        if (typeDeclaration.isPackageMemberTypeDeclaration()) {
-            if (typeDeclaration.isInterface()) {
+
+    /**
+     * It visits the TypeDeclaration node from the AST and
+     * retrieves the required information such as class name, parent class name and implemented interface,
+     *
+     * @param node  A TypeDeclaration node derived from the AST.
+     * @return true if it is required to visit the children node otherwise false
+     */
+    public boolean visit(TypeDeclaration node) {
+        if (node.isPackageMemberTypeDeclaration()) {
+            if (node.isInterface()) {
                 this.isInterface = true;
             }
-            this.className = typeDeclaration.resolveBinding().getQualifiedName();
-            if (typeDeclaration.getSuperclassType() != null) {
-                this.parentClassName = typeDeclaration.getSuperclassType().resolveBinding().getQualifiedName();
+            this.className = node.resolveBinding().getQualifiedName();
+            if (node.getSuperclassType() != null) {
+                this.parentClassName = node.getSuperclassType().resolveBinding().getQualifiedName();
             }
-            List<Type> interfaces = typeDeclaration.superInterfaceTypes();
+            List<Type> interfaces = node.superInterfaceTypes();
             for (Type anInterface : interfaces) {
                 implementedInterfaces.add(anInterface.resolveBinding().getQualifiedName());
             }
@@ -67,15 +83,22 @@ public class JavaClassParser extends ASTVisitor {
         return true;
     }
 
-    public boolean visit(EnumDeclaration enumDeclaration) {
-        if (enumDeclaration.isPackageMemberTypeDeclaration()) {
+    /**
+     * It visits the EnumDeclaration node from the AST and
+     * retrieves the required information to populate EnumConstantDeclaration model
+     *
+     * @param node  A EnumDeclaration node derived from the AST.
+     * @return true if it is required to visit the children node otherwise false
+     */
+    public boolean visit(EnumDeclaration node) {
+        if (node.isPackageMemberTypeDeclaration()) {
             this.isEnum = true;
-            this.className = enumDeclaration.resolveBinding().getQualifiedName();
-            List<Type> interfaces = enumDeclaration.superInterfaceTypes();
+            this.className = node.resolveBinding().getQualifiedName();
+            List<Type> interfaces = node.superInterfaceTypes();
             for (Type anInterface : interfaces) {
                 implementedInterfaces.add(anInterface.resolveBinding().getQualifiedName());
             }
-            List<ASTNode> enumConstant = enumDeclaration.enumConstants();
+            List<ASTNode> enumConstant = node.enumConstants();
             if (!enumConstant.isEmpty()) {
                 for (ASTNode an : enumConstant) {
                     if (an instanceof EnumConstantDeclaration) {
@@ -89,7 +112,13 @@ public class JavaClassParser extends ASTVisitor {
         return true;
     }
 
-    // class attributes
+    /**
+     * It visits the FieldDeclaration node from the AST and
+     * retrieves the required information to populate ADAClassAttribute model
+     *
+     * @param node  A FieldDeclaration node derived from the AST.
+     * @return true if it is required to visit the children node otherwise false
+     */
     public boolean visit(FieldDeclaration node) {
         for (Iterator iter = node.fragments().iterator(); iter.hasNext(); ) {
             VariableDeclarationFragment fragment = (VariableDeclarationFragment) iter.next();
@@ -111,21 +140,24 @@ public class JavaClassParser extends ASTVisitor {
                 String type = binding.getType().getQualifiedName();
                 String value = "";
                 if (fragment.getInitializer() != null) {
-                    //System.out.println(fragment.getInitializer().toString());
                     value = fragment.getInitializer().toString();
                 }
                 ADAClassAttribute sa = new ADAClassAttribute(modifiers, name, type, value);
                 this.classAttributes.add(sa);
-                //System.out.println(binding.getName() + "--" + binding.getType().getQualifiedName());
             } else {
                 this.exFieldInvocation.add(fragment.getNodeType() + "");
             }
-
         }
         return true;
     }
 
-    // method invocations
+    /**
+     * It visits the MethodInvocation node from the AST and
+     * retrieves the required information to populate ADAMethodInvocation model
+     *
+     * @param node  A MethodInvocation node derived from the AST.
+     * @return true if it is required to visit the children node otherwise false
+     */
     public boolean visit(MethodInvocation node) {
         IMethodBinding binding = node.resolveMethodBinding();
         String methodCallName = "";
@@ -138,24 +170,24 @@ public class JavaClassParser extends ASTVisitor {
                 List<ASTNode> list = node.arguments();
                 if (!list.isEmpty()) {
                     for (ASTNode an : list) {
-                        //System.out.println(an.toString());
-                        //int type=an.getNodeType();
-                        //ASTNode.nodeClassForType(an.getNodeType());
                         arguments.add(an.toString());
                     }
                 }
-
-                //System.out.println(binding.getName() + "-->" + binding.getDeclaringClass().getQualifiedName());
             }
             this.ADAMethodInvocations.add(new ADAMethodInvocation(methodCallName, calleeName, arguments));
         } else {
             this.exMethodCalls.add(node.getName().toString());
-            //System.out.println(node.getName().toString());
         }
         return true;
     }
 
-    // constructor invocation.
+    /**
+     * It visits the ClassInstanceCreation node from the AST and
+     * retrieves the required information to populate ADAConstructorInvocation model
+     *
+     * @param node  A ClassInstanceCreation node derived from the AST.
+     * @return true if it is required to visit the children node otherwise false
+     */
     public boolean visit(ClassInstanceCreation node) {
         IMethodBinding binding = node.resolveConstructorBinding();
         String name = "";
@@ -166,23 +198,24 @@ public class JavaClassParser extends ASTVisitor {
                 List<ASTNode> list = node.arguments();
                 if (!list.isEmpty()) {
                     for (ASTNode an : list) {
-                        //System.out.println(an.toString());
-                        //int type=an.getNodeType();
-                        //ASTNode.nodeClassForType(an.getNodeType());
                         arguments.add(an.toString());
                     }
                 }
                 this.constructorInvocations.add(new ADAConstructorInvocation(name, arguments));
             }
-
         } else {
             this.exConstructorInvocations.add(node.toString());
-            //System.out.println(node.toString());
         }
         return true;
     }
 
-    // method or constructor declaration
+    /**
+     * This method visits the MethodDeclaration node from the AST and
+     * retrieves the required information to populate ADAMethodOrConstructorDeclaration model
+     *
+     * @param node  A MethodDeclaration node derived from the AST.
+     * @return true if it is required to visit the children node otherwise false
+     */
     public boolean visit(MethodDeclaration node) {
         String name = node.getName().toString();
         String returnType = "";
@@ -199,7 +232,6 @@ public class JavaClassParser extends ASTVisitor {
                 parameters.put(parameterName, parameterType);
             }
         }
-
         Set<String> accessModifiers = new HashSet<>();
         List<Object> mlist = node.modifiers();
         for (Object o : mlist) {
@@ -217,7 +249,6 @@ public class JavaClassParser extends ASTVisitor {
         localVariables.putAll(this.variableDeclaratorVisitor.getLocalVariables());
         if (node.isConstructor()) {
             boolean isConstructor = true;
-            //name,returnType,accessModifiers,parameters,localVariables,isConstructor
             ADAMethodOrConstructorDeclaration mc = new ADAMethodOrConstructorDeclaration(name, returnType, accessModifiers, parameters, localVariables, isConstructor);
             this.methodConstructorDeclaration.add(mc);
         } else {

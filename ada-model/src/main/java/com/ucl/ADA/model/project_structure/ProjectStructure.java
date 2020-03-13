@@ -24,6 +24,9 @@ import java.util.Map;
 @Table(name = "PROJECT_STRUCTURE")
 public class ProjectStructure extends BaseEntity {
 
+    /**
+     * a map of ClassStructures, the key is qualified class name
+     */
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(name = "PROJECT_STRUCTURE_CLASS_STRUCTURE",
             joinColumns = {@JoinColumn(name = "project_structure_id")},
@@ -31,10 +34,16 @@ public class ProjectStructure extends BaseEntity {
     @MapKeyColumn(name = "class_name")
     private Map<String, ClassStructure> classStructures = new HashMap<>();
 
+    /**
+     * the snapshot object that it belong to
+     */
     @JsonIgnore
     @OneToOne(mappedBy = "projectStructure", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Snapshot snapshot;
 
+    /**
+     * basic information on the snapshot
+     */
     @Transient
     private GitRepoInfo gitRepoInfo;
 
@@ -282,17 +291,27 @@ public class ProjectStructure extends BaseEntity {
         }
     }
 
+    /**
+     * create a new ClassStructure object
+     *
+     * @param className qualified name of class
+     * @return a newly-created ClassStructure object
+     */
     private ClassStructure getNewClassStructure(String className) {
         ClassStructure classStructure = new ClassStructure();
         classStructure.setCurrentPackage(new PackageDeclaration(getDefaultPackageName(className)));
         return classStructure;
     }
 
-
+    /**
+     * get default package name given qualified class name
+     *
+     * @param className qualified name of class
+     * @return a package name, return an empty String if the class is in root package
+     */
     private String getDefaultPackageName(String className) {
         int p = className.lastIndexOf(".");
-        String packageName = (p == -1 ? "" : className.substring(0, p));
-        return packageName;
+        return (p == -1 ? "" : className.substring(0, p));
     }
 
 }

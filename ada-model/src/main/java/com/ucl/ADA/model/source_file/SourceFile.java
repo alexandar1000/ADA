@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Setter
 @NoArgsConstructor
@@ -16,31 +15,26 @@ import java.util.Objects;
 @Table(name = "SOURCE_FILE")
 public class SourceFile extends BaseEntity {
 
+    /**
+     * SHA1 file hash of this source file.
+     */
     @Column(name = "file_hash")
     @Getter
     private String fileHash;
 
+    /**
+     * Snapshot corresponding to this source file
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "snapshot_id")
     @JsonManagedReference
     private Snapshot snapshot;
 
+    /**
+     * Fully qualified file name of this source file
+     */
     @Column(name = "file_name", nullable = false)
     @Getter
     private String fileName;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SourceFile that = (SourceFile) o;
-        return fileHash.equals(that.fileHash) &&
-                snapshot.equals(that.snapshot) &&
-                fileName.equals(that.fileName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(snapshot, fileName);
-    }
 }
