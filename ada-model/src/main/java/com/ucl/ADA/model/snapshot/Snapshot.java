@@ -1,6 +1,6 @@
 package com.ucl.ADA.model.snapshot;
 
-import com.ucl.ADA.model.BaseEntity;
+import com.ucl.ADA.model.base_entity.BaseEntity;
 import com.ucl.ADA.model.analysis_request.AnalysisRequest;
 import com.ucl.ADA.model.branch.Branch;
 import com.ucl.ADA.model.source_file.SourceFile;
@@ -35,6 +35,6 @@ public class Snapshot extends BaseEntity {
     /**
      * Timestamp of the commit time of the snapshot, in UTC time standard
      */
-    private OffsetDateTime timestamp;
+    private OffsetDateTime commitTime;
 
 }

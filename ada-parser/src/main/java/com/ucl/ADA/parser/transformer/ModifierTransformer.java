@@ -1,6 +1,6 @@
 package com.ucl.ADA.parser.transformer;
 
-import com.ucl.ADA.model.dependence_information.declaration_information.ModifierType;
+import com.ucl.ADA.model.static_information.declaration_information.ModifierType;
 
 import java.util.HashSet;
 import java.util.Set;

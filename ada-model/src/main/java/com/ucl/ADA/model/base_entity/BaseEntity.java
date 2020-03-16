@@ -1,4 +1,4 @@
-package com.ucl.ADA.model;
+package com.ucl.ADA.model.base_entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

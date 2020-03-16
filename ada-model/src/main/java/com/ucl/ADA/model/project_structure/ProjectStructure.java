@@ -1,11 +1,11 @@
 package com.ucl.ADA.model.project_structure;
 
-import com.ucl.ADA.model.BaseEntity;
+import com.ucl.ADA.model.base_entity.BaseEntity;
 import com.ucl.ADA.model.class_structure.ClassStructure;
-import com.ucl.ADA.model.dependence_information.declaration_information.AttributeDeclaration;
-import com.ucl.ADA.model.dependence_information.declaration_information.ConstructorDeclaration;
-import com.ucl.ADA.model.dependence_information.declaration_information.MethodDeclaration;
-import com.ucl.ADA.model.dependence_information.declaration_information.PackageDeclaration;
+import com.ucl.ADA.model.static_information.declaration_information.AttributeDeclaration;
+import com.ucl.ADA.model.static_information.declaration_information.ConstructorDeclaration;
+import com.ucl.ADA.model.static_information.declaration_information.MethodDeclaration;
+import com.ucl.ADA.model.static_information.declaration_information.PackageDeclaration;
 import com.ucl.ADA.model.dependence_information.invocation_information.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

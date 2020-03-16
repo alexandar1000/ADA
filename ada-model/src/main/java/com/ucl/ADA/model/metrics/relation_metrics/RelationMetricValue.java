@@ -1,6 +1,6 @@
 package com.ucl.ADA.model.metrics.relation_metrics;
 
-import com.ucl.ADA.model.BaseEntity;
+import com.ucl.ADA.model.base_entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

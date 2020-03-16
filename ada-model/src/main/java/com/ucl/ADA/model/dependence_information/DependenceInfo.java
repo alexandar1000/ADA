@@ -1,6 +1,6 @@
 package com.ucl.ADA.model.dependence_information;
 
-import com.ucl.ADA.model.BaseEntity;
+import com.ucl.ADA.model.base_entity.BaseEntity;
 import com.ucl.ADA.model.dependence_information.invocation_information.AttributeInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
@@ -9,36 +9,52 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class DependenceInfo extends BaseEntity {
 
-    // For environmental coupling:
+    /* ************************************************************************
+     *
+     *  For environmental coupling
+     *
+     **************************************************************************/
+
     /**
      * Packages present in the class. They can be either declared or imported.
      */
-    private List<PackageInvocation> packages = new ArrayList<>();
+    private Set<PackageInvocation> packages = new HashSet<>();
 
+    /* ************************************************************************
+     *
+     *  For data and control flow coupling
+     *
+     **************************************************************************/
 
-    // For data and control flow coupling:
     /**
      * Attributes present in the class. They can be either declared or invoked.
      */
-    private List<AttributeInvocation> attributes = new ArrayList<>();
+    private Set<AttributeInvocation> attributes = new HashSet<>();
 
     /**
      * Constructors present in the class. They can be either declared or invoked.
      */
-    private List<ConstructorInvocation> constructors = new ArrayList<>();
+    private Set<ConstructorInvocation> constructors = new HashSet<>();
 
     /**
      * Methods present in the class. They can be either declared or invoked.
      */
-    private List<MethodInvocation> methods = new ArrayList<>();
+    private Set<MethodInvocation> methods = new HashSet<>();
+
+
+    /* ************************************************************************
+     *
+     *  public functions to update dependence info
+     *
+     **************************************************************************/
 
     /**
      * Adds a new attribute to the instance.

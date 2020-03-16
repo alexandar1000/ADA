@@ -1,6 +1,6 @@
 package com.ucl.ADA.model.owner;
 
-import com.ucl.ADA.model.BaseEntity;
+import com.ucl.ADA.model.base_entity.BaseEntity;
 import com.ucl.ADA.model.repository.GitRepo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

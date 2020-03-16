@@ -1,6 +1,6 @@
 package com.ucl.ADA.model.branch;
 
-import com.ucl.ADA.model.BaseEntity;
+import com.ucl.ADA.model.base_entity.BaseEntity;
 import com.ucl.ADA.model.analysis_request.AnalysisRequest;
 import com.ucl.ADA.model.repository.GitRepo;
 import com.ucl.ADA.model.snapshot.Snapshot;
