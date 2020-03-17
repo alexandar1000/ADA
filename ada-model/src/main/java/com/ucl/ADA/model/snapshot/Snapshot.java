@@ -1,15 +1,18 @@
 package com.ucl.ADA.model.snapshot;
 
-import com.ucl.ADA.model.base_entity.BaseEntity;
 import com.ucl.ADA.model.analysis_request.AnalysisRequest;
+import com.ucl.ADA.model.base_entity.BaseEntity;
 import com.ucl.ADA.model.branch.Branch;
+import com.ucl.ADA.model.class_structure.ClassStructure;
 import com.ucl.ADA.model.source_file.SourceFile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Getter
@@ -23,9 +26,9 @@ public class Snapshot extends BaseEntity {
     private Branch branch;
 
     /**
-     * Set of source files contained in this snapshot
+     * a map of ClassStructures, the key is qualified class name
      */
-    private Set<SourceFile> sourceFiles = new HashSet<>();
+    private Map<String, ClassStructure> classStructures = new HashMap<>();
 
     /**
      * Set of analysis request that retrieved this snapshot
@@ -36,5 +39,21 @@ public class Snapshot extends BaseEntity {
      * Timestamp of the commit time of the snapshot, in UTC time standard
      */
     private OffsetDateTime commitTime;
+
+    /**
+     *
+     */
+    private Map<String, SourceFile> sourceFiles = new HashMap<>();
+
+
+    /**
+     * add a class structure into the snapshot
+     *
+     * @param className      qualified class name
+     * @param classStructure the class structure to add
+     */
+    public void addClassStructures(String className, ClassStructure classStructure) {
+        classStructures.put(className, classStructure);
+    }
 
 }

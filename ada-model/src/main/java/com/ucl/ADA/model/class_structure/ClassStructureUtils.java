@@ -2,6 +2,7 @@ package com.ucl.ADA.model.class_structure;
 
 import com.google.common.collect.SetMultimap;
 import com.ucl.ADA.model.dependence_information.DependenceInfo;
+import lombok.NonNull;
 
 import java.util.Map;
 import java.util.Set;
@@ -9,29 +10,55 @@ import java.util.Set;
 public class ClassStructureUtils {
 
     /**
-     * generate a class structure given information to reuse static info and incoming dependence info
+     * initialize a new class structure given the file name and file hash
      *
-     * @param reuseStaticInfo     the class structure should reuse previous static info or not
-     * @param className           the qualified name of class structure
-     * @param prevClassStructure  the class structure exists in previous SourceFile which can be reused
-     * @param incomingToDeleteMap a guava SetMultimap object, which can be viewed as HashMap<String, Set<String>, the
-     *                            key is the affected class name, the value set contains all incoming dependence info
-     *                            should be deleted from the affected class
-     * @param incomingToAddSet    a set of class names of all class who has new incoming dependence info * @return true
-     *                            if class not in both collections, false elsewhere
-     * @return a class structure which reuse previous class structure or parts of class structure
+     * @param fileName name of the file, which is also file path
+     * @param fileHash hash of the file
+     * @return the new created class structure
      */
-    public static ClassStructure generateClassStructure(boolean reuseStaticInfo, String className, ClassStructure prevClassStructure, SetMultimap<String, String> incomingToDeleteMap, Set<String> incomingToAddSet) {
+    public static ClassStructure initClassStructureWithFileNameAndFileHash(@NonNull String fileName, @NonNull String fileHash) {
+        ClassStructure classStructure = new ClassStructure();
+        classStructure.setFileName(fileName);
+        classStructure.setFileHash(fileHash);
+        return classStructure;
+    }
+
+    /**
+     * generate a class structure given initialized class structure, the previous class structure to reuse, information
+     * to reuse static info and incoming dependence info
+     *
+     * @param classStructure      the initialized class structure
+     * @param prevClassStructure  the class structure exists in previous snapshot that has same qualified name
+     * @param incomingToDeleteMap a guava SetMultimap object that can be viewed as Map<String, Set<String>>. The key is
+     *                            the name of an affected class structure, while the value is a set of class names
+     *                            should be deleted from affected class structure's incoming dependence info
+     * @param incomingToAddSet    a set of class names of all class who has new incoming dependence info
+     * @return a class structure which reuse (at least parts of) previous class structure
+     */
+    public static ClassStructure reuseClassStructure(@NonNull ClassStructure classStructure, ClassStructure prevClassStructure, @NonNull SetMultimap<String, String> incomingToDeleteMap, @NonNull Set<String> incomingToAddSet) {
+        // if previous class structure is null, then nothing to reuse
+        if (prevClassStructure == null) {
+            return classStructure;
+        }
+        // if the class names are different, then should not be reused
+        if (!classStructure.getClassName().equals(prevClassStructure.getClassName())) {
+            throw new IllegalArgumentException("initialized and previous class structure must have the same class name");
+        }
+
+        String className = classStructure.getClassName();
+
+        // check which parts of class structure can be reused
+        boolean reuseStaticInfo = isClassStaticInfoEqual(classStructure, prevClassStructure);
         boolean reuseIncomingDependenceInfo = isClassIncomingUnchanged(className, incomingToDeleteMap, incomingToAddSet);
 
-        // if static info and incoming dependence info is unchanged, then reuse the previous class structure
+        // if both static info and incoming dependence info are unchanged,
+        // then reuse the previous class structure object
         if (reuseStaticInfo && reuseIncomingDependenceInfo) {
             return prevClassStructure;
         }
 
-        // create new class structure
-        ClassStructure classStructure = new ClassStructure();
-        // reuse static info if available
+        // if cannot reuse the whole class structure,
+        // then reuse static info and incoming dependence info if available
         if (reuseStaticInfo) {
             classStructure.setStaticInfo(prevClassStructure.getStaticInfo());
         }
@@ -60,17 +87,31 @@ public class ClassStructureUtils {
     }
 
     /**
-     * check if the incoming dependence info of the class is unchanged given the collections of incoming changed
-     * classes
+     * check if the incoming dependence info of the class is unchanged by searching it from two collections of changed
+     * incoming dependence info
      *
      * @param className           qualified class name
-     * @param incomingToDeleteMap a guava SetMultimap object, which can be viewed as HashMap<String, Set<String>, the
-     *                            key is the affected class name, the value set contains all incoming dependence info
-     *                            should be deleted from the affected class
+     * @param incomingToDeleteMap a guava SetMultimap object that can be viewed as Map<String, Set<String>>. The key is
+     *                            the name of an affected class structure, while the value is a set of class names
+     *                            should be deleted from affected class structure's incoming dependence info
      * @param incomingToAddSet    a set of class names of all class who has new incoming dependence info
-     * @return true only if class not in both collections, false elsewhere
+     * @return true only if the class has no incoming dependence info change
      */
-    public static boolean isClassIncomingUnchanged(String className, SetMultimap<String, String> incomingToDeleteMap, Set<String> incomingToAddSet) {
+    public static boolean isClassIncomingUnchanged(@NonNull String className, @NonNull SetMultimap<String, String> incomingToDeleteMap, @NonNull Set<String> incomingToAddSet) {
         return !incomingToAddSet.contains(className) && !incomingToDeleteMap.containsKey(className);
+    }
+
+    /**
+     * check if two class structures have the same static info by comparing the file name and file hash
+     *
+     * @param m the first input class structure object
+     * @param n the second input class structure object
+     * @return true only if two class structures have the same static info
+     */
+    public static boolean isClassStaticInfoEqual(@NonNull ClassStructure m, @NonNull ClassStructure n) {
+        if (!m.getClassName().equals(n.getClassName())) {
+            throw new IllegalArgumentException("the two input class structures must have the same class name");
+        }
+        return m.getFileName().equals(n.getFileName()) && m.getFileHash().equals(n.getFileHash());
     }
 }

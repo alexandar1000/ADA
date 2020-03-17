@@ -4,7 +4,7 @@ import com.ucl.ADA.model.base_entity.BaseEntity;
 import com.ucl.ADA.model.dependence_information.DependenceInfo;
 import com.ucl.ADA.model.metrics.class_metrics.ClassMetricValue;
 import com.ucl.ADA.model.metrics.relation_metrics.RelationMetricValue;
-import com.ucl.ADA.model.source_file.SourceFile;
+import com.ucl.ADA.model.snapshot.Snapshot;
 import com.ucl.ADA.model.static_information.StaticInfo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,10 +20,37 @@ import java.util.Set;
 @NoArgsConstructor
 public class ClassStructure extends BaseEntity {
 
+    /* ************************************************************************
+     *
+     *  basic information
+     *
+     **************************************************************************/
+
+    /**
+     * qualified name of the class
+     */
+    private String className;
+
+    /**
+     * SHA1 file hash of this source file.
+     */
+    private String fileHash;
+
+    /**
+     * Fully qualified file name of this source file
+     */
+    private String fileName;
+
     /**
      * a set of source files that contains this class structure
      */
-    private Set<SourceFile> sourceFiles = new HashSet<>();
+    private Set<Snapshot> snapshots = new HashSet<>();
+
+    /* ************************************************************************
+     *
+     *  coupling information
+     *
+     **************************************************************************/
 
     /**
      * static information contains all declarations, outgoing dependence info and external invocation which is unchanged
@@ -37,10 +64,14 @@ public class ClassStructure extends BaseEntity {
      */
     private Map<String, DependenceInfo> incomingDependenceInfos = new HashMap<>();
 
-    /** All of the metric values for the link between the current class and the linking classes. */
+    /**
+     * All of the metric values for the link between the current class and the linking classes.
+     */
     private Map<String, RelationMetricValue> relationMetricValues = new HashMap<>();
 
-    /** The metrics corresponding to the current class */
+    /**
+     * The metrics corresponding to the current class
+     */
     private ClassMetricValue classMetricValues = new ClassMetricValue();
 
     /* ************************************************************************
