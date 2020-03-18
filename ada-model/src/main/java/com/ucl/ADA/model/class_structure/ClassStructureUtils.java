@@ -16,8 +16,9 @@ public class ClassStructureUtils {
      * @param fileHash hash of the file
      * @return the new created class structure
      */
-    public static ClassStructure initClassStructureWithFileNameAndFileHash(@NonNull String fileName, @NonNull String fileHash) {
+    public static ClassStructure initClassStructureWithFileNameAndFileHash(@NonNull String className, @NonNull String fileName, @NonNull String fileHash) {
         ClassStructure classStructure = new ClassStructure();
+        classStructure.setClassName(className);
         classStructure.setFileName(fileName);
         classStructure.setFileHash(fileHash);
         return classStructure;

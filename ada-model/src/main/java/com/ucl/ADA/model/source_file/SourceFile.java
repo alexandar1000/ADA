@@ -12,8 +12,14 @@ import java.util.Set;
 @NoArgsConstructor
 public class SourceFile {
 
+    /**
+     * the set of qualified class names of all classes in a source file
+     */
     private Set<String> classNames = new HashSet<>();
 
+    /**
+     * the hash of a file to determine if the content of file is unchanged
+     */
     private String fileHash;
 
 }

@@ -41,7 +41,7 @@ public class Snapshot extends BaseEntity {
     private OffsetDateTime commitTime;
 
     /**
-     *
+     * a map of source files, the key is the file path
      */
     private Map<String, SourceFile> sourceFiles = new HashMap<>();
 
@@ -52,7 +52,7 @@ public class Snapshot extends BaseEntity {
      * @param className      qualified class name
      * @param classStructure the class structure to add
      */
-    public void addClassStructures(String className, ClassStructure classStructure) {
+    public void addClassStructure(String className, ClassStructure classStructure) {
         classStructures.put(className, classStructure);
     }
 

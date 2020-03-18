@@ -1,4 +1,4 @@
-package com.ucl.ADA.parser.transformer;
+package com.ucl.ADA.core.transformer;
 
 import com.ucl.ADA.model.static_information.declaration_information.*;
 import com.ucl.ADA.model.dependence_information.invocation_information.*;

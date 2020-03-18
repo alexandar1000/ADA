@@ -9,10 +9,7 @@ import lombok.NonNull;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.ucl.ADA.model.class_structure.ClassStructureUtils.reuseClassStructure;
 import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
@@ -20,20 +17,16 @@ import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
 public class SnapshotUtils {
 
     /**
-     * initialize a new snapshot object, also initialized the class structures with given information
+     * initialize snapshot and source files given all file paths (before parsing)
      *
-     * @param filePathToClassNamesMap a map that key is the file path and the value is a set of class names that belongs
-     *                                to the file path
-     * @return a new created snapshot object with initialized class structures
+     * @param filePaths the set of file paths
+     * @return a initialized snapshot object
      */
-    // TODO: the parameter is the return value of quick transform which only transform class names
     // TODO: add Branch into parameters
-    public static Snapshot initSnapshot(Map<String, Set<String>> filePathToClassNamesMap) {
+    public static Snapshot initSnapshotAndSourceFiles(Set<String> filePaths) {
         Snapshot snapshot = new Snapshot();
-        Map<String, SourceFile> sourcePathToSourceFiles = snapshot.getSourceFiles();
-        for (Map.Entry<String, Set<String>> entry : filePathToClassNamesMap.entrySet()) {
-            String filePath = entry.getKey();
-            Set<String> classNames = entry.getValue();
+        Map<String, SourceFile> sourceFiles = snapshot.getSourceFiles();
+        for (String filePath : filePaths) {
             // compute file hash
             String fileHash = null;
             try {
@@ -41,37 +34,28 @@ public class SnapshotUtils {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            // create source file if not exists
-            if (!sourcePathToSourceFiles.containsKey(filePath)) {
-                SourceFile sourceFile = new SourceFile();
-                sourceFile.setFileHash(fileHash);
-                sourcePathToSourceFiles.put(filePath, sourceFile);
-            }
-            SourceFile sourceFile = sourcePathToSourceFiles.get(filePath);
-            // add class names into source file
-            for (String className : classNames) {
-                sourceFile.getClassNames().add(className);
-            }
-            // initialize all class structures in the snapshot
-            for (String className : classNames) {
-                snapshot.addClassStructures(className, ClassStructureUtils.initClassStructureWithFileNameAndFileHash(filePath, fileHash));
-            }
+            // create source file
+            SourceFile sourceFile = new SourceFile();
+            sourceFile.setFileHash(fileHash);
+            sourceFiles.put(filePath, sourceFile);
         }
         return snapshot;
     }
 
     /**
      * generate a snapshot given a snapshot that can be reused and the set of names of the affected class structures
+     * (after parsing)
      *
-     * @param prevSnapshot     the previous snapshot to be reused
-     * @param incomingToAddSet the set of names of the affected class structures
-     * @return a snapshot which have reuse (at least parts of) the previous snapshot
+     * @param snapshot                            the current snapshot
+     * @param prevSnapshot                        the previous snapshot to be reused
+     * @param pathsOfAddedSourceFilesToClassNames a map that key is the file path and the value is a set of class names
+     *                                            that belongs to the file path
+     * @param incomingToAddSet                    the set of names of the affected class structures
      */
-    // TODO: need to build a quick transform that only transform affected class names of new parsed ADAClass
-    public static Snapshot reuseClassStructuresOfSnapshot(@NonNull Snapshot snapshot, Snapshot prevSnapshot, @NonNull Set<String> incomingToAddSet) {
-        // if there is no previous snapshot to reuse, return the initialized one
+    public static void reuseClassStructuresOfSnapshot(@NonNull Snapshot snapshot, Snapshot prevSnapshot, @NonNull SetMultimap<String, String> pathsOfAddedSourceFilesToClassNames, @NonNull Set<String> incomingToAddSet) {
+        // there is no previous snapshot to reuse
         if (prevSnapshot == null) {
-            return snapshot;
+            return;
         }
         // the exception can be removed when working on per-repo optimisation
         if (snapshot.getBranch().getBranchName().equals(prevSnapshot.getBranch().getBranchName())) {
@@ -81,20 +65,81 @@ public class SnapshotUtils {
             throw new IllegalArgumentException("the commit time of the previous snapshot to reuse should be earlier than the initialized one");
         }
 
-        Map<String, ClassStructure> prevClassStructures = prevSnapshot.getClassStructures();
+        // initialize all class structures that are in the added source files
+        initClassStructuresGivenPathToClassNamesMap(snapshot, pathsOfAddedSourceFilesToClassNames);
+
+        // initialize all class structures that are in the shared source files
+        initClassStructuresInSharedSourceFiles(snapshot, prevSnapshot);
+
+        // get information of classes affected by deleted source files
         SetMultimap<String, String> incomingToDeleteMap = getIncomingToDeleteMap(snapshot, prevSnapshot);
 
+        // reuse class structure from previous snapshot given information of the change on incoming dependence info of a class
+        Map<String, ClassStructure> prevClassStructures = prevSnapshot.getClassStructures();
         Map<String, ClassStructure> reuseUpdatedClassStructures = new HashMap<>();
         for (Map.Entry<String, ClassStructure> entry : snapshot.getClassStructures().entrySet()) {
             String className = entry.getKey();
-            ClassStructure classStructure = entry.getValue();
-            ClassStructure reuseUpdatedClassStructure = reuseClassStructure(classStructure, prevClassStructures.getOrDefault(className, null), incomingToDeleteMap, incomingToAddSet);
+            ClassStructure initClassStructure = entry.getValue();
+            ClassStructure reuseUpdatedClassStructure = reuseClassStructure(initClassStructure, prevClassStructures.getOrDefault(className, null), incomingToDeleteMap, incomingToAddSet);
             reuseUpdatedClassStructures.put(className, reuseUpdatedClassStructure);
         }
-
         snapshot.setClassStructures(reuseUpdatedClassStructures);
+    }
 
-        return snapshot;
+    /**
+     * initialize class structures of a initialized snapshot given a map, where the key is file paths and the value is
+     * the set of class names in the source path
+     *
+     * @param snapshot          the initialized snapshot
+     * @param pathsToClassNames a map, where the key is file paths and the value is the set of class names in the source
+     *                          path
+     */
+    public static void initClassStructuresGivenPathToClassNamesMap(@NonNull Snapshot snapshot, @NonNull SetMultimap<String, String> pathsToClassNames) {
+        Map<String, SourceFile> sourceFiles = snapshot.getSourceFiles();
+        for (String filePath : pathsToClassNames.keySet()) {
+            Set<String> classNames = pathsToClassNames.get(filePath);
+
+            // add class names into source file
+            SourceFile sourceFile = sourceFiles.get(filePath);
+            for (String className : classNames) {
+                sourceFile.getClassNames().add(className);
+            }
+
+            // initialize all class structures in the snapshot
+            for (String className : classNames) {
+                ClassStructure classStructure = ClassStructureUtils.initClassStructureWithFileNameAndFileHash(className, filePath, sourceFile.getFileHash());
+                snapshot.addClassStructure(className, classStructure);
+            }
+        }
+    }
+
+    /**
+     * initialize class structures of all shared source files between previous and current snapshot
+     *
+     * @param snapshot     the initialized current snapshot
+     * @param prevSnapshot the previous snapshot to get class information from
+     */
+    public static void initClassStructuresInSharedSourceFiles(@NonNull Snapshot snapshot, Snapshot prevSnapshot) {
+        Map<String, SourceFile> sourceFiles = snapshot.getSourceFiles();
+        Map<String, SourceFile> prevSourceFiles = prevSnapshot.getSourceFiles();
+        Map<String, ClassStructure> prevClassStructures = prevSnapshot.getClassStructures();
+
+        // get paths to the shared source files
+        Set<String> pathsToSharedSourceFiles = getPathsToShardSourceFiles(snapshot, prevSnapshot);
+        for (String filePath : pathsToSharedSourceFiles) {
+            // reuse the source file object from previous snapshot for class names information
+            SourceFile prevSourceFile = prevSourceFiles.get(filePath);
+            sourceFiles.put(filePath, prevSourceFile);
+
+            // initialize all class structures that in are shared
+            Set<String> classNames = prevSourceFile.getClassNames();
+            for (String className : classNames) {
+                ClassStructure prevClassStructure = prevClassStructures.get(className);
+                String fileHash = prevClassStructure.getFileHash();
+                ClassStructure classStructure = ClassStructureUtils.initClassStructureWithFileNameAndFileHash(className, filePath, fileHash);
+                snapshot.addClassStructure(className, classStructure);
+            }
+        }
     }
 
     /**
@@ -109,24 +154,10 @@ public class SnapshotUtils {
      * structure's incoming dependence info
      */
     public static SetMultimap<String, String> getIncomingToDeleteMap(@NonNull Snapshot snapshot, @NonNull Snapshot prevSnapshot) {
-        Map<String, SourceFile> sourceFiles = snapshot.getSourceFiles();
+        Set<String> deletedSourceFiles = getPathsToDifferentSourceFiles(prevSnapshot, snapshot);
         Map<String, SourceFile> prevSourceFiles = prevSnapshot.getSourceFiles();
         Map<String, ClassStructure> prevClassStructures = prevSnapshot.getClassStructures();
 
-        // get the set of deleted source files by file names
-        Set<String> deletedSourceFiles = new HashSet<>(prevSourceFiles.keySet());
-        deletedSourceFiles.removeAll(sourceFiles.keySet());
-
-        // update the set of deleted source files by file hashes
-        Set<String> sourceFilesWithSameName = new HashSet<>(prevSourceFiles.keySet());
-        sourceFilesWithSameName.retainAll(sourceFiles.keySet());
-        for (String fileName : sourceFilesWithSameName) {
-            if (!sourceFiles.get(fileName).getFileHash().equals(prevSourceFiles.get(fileName).getFileHash())) {
-                deletedSourceFiles.add(fileName);
-            }
-        }
-
-        // generate incoming to delete map
         SetMultimap<String, String> incomingToDeleteMap = MultimapBuilder.hashKeys().hashSetValues().build();
         for (String fileName : deletedSourceFiles) {
             Set<String> classNames = prevSourceFiles.get(fileName).getClassNames();
@@ -141,5 +172,70 @@ public class SnapshotUtils {
         return incomingToDeleteMap;
     }
 
+    /**
+     * get the paths to all newly added source files in current snapshot compared to the previous one
+     *
+     * @param snapshot     the current snapshot
+     * @param prevSnapshot the previous snapshot
+     * @return a set of source paths to the source files in current snapshot but not in the previous one
+     */
+    public static Set<String> getPathsToAddedSourceFiles(@NonNull Snapshot snapshot, @NonNull Snapshot prevSnapshot) {
+        return getPathsToDifferentSourceFiles(snapshot, prevSnapshot);
+    }
+
+    /**
+     * find all different source files between snapshots by comparing fle name and file hash and return the set of file
+     * paths
+     *
+     * @param snapshot1 the first input snapshot
+     * @param snapshot2 the second input snapshot
+     * @return a set of file paths to source files that only exists in the first snapshot and not in the second one
+     */
+    public static Set<String> getPathsToDifferentSourceFiles(@NonNull Snapshot snapshot1, @NonNull Snapshot snapshot2) {
+        Map<String, SourceFile> sourceFiles1 = snapshot1.getSourceFiles();
+        Map<String, SourceFile> sourceFiles2 = snapshot2.getSourceFiles();
+
+        // get the set of deleted source files by file names
+        Set<String> deletedSourceFiles = new HashSet<>(sourceFiles1.keySet());
+        deletedSourceFiles.removeAll(sourceFiles2.keySet());
+
+        // update the set of deleted source files by file hashes
+        Set<String> sourceFilesWithSameName = new HashSet<>(sourceFiles1.keySet());
+        sourceFilesWithSameName.retainAll(sourceFiles2.keySet());
+        for (String fileName : sourceFilesWithSameName) {
+            if (!sourceFiles2.get(fileName).getFileHash().equals(sourceFiles1.get(fileName).getFileHash())) {
+                deletedSourceFiles.add(fileName);
+            }
+        }
+
+        return deletedSourceFiles;
+    }
+
+    /**
+     * find the same source files between snapshots by comparing fle name and file hash and return the set of file
+     * paths
+     *
+     * @param snapshot1 the first input snapshot
+     * @param snapshot2 the second input snapshot
+     * @return a set of file paths to source files that are shared by two snapshots
+     */
+    public static Set<String> getPathsToShardSourceFiles(@NonNull Snapshot snapshot1, @NonNull Snapshot snapshot2) {
+        Map<String, SourceFile> sourceFiles1 = snapshot1.getSourceFiles();
+        Map<String, SourceFile> sourceFiles2 = snapshot2.getSourceFiles();
+
+        // get the source files with same name
+        Set<String> shardSourceFiles = new HashSet<>(sourceFiles1.keySet());
+        shardSourceFiles.retainAll(sourceFiles2.keySet());
+
+        // filter all files that have different file hash
+        Set<String> res = new HashSet<>();
+        for (String fileName : shardSourceFiles) {
+            if (sourceFiles2.get(fileName).getFileHash().equals(sourceFiles1.get(fileName).getFileHash())) {
+                res.add(fileName);
+            }
+        }
+
+        return res;
+    }
 
 }
