@@ -1,6 +1,5 @@
 package com.ucl.ADA.repository_downloader;
 
-import com.ucl.ADA.model.project_structure.GitRepoInfo;
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;

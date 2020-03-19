@@ -1,16 +1,10 @@
 package com.ucl.ADA.repository_downloader;
 
 import com.ucl.ADA.model.branch.Branch;
-import com.ucl.ADA.model.branch.BranchRepository;
 import com.ucl.ADA.model.owner.Owner;
-import com.ucl.ADA.model.owner.OwnerService;
-import com.ucl.ADA.model.project_structure.GitRepoInfo;
 import com.ucl.ADA.model.repository.GitRepo;
-import com.ucl.ADA.model.repository.GitRepoRepository;
 import com.ucl.ADA.model.snapshot.Snapshot;
-import com.ucl.ADA.model.snapshot.SnapshotRepository;
 import com.ucl.ADA.model.source_file.SourceFile;
-import com.ucl.ADA.model.source_file.SourceFileRepository;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,6 @@
 package com.ucl.ADA.core.boostrap;
 
 import com.ucl.ADA.model.project_structure.ProjectStructure;
-import com.ucl.ADA.model.project_structure.ProjectStructureService;
 import com.ucl.ADA.parser.ParserServices;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

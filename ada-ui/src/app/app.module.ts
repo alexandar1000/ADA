@@ -29,7 +29,8 @@ import { RepositoryComponent } from './repository/repository.component';
 import { BranchComponent } from './branch/branch.component';
 import { SnapshotComponent } from './snapshot/snapshot.component';
 import { FilterPipe } from './filter.pipe';
-import { OwnerService } from './owner.service';
+import { SidebarService } from './sidebar.service';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -64,9 +65,10 @@ import { OwnerService } from './owner.service';
     HttpClientModule,
     MatSliderModule,
     MatOptionModule,
-    MatSelectModule
+    MatSelectModule,
+    MatProgressSpinnerModule
   ],
-  providers: [AnalyserService, OwnerService],
+  providers: [AnalyserService, SidebarService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
