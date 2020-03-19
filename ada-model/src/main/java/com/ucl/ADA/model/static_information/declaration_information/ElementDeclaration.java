@@ -1,4 +1,4 @@
-package com.ucl.ADA.model.dependence_information.invocation_information;
+package com.ucl.ADA.model.static_information.declaration_information;
 
 import com.ucl.ADA.model.base_entity.BaseEntity;
 import lombok.AllArgsConstructor;
@@ -13,10 +13,10 @@ import javax.persistence.MappedSuperclass;
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
-public abstract class ElementInvocation extends BaseEntity {
+public abstract class ElementDeclaration extends BaseEntity {
 
     /**
-     * The name of the invoked element.
+     * The name of the element declaration.
      */
     private String name;
 

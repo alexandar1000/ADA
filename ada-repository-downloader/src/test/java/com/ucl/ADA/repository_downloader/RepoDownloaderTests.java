@@ -1,7 +1,6 @@
 package com.ucl.ADA.repository_downloader;
 
 
-import com.ucl.ADA.model.project_structure.GitRepoInfo;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.jupiter.api.AfterAll;

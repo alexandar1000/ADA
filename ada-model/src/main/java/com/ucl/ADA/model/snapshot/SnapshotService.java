@@ -1,46 +1,37 @@
 package com.ucl.ADA.model.snapshot;
 
 import com.ucl.ADA.model.branch.Branch;
-import com.ucl.ADA.model.branch.BranchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
-import java.util.Set;
 
 @Service
 public class SnapshotService {
 
     @Autowired
-    private BranchService branchService;
-
-    @Autowired
     private SnapshotRepository snapshotRepository;
 
     /**
-     * Get all snapshots given a name of a Git repository, the username of its owner and the name of the branch
-     * @param username name of the owner
-     * @param repository name of the Git repository
-     * @param branchName name of the branch
-     * @return a set of all corresponding snapshots
+     * find the snapshot given the branch and commit time
+     *
+     * @param branch     the branch that owns the snapshot
+     * @param commitTime the commit time of the snapshot
+     * @return the snapshot object given the branch and commit time
      */
-    public Set<Snapshot> getSnapshotsGivenOwnerRepoAndBranch(String username, String repository, String branchName) {
-        Branch branch = branchService.getBranchGivenOwnerRepoAndName(username, repository, branchName);
-
-        return snapshotRepository.findAllByBranch(branch);
+    public Snapshot findSnapshotByBranchAndTimestamp(Branch branch, OffsetDateTime commitTime) {
+        return snapshotRepository.findSnapshotByBranchAndCommitTime(branch, commitTime);
     }
 
     /**
-     * Get a snapshot given a name of a Git repository, the username of its owner, the branch name and timestamp
-     * @param username name of the owner
-     * @param repository name of the Git repository
-     * @param branchName name of the branch
-     * @param timestamp timestamp of a given request
-     * @return the corresponding Snapshot
+     * find the last snapshot of the given branch
+     *
+     * @param branch the branch that owns the snapshot
+     * @return the last snapshot of the given branch
      */
-    public Snapshot getSnapshotGivenOwnerRepoBranchAndTimestamp(String username, String repository, String branchName, OffsetDateTime timestamp) {
-        Branch branch = branchService.getBranchGivenOwnerRepoAndName(username, repository, branchName);
-
-        return snapshotRepository.findByBranchAndTimestamp(branch, timestamp);
+    public Snapshot findLastSnapshotOfBranch(Branch branch) {
+        OffsetDateTime commitTime = branch.getLastSnapshotTimestamp();
+        return findSnapshotByBranchAndTimestamp(branch, commitTime);
     }
+
 }
