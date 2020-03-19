@@ -23,12 +23,18 @@ public class RepositoryAnalyserServices {
 
         // Check last commit time through GitHub API
 
-        // If needs to analyze, call downloader to download the repo
+        // if need to download and analyze again
+        return getSnapshot(prevSnapshot);
+    }
+
+    public Snapshot getSnapshot(Snapshot prevSnapshot) {
+        // call downloader to download the repo
 
         // Downloader return {root dir path, set<file path>}, downloader automatically pick all .java files
         Set<String> sourcePaths = new HashSet<>();
 
-        // write a method to remove all testing files (move the existing functions from parser?)
+        // define which file paths to read?
+        // write a method to remove all testing files or  (move the existing functions from parser?)
 
         // Initialize current snapshot and source files
         Snapshot snapshot = SnapshotUtils.initSnapshotAndSourceFiles(sourcePaths);
@@ -45,9 +51,14 @@ public class RepositoryAnalyserServices {
         SetMultimap<String, String> pathsOfAddedSourceFilesToClassNames = Transformer.getFilePathToClassNamesMap(filePathToClassStructuresMap);
 
         // generate Set<String> incomingToAddSet
-        //TODO: START HERE!!!
+        // TODO: START HERE!!!
+        // A, B, C are parsed
+        // C, D are invoked by A, B OR C
+        // get all old info
+
 
         // transform detailed information of all added class structures
+        // new information
 
         // calculate all changed class structure's metric
 

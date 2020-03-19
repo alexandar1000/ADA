@@ -59,7 +59,7 @@ public class SnapshotUtils {
         }
         // the exception can be removed when working on per-repo optimisation
         if (snapshot.getBranch().getBranchName().equals(prevSnapshot.getBranch().getBranchName())) {
-            throw new IllegalArgumentException("the two input snapshots mus tbe on the same branch");
+            throw new IllegalArgumentException("the two input snapshots must be on the same branch");
         }
         if (snapshot.getCommitTime().isBefore(prevSnapshot.getCommitTime())) {
             throw new IllegalArgumentException("the commit time of the previous snapshot to reuse should be earlier than the initialized one");
@@ -175,7 +175,7 @@ public class SnapshotUtils {
     /**
      * get the paths to all newly added source files in current snapshot compared to the previous one
      *
-     * @param snapshot     the current snapshot
+     * @param snapshot     the initialized snapshot
      * @param prevSnapshot the previous snapshot
      * @return a set of source paths to the source files in current snapshot but not in the previous one
      */

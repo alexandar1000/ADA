@@ -93,7 +93,6 @@
 			<artifactId>guava</artifactId>
 			<version>28.2-jre</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>

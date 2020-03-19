@@ -21,6 +21,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+//TODO: RENAME?
 public class StaticInfo {
 
     /* ************************************************************************
