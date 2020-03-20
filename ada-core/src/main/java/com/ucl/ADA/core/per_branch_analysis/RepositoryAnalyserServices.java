@@ -1,7 +1,7 @@
 package com.ucl.ADA.core.per_branch_analysis;
 
 import com.google.common.collect.SetMultimap;
-import com.ucl.ADA.core.transformer.Transformer;
+import com.ucl.ADA.core.transformer.ModelTransformer;
 import com.ucl.ADA.model.snapshot.Snapshot;
 import com.ucl.ADA.model.snapshot.SnapshotUtils;
 import com.ucl.ADA.parser.ada_model.ADAClass;
@@ -19,6 +19,10 @@ public class RepositoryAnalyserServices {
     public Snapshot analyseRepositoryService(String url, String branchName) {
 
         // parse url and branch name
+
+        // validate owner, repo and branch
+
+        // record analysis request
 
         // Retrieve previous snapshot
         Snapshot prevSnapshot = new Snapshot();
@@ -40,7 +44,8 @@ public class RepositoryAnalyserServices {
         Set<String> sourcePaths = new HashSet<>();
 
         // define which file paths to read?
-        // write a method to remove all testing files or  (move the existing functions from parser?)
+        // write a method to remove all testing files or (move the existing functions from parser?)
+        // parse the file path into root and set of file paths (divided by snapshot timestamp)
 
         // Initialize current snapshot and source files
         Snapshot snapshot = SnapshotUtils.initSnapshotAndSourceFiles(sourcePaths);
@@ -54,14 +59,13 @@ public class RepositoryAnalyserServices {
         SetMultimap<String, ADAClass> filePathToClassStructuresMap = null;
 
         // generate Map<String, Set<String>> pathsOfAddedSourceFilesToClassNames
-        SetMultimap<String, String> pathsOfAddedSourceFilesToClassNames = Transformer.getFilePathToClassNamesMap(filePathToClassStructuresMap);
+        SetMultimap<String, String> pathsOfAddedSourceFilesToClassNames = ModelTransformer.getFilePathToClassNamesMap(filePathToClassStructuresMap);
 
         // generate Set<String> incomingToAddSet
-        // TODO: START HERE!!!
-        // A, B, C are parsed
-        // C, D are invoked by A, B OR C
-        // get all old info
+        Set<String> incomingToAddSet = ModelTransformer.getIncomingToAddSet(filePathToClassStructuresMap);
 
+        // reuse snapshot
+        SnapshotUtils.reuseClassStructuresOfSnapshot(snapshot, prevSnapshot, pathsOfAddedSourceFilesToClassNames, incomingToAddSet);
 
         // transform detailed information of all added class structures
         // new information

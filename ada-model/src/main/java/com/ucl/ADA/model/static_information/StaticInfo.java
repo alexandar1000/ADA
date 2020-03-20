@@ -4,7 +4,7 @@ import com.ucl.ADA.model.dependence_information.DependenceInfo;
 import com.ucl.ADA.model.dependence_information.invocation_information.AttributeInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
-import com.ucl.ADA.model.dependence_information.invocation_information.PackageInvocation;
+import com.ucl.ADA.model.static_information.declaration_information.ImportDeclaration;
 import com.ucl.ADA.model.static_information.declaration_information.AttributeDeclaration;
 import com.ucl.ADA.model.static_information.declaration_information.ConstructorDeclaration;
 import com.ucl.ADA.model.static_information.declaration_information.MethodDeclaration;
@@ -29,6 +29,11 @@ public class StaticInfo {
      *  Declaration information corresponding to this class
      *
      **************************************************************************/
+
+    /**
+     * Packages present in the class. They can be either declared or imported.
+     */
+    private Set<ImportDeclaration> importDeclarations = new HashSet<>();
 
     /**
      * Fully qualified class package name (including the name of the class in the end).
@@ -69,20 +74,14 @@ public class StaticInfo {
      **************************************************************************/
 
     /**
-     * External Attribute Invocations. Includes only calls to classes which cannot be resolved within the project. These
-     * include the dependencies and libraries.
-     */
-    private Set<PackageInvocation> externalPackageImports = new HashSet<>();
-
-    /**
      * External Method Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
     private Set<MethodInvocation> externalMethodInvocations = new HashSet<>();
 
     /**
-     * External Constructor Invocations. Includes only calls to classes which cannot be resolved within the project. These
-     * include the dependencies and libraries.
+     * External Constructor Invocations. Includes only calls to classes which cannot be resolved within the project.
+     * These include the dependencies and libraries.
      */
     private Set<ConstructorInvocation> externalConstructorInvocations = new HashSet<>();
 
@@ -92,4 +91,5 @@ public class StaticInfo {
      */
     private Set<AttributeInvocation> externalAttributeInvocations = new HashSet<>();
 
+    //TODO: write functions to update the attributes
 }
