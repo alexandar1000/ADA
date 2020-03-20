@@ -1,12 +1,7 @@
 package com.ucl.ADA.repository_downloader;
 
-import org.eclipse.jgit.api.CreateBranchCommand;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.lib.Ref;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -27,84 +22,6 @@ import java.util.stream.Stream;
  */
 
 public class RepoDownloader {
-
-    /**
-     * Download a Git repository given a URL and a branch name and initialize a GitRepoInfo object.
-     *
-     * @param url    Git url of the repository
-     * @param branch Branch name
-     * @return Initialized GitRepoInfo object
-     * @throws GitAPIException if download fails
-     * @see GitRepoInfo
-     */
-    public static GitRepoInfo downloadRepository(String url, String branch) throws GitAPIException {
-
-        if (branch.equals("")) {
-            branch = "master";
-        }
-
-        GitRepoInfo repo = setup(url, branch);
-
-        File repoDir = new File(repo.getDirectoryPath());
-
-        Git git = Git.cloneRepository()
-                .setURI(repo.getUrl())
-                .setDirectory(repoDir)
-                .setCloneAllBranches(true)
-                .call();
-
-        if (!repo.getBranch().equals("master")) {
-
-            Ref ref = git.checkout().
-                    setCreateBranch(true).
-                    setName(repo.getBranch()).
-                    setUpstreamMode(CreateBranchCommand.SetupUpstreamMode.TRACK).
-                    setStartPoint("origin/" + repo.getBranch()).
-                    call();
-        }
-
-        List<String> fileNames = getSourceFileNames(repo.getDirectoryPath());
-        repo.setFileNames(fileNames);
-        git.close();
-
-        return repo;
-    }
-
-    /**
-     * Parse the url string to get the owner and name of the Git repository and construct a GitRepoInfo object.
-     *
-     * @param url    of the Git repository
-     * @param branch name
-     * @return initialized GitRepoInfo object
-     */
-    private static GitRepoInfo setup(String url, String branch) {
-
-        GitRepoInfo gitRepoInfo = new GitRepoInfo();
-        gitRepoInfo.setUrl(url);
-
-        String[] data = parseGitUrl(url);
-        String owner = data[3];
-        String name = data[4];
-
-        gitRepoInfo.setRepository(name);
-        gitRepoInfo.setOwner(owner);
-        gitRepoInfo.setBranch(branch);
-
-        OffsetDateTime offsetDateTime = OffsetDateTime.now();
-
-        gitRepoInfo.setTimestamp(offsetDateTime);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
-
-        String timeStamp = offsetDateTime.format(formatter);
-
-        String clone_path = System.getProperty("user.dir") + "/temp/"
-                + owner + "/" + name + "/" + branch + "/" + timeStamp;
-
-        gitRepoInfo.setDirectoryPath(clone_path);
-
-        return gitRepoInfo;
-    }
 
     /**
      * Utility method to list all source files (.java) in a given repository.
