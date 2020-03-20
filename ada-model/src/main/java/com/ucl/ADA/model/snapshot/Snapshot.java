@@ -45,15 +45,13 @@ public class Snapshot extends BaseEntity {
      */
     private Map<String, SourceFile> sourceFiles = new HashMap<>();
 
-
     /**
-     * add a class structure into the snapshot
+     * get class structure from snapshot by name
      *
-     * @param className      qualified class name
-     * @param classStructure the class structure to add
+     * @param name qualified class name
+     * @return the class structure object has input name
      */
-    public void addClassStructure(String className, ClassStructure classStructure) {
-        classStructures.put(className, classStructure);
+    protected ClassStructure getClassStructure(String name) {
+        return classStructures.get(name);
     }
-
 }
