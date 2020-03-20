@@ -34,6 +34,7 @@ public class RepositoryAnalyserServices {
             if (lastCommitTime.isEqual(prevSnapshot.getCommitTime()))
                 return prevSnapshot;
         }
+
         // if need to download and analyze again
         return getSnapshot(prevSnapshot);
     }
@@ -71,7 +72,9 @@ public class RepositoryAnalyserServices {
         // transform detailed information of all added class structures
         transform(snapshot, (Set<ADAClass>) filePathToClassStructuresMap.values());
 
-        // calculate all changed class structure's metric
+        // re-calculate all changed class structure's metric
+        // this step requires change finished utility or transformer to keep track on all changed class structure
+        // need to think carefully how to implement
 
         return snapshot;
     }
