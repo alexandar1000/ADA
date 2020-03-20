@@ -5,8 +5,10 @@ import com.ucl.ADA.core.transformer.Transformer;
 import com.ucl.ADA.model.snapshot.Snapshot;
 import com.ucl.ADA.model.snapshot.SnapshotUtils;
 import com.ucl.ADA.parser.ada_model.ADAClass;
+import com.ucl.ADA.repository_downloader.RepoDownloader;
 import com.ucl.ADA.repository_downloader.RepositoryDownloaderService;
 
+import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,7 +24,11 @@ public class RepositoryAnalyserServices {
         Snapshot prevSnapshot = new Snapshot();
 
         // Check last commit time through GitHub API
-
+        OffsetDateTime lastCommitTime = RepoDownloader.getLatestCommitTime(url, branchName);
+        if(lastCommitTime != null){
+            if(lastCommitTime.isEqual(prevSnapshot.getCommitTime()))
+                return prevSnapshot;
+        }
         // if need to download and analyze again
         return getSnapshot(prevSnapshot);
     }
