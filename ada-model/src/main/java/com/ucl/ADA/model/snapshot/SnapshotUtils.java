@@ -34,7 +34,7 @@ public class SnapshotUtils {
      * @return a initialized snapshot object
      */
     // TODO: add Branch into parameters
-    public static Snapshot initSnapshotAndSourceFiles(Set<String> filePaths) {
+    public static Snapshot initSnapshotAndSourceFiles(@NonNull Set<String> filePaths) {
         Snapshot snapshot = new Snapshot();
         Map<String, SourceFile> sourceFiles = snapshot.getSourceFiles();
         for (String filePath : filePaths) {
@@ -262,168 +262,46 @@ public class SnapshotUtils {
      **************************************************************************/
 
     /**
-     * Adds import declaration for the corresponding declaring class where it is declared.
+     * Add a declaration element into the snapshot given the declaring class name, and the type of declaration
      *
-     * @param snapshot          the snapshot to update
-     * @param declaringClass    Class where the package is declared
-     * @param importDeclaration the import declaration object
+     * @param snapshot        the snapshot to update declaration information
+     * @param declaringClass  the qualified name of the class where it declares
+     * @param declaration     the declaration object
+     * @param declarationType the type of declaration
      */
-    public static void addImportDeclaration(Snapshot snapshot, String declaringClass, ImportDeclaration importDeclaration) {
-        Map<String, ClassStructure> classStructures = snapshot.getClassStructures();
-        if (!classStructures.containsKey(declaringClass)) {
-            throw new IllegalArgumentException("Class structure \"" + declaringClass + "\" is not initialized correctly");
-        }
-        ClassStructureUtils.addImportDeclaration(classStructures.get(declaringClass), importDeclaration);
-    }
-
-    /**
-     * Adds package declaration for the corresponding declaring class where it is declared.
-     *
-     * @param snapshot           the snapshot to update
-     * @param declaringClass     Class where the package is declared
-     * @param packageDeclaration The package declaration object
-     */
-    public static void addPackageDeclaration(Snapshot snapshot, String declaringClass, PackageDeclaration packageDeclaration) {
+    public static void addDeclarationToSnapshot(@NonNull Snapshot snapshot, @NonNull String declaringClass, @NonNull ElementDeclaration declaration, @NonNull DeclarationType declarationType) {
         validateClassNameInSnapshot(snapshot, declaringClass);
-        ClassStructureUtils.setCurrentPackage(snapshot.getClassStructures().get(declaringClass), packageDeclaration);
+        addDeclarationToClassStructure(snapshot.getClassStructure(declaringClass), declaration, declarationType);
     }
 
     /**
-     * Adds attribute declaration for the corresponding declaring class where it is declared.
+     * Add an internal invocation into the snapshot given the consuming and declaring class names, and the type of
+     * invocation
      *
-     * @param snapshot             the snapshot to update
-     * @param declaringClass       Class where the attribute is declared
-     * @param attributeDeclaration The attribute declaration object
+     * @param snapshot           the snapshot to update invocation information
+     * @param consumingClassName the qualified name of the caller
+     * @param declaringClassName the qualified name of the callee
+     * @param invocationType     the type of the invocation
+     * @param invocation         the invocation object
      */
-    public static void addAttributeDeclaration(Snapshot snapshot, String declaringClass, AttributeDeclaration attributeDeclaration) {
-        validateClassNameInSnapshot(snapshot, declaringClass);
-        ClassStructureUtils.addAttributeDeclaration(snapshot.getClassStructures().get(declaringClass), attributeDeclaration);
-    }
-
-    /**
-     * Adds constructor declaration for the corresponding declaring class where it is declared.
-     *
-     * @param snapshot               the snapshot to update
-     * @param declaringClass         Class where the constructor is declared
-     * @param constructorDeclaration The attribute declaration object
-     */
-    public static void addConstructorDeclaration(Snapshot snapshot, String declaringClass, ConstructorDeclaration constructorDeclaration) {
-        validateClassNameInSnapshot(snapshot, declaringClass);
-        ClassStructureUtils.addConstructorDeclaration(snapshot.getClassStructures().get(declaringClass), constructorDeclaration);
-    }
-
-    /**
-     * Adds method declaration for the corresponding declaring class where it is declared.
-     *
-     * @param snapshot          the snapshot to update
-     * @param declaringClass    Class where the method is declared
-     * @param methodDeclaration The method declaration object
-     */
-    public static void addMethodDeclaration(Snapshot snapshot, String declaringClass, MethodDeclaration methodDeclaration) {
-        validateClassNameInSnapshot(snapshot, declaringClass);
-        ClassStructureUtils.addMethodDeclaration(snapshot.getClassStructures().get(declaringClass), methodDeclaration);
-    }
-
-    /**
-     * Adds the attribute invocation for the corresponding declaring class where it is declared, and the corresponding
-     * consuming class where it is consumed.
-     *
-     * @param snapshot            the snapshot to update
-     * @param consumingClassName  class where the attribute has been invoked from
-     * @param declaringClassName  class where the attribute has been declared in
-     * @param attributeInvocation The package declaration object
-     */
-    public static void addAttributeInvocation(Snapshot snapshot, String consumingClassName, String declaringClassName, AttributeInvocation attributeInvocation) {
-        validateClassNamesInSnapshot(snapshot, consumingClassName, declaringClassName);
-        ClassStructureUtils.addAttributeInvocation(snapshot.getClassStructures().get(consumingClassName), declaringClassName, InvocationDirection.OUTGOING, attributeInvocation);
-        ClassStructureUtils.addAttributeInvocation(snapshot.getClassStructures().get(declaringClassName), consumingClassName, InvocationDirection.INCOMING, attributeInvocation);
-    }
-
-    /**
-     * Adds the constructor invocation for the corresponding declaring class where it is declared, and the corresponding
-     * consuming class where it is consumed.
-     *
-     * @param snapshot              the snapshot to update
-     * @param consumingClassName    class where the constructor has been invoked from
-     * @param declaringClassName    class where the constructor has been declared in
-     * @param constructorInvocation The package declaration object
-     */
-    public static void addConstructorInvocation(Snapshot snapshot, String consumingClassName, String declaringClassName, ConstructorInvocation constructorInvocation) {
-        validateClassNamesInSnapshot(snapshot, consumingClassName, declaringClassName);
-        ClassStructureUtils.addConstructorInvocation(snapshot.getClassStructures().get(consumingClassName), declaringClassName, InvocationDirection.OUTGOING, constructorInvocation);
-        ClassStructureUtils.addConstructorInvocation(snapshot.getClassStructures().get(declaringClassName), consumingClassName, InvocationDirection.INCOMING, constructorInvocation);
-    }
-
-    /**
-     * Adds the method invocation for the corresponding declaring class where it is declared, and the corresponding
-     * consuming class where it is consumed.
-     *
-     * @param snapshot           the snapshot to update
-     * @param consumingClassName class where the method has been invoked from
-     * @param declaringClassName class where the method has been declared in
-     * @param methodInvocation   The package declaration object
-     */
-    public static void addMethodInvocation(Snapshot snapshot, String consumingClassName, String declaringClassName, MethodInvocation methodInvocation) {
-        validateClassNamesInSnapshot(snapshot, consumingClassName, declaringClassName);
-        ClassStructureUtils.addMethodInvocation(snapshot.getClassStructures().get(consumingClassName), declaringClassName, InvocationDirection.OUTGOING, methodInvocation);
-        ClassStructureUtils.addMethodInvocation(snapshot.getClassStructures().get(declaringClassName), consumingClassName, InvocationDirection.INCOMING, methodInvocation);
-    }
-
-    public static void addInternalInvocation(Snapshot snapshot, String consumingClassName, String declaringClassName, ElementInvocation invocation, InvocationType invocationType) {
+    public static void addInternalInvocationToSnapshot(@NonNull Snapshot snapshot, @NonNull String consumingClassName, @NonNull String declaringClassName, @NonNull InvocationType invocationType, @NonNull ElementInvocation invocation) {
         validateClassNameInSnapshot(snapshot, consumingClassName);
         validateClassNameInSnapshot(snapshot, declaringClassName);
-
-    }
-
-
-
-
-    /**
-     * Adds the external attribute invocation to the corresponding class.
-     *
-     * @param snapshot                      the snapshot to update
-     * @param consumingClass                the class which consumes the external attribute
-     * @param externalAttributeDeclarations the external attribute being consumed
-     */
-    public static void addExternalAttributeInvocation(Snapshot snapshot, String consumingClass, AttributeInvocation externalAttributeDeclarations) {
-        validateClassNameInSnapshot(snapshot, consumingClass);
-        ClassStructureUtils.addExternalAttributeInvocation(snapshot.getClassStructures().get(consumingClass), externalAttributeDeclarations);
+        addInternalInvocationToClassStructure(snapshot.getClassStructure(consumingClassName), declaringClassName, InvocationDirection.OUTGOING, invocationType, invocation);
+        addInternalInvocationToClassStructure(snapshot.getClassStructure(declaringClassName), consumingClassName, InvocationDirection.INCOMING, invocationType, invocation);
     }
 
     /**
-     * Adds the external constructor invocation to the corresponding class.
+     * Add an external invocation into the snapshot given the consuming class names, and the type of invocation
      *
-     * @param snapshot                       the snapshot to update
-     * @param consumingClass                 the class which consumes the external constructor
-     * @param externalConstructorInvocations the external constructor being consumed
+     * @param snapshot       the snapshot to update invocation information
+     * @param consumingClass the qualified name of the caller
+     * @param invocationType the type of the invocation
+     * @param invocation     the invocation object
      */
-    public static void addExternalConstructorInvocations(Snapshot snapshot, String consumingClass, ConstructorInvocation externalConstructorInvocations) {
+    public static void addExternalInvocationToSnapshot(@NonNull Snapshot snapshot, @NonNull String consumingClass, @NonNull InvocationType invocationType, @NonNull ElementInvocation invocation) {
         validateClassNameInSnapshot(snapshot, consumingClass);
-        if (this.classStructures.containsKey(consumingClass)) {
-            this.classStructures.get(consumingClass).addExternalConstructorInvocation(externalConstructorInvocations);
-        } else {
-            ClassStructure classStructure = new ClassStructure();
-            classStructure.addExternalConstructorInvocation(externalConstructorInvocations);
-            this.classStructures.put(consumingClass, classStructure);
-        }
-    }
-
-    /**
-     * Adds the external method invocation to the corresponding class.
-     *
-     * @param snapshot                  the snapshot to update
-     * @param consumingClass            the class which consumes the external method
-     * @param externalMethodInvocations the external method being consumed
-     */
-    public static void addExternalMethodInvocations(Snapshot snapshot, String consumingClass, MethodInvocation externalMethodInvocations) {
-        validateClassNameInSnapshot(snapshot, consumingClass);
-        if (this.classStructures.containsKey(consumingClass)) {
-            this.classStructures.get(consumingClass).addExternalMethodInvocation(externalMethodInvocations);
-        } else {
-            ClassStructure classStructure = getNewClassStructure(consumingClass);
-            classStructure.addExternalMethodInvocation(externalMethodInvocations);
-            this.classStructures.put(consumingClass, classStructure);
-        }
+        addExternalInvocationToClassStructure(snapshot.getClassStructure(consumingClass), invocationType, invocation);
     }
 
     /**
@@ -432,24 +310,18 @@ public class SnapshotUtils {
      * @param snapshot  the snapshot that should contain the class structure
      * @param className the qualified class name to be validated
      */
-    public static void validateClassNameInSnapshot(Snapshot snapshot, String className) {
+    public static void validateClassNameInSnapshot(@NonNull Snapshot snapshot, @NonNull String className) {
         Map<String, ClassStructure> classStructures = snapshot.getClassStructures();
         if (!classStructures.containsKey(className)) {
             throw new IllegalArgumentException("Class structure \"" + className + "\" is not initialized correctly");
         }
     }
 
-    /**
-     * validate if a class name is included in the class structures of a snapshot
+    /* ************************************************************************
      *
-     * @param snapshot   the snapshot that should contain the class structure
-     * @param className1 the first qualified class name to be validated
-     * @param className2 the second qualified class name to be validated
-     */
-    public static void validateClassNamesInSnapshot(Snapshot snapshot, String className1, String className2) {
-        validateClassNameInSnapshot(snapshot, className1);
-        validateClassNameInSnapshot(snapshot, className2);
-    }
+     *  functions that compute metrics for each class structure in snapshot
+     *
+     **************************************************************************/
 
 //    /**
 //     * Computes both the class and the relation metrics for the project structure

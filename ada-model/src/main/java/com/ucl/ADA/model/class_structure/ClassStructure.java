@@ -2,10 +2,14 @@ package com.ucl.ADA.model.class_structure;
 
 import com.ucl.ADA.model.base_entity.BaseEntity;
 import com.ucl.ADA.model.dependence_information.DependenceInfo;
+import com.ucl.ADA.model.dependence_information.invocation_information.AttributeInvocation;
+import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
+import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
 import com.ucl.ADA.model.metrics.class_metrics.ClassMetricValue;
 import com.ucl.ADA.model.metrics.relation_metrics.RelationMetricValue;
 import com.ucl.ADA.model.snapshot.Snapshot;
 import com.ucl.ADA.model.static_information.StaticInfo;
+import com.ucl.ADA.model.static_information.declaration_information.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -74,5 +78,45 @@ public class ClassStructure extends BaseEntity {
      */
     private ClassMetricValue classMetricValues = new ClassMetricValue();
 
-    // TODO: write function to update attributes
+    /* ************************************************************************
+     *
+     *  functions that read or update attributes of class structure and its static info
+     *
+     **************************************************************************/
+
+    protected void addExternalMethodInvocations(MethodInvocation methodInvocation) {
+        staticInfo.getExternalMethodInvocations().add(methodInvocation);
+    }
+
+    protected void addExternalConstructorInvocations(ConstructorInvocation constructorInvocation) {
+        staticInfo.getExternalConstructorInvocations().add(constructorInvocation);
+    }
+
+    protected void addExternalAttributeInvocations(AttributeInvocation attributeInvocation) {
+        staticInfo.getExternalAttributeInvocations().add(attributeInvocation);
+    }
+
+    protected Map<String, DependenceInfo> getOutgoingDependenceInfos() {
+        return staticInfo.getOutgoingDependenceInfos();
+    }
+
+    protected void setPackageDeclaration(PackageDeclaration packageDeclaration) {
+        staticInfo.setCurrentPackage(packageDeclaration);
+    }
+
+    protected void addConstructorDeclaration(ConstructorDeclaration constructorDeclaration) {
+        staticInfo.getConstructorDeclarations().add(constructorDeclaration);
+    }
+
+    protected void addMethodDeclaration(MethodDeclaration methodDeclaration) {
+        staticInfo.getMethodDeclarations().add(methodDeclaration);
+    }
+
+    protected void addAttributeDeclaration(AttributeDeclaration attributeDeclaration) {
+        staticInfo.getAttributeDeclarations().add(attributeDeclaration);
+    }
+
+    protected void addImportDeclaration(ImportDeclaration importDeclaration) {
+        staticInfo.getImportDeclarations().add(importDeclaration);
+    }
 }

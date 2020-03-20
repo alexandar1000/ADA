@@ -53,7 +53,7 @@ public class StaticInfo {
     /**
      * Methods declared in this class.
      */
-    private Set<MethodDeclaration> methodsDeclarations = new HashSet<>();
+    private Set<MethodDeclaration> methodDeclarations = new HashSet<>();
 
     /* ************************************************************************
      *
@@ -91,5 +91,4 @@ public class StaticInfo {
      */
     private Set<AttributeInvocation> externalAttributeInvocations = new HashSet<>();
 
-    //TODO: write functions to update the attributes
 }

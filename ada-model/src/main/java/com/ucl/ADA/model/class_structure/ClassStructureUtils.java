@@ -132,170 +132,59 @@ public class ClassStructureUtils {
 
     /* ************************************************************************
      *
-     *  functions that add declarations of class structure
+     *  functions that update class structure with new information
      *
      **************************************************************************/
 
     /**
-     * Updates the package corresponding to the class.
+     * add a declaration element into the class structure depends on the declaration type
      *
-     * @param classStructure     the class structure to update
-     * @param packageDeclaration the name of the package corresponding to the current class
+     * @param classStructure  the class structure to update
+     * @param declaration     the declaration object
+     * @param declarationType the implemented type of declaration
      */
-    public static void setCurrentPackage(ClassStructure classStructure, PackageDeclaration packageDeclaration) {
-        classStructure.getStaticInfo().setCurrentPackage(packageDeclaration);
-    }
-
-    /**
-     * Adds an import declaration corresponding to the class.
-     *
-     * @param classStructure    the class structure to update
-     * @param importDeclaration the import declaration object
-     */
-    public static void addImportDeclaration(ClassStructure classStructure, ImportDeclaration importDeclaration) {
-        classStructure.getStaticInfo().getImportDeclarations().add(importDeclaration);
-    }
-
-    /**
-     * Adds a Attribute Declaration to the ClassDependenceTree
-     *
-     * @param classStructure       the class structure to update
-     * @param attributeDeclaration the attribute declaration object
-     */
-    public static void addAttributeDeclaration(ClassStructure classStructure, AttributeDeclaration attributeDeclaration) {
-        classStructure.getStaticInfo().getAttributeDeclarations().add(attributeDeclaration);
-    }
-
-    /**
-     * Adds a Method Declaration to the ClassDependenceTree
-     *
-     * @param classStructure    the class structure to update
-     * @param methodDeclaration the method declaration object
-     */
-    public static void addMethodDeclaration(ClassStructure classStructure, MethodDeclaration methodDeclaration) {
-        classStructure.getStaticInfo().getMethodsDeclarations().add(methodDeclaration);
-    }
-
-    /**
-     * Adds a Constructor Declaration to the ClassDependenceTree
-     *
-     * @param classStructure         the class structure to update
-     * @param constructorDeclaration the constructor declaration object
-     */
-    public static void addConstructorDeclaration(ClassStructure classStructure, ConstructorDeclaration constructorDeclaration) {
-        classStructure.getStaticInfo().getConstructorDeclarations().add(constructorDeclaration);
-    }
-
-    /* ************************************************************************
-     *
-     *  functions that add internal invocations of class structure
-     *
-     **************************************************************************/
-
-    /**
-     * Adds an attribute invocation element as either an incoming or outgoing dependency, depending on the call.
-     *
-     * @param classStructure      the class structure to update
-     * @param relatingClass       the class which the invocation relates to
-     * @param invocationDirection either an incoming invocation type in the case that the attribute is being invoked
-     *                            from the relatingClass, or an outgoing invocation type in the case that the attribute
-     *                            is invoked from the relatingClass
-     * @param attributeInvocation the attribute invocation object containing the data corresponding to the invocation in
-     *                            question
-     */
-    public static void addAttributeInvocation(ClassStructure classStructure, String relatingClass, InvocationDirection invocationDirection, AttributeInvocation attributeInvocation) {
-        if (invocationDirection == InvocationDirection.OUTGOING) {
-            Map<String, DependenceInfo> outgoingDependenceInfos = classStructure.getStaticInfo().getOutgoingDependenceInfos();
-            if (outgoingDependenceInfos.containsKey(relatingClass)) {
-                outgoingDependenceInfos.get(relatingClass).addAttributeInvocation(attributeInvocation);
-            } else {
-                DependenceInfo dependenceInfo = new DependenceInfo();
-                dependenceInfo.addAttributeInvocation(attributeInvocation);
-                outgoingDependenceInfos.put(relatingClass, dependenceInfo);
-            }
-        } else {
-            Map<String, DependenceInfo> incomingDependenceInfos = classStructure.getIncomingDependenceInfos();
-            if (incomingDependenceInfos.containsKey(relatingClass)) {
-                incomingDependenceInfos.get(relatingClass).addAttributeInvocation(attributeInvocation);
-            } else {
-                DependenceInfo dependenceInfo = new DependenceInfo();
-                dependenceInfo.addAttributeInvocation(attributeInvocation);
-                incomingDependenceInfos.put(relatingClass, dependenceInfo);
-            }
+    public static void addDeclarationToClassStructure(@NonNull ClassStructure classStructure, @NonNull ElementDeclaration declaration, @NonNull DeclarationType declarationType) {
+        switch (declarationType) {
+            case CONSTRUCTOR:
+                classStructure.addConstructorDeclaration((ConstructorDeclaration) declaration);
+                break;
+            case ATTRIBUTE:
+                classStructure.addAttributeDeclaration((AttributeDeclaration) declaration);
+                break;
+            case METHOD:
+                classStructure.addMethodDeclaration((MethodDeclaration) declaration);
+                break;
+            case IMPORT:
+                classStructure.addImportDeclaration((ImportDeclaration) declaration);
+                break;
+            case PACKAGE:
+                classStructure.setPackageDeclaration((PackageDeclaration) declaration);
+                break;
+            case PARAMETER:
+                throw new IllegalArgumentException("parameter declaration should not be added into class structure");
+            default:
+                throw new IllegalArgumentException("Invalid declaration type");
         }
     }
 
     /**
-     * Adds a constructor invocation element as either an incoming or outgoing dependency, depending on the call.
-     *
-     * @param classStructure        the class structure to update
-     * @param relatingClass         the class which the invocation relates to
-     * @param invocationDirection   either an incoming invocation type in the case that the constructor is being invoked
-     *                              from the relatingClass, or an outgoing invocation type in the case that the
-     *                              constructor is invoked from the relatingClass
-     * @param constructorInvocation the constructor invocation object containing the data corresponding to the
-     *                              invocation in question
-     */
-    public static void addConstructorInvocation(ClassStructure classStructure, String relatingClass, InvocationDirection invocationDirection, ConstructorInvocation constructorInvocation) {
-        if (invocationDirection == InvocationDirection.OUTGOING) {
-            Map<String, DependenceInfo> outgoingDependenceInfos = classStructure.getStaticInfo().getOutgoingDependenceInfos();
-            if (outgoingDependenceInfos.containsKey(relatingClass)) {
-                outgoingDependenceInfos.get(relatingClass).addConstructorInvocation(constructorInvocation);
-            } else {
-                DependenceInfo dependenceInfo = new DependenceInfo();
-                dependenceInfo.addConstructorInvocation(constructorInvocation);
-                outgoingDependenceInfos.put(relatingClass, dependenceInfo);
-            }
-        } else {
-            Map<String, DependenceInfo> incomingDependenceInfos = classStructure.getIncomingDependenceInfos();
-            if (incomingDependenceInfos.containsKey(relatingClass)) {
-                incomingDependenceInfos.get(relatingClass).addConstructorInvocation(constructorInvocation);
-            } else {
-                DependenceInfo dependenceInfo = new DependenceInfo();
-                dependenceInfo.addConstructorInvocation(constructorInvocation);
-                incomingDependenceInfos.put(relatingClass, dependenceInfo);
-            }
-        }
-    }
-
-    /**
-     * Adds a method invocation element as either an incoming or outgoing dependency, depending on the call.
+     * add an internal invocation element as either an incoming or outgoing dependency into the class structure depends
+     * on the invocation type
      *
      * @param classStructure      the class structure to update
      * @param relatingClass       the class which the invocation relates to
      * @param invocationDirection either an incoming invocation type in the case that the method is being invoked from
      *                            the relatingClass, or an outgoing invocation type in the case that the method is
      *                            invoked from the relatingClass
-     * @param methodInvocation    the method invocation object containing the data corresponding to the invocation in
-     *                            question
+     * @param invocation          the invocation object
+     * @param invocationType      the implemented type of invocation
      */
-    public static void addMethodInvocation(ClassStructure classStructure, String relatingClass, InvocationDirection invocationDirection, MethodInvocation methodInvocation) {
-        if (invocationDirection == InvocationDirection.OUTGOING) {
-            Map<String, DependenceInfo> outgoingDependenceInfos = classStructure.getStaticInfo().getOutgoingDependenceInfos();
-            if (outgoingDependenceInfos.containsKey(relatingClass)) {
-                outgoingDependenceInfos.get(relatingClass).addMethodInvocation(methodInvocation);
-            } else {
-                DependenceInfo dependenceInfo = new DependenceInfo();
-                dependenceInfo.addMethodInvocation(methodInvocation);
-                outgoingDependenceInfos.put(relatingClass, dependenceInfo);
-            }
-        } else {
-            Map<String, DependenceInfo> incomingDependenceInfos = classStructure.getIncomingDependenceInfos();
-            if (incomingDependenceInfos.containsKey(relatingClass)) {
-                incomingDependenceInfos.get(relatingClass).addMethodInvocation(methodInvocation);
-            } else {
-                DependenceInfo dependenceInfo = new DependenceInfo();
-                dependenceInfo.addMethodInvocation(methodInvocation);
-                incomingDependenceInfos.put(relatingClass, dependenceInfo);
-            }
-        }
-    }
-
-    public static void addInvocation(ClassStructure classStructure, String relatingClass, InvocationDirection invocationDirection, ElementInvocation invocation, InvocationType invocationType) {
+    public static void addInternalInvocationToClassStructure(@NonNull ClassStructure classStructure, @NonNull String relatingClass, @NonNull InvocationDirection invocationDirection, @NonNull InvocationType invocationType, @NonNull ElementInvocation invocation) {
+        // retrieve either outgoing or incoming dependence infos
         Map<String, DependenceInfo> dependenceInfos;
         switch (invocationDirection) {
             case OUTGOING:
-                dependenceInfos = classStructure.getStaticInfo().getOutgoingDependenceInfos();
+                dependenceInfos = classStructure.getOutgoingDependenceInfos();
                 break;
             case INCOMING:
                 dependenceInfos = classStructure.getIncomingDependenceInfos();
@@ -303,10 +192,14 @@ public class ClassStructureUtils {
             default:
                 throw new IllegalArgumentException("Invalid invocation direction");
         }
+
+        // check if the dependence info to the relating class exists
         if (!dependenceInfos.containsKey(relatingClass)) {
             dependenceInfos.put(relatingClass, new DependenceInfo());
         }
         DependenceInfo dependenceInfo = dependenceInfos.get(relatingClass);
+
+        // add new invocation by its type
         switch (invocationType) {
             case METHOD:
                 dependenceInfo.addMethodInvocation((MethodInvocation) invocation);
@@ -322,45 +215,27 @@ public class ClassStructureUtils {
         }
     }
 
-    /* ************************************************************************
-     *
-     *  functions that add external invocations of class structure
-     *
-     **************************************************************************/
-
     /**
-     * Adds a new external attribute invocation
+     * add an external invocation element into the class structure depends on the invocation type
      *
-     * @param classStructure      the class structure to update
-     * @param attributeInvocation an external attribute invocation object containing all of the related information
-     *                            about the attribute invocation being added
+     * @param classStructure the class structure to update
+     * @param invocationType the implemented type of invocation
+     * @param invocation     the invocation object
      */
-    public static void addExternalAttributeInvocation(ClassStructure classStructure, AttributeInvocation
-            attributeInvocation) {
-        classStructure.getStaticInfo().getExternalAttributeInvocations().add(attributeInvocation);
-    }
-
-    /**
-     * Adds a new external constructor invocation
-     *
-     * @param classStructure        the class structure to update
-     * @param constructorInvocation an external constructor invocation object containing all of the related information
-     *                              about the constructor invocation being added
-     */
-    public static void addExternalConstructorInvocation(ClassStructure classStructure, ConstructorInvocation
-            constructorInvocation) {
-        classStructure.getStaticInfo().getExternalConstructorInvocations().add(constructorInvocation);
-    }
-
-    /**
-     * Adds a new external method invocation
-     *
-     * @param classStructure   the class structure to update
-     * @param methodInvocation an external method invocation object containing all of the related information about the
-     *                         method invocation being added
-     */
-    public static void addExternalMethodInvocation(ClassStructure classStructure, MethodInvocation methodInvocation) {
-        classStructure.getStaticInfo().getExternalMethodInvocations().add(methodInvocation);
+    public static void addExternalInvocationToClassStructure(@NonNull ClassStructure classStructure, @NonNull InvocationType invocationType, @NonNull ElementInvocation invocation) {
+        switch (invocationType) {
+            case METHOD:
+                classStructure.addExternalMethodInvocations((MethodInvocation) invocation);
+                break;
+            case ATTRIBUTE:
+                classStructure.addExternalAttributeInvocations((AttributeInvocation) invocation);
+                break;
+            case CONSTRUCTOR:
+                classStructure.addExternalConstructorInvocations((ConstructorInvocation) invocation);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid invocation type");
+        }
     }
 
     /* ************************************************************************
