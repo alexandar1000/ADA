@@ -4,17 +4,28 @@ import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.SetMultimap;
 import com.ucl.ADA.model.class_structure.ClassStructure;
 import com.ucl.ADA.model.class_structure.ClassStructureUtils;
+import com.ucl.ADA.model.dependence_information.invocation_information.*;
 import com.ucl.ADA.model.source_file.SourceFile;
+import com.ucl.ADA.model.static_information.declaration_information.*;
 import lombok.NonNull;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-import static com.ucl.ADA.model.class_structure.ClassStructureUtils.reuseClassStructure;
+import static com.ucl.ADA.model.class_structure.ClassStructureUtils.*;
 import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
 
 public class SnapshotUtils {
+
+    /* ************************************************************************
+     *
+     *  functions that initialize snapshot
+     *
+     **************************************************************************/
 
     /**
      * initialize snapshot and source files given all file paths (before parsing)
@@ -23,7 +34,7 @@ public class SnapshotUtils {
      * @return a initialized snapshot object
      */
     // TODO: add Branch into parameters
-    public static Snapshot initSnapshotAndSourceFiles(Set<String> filePaths) {
+    public static Snapshot initSnapshotAndSourceFiles(@NonNull Set<String> filePaths) {
         Snapshot snapshot = new Snapshot();
         Map<String, SourceFile> sourceFiles = snapshot.getSourceFiles();
         for (String filePath : filePaths) {
@@ -41,6 +52,12 @@ public class SnapshotUtils {
         }
         return snapshot;
     }
+
+    /* ************************************************************************
+     *
+     *  functions that reuse previous snapshot
+     *
+     **************************************************************************/
 
     /**
      * generate a snapshot given a snapshot that can be reused and the set of names of the affected class structures
@@ -108,7 +125,7 @@ public class SnapshotUtils {
             // initialize all class structures in the snapshot
             for (String className : classNames) {
                 ClassStructure classStructure = ClassStructureUtils.initClassStructureWithFileNameAndFileHash(className, filePath, sourceFile.getFileHash());
-                snapshot.addClassStructure(className, classStructure);
+                snapshot.getClassStructures().put(className, classStructure);
             }
         }
     }
@@ -131,13 +148,13 @@ public class SnapshotUtils {
             SourceFile prevSourceFile = prevSourceFiles.get(filePath);
             sourceFiles.put(filePath, prevSourceFile);
 
-            // initialize all class structures that in are shared
+            // initialize all class structures that are in shared source files
             Set<String> classNames = prevSourceFile.getClassNames();
             for (String className : classNames) {
                 ClassStructure prevClassStructure = prevClassStructures.get(className);
                 String fileHash = prevClassStructure.getFileHash();
                 ClassStructure classStructure = ClassStructureUtils.initClassStructureWithFileNameAndFileHash(className, filePath, fileHash);
-                snapshot.addClassStructure(className, classStructure);
+                snapshot.getClassStructures().put(className, classStructure);
             }
         }
     }
@@ -237,5 +254,83 @@ public class SnapshotUtils {
 
         return res;
     }
+
+    /* ************************************************************************
+     *
+     *  functions that update snapshot with new declaration and invocation info
+     *
+     **************************************************************************/
+
+    /**
+     * Add a declaration element into the snapshot given the declaring class name, and the type of declaration
+     *
+     * @param snapshot        the snapshot to update declaration information
+     * @param declaringClass  the qualified name of the class where it declares
+     * @param declaration     the declaration object
+     * @param declarationType the type of declaration
+     */
+    public static void addDeclarationToSnapshot(@NonNull Snapshot snapshot, @NonNull String declaringClass, @NonNull ElementDeclaration declaration, @NonNull DeclarationType declarationType) {
+        validateClassNameInSnapshot(snapshot, declaringClass);
+        addDeclarationToClassStructure(snapshot.getClassStructure(declaringClass), declaration, declarationType);
+    }
+
+    /**
+     * Add an internal invocation into the snapshot given the consuming and declaring class names, and the type of
+     * invocation
+     *
+     * @param snapshot           the snapshot to update invocation information
+     * @param consumingClassName the qualified name of the caller
+     * @param declaringClassName the qualified name of the callee
+     * @param invocationType     the type of the invocation
+     * @param invocation         the invocation object
+     */
+    public static void addInternalInvocationToSnapshot(@NonNull Snapshot snapshot, @NonNull String consumingClassName, @NonNull String declaringClassName, @NonNull InvocationType invocationType, @NonNull ElementInvocation invocation) {
+        validateClassNameInSnapshot(snapshot, consumingClassName);
+        validateClassNameInSnapshot(snapshot, declaringClassName);
+        addInternalInvocationToClassStructure(snapshot.getClassStructure(consumingClassName), declaringClassName, InvocationDirection.OUTGOING, invocationType, invocation);
+        addInternalInvocationToClassStructure(snapshot.getClassStructure(declaringClassName), consumingClassName, InvocationDirection.INCOMING, invocationType, invocation);
+    }
+
+    /**
+     * Add an external invocation into the snapshot given the consuming class names, and the type of invocation
+     *
+     * @param snapshot       the snapshot to update invocation information
+     * @param consumingClass the qualified name of the caller
+     * @param invocationType the type of the invocation
+     * @param invocation     the invocation object
+     */
+    public static void addExternalInvocationToSnapshot(@NonNull Snapshot snapshot, @NonNull String consumingClass, @NonNull InvocationType invocationType, @NonNull ElementInvocation invocation) {
+        validateClassNameInSnapshot(snapshot, consumingClass);
+        addExternalInvocationToClassStructure(snapshot.getClassStructure(consumingClass), invocationType, invocation);
+    }
+
+    /**
+     * validate if a class name is included in the class structures of a snapshot
+     *
+     * @param snapshot  the snapshot that should contain the class structure
+     * @param className the qualified class name to be validated
+     */
+    public static void validateClassNameInSnapshot(@NonNull Snapshot snapshot, @NonNull String className) {
+        Map<String, ClassStructure> classStructures = snapshot.getClassStructures();
+        if (!classStructures.containsKey(className)) {
+            throw new IllegalArgumentException("Class structure \"" + className + "\" is not initialized correctly");
+        }
+    }
+
+    /* ************************************************************************
+     *
+     *  functions that compute metrics for each class structure in snapshot
+     *
+     **************************************************************************/
+
+//    /**
+//     * Computes both the class and the relation metrics for the project structure
+//     */
+//    public void computeAllMetrics() {
+//        for (ClassStructure classStructure : classStructures.values()) {
+//            classStructure.computeAllClassMetrics();
+//            classStructure.computeAllRelationMetrics();
+//        }
+//    }
 
 }
