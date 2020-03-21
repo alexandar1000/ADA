@@ -89,15 +89,7 @@ public class CompilationUnitBuilderTest {
 
     }
 
-    @Test
-    public void packageAndImportVisitorTest() {
-        CompilationUnit compilationUnit = compilationUnitBuilder.getCompilationUnit(this.filePath, this.classSourceCode, this.sourceDirectories);
-        PackageAndImportVisitor packageAndImportVisitor = new PackageAndImportVisitor();
-        compilationUnit.accept(packageAndImportVisitor);
-        assertEquals(packageAndImportVisitor.getPackageName(), this.packageName);
-        assertEquals(packageAndImportVisitor.getImportedExternalClasses().size(), 0);
-        assertEquals(packageAndImportVisitor.getImportedInternalClasses().size(), 0);
-    }
+
 
     @Test
     public void typeDeclarationVisitorTest() {
