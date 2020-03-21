@@ -48,17 +48,20 @@ public class RepositoryAnalyserServices {
         // TODO: call downloader to download the repo
 
         // Downloader return {root dir path, set<file path>}, downloader automatically pick all .java files
-        Set<String> sourcePaths = new HashSet<>();
+        Set<String> sourcePaths = new HashSet<>(); // all java file path
 
         // TODO: define which file paths to read?
         // write a method to remove all testing files or (move the existing functions from parser?)
         // parse the file path into root and set of file paths (divided by snapshot timestamp)
+        // all valid java file path (.mvwn /test)
 
         // Initialize current snapshot and source files
         Snapshot snapshot = initSnapshotAndSourceFiles(sourcePaths);
 
         // Get added set of SourceFile
         Set<String> addedSourceFiles = getPathsToAddedSourceFiles(snapshot, prevSnapshot);
+
+        // all valid java file path that need to parse
 
         // TODO: Get source paths to parse from addedSourceFiles, and send {root dir path, addedSourceFiles} to Parser
 
