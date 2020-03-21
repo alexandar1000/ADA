@@ -113,13 +113,15 @@ public class SourceFileProcessor {
      */
     protected String[] getSourceDirectories(File rootDirectory) {
         List<String> sourceDirectories = new ArrayList<>();
-        Collection<File> files = FileUtils.listFilesAndDirs(rootDirectory,
-                TrueFileFilter.INSTANCE,
-                TrueFileFilter.INSTANCE);
-        for (File file : files) {
-            if (file.isDirectory()) {
-                if (file.getName().equals("src") || file.getName().equals("Src"))
-                    sourceDirectories.add(file.getAbsolutePath());
+        if (rootDirectory.isDirectory()) {
+            Collection<File> files = FileUtils.listFilesAndDirs(rootDirectory,
+                    TrueFileFilter.INSTANCE,
+                    TrueFileFilter.INSTANCE);
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    if (file.getName().equals("src") || file.getName().equals("Src"))
+                        sourceDirectories.add(file.getAbsolutePath());
+                }
             }
         }
         String[] srcDirs = sourceDirectories.stream().toArray(String[]::new);

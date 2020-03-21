@@ -5,12 +5,16 @@ import com.ucl.ADA.parser.ada_model.ADAClass;
 import com.ucl.ADA.parser.parser.ADAParser;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Service
 public class ParserServices {
 
+
+    public ParserServices() {
+    }
 
     /**
      * Parse the given code repository and generates a map of ADAClass
@@ -22,5 +26,4 @@ public class ParserServices {
     public SetMultimap<String, ADAClass> parseRepository(String repositoryPath, List<String> filePaths) {
         return new ADAParser().getParsedSourceFile(repositoryPath, filePaths);
     }
-
 }
