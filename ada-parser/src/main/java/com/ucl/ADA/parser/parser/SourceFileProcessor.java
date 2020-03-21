@@ -22,14 +22,15 @@ public class SourceFileProcessor {
      * It takes list of file paths and reads the file contents
      * and forms a map of paths->contents for each list.
      *
-     * @param listsOfFilePaths A list of string containing the *.java source file paths
+     * @param rootDirectory            source repository root path
+     * @param listsOfRelativeFilePaths A list of string containing the *.java source file paths
      * @return A list of map where each contains (source file path-> contents
      */
-    protected List<Map<String, String>> getSourceContentsInChunks(List<List<String>> listsOfFilePaths) {
+    protected List<Map<String, String>> getSourceContentsInChunks(String rootDirectory, List<List<String>> listsOfRelativeFilePaths) {
         List<Map<String, String>> allFileContents = new ArrayList<>();
-        for (List<String> listOfFilePaths : listsOfFilePaths) {
+        for (List<String> listOfFilePaths : listsOfRelativeFilePaths) {
             Map<String, String> fileContents = new HashMap<>();
-            fileContents.putAll(getAllSourceContent(listOfFilePaths));
+            fileContents.putAll(getAllSourceContent(rootDirectory, listOfFilePaths));
             allFileContents.add(fileContents);
         }
         return allFileContents;
@@ -38,14 +39,16 @@ public class SourceFileProcessor {
     /**
      * It takes a list of *.java source file paths and read all the contents of these files.
      *
-     * @param paths A list of *.java source file paths
-     * @return  A map containing all *java source file path and its content
+     * @param rootDirectory            source repository root path
+     * @param listsOfRelativeFilePaths A list of *.java source file paths
+     * @return A map containing all *java source file path and its content
      * in a form of source (file path-> file contents) pair.
      */
-    protected Map<String, String> getAllSourceContent(List<String> paths) {
+    protected Map<String, String> getAllSourceContent(String rootDirectory, List<String> listsOfRelativeFilePaths) {
         Map<String, String> sourceContents = new HashMap<>();
-        for (String path : paths) {
-            String code = getSourceCodeFromSourcePath(path);
+        for (String path : listsOfRelativeFilePaths) {
+            String absoluteFilePath = rootDirectory + "/" + path;
+            String code = getSourceCodeFromSourcePath(absoluteFilePath);
             sourceContents.put(path, code);
         }
         return sourceContents;
@@ -56,14 +59,14 @@ public class SourceFileProcessor {
      * This method reads the contents from a given source file path.
      * If the file is empty or cannot be found in the given file path it return a empty string
      *
-     * @param sourceFilePath Source file path that content has to be read from the path.
+     * @param absoluteFilePath Source file path that content has to be read from the path.
      * @return A single string containing the source code written in that file.
      * And containing empty string if the file is empty or cannot be found in the specified location.
      * @IOException if errors occur in IO operation
      */
-    protected String getSourceCodeFromSourcePath(String sourceFilePath) {
+    protected String getSourceCodeFromSourcePath(String absoluteFilePath) {
         String sourceCode = "";
-        File sourceFile = new File(sourceFilePath);
+        File sourceFile = new File(absoluteFilePath);
         if (sourceFile.exists()) {
             try {
                 sourceCode = FileUtils.readFileToString(sourceFile, StandardCharsets.UTF_8);
@@ -110,13 +113,15 @@ public class SourceFileProcessor {
      */
     protected String[] getSourceDirectories(File rootDirectory) {
         List<String> sourceDirectories = new ArrayList<>();
-        Collection<File> files = FileUtils.listFilesAndDirs(rootDirectory,
-                TrueFileFilter.INSTANCE,
-                TrueFileFilter.INSTANCE);
-        for (File file : files) {
-            if (file.isDirectory()) {
-                if (file.getName().equals("src") || file.getName().equals("Src"))
-                    sourceDirectories.add(file.getAbsolutePath());
+        if (rootDirectory.isDirectory()) {
+            Collection<File> files = FileUtils.listFilesAndDirs(rootDirectory,
+                    TrueFileFilter.INSTANCE,
+                    TrueFileFilter.INSTANCE);
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    if (file.getName().equals("src") || file.getName().equals("Src"))
+                        sourceDirectories.add(file.getAbsolutePath());
+                }
             }
         }
         String[] srcDirs = sourceDirectories.stream().toArray(String[]::new);

@@ -2,6 +2,8 @@ package com.ucl.ADA.parser.parser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.MultimapBuilder;
+import com.google.common.collect.SetMultimap;
 import com.ucl.ADA.parser.ada_model.ADAClass;
 import com.ucl.ADA.parser.parser.visitor.ADAClassVisitor;
 import com.ucl.ADA.parser.parser.visitor.PackageAndImportVisitor;
@@ -35,13 +37,11 @@ public class ADAParser {
      * It parses all the .*java source files and populates a set of ADAClass model.
      *
      * @param rootDirectory Source repository path
-     * @return A set of parsed class in from of ADAClass model
+     * @param filePaths     list of file path(relative) that needs to be parsed
+     * @return A map of parsed class in from of ADAClass model
      */
-    public Set<ADAClass> getParsedSourceFile(String rootDirectory) {
-        Set<ADAClass> allParsedFile = new HashSet<>();
-        List<ADAClass> classes = parsingSourceFilesConcurrently(rootDirectory);
-        allParsedFile.addAll(classes);
-        return allParsedFile;
+    public SetMultimap<String, ADAClass> getParsedSourceFile(String rootDirectory, List<String> filePaths) {
+        return parseSourceFilesConcurrently(rootDirectory, filePaths);
     }
 
 
@@ -52,13 +52,13 @@ public class ADAParser {
      * @param rootDirectory Source repository path
      * @JsonProcessingException if error occurs while preparing the JSON
      */
-    public void printParsedSourceFileInJSON(String rootDirectory) {
-        Set<ADAClass> classes = getParsedSourceFile(rootDirectory);
-        for (ADAClass aClass : classes) {
+    public void printParsedSourceFileInJSON(String rootDirectory, List<String> filePaths) {
+        SetMultimap<String, ADAClass> classes = getParsedSourceFile(rootDirectory, filePaths);
+        for (Map.Entry<String, ADAClass> entry : classes.entries()) {
             ObjectMapper objMapper = new ObjectMapper();
             String jsonStr = "[]";
             try {
-                jsonStr = objMapper.writeValueAsString(aClass);
+                jsonStr = objMapper.writeValueAsString(entry.getValue());
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
@@ -66,35 +66,35 @@ public class ADAParser {
         }
     }
 
-
     /**
      * This method parsed all source *.java files for a given source repository and make a list of ADAClass models
      * It performs thread pooling to parsing the source files and populate list of ADAClass models concurrently.
      *
      * @param rootDirectory Source repository path
+     * @param filePaths     list of file path(relative) that needs to be parsed
      * @return A list of parsed class in from of ADAClass model
      * @InterruptedException if errors occur in thread pooling.
      */
-    private List<ADAClass> parsingSourceFilesConcurrently(String rootDirectory) {
-        List<ADAClass> parsedClasses = new ArrayList<>();
-        List<String> filePaths = sourceFileProcessor.getSourceFilePaths(rootDirectory);
+    private SetMultimap<String, ADAClass> parseSourceFilesConcurrently(String rootDirectory, List<String> filePaths) {
+
+        SetMultimap<String, ADAClass> parsedClasses = MultimapBuilder.hashKeys().hashSetValues().build();
         List<List<String>> filePathBatches = ListUtils.partition(filePaths, NUMBER_OF_FILES_IN_A_BATCH);
-        List<Map<String, String>> allFileContents = sourceFileProcessor.getSourceContentsInChunks(filePathBatches);
+        List<Map<String, String>> allFileContents = sourceFileProcessor.getSourceContentsInChunks(rootDirectory, filePathBatches);
         String[] allSrcDirectories = sourceFileProcessor.getSourceDirectories(new File(rootDirectory));
         ExecutorService executor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
         // Callable, return a future, submit and run the task async
-        List<Callable<List<ADAClass>>> listOfCallable = new ArrayList<>();
+        List<Callable<SetMultimap<String, ADAClass>>> listOfCallable = new ArrayList<>();
         for (Map<String, String> filePathBatch : allFileContents) {
-            Callable<List<ADAClass>> c = () -> {
-                return parseSourceFiles(filePathBatch, allSrcDirectories);
+            Callable<SetMultimap<String, ADAClass>> c = () -> {
+                return parseSourceFilesInBatch(filePathBatch, allSrcDirectories);
             };
             listOfCallable.add(c);
         }
         try {
-            List<Future<List<ADAClass>>> futures = executor.invokeAll(listOfCallable);
-            for (Future<List<ADAClass>> future : futures) {
+            List<Future<SetMultimap<String, ADAClass>>> futures = executor.invokeAll(listOfCallable);
+            for (Future<SetMultimap<String, ADAClass>> future : futures) {
                 if (future.isDone()) {
-                    parsedClasses.addAll(future.get());
+                    parsedClasses.putAll(future.get());
                 }
             }
         } catch (InterruptedException | ExecutionException e) {
@@ -113,18 +113,20 @@ public class ADAParser {
      *
      * @param filePathContentPair A map containing file path->file contents
      * @param sourceDirectories   All the source directories (src/) insider the repository.
-     * @return A list of ADAClass model with parsed data.
+     * @return A map of ADAClass model with parsed data in form of path->ADAClass.
      */
-    private List<ADAClass> parseSourceFiles(Map<String, String> filePathContentPair, String[] sourceDirectories) {
-        List<ADAClass> parsedClasses = new ArrayList<>();
+    private SetMultimap<String, ADAClass> parseSourceFilesInBatch(Map<String, String> filePathContentPair, String[] sourceDirectories) {
+        SetMultimap<String, ADAClass> parsedClassMap = MultimapBuilder.hashKeys().hashSetValues().build();
         for (Map.Entry<String, String> sourceEntry : filePathContentPair.entrySet()) {
             String filePath = sourceEntry.getKey();
             String sourceCode = sourceEntry.getValue();
             CompilationUnit compilationUnit = compilationUnitBuilder.getCompilationUnit(filePath, sourceCode, sourceDirectories);
             List<ADAClass> classes = getParsedClass(compilationUnit);
-            parsedClasses.addAll(classes);
+            for (ADAClass adc : classes) {
+                parsedClassMap.put(filePath, adc);
+            }
         }
-        return parsedClasses;
+        return parsedClassMap;
     }
 
 
