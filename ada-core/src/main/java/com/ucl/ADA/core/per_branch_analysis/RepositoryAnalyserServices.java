@@ -41,6 +41,8 @@ public class RepositoryAnalyserServices {
             return null;
         }
 
+        // TODO: if invalid url or branch, store a branch is invalid at last commit time (a flag?)
+
         // TODO: record analysis request
 
         // TODO: store everything
