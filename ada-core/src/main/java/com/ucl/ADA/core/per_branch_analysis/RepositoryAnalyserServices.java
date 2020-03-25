@@ -5,9 +5,9 @@ import com.ucl.ADA.model.snapshot.Snapshot;
 import com.ucl.ADA.parser.ada_model.ADAClass;
 import com.ucl.ADA.repository_downloader.RepoDownloader;
 import com.ucl.ADA.repository_downloader.RepositoryDownloaderService;
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 import java.time.OffsetDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 import static com.ucl.ADA.core.transformer.ModelTransformer.*;
@@ -34,7 +34,12 @@ public class RepositoryAnalyserServices {
         }
 
         // if need to download and analyze again
-        Snapshot snapshot = getSnapshot(prevSnapshot);
+        Snapshot snapshot;
+        try {
+            snapshot = getSnapshot(prevSnapshot, url ,branchName);
+        } catch (GitAPIException e) {
+            return null;
+        }
 
         // TODO: record analysis request
 
@@ -44,11 +49,12 @@ public class RepositoryAnalyserServices {
         return snapshot;
     }
 
-    public Snapshot getSnapshot(Snapshot prevSnapshot) {
-        // TODO: call downloader to download the repo
+    public Snapshot getSnapshot(Snapshot prevSnapshot, String url, String branchName) throws GitAPIException {
+
+        String rootDirPath = RepoDownloader.downloadRepository(url, branchName);
+        Set<String> sourcePaths = RepoDownloader.getSourceFilePaths(rootDirPath);
 
         // Downloader return {root dir path, set<file path>}, downloader automatically pick all .java files
-        Set<String> sourcePaths = new HashSet<>(); // all java file path
 
         // TODO: define which file paths to read?
         // write a method to remove all testing files or (move the existing functions from parser?)

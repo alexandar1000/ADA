@@ -14,7 +14,7 @@ public class CompilationUnitBuilder {
     /**
      * Default constructor for SourceFileProcessor
      */
-    protected CompilationUnitBuilder() {
+    public CompilationUnitBuilder() {
     }
 
     /**
@@ -26,7 +26,7 @@ public class CompilationUnitBuilder {
      * @return A compilation unit for the given source file.
      * @Exception if error occurs while making the compilation unit
      */
-    protected CompilationUnit getCompilationUnit(String filePath, String sourceCode, String[] sourceDirectories) {
+    public CompilationUnit getCompilationUnit(String filePath, String sourceCode, String[] sourceDirectories) {
         Map options = getParserVersion_1_5();
         ASTParser parser = buildASTParser(sourceDirectories, options);
         String unitName = new File(filePath).getName();
