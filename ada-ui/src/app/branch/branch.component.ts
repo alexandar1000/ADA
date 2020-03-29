@@ -64,8 +64,7 @@ export class BranchComponent implements OnInit {
           if (this.branch !== this.highlightSnapshot[2]) {
             this.highlighted = false;
           }
-
-          if (this.branch === this.highlightSnapshot[2] && this.owner !== this.highlightSnapshot[0]) {
+          if (this.branch === this.highlightSnapshot[2] && this.repository !== this.highlightSnapshot[1]) {
             this.highlighted = false;
           }
         }
