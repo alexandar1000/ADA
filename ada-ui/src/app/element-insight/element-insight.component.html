@@ -1,3 +1,19 @@
 <div class="element-insight">
-  <p>Element Insight:</p>
+  <p><u>Element Insight:</u></p>
+  <div *ngIf="selectedNode != null">
+    <ul>
+      <li>
+        Package: {{projectStructure.classStructures.get(selectedNode).packageDeclaration.name}}
+      </li>
+      <li>
+        Attribute Declarations: {{projectStructure.classStructures.get(selectedNode).attributeDeclarations}}
+      </li>
+      <li>
+        Constructor Declarations: {{projectStructure.classStructures.get(selectedNode).constructorDeclarations}}
+      </li>
+      <li>
+        Method Declarations: {{projectStructure.classStructures.get(selectedNode).methodDeclarations}}
+      </li>
+    </ul>
+  </div>
 </div>

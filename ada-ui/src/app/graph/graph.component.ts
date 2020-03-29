@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import * as cytoscape from 'cytoscape';
 import {MetricNameConverter} from "../classes/metric-name-converter";
 import {ProjectStructure} from "../classes/project-structure";
@@ -13,6 +13,7 @@ export class GraphComponent implements OnInit {
   private cy;
   @Input() projectStructure: ProjectStructure;
   @Input() selectedMetric: string;
+  @Output() nodeSelectedEvent = new EventEmitter();
   private metricNameConverter = new MetricNameConverter();
 
   constructor() { }
@@ -20,6 +21,7 @@ export class GraphComponent implements OnInit {
   ngOnInit() {
     this.initCytoscape();
     this.repopulateGraph();
+    this.initEventHandlers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -190,5 +192,30 @@ export class GraphComponent implements OnInit {
         })
         .update();
     }
+  }
+
+  private nodeSelected(nodeId: string) {
+    this.nodeSelectedEvent.emit(nodeId);
+  }
+
+  private handleOnSelectNodeEvent() {
+    let self = this;
+    this.cy.on('select', 'node', function(evt){
+      var node = evt.target;
+      self.nodeSelected(node.id());
+    });
+  }
+
+  private handleOnUnselectNodeEvent() {
+    let self = this;
+    this.cy.on('unselect', 'node', function(evt){
+      var node = evt.target;
+      self.nodeSelected(null);
+    });
+  }
+
+  private initEventHandlers() {
+    this.handleOnSelectNodeEvent();
+    this.handleOnUnselectNodeEvent()
   }
 }
