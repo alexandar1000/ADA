@@ -14,6 +14,7 @@ export class GraphComponent implements OnInit {
   @Input() projectStructure: ProjectStructure;
   @Input() selectedMetric: string;
   @Output() nodeSelectedEvent = new EventEmitter();
+  @Output() edgeSelectedEvent = new EventEmitter();
   private metricNameConverter = new MetricNameConverter();
 
   constructor() { }
@@ -198,6 +199,10 @@ export class GraphComponent implements OnInit {
     this.nodeSelectedEvent.emit(nodeId);
   }
 
+  private edgeSelected(edgeId: string) {
+    this.edgeSelectedEvent.emit(edgeId);
+  }
+
   private handleOnSelectNodeEvent() {
     let self = this;
     this.cy.on('select', 'node', function(evt){
@@ -209,13 +214,29 @@ export class GraphComponent implements OnInit {
   private handleOnUnselectNodeEvent() {
     let self = this;
     this.cy.on('unselect', 'node', function(evt){
-      var node = evt.target;
       self.nodeSelected(null);
+    });
+  }
+
+  private handleOnSelectEdgeEvent() {
+    let self = this;
+    this.cy.on('select', 'edge', function(evt){
+      var edge = evt.target;
+      self.edgeSelected(edge.id());
+    });
+    }
+
+  private handleOnUnselectEdgeEvent() {
+    let self = this;
+    this.cy.on('unselect', 'edge', function(evt){
+      self.edgeSelected(null);
     });
   }
 
   private initEventHandlers() {
     this.handleOnSelectNodeEvent();
-    this.handleOnUnselectNodeEvent()
+    this.handleOnUnselectNodeEvent();
+    this.handleOnSelectEdgeEvent();
+    this.handleOnUnselectEdgeEvent();
   }
 }

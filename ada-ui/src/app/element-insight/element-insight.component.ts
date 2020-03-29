@@ -10,6 +10,7 @@ export class ElementInsightComponent implements OnInit {
 
   @Input() projectStructure: ProjectStructure;
   @Input() selectedNode: string;
+  @Input() selectedEdge: number;
   constructor() { }
 
   ngOnInit() {
@@ -17,12 +18,18 @@ export class ElementInsightComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.selectedNode) {
-      this.displayCorrespondingInformation(this.selectedNode);
+      this.displayCorrespondingNodeInformation(this.selectedNode);
+    } else if (changes.selectedEdge) {
+      this.displayCorrespondingEdgeInformation(this.selectedEdge);
     }
   }
 
-  private displayCorrespondingInformation(nodeId: string): void {
+  private displayCorrespondingNodeInformation(nodeId: string): void {
 
   }
+
+  private displayCorrespondingEdgeInformation(edgeId: number): void {
+
+    }
 
 }

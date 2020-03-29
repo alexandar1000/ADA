@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit {
   private metrics = this.analyserService.metrics;
   private selectedMetric = this.metrics[0];
   private selectedNode: string;
+  private selectedEdge: string;
 
   constructor(private analyserService: AnalyserService,
               private newEntryService: NewEntryService,
@@ -59,7 +60,11 @@ export class DashboardComponent implements OnInit {
     this.newEntryService.confirmNewEntry([owner, repository, branch, snapshot]);
   }
 
-  updateAdditionalInformation($event: any) {
+  updateAdditionalInformationWithNode($event: any) {
     this.selectedNode = $event;
+  }
+
+  updateAdditionalInformationWithEdge($event: any) {
+    this.selectedEdge = $event;
   }
 }
