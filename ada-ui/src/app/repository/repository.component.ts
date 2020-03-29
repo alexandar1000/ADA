@@ -85,7 +85,6 @@ export class RepositoryComponent implements OnInit {
         this.clicked = true;
         this.cashed = true;
       })
-
     }
     else if (this.cashed && this.clicked) {
       this.clicked = false;

@@ -12,10 +12,12 @@ export class SnapshotComponent implements OnInit {
   @Input() branch: string;
   @Input() snapshot: string;
   private highlighted: boolean;
+  private highlightSnapshot: string[];
 
   @Input()
   set toHighlightSnapshot(entry: string[]) {
     if (entry) {
+      this.highlightSnapshot = entry;
       let snapshotToHighlight = entry[3];
       if (snapshotToHighlight === this.snapshot) {
         this.highlighted = true;
@@ -27,7 +29,7 @@ export class SnapshotComponent implements OnInit {
   set toUnHighlightSnapshot(entry: string[]) {
     if (entry) {
       let snapshot = entry[3];
-      if (snapshot === this.snapshot) {
+      if (snapshot === this.snapshot && this.snapshot !== this.highlightSnapshot[3]) {
         this.highlighted = false;
       }
     }

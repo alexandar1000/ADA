@@ -55,6 +55,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
   getOwnerList(): void {
     this.owners = [];
+    this.entry = [];
     this.sidebarService.getOwnersList().subscribe(ownerNames => {
       ownerNames.forEach(ownerName => {
         this.owners.push(ownerName);

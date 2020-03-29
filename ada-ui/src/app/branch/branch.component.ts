@@ -27,16 +27,14 @@ export class BranchComponent implements OnInit {
       if (!this.snapshots) {
         this.snapshots = [];
       }
-      if (branch === this.branch) {
+      if (owner === this.owner && repository === this.repository && branch === this.branch) {
         if (!this.cashed) {
           this.getSnapshotsList(owner, repository, branch);
         }
         else {
           this.clicked = true;
         }
-        if (!this.isSnapshotInList(snapshot)) {
-          this.snapshots.push(snapshot);
-        }
+        this.snapshots.push(snapshot);
       }
     }
   }
