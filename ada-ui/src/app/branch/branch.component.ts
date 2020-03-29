@@ -13,25 +13,62 @@ export class BranchComponent implements OnInit {
   private snapshots: string[];
   private clicked: boolean;
   private cashed: boolean;
+  private highlightSnapshot: string[];
+  private previousHighlightSnapshot: string[];
+  private highlighted: boolean;
 
   @Input()
   set newEntrySnapshot(entry: string[]) {
-    let owner = entry[0];
-    let repository = entry[1];
-    let branch = entry[2];
-    let snapshot = entry[3];
-    if (!this.snapshots) {
-      this.snapshots = [];
+    if (entry) {
+      let owner = entry[0];
+      let repository = entry[1];
+      let branch = entry[2];
+      let snapshot = entry[3];
+      if (!this.snapshots) {
+        this.snapshots = [];
+      }
+      if (branch === this.branch) {
+        if (!this.cashed) {
+          this.getSnapshotsList(owner, repository, branch);
+        }
+        else {
+          this.clicked = true;
+        }
+        if (!this.isSnapshotInList(snapshot)) {
+          this.snapshots.push(snapshot);
+        }
+      }
     }
-    if (branch === this.branch) {
-      if (!this.cashed) {
-        this.getSnapshotsList(owner, repository, branch);
+  }
+
+  @Input()
+  set toHighlightSnapshot(entry: string[]) {
+    if (entry) {
+      let ownerToHighlight = entry[0];
+      let repositoryToHighlight = entry[1];
+      let branchToHighlight = entry[2];
+      this.highlightSnapshot = entry;
+      if (branchToHighlight === this.branch && repositoryToHighlight === this.repository && ownerToHighlight === this.owner) {
+        this.highlighted = true;
       }
-      else {
-        this.clicked = true;
-      }
-      if (!this.isSnapshotInList(snapshot)) {
-        this.snapshots.push(snapshot);
+    }
+  }
+
+  @Input()
+  set toUnHighlightSnapshot(entry: string[]) {
+    if (entry) {
+      let branchToUnHighlight = entry[2];
+      this.previousHighlightSnapshot = entry;
+      if (branchToUnHighlight === this.branch) {
+        if (this.highlightSnapshot) {
+          if (this.branch !== this.highlightSnapshot[2]) {
+            this.highlighted = false;
+          }
+
+          if (this.branch === this.highlightSnapshot[2] && this.owner !== this.highlightSnapshot[0]) {
+            this.highlighted = false;
+          }
+        }
       }
     }
   }

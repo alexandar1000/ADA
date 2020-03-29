@@ -45,3 +45,7 @@ h1.app-name {
   text-decoration: none;
   color: #FFFFFF;
 }
+
+.highlighted {
+  font-weight: bold;
+}

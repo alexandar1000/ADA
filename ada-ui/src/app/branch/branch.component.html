@@ -1,8 +1,8 @@
-<a mat-list-item (click)="getSnapshotsList(owner, repository, branch)" class="branch-container">
+<a mat-list-item (click)="getSnapshotsList(owner, repository, branch)" [ngClass]="{'highlighted': highlighted}" class="branch-container">
     <mat-icon *ngIf="!clicked">arrow_right</mat-icon>
     <mat-icon *ngIf="clicked">arrow_drop_down</mat-icon>
     {{branch}}
 </a>
 <mat-nav-list> 
-    <app-snapshot [owner]="owner" [repository]="repository" [branch]="branch" [snapshot]="snapshot" *ngFor="let snapshot of snapshots" [hidden]="!clicked"></app-snapshot>
+    <app-snapshot [owner]="owner" [repository]="repository" [branch]="branch" [snapshot]="snapshot" [toHighlightSnapshot]="highlightSnapshot" [toUnHighlightSnapshot]="previousHighlightSnapshot" *ngFor="let snapshot of snapshots" [hidden]="!clicked"></app-snapshot>
 </mat-nav-list>

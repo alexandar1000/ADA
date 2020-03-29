@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { SidebarService } from '../sidebar.service';
 
 @Component({
@@ -12,24 +12,55 @@ export class OwnerComponent implements OnInit {
   private clicked: boolean;
   private cashed: boolean;
   private entry: string[];
+  private highlightSnapshot: string[];
+  private previousHighlightSnapshot: string[];
+  private highlighted: boolean;
 
   @Input()
   set newEntryRepository(entry: string[]) {
-    this.entry = entry;
-    let owner = entry[0];
-    let repository = entry[1];
-    if (!this.repositories) {
-      this.repositories = [];
+    if (entry) {
+      this.entry = entry;
+      let owner = entry[0];
+      let repository = entry[1];
+      if (!this.repositories) {
+        this.repositories = [];
+      }
+      if (owner === this.owner) {
+        if (!this.cashed) {
+          this.getReposList(owner);
+        }
+        else {
+          this.clicked = true;
+        }
+        if (!this.isRepositoryInList(repository)) {
+          this.repositories.push(repository);
+        }
+      }
     }
-    if (owner === this.owner) {
-      if (!this.cashed) {
-        this.getReposList(owner);
+  }
+
+  @Input()
+  set toHighlightSnapshot(entry: string[]) {
+    if (entry) {
+      let ownerToHighlight = entry[0];
+      this.highlightSnapshot = entry;
+      if (ownerToHighlight === this.owner) {
+        this.highlighted = true;
       }
-      else {
-        this.clicked = true;
-      }
-      if (!this.isRepositoryInList(repository)) {
-        this.repositories.push(repository);
+    }
+  }
+
+  @Input()
+  set toUnHighlightSnapshot(entry: string[]) {
+    if (entry) {
+      let ownerToUnHighlight = entry[0];
+      this.previousHighlightSnapshot = entry;
+      if (ownerToUnHighlight === this.owner) {
+        if (this.highlightSnapshot) {
+          if (this.highlightSnapshot[0] !== this.owner) {
+            this.highlighted = false;
+          }
+        }
       }
     }
   }
