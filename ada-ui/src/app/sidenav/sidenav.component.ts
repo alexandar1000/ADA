@@ -56,6 +56,9 @@ export class SidenavComponent implements OnInit, OnDestroy {
   getOwnerList(): void {
     this.owners = [];
     this.entry = [];
+    let snapshotToUnHighlight = this.highglightSnapshot;
+    this.highglightSnapshot = [];
+    this.previousHighlightSnapshot = snapshotToUnHighlight;
     this.sidebarService.getOwnersList().subscribe(ownerNames => {
       ownerNames.forEach(ownerName => {
         this.owners.push(ownerName);
