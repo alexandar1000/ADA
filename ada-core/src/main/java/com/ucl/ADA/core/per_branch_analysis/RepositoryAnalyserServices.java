@@ -2,6 +2,7 @@ package com.ucl.ADA.core.per_branch_analysis;
 
 import com.google.common.collect.SetMultimap;
 import com.ucl.ADA.model.snapshot.Snapshot;
+import com.ucl.ADA.parser.ParserServices;
 import com.ucl.ADA.parser.ada_model.ADAClass;
 import com.ucl.ADA.repository_downloader.RepoDownloader;
 import com.ucl.ADA.repository_downloader.RepositoryDownloaderService;
@@ -16,6 +17,8 @@ import static com.ucl.ADA.model.snapshot.SnapshotUtils.*;
 public class RepositoryAnalyserServices {
 
     private RepositoryDownloaderService repositoryDownloaderService;
+
+    private ParserServices parserServices;
 
     public Snapshot analyseRepositoryService(String url, String branchName) {
 
@@ -53,15 +56,9 @@ public class RepositoryAnalyserServices {
 
     public Snapshot getSnapshot(Snapshot prevSnapshot, String url, String branchName) throws GitAPIException {
 
+        // Downloader return {root dir path, set<file path>}, downloader automatically pick all .java files
         String rootDirPath = RepoDownloader.downloadRepository(url, branchName);
         Set<String> sourcePaths = RepoDownloader.getSourceFilePaths(rootDirPath);
-
-        // Downloader return {root dir path, set<file path>}, downloader automatically pick all .java files
-
-        // TODO: define which file paths to read?
-        // write a method to remove all testing files or (move the existing functions from parser?)
-        // parse the file path into root and set of file paths (divided by snapshot timestamp)
-        // all valid java file path (.mvwn /test)
 
         // Initialize current snapshot and source files
         Snapshot snapshot = initSnapshotAndSourceFiles(sourcePaths);
@@ -69,12 +66,9 @@ public class RepositoryAnalyserServices {
         // Get added set of SourceFile
         Set<String> addedSourceFiles = getPathsToAddedSourceFiles(snapshot, prevSnapshot);
 
-        // all valid java file path that need to parse
-
-        // TODO: Get source paths to parse from addedSourceFiles, and send {root dir path, addedSourceFiles} to Parser
-
-        // TODO: Parser return map<file path, set<ADAClass>> (use guava SetMultimap?)
+        // Get source paths to parse from addedSourceFiles, and send {root dir path, addedSourceFiles} to Parser
         SetMultimap<String, ADAClass> filePathToClassStructuresMap = null;
+//        SetMultimap<String, ADAClass> filePathToClassStructuresMap = parserServices.parseRepository(rootDirPath, sourcePaths);
 
         // generate Map<String, Set<String>> pathsOfAddedSourceFilesToClassNames
         SetMultimap<String, String> pathsOfAddedSourceFilesToClassNames = getFilePathToClassNamesMap(filePathToClassStructuresMap);
