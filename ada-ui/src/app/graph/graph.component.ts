@@ -19,6 +19,7 @@ export class GraphComponent implements OnInit {
 
   ngOnInit() {
     this.initCytoscape();
+    this.initEventHandlers();
     this.repopulateGraph();
   }
 
@@ -52,6 +53,31 @@ export class GraphComponent implements OnInit {
               'curve-style': 'bezier',
               'target-arrow-shape': 'triangle',
               label: 'data(weight)'
+            }
+          },
+          {
+            selector: 'node.highlight',
+            style: {
+              'border-color': '#ff3b00',
+              'border-width': '5px'
+            }
+          },
+          {
+            selector: 'node.unhighlight',
+            style: {
+              'opacity': 0.4
+            }
+          },
+          {
+            selector: 'edge.highlight',
+            style: {
+              'line-color': '#ff3b00'
+            }
+          },
+          {
+            selector: 'edge.unhighlight',
+            style: {
+              'opacity': 0.2
             }
           }
         ]
@@ -190,5 +216,70 @@ export class GraphComponent implements OnInit {
         })
         .update();
     }
+  }
+
+  private highlightNodeNeighbourhood(node: any): void {
+    let neighbourhood = node.neighborhood();
+    this.cy.batch(function(){
+      neighbourhood.addClass('highlight');
+    });
+  }
+
+  private unhighlightNodeNeighbourhood(node: any): void {
+    let neighbourhood = node.neighborhood();
+    this.cy.batch(function(){
+      neighbourhood.removeClass('highlight');
+    });
+  }
+
+  private highlightEdgeNeighbourhood(edge: any): void {
+    let connectedNodes = edge.connectedNodes();
+    this.cy.batch(function(){
+      edge.addClass('highlight');
+      connectedNodes.addClass('highlight');
+    });
+  }
+
+  private unhighlightEdgeNeighbourhood(edge: any): void {
+    let connectedNodes = edge.connectedNodes();
+    this.cy.batch(function(){
+      edge.removeClass('highlight');
+      connectedNodes.removeClass('highlight');
+    });
+  }
+
+  private handleSelectNode() : void {
+    let self = this;
+    this.cy.on('select', 'node', function(evt){
+      self.highlightNodeNeighbourhood(evt.target);
+    });
+  }
+
+  private handleUnselectNode() : void {
+    let self = this;
+    this.cy.on('unselect', 'node', function(evt){
+      self.unhighlightNodeNeighbourhood(evt.target);
+    });
+  }
+
+  private handleSelectEdge() : void {
+    let self = this;
+    this.cy.on('select', 'edge', function(evt){
+      self.highlightEdgeNeighbourhood(evt.target);
+    });
+  }
+
+  private handleUnselectEdge() : void {
+    let self = this;
+    this.cy.on('unselect', 'edge', function(evt){
+      self.unhighlightEdgeNeighbourhood(evt.target);
+    });
+  }
+
+  private initEventHandlers(): void {
+    this.handleSelectNode();
+    this.handleUnselectNode();
+    this.handleSelectEdge();
+    this.handleUnselectEdge();
   }
 }
