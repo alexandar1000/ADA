@@ -41,6 +41,8 @@ public class RepositoryAnalyserServices {
             return null;
         }
 
+        // TODO: if invalid url or branch, store a branch is invalid at last commit time (a flag?)
+
         // TODO: record analysis request
 
         // TODO: store everything
@@ -59,12 +61,15 @@ public class RepositoryAnalyserServices {
         // TODO: define which file paths to read?
         // write a method to remove all testing files or (move the existing functions from parser?)
         // parse the file path into root and set of file paths (divided by snapshot timestamp)
+        // all valid java file path (.mvwn /test)
 
         // Initialize current snapshot and source files
         Snapshot snapshot = initSnapshotAndSourceFiles(sourcePaths);
 
         // Get added set of SourceFile
         Set<String> addedSourceFiles = getPathsToAddedSourceFiles(snapshot, prevSnapshot);
+
+        // all valid java file path that need to parse
 
         // TODO: Get source paths to parse from addedSourceFiles, and send {root dir path, addedSourceFiles} to Parser
 
