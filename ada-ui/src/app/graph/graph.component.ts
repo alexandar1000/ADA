@@ -231,6 +231,7 @@ export class GraphComponent implements OnInit {
   private updateDisplayOfZeroEdges(hideEdges: boolean): void {
     let self = this;
     this.cy.batch(function() {
+      self.cy.elements().unselect();
       // Show only edges with a weight other than zero
       if (hideEdges == true) {
         self.cy.edges().forEach(function (edge) {
@@ -257,11 +258,43 @@ export class GraphComponent implements OnInit {
     });
   }
 
+  /**
+   * Highlights the neighbouring nodes and the corresponding edges
+   * @param node the node in the graph which is selected
+   */
   private highlightNodeNeighbourhood(node: any): void {
     let neighbourhood = node.neighborhood();
-    this.cy.batch(function(){
-      neighbourhood.addClass('highlight');
-    });
+    let self = this;
+    // Use a batch update
+    this.cy.batch(function() {
+      let self = this;
+      if (!self.hideZeroEdges) {
+        // All elements are displayed so the entire neighbourhood can be highlighted
+        neighbourhood.addClass('highlight');
+      } else {
+        // As some edges are hidden, some nodes need to be omitted from the highlighting
+        neighbourhood.forEach(function (element) {
+          if (element.isNode()) {
+            // If the element is node, check whether they have a displayed edge between them
+            let hasValidEdge = false;
+            let edges = node.edgesWith(element);
+            for (let edge of edges) {
+              if (edge.data('weight') != 0) {
+                hasValidEdge = true;
+              }
+            }
+            if (hasValidEdge) {
+              element.addClass('highlight');
+            }
+          } else {
+            // If the element is an edge, check if it is hidden before highlighting it
+            if (element.data('weight') != 0) {
+              element.addClass('highlight');
+            }
+          }
+        });
+      }
+    }.bind(self)); // As this is a callback, bind it to the environment to know whether edges are hidden or not
   }
 
   private unhighlightNodeNeighbourhood(node: any): void {
