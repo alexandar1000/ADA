@@ -17,5 +17,8 @@ public abstract class BaseEntity {
     /**
      * the unique identity of an object
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 }

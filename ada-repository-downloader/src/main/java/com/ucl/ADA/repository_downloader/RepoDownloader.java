@@ -152,7 +152,7 @@ public class RepoDownloader {
      * @param url url of the git repository
      * @return a String array containing the name of the owner at [3] index and the repo name at [4] index.
      */
-    private static String[] parseGitUrl(String url) {
+    public static String[] parseGitUrl(String url) {
         String[] data = url.split("/|//");
 
         if (data[4].indexOf(".") > 0)
