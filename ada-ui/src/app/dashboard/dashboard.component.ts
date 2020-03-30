@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {ProjectStructure} from "../classes/project-structure";
 import {AnalyserService} from "../analyser.service";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
@@ -14,6 +14,8 @@ export class DashboardComponent implements OnInit {
   private snapshots = this.analyserService.snapshots;
   private metrics = this.analyserService.metrics;
   private selectedMetric = this.metrics[0];
+  private selectedNode: string;
+  private selectedEdge: string;
 
   constructor(private analyserService: AnalyserService,
               private newEntryService: NewEntryService,
@@ -56,5 +58,13 @@ export class DashboardComponent implements OnInit {
 
   sendNewEntry(owner: string, repository: string, branch: string, snapshot: string) {
     this.newEntryService.confirmNewEntry([owner, repository, branch, snapshot]);
+  }
+
+  updateAdditionalInformationWithNode($event: any) {
+    this.selectedNode = $event;
+  }
+
+  updateAdditionalInformationWithEdge($event: any) {
+    this.selectedEdge = $event;
   }
 }

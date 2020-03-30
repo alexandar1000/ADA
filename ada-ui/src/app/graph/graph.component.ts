@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import * as cytoscape from 'cytoscape';
 import {MetricNameConverter} from "../classes/metric-name-converter";
 import {ProjectStructure} from "../classes/project-structure";
@@ -13,6 +13,8 @@ export class GraphComponent implements OnInit {
   private cy;
   @Input() projectStructure: ProjectStructure;
   @Input() selectedMetric: string;
+  @Output() nodeSelectedEvent = new EventEmitter();
+  @Output() edgeSelectedEvent = new EventEmitter();
   private metricNameConverter = new MetricNameConverter();
 
   constructor() { }
@@ -20,6 +22,7 @@ export class GraphComponent implements OnInit {
   ngOnInit() {
     this.initCytoscape();
     this.repopulateGraph();
+    this.initEventHandlers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -190,5 +193,50 @@ export class GraphComponent implements OnInit {
         })
         .update();
     }
+  }
+
+  private nodeSelected(nodeId: string) {
+    this.nodeSelectedEvent.emit(nodeId);
+  }
+
+  private edgeSelected(edgeId: string) {
+    this.edgeSelectedEvent.emit(edgeId);
+  }
+
+  private handleOnSelectNodeEvent() {
+    let self = this;
+    this.cy.on('select', 'node', function(evt){
+      var node = evt.target;
+      self.nodeSelected(node.id());
+    });
+  }
+
+  private handleOnUnselectNodeEvent() {
+    let self = this;
+    this.cy.on('unselect', 'node', function(evt){
+      self.nodeSelected(null);
+    });
+  }
+
+  private handleOnSelectEdgeEvent() {
+    let self = this;
+    this.cy.on('select', 'edge', function(evt){
+      var edge = evt.target;
+      self.edgeSelected(edge.id());
+    });
+    }
+
+  private handleOnUnselectEdgeEvent() {
+    let self = this;
+    this.cy.on('unselect', 'edge', function(evt){
+      self.edgeSelected(null);
+    });
+  }
+
+  private initEventHandlers() {
+    this.handleOnSelectNodeEvent();
+    this.handleOnUnselectNodeEvent();
+    this.handleOnSelectEdgeEvent();
+    this.handleOnUnselectEdgeEvent();
   }
 }
