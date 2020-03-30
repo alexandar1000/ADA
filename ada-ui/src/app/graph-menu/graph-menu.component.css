@@ -5,3 +5,6 @@
   overflow: auto;
 }
 
+li {
+  list-style-type: none;
+}

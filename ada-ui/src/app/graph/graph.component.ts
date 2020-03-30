@@ -178,20 +178,17 @@ export class GraphComponent implements OnInit {
 
     let self = this;
     if (newMetric != null) {
-      this.cy.startBatch();
-
-      this.cy.edges().forEach(function( edge ){
-        let source = edge.data('source');
-        let target = edge.data('target');
-        edge.data('weight', self.getCorrespondingWeight(source, target));
+      this.cy.batch(function(){
+        self.cy.edges().forEach(function( edge ){
+          let source = edge.data('source');
+          let target = edge.data('target');
+          edge.data('weight', self.getCorrespondingWeight(source, target));
+        });
+        self.updateArrowStyle();
       });
-
-      this.cy.endBatch();
     } else {
       console.error('Metric name is not in the translator.');
     }
-
-    this.updateArrowStyle();
   }
 
   private updateArrowStyle (): void {
