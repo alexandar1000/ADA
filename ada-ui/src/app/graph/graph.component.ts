@@ -14,7 +14,7 @@ export class GraphComponent implements OnInit {
   @Input() projectStructure: ProjectStructure;
   @Input() selectedMetric: string;
   @Input() hideZeroEdges = false;
-  @Input() highlightNeighbours = true;
+  @Input() hideNodesWithoutNeighbours = false;
   private metricNameConverter = new MetricNameConverter();
 
 
@@ -32,10 +32,9 @@ export class GraphComponent implements OnInit {
     }
     if (changes.hideZeroEdges && this.cy != null) {
       this.updateDisplayOfZeroEdges(this.hideZeroEdges);
-      // this.changeMetricRepresentedInGraph();
     }
-    if (changes.highlightNeighbours) {
-      // this.changeMetricRepresentedInGraph();
+    if (changes.hideNodesWithoutNeighbours && this.cy != null) {
+      this.updateDisplayOfNodesWithoutNeighbours(this.hideNodesWithoutNeighbours);
     }
   }
 
@@ -102,6 +101,7 @@ export class GraphComponent implements OnInit {
     this.updateArrowStyle();
 
     this.updateDisplayOfZeroEdges(this.hideZeroEdges);
+    this.updateDisplayOfNodesWithoutNeighbours(this.hideNodesWithoutNeighbours);
 
     var layout = this.cy.layout({
       name: 'circle'
@@ -202,6 +202,7 @@ export class GraphComponent implements OnInit {
       console.error('Metric name is not in the translator.');
     }
     this.updateDisplayOfZeroEdges(this.hideZeroEdges);
+    this.updateDisplayOfNodesWithoutNeighbours(this.hideNodesWithoutNeighbours);
   }
 
   private updateArrowStyle (): void {
@@ -228,6 +229,15 @@ export class GraphComponent implements OnInit {
     }
   }
 
+  /**
+   * Update the display of edges based on hideEdges parameter. If the parameter is true, hide those edges which have
+   * a weight of 0. This is done as the meaning of the weight of zero and an omitted edge is quite similar, and because
+   * having a lot of zero edges might clutter the graph.
+   * @param hideEdges a flag which defines whether the edges are to be defined
+   */
+
+  // If this is true and is becoming false, they need to update the nodes
+
   private updateDisplayOfZeroEdges(hideEdges: boolean): void {
     let self = this;
     this.cy.batch(function() {
@@ -246,9 +256,18 @@ export class GraphComponent implements OnInit {
             })
           }
         });
+        self.updateDisplayOfNodesWithoutNeighbours(self.hideNodesWithoutNeighbours);
       // Show all edges
       } else {
         self.cy.edges().forEach(function (edge) {
+          let correspondingNodes = edge.connectedNodes();
+          if (self.hideNodesWithoutNeighbours) {
+            for (let node of correspondingNodes) {
+              node.style({
+                'display': 'element'
+              })
+            }
+          }
           edge.style(
             {
               'display': 'element'
@@ -256,6 +275,58 @@ export class GraphComponent implements OnInit {
         });
       }
     });
+  }
+
+  /**
+   * Update the nodes in the graph. If hideNodes is true, all of the nodes without outgoing/incoming edges which are
+   * displayed on the screen, will be hidden as well.
+   * @param hideNodes whether to hide the nodes or not
+   */
+    private updateDisplayOfNodesWithoutNeighbours(hideNodes: boolean): void {
+    let self = this;
+    // Process all of th nodes in batch
+    this.cy.batch(function() {
+      self.cy.elements().unselect();
+      if (hideNodes == true) {
+        // If the nodes are selected to be hidden, hide those without edges or with hidden edges
+        self.cy.nodes().forEach(function (node) {
+          let connectedEdges = node.connectedEdges();
+          let hideNode = true;
+          if (self.hideZeroEdges) {
+            // If zero weight edges are hidden, check each edge
+            for (let edge of connectedEdges) {
+              if (edge.data('weight') != 0) {
+                // If there is at least one edge, the node needs to be displayed
+                hideNode = false;
+              }
+            }
+          } else {
+            // If there are no hidden edges, then if at least one edge exists, it is sufficient to display the node
+            if (connectedEdges.length > 0) {
+              hideNode = false;
+            }
+          }
+          // Based on the processing above, update the node
+          if (hideNode) {
+            node.style(
+              {
+                'display': 'none'
+              })
+          } else {
+            node.style(
+              {
+                'display': 'element'
+              })
+          }
+        });
+      } else {
+        // If all the nodes should be displayed, show all nodes
+        self.cy.nodes().style(
+          {
+            'display': 'element'
+          })
+      }
+    }.bind(self));
   }
 
   /**

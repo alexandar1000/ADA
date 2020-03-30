@@ -15,7 +15,7 @@ export class DashboardComponent implements OnInit {
   private metrics = this.analyserService.metrics;
   private selectedMetric = this.metrics[0];
   private hideZeroEdges = false;
-  private highlightNeighbours = true;
+  private hideNodesWithoutNeighbours = false;
 
   constructor(private analyserService: AnalyserService,
               private newEntryService: NewEntryService,
@@ -64,7 +64,7 @@ export class DashboardComponent implements OnInit {
     this.hideZeroEdges = state;
   }
 
-  handleUpdateHighlightNeighbours(state: boolean): void {
-    this.highlightNeighbours = state;
+  handleUpdateHideNodesWithoutNeighbours(state: boolean): void {
+    this.hideNodesWithoutNeighbours = state;
   }
 }

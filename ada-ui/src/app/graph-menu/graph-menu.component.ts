@@ -8,9 +8,9 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 export class GraphMenuComponent implements OnInit {
 
   private areZeroWeightsHidden = false;
-  private areNeighboursHighlighted = true;
+  private areNodesWithoutNeighboursHidden = false;
   @Output() hideZeroWeightsEvent = new EventEmitter();
-  @Output() highlightNeighboursEvent = new EventEmitter();
+  @Output() hideNodesWithoutEdgesEvent = new EventEmitter();
 
   constructor() { }
 
@@ -22,8 +22,8 @@ export class GraphMenuComponent implements OnInit {
     this.hideZeroWeightsEvent.emit(this.areZeroWeightsHidden);
   }
 
-  handleNeighboursHighlighting($event: any): void {
-    this.areNeighboursHighlighted = $event.checked;
-    this.highlightNeighboursEvent.emit(this.areNeighboursHighlighted);
+  handleNodesWithoutNeighboursChanged($event: any): void {
+    this.areNodesWithoutNeighboursHidden = $event.checked;
+    this.hideNodesWithoutEdgesEvent.emit(this.areNodesWithoutNeighboursHidden);
   }
 }
