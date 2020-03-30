@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-graph-menu',
@@ -9,19 +9,21 @@ export class GraphMenuComponent implements OnInit {
 
   private areZeroWeightsHidden = false;
   private areNeighboursHighlighted = true;
-  @Output() optionChangedEvent = new EventEmitter();
+  @Output() hideZeroWeightsEvent = new EventEmitter();
+  @Output() highlightNeighboursEvent = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  handleZeroWeightsChanged(): void {
-    console.log(this.areZeroWeightsHidden);
+  handleZeroWeightsChanged($event: any): void {
+    this.areZeroWeightsHidden = $event.checked;
+    this.hideZeroWeightsEvent.emit(this.areZeroWeightsHidden);
   }
 
-  handleNeighboursHighlighting(): void {
-      console.log(this.areNeighboursHighlighted);
-    }
-
+  handleNeighboursHighlighting($event: any): void {
+    this.areNeighboursHighlighted = $event.checked;
+    this.highlightNeighboursEvent.emit(this.areNeighboursHighlighted);
+  }
 }

@@ -14,6 +14,8 @@ export class DashboardComponent implements OnInit {
   private snapshots = this.analyserService.snapshots;
   private metrics = this.analyserService.metrics;
   private selectedMetric = this.metrics[0];
+  private hideZeroEdges: boolean;
+  private highlightNeighbours: boolean;
 
   constructor(private analyserService: AnalyserService,
               private newEntryService: NewEntryService,
@@ -56,5 +58,13 @@ export class DashboardComponent implements OnInit {
 
   sendNewEntry(owner: string, repository: string, branch: string, snapshot: string) {
     this.newEntryService.confirmNewEntry([owner, repository, branch, snapshot]);
+  }
+
+  handleUpdateHideZeroEdges(state: boolean): void {
+    this.hideZeroEdges = state;
+  }
+
+  handleUpdateHighlightNeighbours(state: boolean): void {
+    this.highlightNeighbours = state;
   }
 }

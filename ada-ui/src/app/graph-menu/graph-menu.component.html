@@ -2,10 +2,10 @@
   <p>graph-menu works!</p>
   <ul>
     <li>
-      <mat-checkbox [(ngModel)]="areZeroWeightsHidden" (change)="handleZeroWeightsChanged()">Hide zero weights</mat-checkbox>
+      <mat-checkbox [checked]="areZeroWeightsHidden" (change)="handleZeroWeightsChanged($event)">Hide zero weights</mat-checkbox>
     </li>
     <li>
-      <mat-checkbox [(ngModel)]="areNeighboursHighlighted" (change)="handleNeighboursHighlighting()">Highlight neighbours of selected elements</mat-checkbox>
+      <mat-checkbox [checked]="areNeighboursHighlighted" (change)="handleNeighboursHighlighting($event)">Highlight neighbours of selected elements</mat-checkbox>
     </li>
 <!--    <li>-->
 <!--      <mat-checkbox>Highlight neighbours of selected nodes</mat-checkbox>-->

@@ -10,10 +10,13 @@ import {ProjectStructure} from "../classes/project-structure";
 })
 export class GraphComponent implements OnInit {
 
-  private cy;
+  private cy = null;
   @Input() projectStructure: ProjectStructure;
   @Input() selectedMetric: string;
+  @Input() hideZeroEdges = false;
+  @Input() highlightNeighbours = true;
   private metricNameConverter = new MetricNameConverter();
+
 
   constructor() { }
 
@@ -26,6 +29,13 @@ export class GraphComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.selectedMetric && !changes.selectedMetric.firstChange) {
       this.changeMetricRepresentedInGraph();
+    }
+    if (changes.hideZeroEdges && this.cy != null) {
+      this.updateDisplayOfZeroEdges(this.hideZeroEdges);
+      // this.changeMetricRepresentedInGraph();
+    }
+    if (changes.highlightNeighbours) {
+      // this.changeMetricRepresentedInGraph();
     }
   }
 
@@ -90,6 +100,8 @@ export class GraphComponent implements OnInit {
     this.cy.add(elements);
 
     this.updateArrowStyle();
+
+    this.updateDisplayOfZeroEdges(this.hideZeroEdges);
 
     var layout = this.cy.layout({
       name: 'circle'
@@ -189,6 +201,7 @@ export class GraphComponent implements OnInit {
     } else {
       console.error('Metric name is not in the translator.');
     }
+    this.updateDisplayOfZeroEdges(this.hideZeroEdges);
   }
 
   private updateArrowStyle (): void {
@@ -213,6 +226,35 @@ export class GraphComponent implements OnInit {
         })
         .update();
     }
+  }
+
+  private updateDisplayOfZeroEdges(hideEdges: boolean): void {
+    let self = this;
+    this.cy.batch(function() {
+      // Show only edges with a weight other than zero
+      if (hideEdges == true) {
+        self.cy.edges().forEach(function (edge) {
+          let weight = edge.data('weight');
+          if (weight != 0) {
+            edge.style({
+              'display': 'element'
+            })
+          } else {
+            edge.style({
+              'display': 'none'
+            })
+          }
+        });
+      // Show all edges
+      } else {
+        self.cy.edges().forEach(function (edge) {
+          edge.style(
+            {
+              'display': 'element'
+            })
+        });
+      }
+    });
   }
 
   private highlightNodeNeighbourhood(node: any): void {
