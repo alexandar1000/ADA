@@ -1,3 +1,7 @@
 .repository-container {
     padding-left: 10px;
 }
+
+.highlighted {
+    font-weight: bold;
+}

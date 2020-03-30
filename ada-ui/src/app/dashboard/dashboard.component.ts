@@ -3,6 +3,7 @@ import {ProjectStructure} from "../classes/project-structure";
 import {AnalyserService} from "../analyser.service";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import { NewEntryService } from '../new-entry.service';
+import { SnapshotStyleService } from '../snapshot-style.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,6 +20,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private analyserService: AnalyserService,
               private newEntryService: NewEntryService,
+              private snapshotStyleService: SnapshotStyleService,
               private route: ActivatedRoute,
               private router: Router) { }
 
@@ -58,6 +60,7 @@ export class DashboardComponent implements OnInit {
 
   sendNewEntry(owner: string, repository: string, branch: string, snapshot: string) {
     this.newEntryService.confirmNewEntry([owner, repository, branch, snapshot]);
+    this.snapshotStyleService.sendClickedSnapshotToSidebar([owner, repository, branch, snapshot]);
   }
 
   updateAdditionalInformationWithNode($event: any) {
