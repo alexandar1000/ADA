@@ -18,8 +18,8 @@ import java.util.concurrent.*;
 
 public class ADAParser {
 
-    private final int NUMBER_OF_THREADS = 8;
-    private final int NUMBER_OF_FILES_IN_A_BATCH = 80;
+    private final int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
+    private final int NUMBER_OF_FILES_IN_A_BATCH = 100;
     private final SourceFileProcessor sourceFileProcessor;
     private final CompilationUnitBuilder compilationUnitBuilder;
 
@@ -28,8 +28,8 @@ public class ADAParser {
      * Constructor of ADAParser
      */
     public ADAParser() {
-        sourceFileProcessor = new SourceFileProcessor();
-        compilationUnitBuilder = new CompilationUnitBuilder();
+        this.sourceFileProcessor = new SourceFileProcessor();
+        this.compilationUnitBuilder = new CompilationUnitBuilder();
     }
 
 
@@ -37,11 +37,12 @@ public class ADAParser {
      * It parses all the .*java source files and populates a set of ADAClass model.
      *
      * @param rootDirectory Source repository path
-     * @param filePaths     list of file path(relative) that needs to be parsed
+     * @param filePaths     set of file path(relative) that needs to be parsed
      * @return A map of parsed class in from of ADAClass model
      */
-    public SetMultimap<String, ADAClass> getParsedSourceFile(String rootDirectory, List<String> filePaths) {
-        return parseSourceFilesConcurrently(rootDirectory, filePaths);
+    public SetMultimap<String, ADAClass> getParsedSourceFile(String rootDirectory, Set<String> filePaths) {
+        List<String> sourceFilePaths = new ArrayList<>(filePaths);
+        return parseSourceFilesConcurrently(rootDirectory, sourceFilePaths);
     }
 
 
@@ -50,9 +51,10 @@ public class ADAParser {
      * It then prints the parsed ADAClasses in JSON format.
      *
      * @param rootDirectory Source repository path
+     * @param filePaths     set of file path(relative) that needs to be parsed
      * @JsonProcessingException if error occurs while preparing the JSON
      */
-    public void printParsedSourceFileInJSON(String rootDirectory, List<String> filePaths) {
+    public void printParsedSourceFileInJSON(String rootDirectory, Set<String> filePaths) {
         SetMultimap<String, ADAClass> classes = getParsedSourceFile(rootDirectory, filePaths);
         for (Map.Entry<String, ADAClass> entry : classes.entries()) {
             ObjectMapper objMapper = new ObjectMapper();
@@ -81,7 +83,7 @@ public class ADAParser {
         List<List<String>> filePathBatches = ListUtils.partition(filePaths, NUMBER_OF_FILES_IN_A_BATCH);
         List<Map<String, String>> allFileContents = sourceFileProcessor.getSourceContentsInChunks(rootDirectory, filePathBatches);
         String[] allSrcDirectories = sourceFileProcessor.getSourceDirectories(new File(rootDirectory));
-        ExecutorService executor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+        ExecutorService executor = Executors.newFixedThreadPool(NUMBER_OF_CORES);
         // Callable, return a future, submit and run the task async
         List<Callable<SetMultimap<String, ADAClass>>> listOfCallable = new ArrayList<>();
         for (Map<String, String> filePathBatch : allFileContents) {
