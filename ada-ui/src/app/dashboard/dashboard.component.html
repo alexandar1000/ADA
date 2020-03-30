@@ -5,6 +5,7 @@
 <section *ngIf="!analyserService.isLoading">
   <app-graph [projectStructure]="projectStructure" [selectedMetric]="selectedMetric"></app-graph>
   <div>
+    <app-graph-menu></app-graph-menu>
     <app-element-insight [projectStructure]="projectStructure"></app-element-insight>
     <app-snapshot-slider [snapshots]="snapshots"></app-snapshot-slider>
     <app-metric-selector [metrics]="metrics" [selectedMetric]="selectedMetric" (selectedMetricChanged)="updateSelectedMetric($event)"></app-metric-selector>
