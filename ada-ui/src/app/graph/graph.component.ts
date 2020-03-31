@@ -27,7 +27,7 @@ export class GraphComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.cy != null && (changes.selectedMetric || changes.hideZeroEdges || changes.hideNodesWithoutNeighbours)) {
+    if ((this.cy != null) && (changes.selectedMetric || changes.hideZeroEdges || changes.hideNodesWithoutNeighbours)) {
       this.changeMetricRepresentedInGraph();
       this.reflectGraphMenuStateToGraph();
     }
@@ -61,27 +61,22 @@ export class GraphComponent implements OnInit {
           },
           {
             selector: 'node.highlight',
-            style: {
-              'border-color': '#ff3b00',
-              'border-width': '5px'
-            }
+            style: {}
           },
           {
             selector: 'node.unhighlight',
             style: {
-              'opacity': 0.3
+              'opacity': 0.1
             }
           },
           {
             selector: 'edge.highlight',
-            style: {
-              'line-color': '#ff3b00'
-            }
+            style: {}
           },
           {
             selector: 'edge.unhighlight',
             style: {
-              'opacity': 0.3
+              'opacity': 0.1
             }
           }
         ]
@@ -282,7 +277,7 @@ export class GraphComponent implements OnInit {
             // If there is at least one visible edge, the node needs to be displayed
             for (let edge of connectedEdges) {
               // If the edges are not hidden or the edge is visible, display the node
-              if (!self.hideZeroEdges || edge.visible()) {
+              if (!self.hideZeroEdges || edge.data('weight') != 0) {
                 hideNode = false;
                 break;
               }
@@ -317,7 +312,6 @@ export class GraphComponent implements OnInit {
    */
   private highlightNodeNeighbourhood(node: any): void {
     let neighbourhood = node.neighborhood();
-    let self = this;
     // Use a batch update
     this.cy.batch(function() {
       let self = this;
@@ -332,7 +326,7 @@ export class GraphComponent implements OnInit {
             let hasValidEdge = false;
             let edges = node.edgesWith(element);
             for (let edge of edges) {
-              if (edge.data('weight') != 0) {
+              if (edge.visible()) {
                 hasValidEdge = true;
               }
             }
@@ -341,19 +335,21 @@ export class GraphComponent implements OnInit {
             }
           } else {
             // If the element is an edge, check if it is hidden before highlighting it
-            if (element.data('weight') != 0) {
+            if (element.visible()) {
               element.addClass('highlight');
             }
           }
         });
       }
-    }.bind(self)); // As this is a callback, bind it to the environment to know whether edges are hidden or not
+      neighbourhood.absoluteComplement().addClass('unhighlight');
+    }.bind(this)); // As this is a callback, bind it to the environment to know whether edges are hidden or not
   }
 
   private unhighlightNodeNeighbourhood(node: any): void {
     let neighbourhood = node.neighborhood();
     this.cy.batch(function(){
       neighbourhood.removeClass('highlight');
+      neighbourhood.absoluteComplement().removeClass('unhighlight');
     });
   }
 
