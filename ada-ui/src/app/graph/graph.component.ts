@@ -14,8 +14,12 @@ export class GraphComponent implements OnInit {
   private cy = null;
   @Input() projectStructure: ProjectStructure;
   @Input() selectedMetric: string;
-  @Input() hideZeroEdges = false;
-  @Input() hideNodesWithoutNeighbours = false;
+
+  @Input() areZeroWeightedEdgesHidden: boolean;
+  @Input() areNeighbourlessNodesHidden: boolean;
+  @Input() areEdgeWeightsShownAsLabels: boolean;
+  @Input() areEdgesColourCoded: boolean;
+
   private highlightedNodes: CollectionReturnValue = null;
   @Output() nodeSelectedEvent = new EventEmitter();
   @Output() edgeSelectedEvent = new EventEmitter();
@@ -227,8 +231,8 @@ export class GraphComponent implements OnInit {
    */
   private reflectGraphMenuStateToGraph(): void {
     this.cy.elements().unselect();
-    this.updateDisplayOfZeroEdges(this.hideZeroEdges);
-    this.updateDisplayOfNodesWithoutNeighbours(this.hideNodesWithoutNeighbours);
+    this.updateDisplayOfZeroEdges(this.areZeroWeightedEdgesHidden);
+    this.updateDisplayOfNodesWithoutNeighbours(this.areNeighbourlessNodesHidden);
   }
 
   /**
@@ -282,7 +286,7 @@ export class GraphComponent implements OnInit {
             // If there is at least one visible edge, the node needs to be displayed
             for (let edge of connectedEdges) {
               // If the edges are not hidden or the edge is visible, display the node
-              if (!self.hideZeroEdges || edge.data('weight') != 0) {
+              if (!self.areZeroWeightedEdgesHidden || edge.data('weight') != 0) {
                 hideNode = false;
                 break;
               }
@@ -376,7 +380,7 @@ export class GraphComponent implements OnInit {
     // Use a batch update
     this.cy.batch(function() {
       let self = this;
-      if (self.hideZeroEdges) {
+      if (self.areZeroWeightedEdgesHidden) {
         // Only make adjustments to the neighbourhood if some edges are hidden
         neighbourhood.forEach(function (element) {
           if (element.isNode()) {

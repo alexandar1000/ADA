@@ -15,10 +15,12 @@ export class DashboardComponent implements OnInit {
   private snapshots = this.analyserService.snapshots;
   private metrics = this.analyserService.metrics;
   private selectedMetric = this.metrics[0];
-  private hideZeroEdges = false;
-  private hideNodesWithoutNeighbours = false;
   private selectedNode: string;
   private selectedEdge: string;
+  private areZeroWeightedEdgesHidden = false;
+  private areNeighbourlessNodesHidden = false;
+  private areEdgeWeightsShownAsLabels = false;
+  private areEdgesColourCoded = false;
 
   constructor(private analyserService: AnalyserService,
               private newEntryService: NewEntryService,
@@ -73,11 +75,19 @@ export class DashboardComponent implements OnInit {
     this.selectedEdge = $event;
   }
 
-  handleUpdateHideZeroEdges(state: boolean): void {
-    this.hideZeroEdges = state;
+  handleUpdateZeroWeightedEdgesRepresentationEvent(state: boolean): void {
+    this.areZeroWeightedEdgesHidden = state;
   }
 
-  handleUpdateHideNodesWithoutNeighbours(state: boolean): void {
-    this.hideNodesWithoutNeighbours = state;
+  handleUpdateNeighbourlessNodesRepresentationEvent(state: boolean): void {
+    this.areNeighbourlessNodesHidden = state;
+  }
+
+  handleUpdateEdgeWeightsAsLabelRepresentationEvent(state: boolean): void {
+    this.areEdgeWeightsShownAsLabels = state;
+  }
+
+  handleUpdateEdgesColourCodingRepresentationEvent(state: boolean): void {
+    this.areEdgesColourCoded = state;
   }
 }

@@ -2,10 +2,24 @@
   <p><u>Menu:</u></p>
   <ul>
     <li>
-      <mat-checkbox [checked]="areZeroWeightedEdgesHidden" (change)="handleZeroWeightedEdgesRepresentationChange($event)">Hide zero weights</mat-checkbox>
+      <mat-checkbox [checked]="areZeroWeightedEdgesHidden"
+                    (change)="handleZeroWeightedEdgesRepresentationChange($event)"
+      >Hide zero weights</mat-checkbox>
     </li>
     <li>
-      <mat-checkbox [checked]="areNodesWithoutNeighboursHidden" (change)="handleNodesWithoutNeighboursRepresentationChange($event)">Hide nodes without outgoing/incoming edges</mat-checkbox>
+      <mat-checkbox [checked]="areNeighbourlessNodesHidden"
+                    (change)="handleNodesWithoutNeighboursRepresentationChange($event)"
+      >Hide nodes without outgoing/incoming edges</mat-checkbox>
+    </li>
+    <li>
+      <mat-checkbox [checked]="areEdgeWeightsShownAsLabels"
+                    (change)="handleEdgeWeightsAsLabelRepresentationChange($event)"
+      >Show edge metrics as labels</mat-checkbox>
+    </li>
+    <li>
+      <mat-checkbox [checked]="areEdgesColourCoded"
+                    (change)="handleEdgesColourCodingRepresentationChange($event)"
+      >Show edge metrics by colour coding the edges</mat-checkbox>
     </li>
   </ul>
 </div>

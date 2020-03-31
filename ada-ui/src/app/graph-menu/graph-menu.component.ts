@@ -7,10 +7,10 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class GraphMenuComponent implements OnInit {
 
-  @Input() areZeroWeightedEdgesHidden = false;
-  @Input() areNodesWithoutNeighboursHidden = false;
-  @Input() areEdgeWeightsShownAsLabels = false;
-  @Input() areEdgesColourCoded = false;
+  @Input() areZeroWeightedEdgesHidden: boolean;
+  @Input() areNeighbourlessNodesHidden: boolean;
+  @Input() areEdgeWeightsShownAsLabels: boolean;
+  @Input() areEdgesColourCoded: boolean;
 
   @Output() updateZeroWeightedEdgesRepresentationEvent = new EventEmitter();
   @Output() updateNeighbourlessNodesRepresentationEvent = new EventEmitter();
@@ -28,8 +28,8 @@ export class GraphMenuComponent implements OnInit {
   }
 
   handleNodesWithoutNeighboursRepresentationChange($event: any): void {
-    this.areNodesWithoutNeighboursHidden = $event.checked;
-    this.updateNeighbourlessNodesRepresentationEvent.emit(this.areNodesWithoutNeighboursHidden);
+    this.areNeighbourlessNodesHidden = $event.checked;
+    this.updateNeighbourlessNodesRepresentationEvent.emit(this.areNeighbourlessNodesHidden);
   }
 
   handleEdgeWeightsAsLabelRepresentationChange($event: any): void {
