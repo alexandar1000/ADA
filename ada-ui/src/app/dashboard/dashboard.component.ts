@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit {
     if (this.router.url == '/dashboard/current') {
       this.analyserService.isLoading = true;
       this.analyserService.doAnalysis().subscribe(dataJson => {
-        this.updateProjectStructure(dataJson)
+        this.updateProjectStructure(dataJson);
         let owner = dataJson['gitRepoInfo'].owner;
         let repository = dataJson['gitRepoInfo'].repository;
         let branch = dataJson['gitRepoInfo'].branch;

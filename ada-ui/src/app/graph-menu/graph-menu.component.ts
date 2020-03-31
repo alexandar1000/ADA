@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-graph-menu',
@@ -7,8 +7,8 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 })
 export class GraphMenuComponent implements OnInit {
 
-  private areZeroWeightsHidden = false;
-  private areNodesWithoutNeighboursHidden = false;
+  @Input() areZeroWeightsHidden = false;
+  @Input() areNodesWithoutNeighboursHidden = false;
   @Output() hideZeroWeightsEvent = new EventEmitter();
   @Output() hideNodesWithoutEdgesEvent = new EventEmitter();
 

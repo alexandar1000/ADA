@@ -7,7 +7,10 @@
              [hideNodesWithoutNeighbours]="hideNodesWithoutNeighbours"></app-graph>
   <div>
     <app-graph-menu (hideZeroWeightsEvent)="handleUpdateHideZeroEdges($event)"
-                    (hideNodesWithoutEdgesEvent)="handleUpdateHideNodesWithoutNeighbours($event)"></app-graph-menu>
+                    (hideNodesWithoutEdgesEvent)="handleUpdateHideNodesWithoutNeighbours($event)"
+                    [areZeroWeightsHidden]="hideZeroEdges"
+                    [areNodesWithoutNeighboursHidden]="hideNodesWithoutNeighbours"
+    ></app-graph-menu>
     <app-element-insight [projectStructure]="projectStructure"></app-element-insight>
     <app-snapshot-slider [snapshots]="snapshots"></app-snapshot-slider>
     <app-metric-selector [metrics]="metrics" [selectedMetric]="selectedMetric" (selectedMetricChanged)="updateSelectedMetric($event)"></app-metric-selector>
