@@ -35,9 +35,17 @@ export class GraphComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if ((this.cy != null) && (changes.selectedMetric || changes.hideZeroEdges || changes.hideNodesWithoutNeighbours)) {
-      this.changeMetricRepresentedInGraph();
-      this.reflectGraphMenuStateToGraph();
+    if (this.cy != null) {
+      if (changes.selectedMetric || changes.areZeroWeightedEdgesHidden || changes.areNeighbourlessNodesHidden) {
+        this.changeMetricRepresentedInGraph();
+        this.reflectGraphMenuStateToGraph();
+      }
+      if (changes.areEdgeWeightsShownAsLabels) {
+        console.log(this.areEdgeWeightsShownAsLabels);
+      }
+      if (changes.areEdgesColourCoded) {
+        console.log(this.areEdgesColourCoded);
+      }
     }
   }
 
