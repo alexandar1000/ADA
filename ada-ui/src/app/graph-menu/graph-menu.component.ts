@@ -7,23 +7,38 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class GraphMenuComponent implements OnInit {
 
-  @Input() areZeroWeightsHidden = false;
+  @Input() areZeroWeightedEdgesHidden = false;
   @Input() areNodesWithoutNeighboursHidden = false;
-  @Output() hideZeroWeightsEvent = new EventEmitter();
-  @Output() hideNodesWithoutEdgesEvent = new EventEmitter();
+  @Input() areEdgeWeightsShownAsLabels = false;
+  @Input() areEdgesColourCoded = false;
+
+  @Output() updateZeroWeightedEdgesRepresentationEvent = new EventEmitter();
+  @Output() updateNeighbourlessNodesRepresentationEvent = new EventEmitter();
+  @Output() updateEdgeWeightsAsLabelRepresentationEvent = new EventEmitter();
+  @Output() updateEdgesColourCodingRepresentationEvent = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  handleZeroWeightsChanged($event: any): void {
-    this.areZeroWeightsHidden = $event.checked;
-    this.hideZeroWeightsEvent.emit(this.areZeroWeightsHidden);
+  handleZeroWeightedEdgesRepresentationChange($event: any): void {
+    this.areZeroWeightedEdgesHidden = $event.checked;
+    this.updateZeroWeightedEdgesRepresentationEvent.emit(this.areZeroWeightedEdgesHidden);
   }
 
-  handleNodesWithoutNeighboursChanged($event: any): void {
+  handleNodesWithoutNeighboursRepresentationChange($event: any): void {
     this.areNodesWithoutNeighboursHidden = $event.checked;
-    this.hideNodesWithoutEdgesEvent.emit(this.areNodesWithoutNeighboursHidden);
+    this.updateNeighbourlessNodesRepresentationEvent.emit(this.areNodesWithoutNeighboursHidden);
+  }
+
+  handleEdgeWeightsAsLabelRepresentationChange($event: any): void {
+    this.areEdgeWeightsShownAsLabels = $event.checked;
+    this.updateEdgeWeightsAsLabelRepresentationEvent.emit(this.areEdgeWeightsShownAsLabels);
+  }
+
+  handleEdgesColourCodingRepresentationChange($event: any): void {
+    this.areEdgesColourCoded = $event.checked;
+    this.updateEdgesColourCodingRepresentationEvent.emit(this.areEdgesColourCoded);
   }
 }

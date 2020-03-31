@@ -7,9 +7,9 @@
              [hideNodesWithoutNeighbours]="hideNodesWithoutNeighbours"
              (nodeSelectedEvent)="updateAdditionalInformationWithNode($event)" (edgeSelectedEvent)="updateAdditionalInformationWithEdge($event)"></app-graph>
   <div>
-    <app-graph-menu (hideZeroWeightsEvent)="handleUpdateHideZeroEdges($event)"
-                    (hideNodesWithoutEdgesEvent)="handleUpdateHideNodesWithoutNeighbours($event)"
-                    [areZeroWeightsHidden]="hideZeroEdges"
+    <app-graph-menu (updateZeroWeightedEdgesRepresentationEvent)="handleUpdateHideZeroEdges($event)"
+                    (updateNeighbourlessNodesRepresentationEvent)="handleUpdateHideNodesWithoutNeighbours($event)"
+                    [areZeroWeightedEdgesHidden]="hideZeroEdges"
                     [areNodesWithoutNeighboursHidden]="hideNodesWithoutNeighbours"
     ></app-graph-menu>
     <app-element-insight [projectStructure]="projectStructure" [selectedNode]="selectedNode" [selectedEdge]="selectedEdge"></app-element-insight>
