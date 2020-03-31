@@ -28,7 +28,6 @@ export class GraphComponent implements OnInit {
     this.initCytoscape();
     this.initEventHandlers();
     this.repopulateGraph();
-    this.initEventHandlers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -426,20 +425,14 @@ export class GraphComponent implements OnInit {
     return neighbourhood;
   }
 
-  private handleSelectElement(): void {
-    let self = this;
-    this.cy.on('select', '*', function(evt){
-      self.highlightElementNeighbourhood(evt.target);
-    });
+  private emitElementSelectedEvent(element: any): void {
+    if (element.isNode()) {
+      this.nodeSelected(element.id());
+    } else if (element.isEdge()){
+      this.edgeSelected(element.id());
+    }
   }
 
-  private handleUnselectElement(): void {
-    let self = this;
-    this.cy.on('unselect', '*', function(evt){
-      self.unhighlightElementNeighbourhood(evt.target);
-    });
-  }
-    
   private nodeSelected(nodeId: string) {
     this.nodeSelectedEvent.emit(nodeId);
   }
@@ -448,42 +441,32 @@ export class GraphComponent implements OnInit {
     this.edgeSelectedEvent.emit(edgeId);
   }
 
-  private handleOnSelectNodeEvent() {
+  /**
+   * If an element in the graph was selected, handle the event
+   */
+  private handleSelectElement(): void {
     let self = this;
-    this.cy.on('select', 'node', function(evt){
-      var node = evt.target;
-      self.nodeSelected(node.id());
+    this.cy.on('select', '*', function(evt){
+      self.emitElementSelectedEvent(evt.target);
+      self.highlightElementNeighbourhood(evt.target);
     });
   }
 
-  private handleOnUnselectNodeEvent() {
+  /**
+   * If an element in the graph was unselected, handle the event
+   */
+  private handleUnselectElement(): void {
     let self = this;
-    this.cy.on('unselect', 'node', function(evt){
-      self.nodeSelected(null);
+    this.cy.on('unselect', '*', function(evt){
+      self.unhighlightElementNeighbourhood(evt.target);
     });
   }
 
-  private handleOnSelectEdgeEvent() {
-    let self = this;
-    this.cy.on('select', 'edge', function(evt){
-      var edge = evt.target;
-      self.edgeSelected(edge.id());
-    });
-    }
-
-  private handleOnUnselectEdgeEvent() {
-    let self = this;
-    this.cy.on('unselect', 'edge', function(evt){
-      self.edgeSelected(null);
-    });
-  }
-
-  private initEventHandlers() {
+  /**
+   * Initialise all of the event handlers
+   */
+  private initEventHandlers(): void {
     this.handleSelectElement();
     this.handleUnselectElement();
-    this.handleOnSelectNodeEvent();
-    this.handleOnUnselectNodeEvent();
-    this.handleOnSelectEdgeEvent();
-    this.handleOnUnselectEdgeEvent();
   }
 }
