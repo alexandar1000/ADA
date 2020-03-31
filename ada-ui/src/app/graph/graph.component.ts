@@ -15,6 +15,7 @@ export class GraphComponent implements OnInit {
   @Input() selectedMetric: string;
   @Input() hideZeroEdges = false;
   @Input() hideNodesWithoutNeighbours = false;
+  private highlightedNodes: any = null;
   private metricNameConverter = new MetricNameConverter();
 
 
@@ -81,6 +82,7 @@ export class GraphComponent implements OnInit {
           }
         ]
       });
+    this.highlightedNodes = this.cy.collection();
   }
 
   private repopulateGraph(): void {
@@ -307,6 +309,19 @@ export class GraphComponent implements OnInit {
   }
 
   /**
+   * Highlight the selection of the element while abstracting from whether it is a node or an edge
+   * @param element element which is selected
+   */
+  private highlightElementNeighbourhood(element: any): void {
+    if (element.isNode()) {
+      this.highlightNodeNeighbourhood(element);
+    } else if (element.isEdge()) {
+      this.highlightEdgeNeighbourhood(element);
+    }
+
+  }
+
+  /**
    * Highlights the neighbouring nodes and the corresponding edges
    * @param node the node in the graph which is selected
    */
@@ -373,10 +388,10 @@ export class GraphComponent implements OnInit {
     });
   }
 
-  private handleSelectNode() : void {
+  private handleSelectElement(): void {
     let self = this;
-    this.cy.on('select', 'node', function(evt){
-      self.highlightNodeNeighbourhood(evt.target);
+    this.cy.on('select', '*', function(evt){
+      self.highlightElementNeighbourhood(evt.target);
     });
   }
 
@@ -384,13 +399,6 @@ export class GraphComponent implements OnInit {
     let self = this;
     this.cy.on('unselect', 'node', function(evt){
       self.unhighlightNodeNeighbourhood(evt.target);
-    });
-  }
-
-  private handleSelectEdge() : void {
-    let self = this;
-    this.cy.on('select', 'edge', function(evt){
-      self.highlightEdgeNeighbourhood(evt.target);
     });
   }
 
@@ -402,9 +410,10 @@ export class GraphComponent implements OnInit {
   }
 
   private initEventHandlers(): void {
-    this.handleSelectNode();
+    this.handleSelectElement();
+    // this.handleSelectNode();
     this.handleUnselectNode();
-    this.handleSelectEdge();
+    // this.handleSelectEdge();
     this.handleUnselectEdge();
   }
 }
