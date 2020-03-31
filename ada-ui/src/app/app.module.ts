@@ -32,6 +32,8 @@ import { FilterPipe } from './filter.pipe';
 import { SidebarService } from './sidebar.service';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { ElementInsightComponent } from './element-insight/element-insight.component';
+import { GraphMenuComponent } from './graph-menu/graph-menu.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [
@@ -49,27 +51,29 @@ import { ElementInsightComponent } from './element-insight/element-insight.compo
     SnapshotComponent,
     FilterPipe,
     ElementInsightComponent,
+    GraphMenuComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    LayoutModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatInputModule,
-    MatSnackBarModule,
-    ReactiveFormsModule,
-    FormsModule,
-    HttpClientModule,
-    MatSliderModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatProgressSpinnerModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        LayoutModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatSidenavModule,
+        MatIconModule,
+        MatListModule,
+        MatInputModule,
+        MatSnackBarModule,
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientModule,
+        MatSliderModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatProgressSpinnerModule,
+        MatCheckboxModule
+    ],
   providers: [AnalyserService, SidebarService],
   bootstrap: [AppComponent]
 })

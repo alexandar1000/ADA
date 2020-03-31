@@ -15,6 +15,8 @@ export class DashboardComponent implements OnInit {
   private snapshots = this.analyserService.snapshots;
   private metrics = this.analyserService.metrics;
   private selectedMetric = this.metrics[0];
+  private hideZeroEdges = false;
+  private hideNodesWithoutNeighbours = false;
   private selectedNode: string;
   private selectedEdge: string;
 
@@ -28,7 +30,7 @@ export class DashboardComponent implements OnInit {
     if (this.router.url == '/dashboard/current') {
       this.analyserService.isLoading = true;
       this.analyserService.doAnalysis().subscribe(dataJson => {
-        this.updateProjectStructure(dataJson)
+        this.updateProjectStructure(dataJson);
         let owner = dataJson['gitRepoInfo'].owner;
         let repository = dataJson['gitRepoInfo'].repository;
         let branch = dataJson['gitRepoInfo'].branch;
@@ -69,5 +71,13 @@ export class DashboardComponent implements OnInit {
 
   updateAdditionalInformationWithEdge($event: any) {
     this.selectedEdge = $event;
+  }
+
+  handleUpdateHideZeroEdges(state: boolean): void {
+    this.hideZeroEdges = state;
+  }
+
+  handleUpdateHideNodesWithoutNeighbours(state: boolean): void {
+    this.hideNodesWithoutNeighbours = state;
   }
 }
