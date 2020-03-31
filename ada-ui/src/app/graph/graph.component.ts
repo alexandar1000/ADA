@@ -44,7 +44,7 @@ export class GraphComponent implements OnInit {
         this.toggleDisplayOfEdgeWeightsAsLabels(this.areEdgeWeightsShownAsLabels);
       }
       if (changes.areEdgesColourCoded) {
-        console.log(this.areEdgesColourCoded);
+        this.toggleEdgeColourcoding(this.areEdgesColourCoded);
       }
     }
   }
@@ -248,6 +248,8 @@ export class GraphComponent implements OnInit {
     this.cy.elements().unselect();
     this.updateDisplayOfZeroEdges(this.areZeroWeightedEdgesHidden);
     this.updateDisplayOfNodesWithoutNeighbours(this.areNeighbourlessNodesHidden);
+    this.toggleDisplayOfEdgeWeightsAsLabels(this.areEdgeWeightsShownAsLabels);
+    this.toggleEdgeColourcoding(this.areEdgesColourCoded);
   }
 
   /**
@@ -452,6 +454,53 @@ export class GraphComponent implements OnInit {
     }
   }
 
+  private toggleEdgeColourcoding(areEdgesColourCoded: boolean) {
+    let self = this;
+    if (areEdgesColourCoded) {
+      this.cy.edges().forEach(function (edge) {
+        let colour = GraphComponent.getColourCoding(edge.data('weight'));
+        edge.style('line-color', colour);
+        edge.style('source-arrow-color', colour);
+        edge.style('target-arrow-color', colour);
+      });
+    } else {
+      this.cy.edges().forEach(function (edge) {
+        edge.removeStyle('line-color');
+        edge.removeStyle('source-arrow-color');
+        edge.removeStyle('target-arrow-color');
+      });
+    }
+  }
+
+  private static INFINITE_WEIGHT_SPACE = 0;
+  private static NORMALISED_WEIGHT_SPACE = 1;
+
+  private static getColourCoding(weight: number, weightSpace: number = GraphComponent.INFINITE_WEIGHT_SPACE): string {
+    let gradients = ['#34ff29', '#70ff29', '#94ff29', '#b8ff29', '#d8ff29', '#fbff29', '#ffe629', '#ffbf29', '#ff9f29', '#ff7429', '#ff5729', '#ff2929'];
+    if (weightSpace == GraphComponent.INFINITE_WEIGHT_SPACE) {
+      if (weight <= 10) {
+        return gradients[Math.round(weight)];
+      } else {
+        return gradients[11];
+      }
+    } else if (weightSpace == GraphComponent.NORMALISED_WEIGHT_SPACE) {
+      if (weight == 1) {
+        return gradients[11];
+      } else if (weight == 0) {
+        return gradients[0];
+      } else {
+        let correspondingGradient = weight * 10;
+        if (correspondingGradient < 5) {
+          correspondingGradient = Math.ceil(correspondingGradient);
+        } else {
+          correspondingGradient = Math.floor(correspondingGradient);
+        }
+        return gradients[correspondingGradient];
+      }
+    }
+
+  }
+
   /**
    * Abstract the emitting of the event regardless of its type
    * @param element element which is selected
@@ -500,7 +549,6 @@ export class GraphComponent implements OnInit {
       self.unhighlightElementNeighbourhood(evt.target);
     });
   }
-
   /**
    * Initialise all of the event handlers
    */
