@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,31 +19,44 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
+@Table(name = "SNAPSHOT")
 public class Snapshot extends BaseEntity {
 
     /**
      * Branch entity corresponding to this snapshot
      */
+    @ManyToOne
+    @JoinColumn(name = "branch_id", nullable = false)
     private Branch branch;
-
-    /**
-     * a map of ClassStructures, the key is qualified class name
-     */
-    private Map<String, ClassStructure> classStructures = new HashMap<>();
 
     /**
      * Set of analysis request that retrieved this snapshot
      */
+    @OneToMany(mappedBy = "snapshot")
     private Set<AnalysisRequest> analysisRequests = new HashSet<>();
 
     /**
      * Timestamp of the commit time of the snapshot, in UTC time standard
      */
+    @Column(name = "timestamp", nullable = false)
     private OffsetDateTime commitTime;
+
+    /**
+     * a map of ClassStructures, the key is qualified class name
+     */
+    @ManyToMany
+    @JoinTable(name = "SNAPSHOT_CLASS_STRUCTURE",
+            joinColumns = {@JoinColumn(name = "snapshot_id")},
+            inverseJoinColumns = {@JoinColumn(name = "class_structure_id")})
+    @MapKeyColumn(name = "class_name")
+    private Map<String, ClassStructure> classStructures = new HashMap<>();
 
     /**
      * a map of source files, the key is the file path
      */
+    @OneToMany(mappedBy = "snapshot")
+    @MapKeyColumn(name = "file_path")
     private Map<String, SourceFile> sourceFiles = new HashMap<>();
 
     /**

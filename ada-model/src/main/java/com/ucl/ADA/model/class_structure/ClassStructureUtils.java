@@ -2,6 +2,8 @@ package com.ucl.ADA.model.class_structure;
 
 import com.google.common.collect.SetMultimap;
 import com.ucl.ADA.model.dependence_information.DependenceInfo;
+import com.ucl.ADA.model.dependence_information.IncomingDependenceInfo;
+import com.ucl.ADA.model.dependence_information.OutgoingDependenceInfo;
 import com.ucl.ADA.model.dependence_information.invocation_information.*;
 import com.ucl.ADA.model.static_information.declaration_information.*;
 import lombok.NonNull;
@@ -20,14 +22,14 @@ public class ClassStructureUtils {
     /**
      * initialize a new class structure given the file name and file hash
      *
-     * @param fileName name of the file, which is also file path
+     * @param filePath name of the file, which is also file path
      * @param fileHash hash of the file
      * @return the new created class structure
      */
-    public static ClassStructure initClassStructureWithFileNameAndFileHash(@NonNull String className, @NonNull String fileName, @NonNull String fileHash) {
+    public static ClassStructure initClassStructureWithFileNameAndFileHash(@NonNull String className, @NonNull String filePath, @NonNull String fileHash) {
         ClassStructure classStructure = new ClassStructure();
         classStructure.setClassName(className);
-        classStructure.setFileName(fileName);
+        classStructure.setFilePath(filePath);
         classStructure.setFileHash(fileHash);
         return classStructure;
     }
@@ -82,13 +84,13 @@ public class ClassStructureUtils {
             classStructure.setIncomingDependenceInfos(prevClassStructure.getIncomingDependenceInfos());
         } else {
             // reuse incoming dependence info excludes incomingToDeleteMap from previous class structure
-            Map<String, DependenceInfo> incomingDependenceInfo = classStructure.getIncomingDependenceInfos();
+            Map<String, IncomingDependenceInfo> incomingDependenceInfo = classStructure.getIncomingDependenceInfos();
             if (incomingToDeleteMap.containsKey(className)) {
                 // if there are incoming dependence info to delete, query from incomingToDeleteMap
                 Set<String> incomingToDeleteSet = incomingToDeleteMap.get(className);
-                for (Map.Entry<String, DependenceInfo> entry : prevClassStructure.getIncomingDependenceInfos().entrySet()) {
+                for (Map.Entry<String, IncomingDependenceInfo> entry : prevClassStructure.getIncomingDependenceInfos().entrySet()) {
                     String incomingClass = entry.getKey();
-                    DependenceInfo dependenceInfo = entry.getValue();
+                    IncomingDependenceInfo dependenceInfo = entry.getValue();
                     if (!incomingToDeleteSet.contains(incomingClass)) {
                         incomingDependenceInfo.put(incomingClass, dependenceInfo);
                     }
@@ -127,7 +129,7 @@ public class ClassStructureUtils {
         if (!m.getClassName().equals(n.getClassName())) {
             throw new IllegalArgumentException("the two input class structures must have the same class name");
         }
-        return m.getFileName().equals(n.getFileName()) && m.getFileHash().equals(n.getFileHash());
+        return m.getFilePath().equals(n.getFilePath()) && m.getFileHash().equals(n.getFileHash());
     }
 
     /* ************************************************************************
@@ -180,24 +182,24 @@ public class ClassStructureUtils {
      * @param invocationType      the implemented type of invocation
      */
     public static void addInternalInvocationToClassStructure(@NonNull ClassStructure classStructure, @NonNull String relatingClass, @NonNull InvocationDirection invocationDirection, @NonNull InvocationType invocationType, @NonNull ElementInvocation invocation) {
-        // retrieve either outgoing or incoming dependence infos
-        Map<String, DependenceInfo> dependenceInfos;
+        DependenceInfo dependenceInfo;
+        // retrieve outgoing or incoming dependence info
         switch (invocationDirection) {
             case OUTGOING:
-                dependenceInfos = classStructure.getOutgoingDependenceInfos();
+                if (!classStructure.getOutgoingDependenceInfos().containsKey(relatingClass)) {
+                    classStructure.getOutgoingDependenceInfos().put(relatingClass, new OutgoingDependenceInfo());
+                }
+                dependenceInfo = classStructure.getOutgoingDependenceInfos().get(relatingClass);
                 break;
             case INCOMING:
-                dependenceInfos = classStructure.getIncomingDependenceInfos();
+                if (!classStructure.getIncomingDependenceInfos().containsKey(relatingClass)) {
+                    classStructure.getIncomingDependenceInfos().put(relatingClass, new IncomingDependenceInfo());
+                }
+                dependenceInfo = classStructure.getIncomingDependenceInfos().get(relatingClass);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid invocation direction");
         }
-
-        // check if the dependence info to the relating class exists
-        if (!dependenceInfos.containsKey(relatingClass)) {
-            dependenceInfos.put(relatingClass, new DependenceInfo());
-        }
-        DependenceInfo dependenceInfo = dependenceInfos.get(relatingClass);
 
         // add new invocation by its type
         switch (invocationType) {

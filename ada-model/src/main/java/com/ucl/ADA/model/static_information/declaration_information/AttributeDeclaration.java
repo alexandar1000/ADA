@@ -4,28 +4,39 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
+import javax.persistence.*;
 import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
+@Table(name = "ATTRIBUTE_DECLARATION")
 public class AttributeDeclaration extends ElementDeclaration {
 
     /**
      * The type of the attribute.
      */
+    @Column(name = "type")
     private String type;
 
     /**
      * The value assigned to the attribute.
      */
+    @Column(name = "value")
     private String value;
 
     /**
      * The access modifier assigned to the attribute.
      */
-    private Set<ModifierType> modifierTypes = new HashSet<>();
+    @ElementCollection(targetClass = ModifierType.class)
+    @CollectionTable(
+            name = "ATTRIBUTE_DECLARATION_MODIFIER_TYPE",
+            joinColumns = @JoinColumn(name = "attribute_declaration_id")
+    )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "modifier_type")
+    private Set<ModifierType> modifierTypes;
 
     /**
      * The constructor of the attribute declaration object.
@@ -37,9 +48,7 @@ public class AttributeDeclaration extends ElementDeclaration {
      */
     public AttributeDeclaration(Set<ModifierType> modifierTypes, String type, String name, String value) {
         super(name);
-        if (modifierTypes != null) {
-            this.modifierTypes.addAll(modifierTypes);
-        }
+        this.modifierTypes = modifierTypes;
         this.type = type;
         this.value = value;
     }

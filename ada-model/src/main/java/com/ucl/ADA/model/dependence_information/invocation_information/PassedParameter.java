@@ -5,14 +5,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
+@Table(name = "PASSED_PARAMETER")
 public class PassedParameter extends BaseEntity {
 
     /**
      * the message of the passed parameter
      */
+    @Column(name = "name")
     private String name;
 
     /**

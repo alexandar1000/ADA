@@ -4,25 +4,39 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
+@Table(name = "CONSTRUCTOR_DECLARATION")
 public class ConstructorDeclaration extends ElementDeclaration {
 
     /**
      * The access modifier assigned to the constructor.
      */
-    private Set<ModifierType> modifierTypes = new HashSet<>();
+    @ElementCollection(targetClass = ModifierType.class)
+    @CollectionTable(
+            name = "CONSTRUCTOR_DECLARATION_MODIFIER_TYPE",
+            joinColumns = @JoinColumn(name = "constructor_declaration_id")
+    )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "modifier_type")
+    private Set<ModifierType> modifierTypes;
 
     /**
      * List of the parameters which the constructor accepts.
      */
-    private List<ParameterDeclaration> parameters = new ArrayList<>();
+    @OneToMany
+    @JoinTable(
+            name = "CONSTRUCTOR_DECLARATION_PARAMETER_DECLARATION",
+            joinColumns = @JoinColumn(name = "constructor_declaration_id"),
+            inverseJoinColumns = @JoinColumn(name = "parameter_declaration_id")
+    )
+    private List<ParameterDeclaration> parameters;
 
     /**
      * The constructor of the constructor declaration object.
@@ -33,11 +47,7 @@ public class ConstructorDeclaration extends ElementDeclaration {
      */
     public ConstructorDeclaration(Set<ModifierType> modifierTypes, String name, List<ParameterDeclaration> parameters) {
         super(name);
-        if (modifierTypes != null) {
-            this.modifierTypes.addAll(modifierTypes);
-        }
-        if (parameters != null) {
-            this.parameters.addAll(parameters);
-        }
+        this.modifierTypes = modifierTypes;
+        this.parameters = parameters;
     }
 }
