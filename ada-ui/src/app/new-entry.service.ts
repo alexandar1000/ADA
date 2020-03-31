@@ -10,7 +10,6 @@ export class NewEntryService {
 
   newEntryConfirmed$ = this.newEntryConfirmedSource.asObservable();
 
-
   constructor() { }
 
   confirmNewEntry(entry: string[]) {
