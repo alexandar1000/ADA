@@ -2,6 +2,7 @@ import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import * as cytoscape from 'cytoscape';
 import {MetricNameConverter} from "../classes/metric-name-converter";
 import {ProjectStructure} from "../classes/project-structure";
+import {CollectionReturnValue} from "cytoscape";
 
 @Component({
   selector: 'app-graph',
@@ -15,7 +16,7 @@ export class GraphComponent implements OnInit {
   @Input() selectedMetric: string;
   @Input() hideZeroEdges = false;
   @Input() hideNodesWithoutNeighbours = false;
-  private highlightedNodes: any = null;
+  private highlightedNodes: CollectionReturnValue = null;
   private metricNameConverter = new MetricNameConverter();
 
 
@@ -313,28 +314,68 @@ export class GraphComponent implements OnInit {
    * @param element element which is selected
    */
   private highlightElementNeighbourhood(element: any): void {
-    if (element.isNode()) {
-      this.highlightNodeNeighbourhood(element);
-    } else if (element.isEdge()) {
-      this.highlightEdgeNeighbourhood(element);
-    }
+    let highlightedNeighbourhood;
+    this.cy.batch(function() {
+      // Get the neighbourhoods of the given element
+      if (element.isNode()) {
+        highlightedNeighbourhood = this.getNodeNeighbourhood(element);
+      } else if (element.isEdge()) {
+        highlightedNeighbourhood = this.getEdgeNeighbourhood(element);
+      }
+      // Add the neighbourhood of the given element to the highlighted nodes
+      this.highlightedNodes = this.highlightedNodes.union(highlightedNeighbourhood);
 
+      // Reset the classes before assigning new ones
+      this.cy.elements().removeClass('highlight');
+      highlightedNeighbourhood.removeClass('unhighlight');
+
+      // Highlight the neighbourhood and unhighlight all elements not in the neighbourhood
+      this.highlightedNodes.addClass('highlight');
+      this.highlightedNodes.absoluteComplement().addClass('unhighlight');
+    }.bind(this));
   }
 
   /**
-   * Highlights the neighbouring nodes and the corresponding edges
+   * Unhighlight the selection of the element while abstracting from whether it is a node or an edge
+   * @param element element which is unselected
+   */
+  private unhighlightElementNeighbourhood(element: any): void {
+    let neighbourhoodToStayHighlighted = this.cy.collection();
+    let selectedElements = this.cy.elements('*:selected');
+    this.cy.batch(function() {
+      // Remove any highlighting/unhighlighting
+      this.cy.elements().removeClass('highlight');
+      this.cy.elements().removeClass('unhighlight');
+
+      // Get the neighbourhoods of the remaining selected elements (possibly none)
+      for (let element of selectedElements) {
+        if (element.isNode()) {
+          neighbourhoodToStayHighlighted = neighbourhoodToStayHighlighted.union(this.getNodeNeighbourhood(element));
+        } else if (element.isEdge()) {
+          neighbourhoodToStayHighlighted = neighbourhoodToStayHighlighted.union(this.getEdgeNeighbourhood(element));
+        }
+      }
+      // Update the elements which are highlighted in the graph
+      this.highlightedNodes = neighbourhoodToStayHighlighted;
+      // If there is more than one element which needs to be highlighted, do the corresponding highlighting
+      if (selectedElements.length > 0) {
+        this.highlightedNodes.addClass('highlight');
+        this.highlightedNodes.absoluteComplement().addClass('unhighlight');
+      }
+    }.bind(this));
+  }
+
+  /**
+   * Given a node, get its neighbouring nodes, the corresponding edges and itself
    * @param node the node in the graph which is selected
    */
-  private highlightNodeNeighbourhood(node: any): void {
+  private getNodeNeighbourhood(node: any): CollectionReturnValue {
     let neighbourhood = node.neighborhood();
     // Use a batch update
     this.cy.batch(function() {
       let self = this;
-      if (!self.hideZeroEdges) {
-        // All elements are displayed so the entire neighbourhood can be highlighted
-        neighbourhood.addClass('highlight');
-      } else {
-        // As some edges are hidden, some nodes need to be omitted from the highlighting
+      if (self.hideZeroEdges) {
+        // Only make adjustments to the neighbourhood if some edges are hidden
         neighbourhood.forEach(function (element) {
           if (element.isNode()) {
             // If the element is node, check whether they have a displayed edge between them
@@ -345,47 +386,41 @@ export class GraphComponent implements OnInit {
                 hasValidEdge = true;
               }
             }
-            if (hasValidEdge) {
-              element.addClass('highlight');
+            if (!hasValidEdge) {
+              neighbourhood = neighbourhood.difference(element);
             }
           } else {
-            // If the element is an edge, check if it is hidden before highlighting it
-            if (element.visible()) {
-              element.addClass('highlight');
+            // If the element is an edge, check if it is hidden, and if so remove it from the neighbourhood
+            if (!element.visible()) {
+              neighbourhood = neighbourhood.difference(element);
             }
           }
         });
       }
-      neighbourhood.absoluteComplement().difference(node).addClass('unhighlight');
+      // Add the node itself to the neighbourhood so that it is highlighted
+      neighbourhood = neighbourhood.union(node);
     }.bind(this)); // As this is a callback, bind it to the environment to know whether edges are hidden or not
+
+    return neighbourhood;
   }
 
-  private unhighlightNodeNeighbourhood(node: any): void {
-    let neighbourhood = node.neighborhood();
-    this.cy.batch(function(){
-      neighbourhood.removeClass('highlight');
-      neighbourhood.absoluteComplement().removeClass('unhighlight');
-    });
-  }
-
-  private highlightEdgeNeighbourhood(edge: any): void {
+  /**
+   * Given an edge, get its neighbouring nodes and itself
+   * @param edge the edge in the graph which is selected
+   */
+  private getEdgeNeighbourhood(edge: any): CollectionReturnValue {
     let connectedNodes = edge.connectedNodes();
-    let self = this;
+    let neighbourhood;
     this.cy.batch(function() {
-      edge.addClass('highlight');
-      connectedNodes.addClass('highlight');
-      self.cy.elements().difference(edge).difference(connectedNodes).addClass('unhighlight');
-    });
-  }
+      connectedNodes.forEach(function (node) {
+        if (!node.visible()) {
+          connectedNodes = connectedNodes.diff(node);
+        }
+      });
+      neighbourhood = connectedNodes.union(edge);
+    }.bind(this));
 
-  private unhighlightEdgeNeighbourhood(edge: any): void {
-    let connectedNodes = edge.connectedNodes();
-    let self = this;
-    this.cy.batch(function(){
-      edge.removeClass('highlight');
-      connectedNodes.removeClass('highlight');
-      self.cy.elements().difference(edge).difference(connectedNodes).removeClass('unhighlight');
-    });
+    return neighbourhood;
   }
 
   private handleSelectElement(): void {
@@ -395,25 +430,15 @@ export class GraphComponent implements OnInit {
     });
   }
 
-  private handleUnselectNode() : void {
+  private handleUnselectElement(): void {
     let self = this;
-    this.cy.on('unselect', 'node', function(evt){
-      self.unhighlightNodeNeighbourhood(evt.target);
-    });
-  }
-
-  private handleUnselectEdge() : void {
-    let self = this;
-    this.cy.on('unselect', 'edge', function(evt){
-      self.unhighlightEdgeNeighbourhood(evt.target);
+    this.cy.on('unselect', '*', function(evt){
+      self.unhighlightElementNeighbourhood(evt.target);
     });
   }
 
   private initEventHandlers(): void {
     this.handleSelectElement();
-    // this.handleSelectNode();
-    this.handleUnselectNode();
-    // this.handleSelectEdge();
-    this.handleUnselectEdge();
+    this.handleUnselectElement();
   }
 }
