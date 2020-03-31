@@ -341,7 +341,7 @@ export class GraphComponent implements OnInit {
           }
         });
       }
-      neighbourhood.absoluteComplement().addClass('unhighlight');
+      neighbourhood.absoluteComplement().difference(node).addClass('unhighlight');
     }.bind(this)); // As this is a callback, bind it to the environment to know whether edges are hidden or not
   }
 
@@ -355,17 +355,21 @@ export class GraphComponent implements OnInit {
 
   private highlightEdgeNeighbourhood(edge: any): void {
     let connectedNodes = edge.connectedNodes();
-    this.cy.batch(function(){
+    let self = this;
+    this.cy.batch(function() {
       edge.addClass('highlight');
       connectedNodes.addClass('highlight');
+      self.cy.elements().difference(edge).difference(connectedNodes).addClass('unhighlight');
     });
   }
 
   private unhighlightEdgeNeighbourhood(edge: any): void {
     let connectedNodes = edge.connectedNodes();
+    let self = this;
     this.cy.batch(function(){
       edge.removeClass('highlight');
       connectedNodes.removeClass('highlight');
+      self.cy.elements().difference(edge).difference(connectedNodes).removeClass('unhighlight');
     });
   }
 
