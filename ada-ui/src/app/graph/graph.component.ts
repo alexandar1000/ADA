@@ -27,14 +27,9 @@ export class GraphComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.selectedMetric && !changes.selectedMetric.firstChange) {
+    if (this.cy != null && (changes.selectedMetric || changes.hideZeroEdges || changes.hideNodesWithoutNeighbours)) {
       this.changeMetricRepresentedInGraph();
-    }
-    if (changes.hideZeroEdges && this.cy != null) {
-      this.updateDisplayOfZeroEdges(this.hideZeroEdges);
-    }
-    if (changes.hideNodesWithoutNeighbours && this.cy != null) {
-      this.updateDisplayOfNodesWithoutNeighbours(this.hideNodesWithoutNeighbours);
+      this.reflectGraphMenuStateToGraph();
     }
   }
 
@@ -74,7 +69,7 @@ export class GraphComponent implements OnInit {
           {
             selector: 'node.unhighlight',
             style: {
-              'opacity': 0.4
+              'opacity': 0.3
             }
           },
           {
@@ -86,7 +81,7 @@ export class GraphComponent implements OnInit {
           {
             selector: 'edge.unhighlight',
             style: {
-              'opacity': 0.2
+              'opacity': 0.3
             }
           }
         ]
@@ -100,8 +95,7 @@ export class GraphComponent implements OnInit {
 
     this.updateArrowStyle();
 
-    this.updateDisplayOfZeroEdges(this.hideZeroEdges);
-    this.updateDisplayOfNodesWithoutNeighbours(this.hideNodesWithoutNeighbours);
+    this.reflectGraphMenuStateToGraph();
 
     var layout = this.cy.layout({
       name: 'circle'
@@ -201,8 +195,6 @@ export class GraphComponent implements OnInit {
     } else {
       console.error('Metric name is not in the translator.');
     }
-    this.updateDisplayOfZeroEdges(this.hideZeroEdges);
-    this.updateDisplayOfNodesWithoutNeighbours(this.hideNodesWithoutNeighbours);
   }
 
   private updateArrowStyle (): void {
@@ -230,21 +222,27 @@ export class GraphComponent implements OnInit {
   }
 
   /**
+   * Handle the changes of selected options in the graph menu so that they are reflected in the graph. Also, set the
+   * order of updating in one place.
+   */
+  private reflectGraphMenuStateToGraph(): void {
+    this.cy.elements().unselect();
+    this.updateDisplayOfZeroEdges(this.hideZeroEdges);
+    this.updateDisplayOfNodesWithoutNeighbours(this.hideNodesWithoutNeighbours);
+  }
+
+  /**
    * Update the display of edges based on hideEdges parameter. If the parameter is true, hide those edges which have
    * a weight of 0. This is done as the meaning of the weight of zero and an omitted edge is quite similar, and because
    * having a lot of zero edges might clutter the graph.
    * @param hideEdges a flag which defines whether the edges are to be defined
    */
-
-  // If this is true and is becoming false, they need to update the nodes
-
   private updateDisplayOfZeroEdges(hideEdges: boolean): void {
-    let self = this;
+    // Make all changes to the graph in batch
     this.cy.batch(function() {
-      self.cy.elements().unselect();
       // Show only edges with a weight other than zero
       if (hideEdges == true) {
-        self.cy.edges().forEach(function (edge) {
+        this.cy.edges().forEach(function (edge) {
           let weight = edge.data('weight');
           if (weight != 0) {
             edge.style({
@@ -256,25 +254,14 @@ export class GraphComponent implements OnInit {
             })
           }
         });
-        self.updateDisplayOfNodesWithoutNeighbours(self.hideNodesWithoutNeighbours);
       // Show all edges
       } else {
-        self.cy.edges().forEach(function (edge) {
-          let correspondingNodes = edge.connectedNodes();
-          if (self.hideNodesWithoutNeighbours) {
-            for (let node of correspondingNodes) {
-              node.style({
-                'display': 'element'
-              })
-            }
-          }
-          edge.style(
+        this.cy.edges().style(
             {
               'display': 'element'
-            })
-        });
+            });
       }
-    });
+    }.bind(this));
   }
 
   /**
@@ -283,27 +270,22 @@ export class GraphComponent implements OnInit {
    * @param hideNodes whether to hide the nodes or not
    */
     private updateDisplayOfNodesWithoutNeighbours(hideNodes: boolean): void {
-    let self = this;
     // Process all of th nodes in batch
     this.cy.batch(function() {
-      self.cy.elements().unselect();
+      let self = this;
       if (hideNodes == true) {
         // If the nodes are selected to be hidden, hide those without edges or with hidden edges
-        self.cy.nodes().forEach(function (node) {
+        this.cy.nodes().forEach(function (node) {
           let connectedEdges = node.connectedEdges();
           let hideNode = true;
-          if (self.hideZeroEdges) {
-            // If zero weight edges are hidden, check each edge
+          if (connectedEdges.length > 0) {
+            // If there is at least one visible edge, the node needs to be displayed
             for (let edge of connectedEdges) {
-              if (edge.data('weight') != 0) {
-                // If there is at least one edge, the node needs to be displayed
+              // If the edges are not hidden or the edge is visible, display the node
+              if (!self.hideZeroEdges || edge.visible()) {
                 hideNode = false;
+                break;
               }
-            }
-          } else {
-            // If there are no hidden edges, then if at least one edge exists, it is sufficient to display the node
-            if (connectedEdges.length > 0) {
-              hideNode = false;
             }
           }
           // Based on the processing above, update the node
@@ -321,12 +303,12 @@ export class GraphComponent implements OnInit {
         });
       } else {
         // If all the nodes should be displayed, show all nodes
-        self.cy.nodes().style(
+        this.cy.nodes().style(
           {
             'display': 'element'
           })
       }
-    }.bind(self));
+    }.bind(this));
   }
 
   /**
