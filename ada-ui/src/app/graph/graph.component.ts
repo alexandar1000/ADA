@@ -41,7 +41,7 @@ export class GraphComponent implements OnInit {
         this.reflectGraphMenuStateToGraph();
       }
       if (changes.areEdgeWeightsShownAsLabels) {
-        console.log(this.areEdgeWeightsShownAsLabels);
+        this.toggleDisplayOfEdgeWeightsAsLabels(this.areEdgeWeightsShownAsLabels);
       }
       if (changes.areEdgesColourCoded) {
         console.log(this.areEdgesColourCoded);
@@ -64,14 +64,21 @@ export class GraphComponent implements OnInit {
           {
             selector: 'node',
             style: {
-              label: 'data(label)'
+              'label': 'data(label)',
+              'min-zoomed-font-size': 10
             }
           },
           {
             selector: 'edge',
             style: {
               'curve-style': 'bezier',
-              'target-arrow-shape': 'triangle',
+              'target-arrow-shape': 'triangle'
+            }
+          },
+          {
+            selector: 'edge.labeled',
+            style: {
+              'min-zoomed-font-size': 10,
               label: 'data(weight)'
             }
           },
@@ -437,6 +444,18 @@ export class GraphComponent implements OnInit {
     return neighbourhood;
   }
 
+  private toggleDisplayOfEdgeWeightsAsLabels(areEdgeWeightsAsShownAsLabels: boolean): void {
+    if (areEdgeWeightsAsShownAsLabels) {
+      this.cy.edges().addClass('labeled');
+    } else {
+      this.cy.edges().removeClass('labeled');
+    }
+  }
+
+  /**
+   * Abstract the emitting of the event regardless of its type
+   * @param element element which is selected
+   */
   private emitElementSelectedEvent(element: any): void {
     if (element.isNode()) {
       this.nodeSelected(element.id());
@@ -445,10 +464,18 @@ export class GraphComponent implements OnInit {
     }
   }
 
+  /**
+   * Emit the selection of the node to the dashboard
+   * @param nodeId id of the node which is selected
+   */
   private nodeSelected(nodeId: string) {
     this.nodeSelectedEvent.emit(nodeId);
   }
 
+  /**
+   * Emit the selection of the edge to the dashboard
+   * @param edgeId id of the edge which is selected
+   */
   private edgeSelected(edgeId: string) {
     this.edgeSelectedEvent.emit(edgeId);
   }
