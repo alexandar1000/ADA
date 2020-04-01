@@ -474,20 +474,21 @@ export class GraphComponent implements OnInit {
 
   private static INFINITE_WEIGHT_SPACE = 0;
   private static NORMALISED_WEIGHT_SPACE = 1;
+  static gradients = ['#34ff29', '#70ff29', '#94ff29', '#b8ff29', '#d8ff29', '#fbff29', '#ffe629', '#ffbf29', '#ff9f29', '#ff7429', '#ff5729', '#ff2929'];
 
   private static getColourCoding(weight: number, weightSpace: number = GraphComponent.INFINITE_WEIGHT_SPACE): string {
-    let gradients = ['#34ff29', '#70ff29', '#94ff29', '#b8ff29', '#d8ff29', '#fbff29', '#ffe629', '#ffbf29', '#ff9f29', '#ff7429', '#ff5729', '#ff2929'];
+
     if (weightSpace == GraphComponent.INFINITE_WEIGHT_SPACE) {
       if (weight <= 10) {
-        return gradients[Math.round(weight)];
+        return GraphComponent.gradients[Math.round(weight)];
       } else {
-        return gradients[11];
+        return GraphComponent.gradients[11];
       }
     } else if (weightSpace == GraphComponent.NORMALISED_WEIGHT_SPACE) {
       if (weight == 1) {
-        return gradients[11];
+        return GraphComponent.gradients[11];
       } else if (weight == 0) {
-        return gradients[0];
+        return GraphComponent.gradients[0];
       } else {
         let correspondingGradient = weight * 10;
         if (correspondingGradient < 5) {
@@ -495,7 +496,7 @@ export class GraphComponent implements OnInit {
         } else {
           correspondingGradient = Math.floor(correspondingGradient);
         }
-        return gradients[correspondingGradient];
+        return GraphComponent.gradients[correspondingGradient];
       }
     }
 

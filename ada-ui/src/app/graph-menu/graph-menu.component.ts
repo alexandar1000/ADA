@@ -1,4 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {GraphComponent} from "../graph/graph.component";
 
 @Component({
   selector: 'app-graph-menu',
@@ -6,6 +7,16 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   styleUrls: ['./graph-menu.component.css']
 })
 export class GraphMenuComponent implements OnInit {
+
+  private canvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild('colourcodingLegend', { static: false }) public set content(content: ElementRef<HTMLCanvasElement>) {
+    this.canvas = content;
+    if (this.canvas != undefined) {
+      this.createColourcodingLegend();
+    }
+  };
+
+  private ctx: CanvasRenderingContext2D;
 
   @Input() areZeroWeightedEdgesHidden: boolean;
   @Input() areNeighbourlessNodesHidden: boolean;
@@ -20,6 +31,20 @@ export class GraphMenuComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  createColourcodingLegend(): void {
+    const canvasElement = this.canvas.nativeElement;
+    this.ctx = canvasElement.getContext('2d');
+    // Create gradient
+    var grd = this.ctx.createLinearGradient(0, 0, 200, 0);
+    for (let i = 0; i < GraphComponent.gradients.length; i++) {
+      grd.addColorStop(i*(1/12), GraphComponent.gradients[i]);
+    }
+
+    // Fill with gradient
+    this.ctx.fillStyle = grd;
+    this.ctx.fillRect(0, 0, 200, 20);
   }
 
   handleZeroWeightedEdgesRepresentationChange($event: any): void {
