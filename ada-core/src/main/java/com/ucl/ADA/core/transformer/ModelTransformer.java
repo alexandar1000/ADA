@@ -117,8 +117,7 @@ public class ModelTransformer {
      */
     public static void transformImportDeclaration(Snapshot snapshot, ADAClass sourceClass) {
         String className = sourceClass.getClassName();
-        // TODO: replace imported internal class in parser module
-        for (String declarationInfo : sourceClass.getImportedInternalClasses()) {
+        for (String declarationInfo : sourceClass.getImportedPackagesAndClasses()) {
             ImportDeclaration importDeclaration = new ImportDeclaration(declarationInfo);
             addDeclarationToSnapshot(snapshot, className, importDeclaration, DeclarationType.IMPORT);
         }

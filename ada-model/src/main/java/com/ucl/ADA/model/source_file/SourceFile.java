@@ -29,7 +29,7 @@ public class SourceFile extends BaseEntity {
      */
     @ElementCollection
     @CollectionTable(
-            name = "SOURCE_FILE_CLASS_NAMES",
+            name = "SOURCE_FILE_CLASS_NAME",
             joinColumns = @JoinColumn(name = "source_file_id")
     )
     @Column(name = "class_name")
