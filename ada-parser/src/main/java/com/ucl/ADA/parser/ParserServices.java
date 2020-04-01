@@ -4,7 +4,6 @@ import com.google.common.collect.SetMultimap;
 import com.ucl.ADA.parser.ada_model.ADAClass;
 import com.ucl.ADA.parser.parser.ADAParser;
 import org.springframework.stereotype.Service;
-
 import java.util.Set;
 
 
@@ -25,4 +24,5 @@ public class ParserServices {
     public SetMultimap<String, ADAClass> parseRepository(String repositoryPath, Set<String> filePaths) {
         return new ADAParser().getParsedSourceFile(repositoryPath, filePaths);
     }
+
 }
