@@ -4,29 +4,35 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
+import javax.persistence.*;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
+@Table(name = "CONSTRUCTOR_INVOCATION")
 public class ConstructorInvocation extends ElementInvocation {
 
     /**
      * The list of parameters which have been passes to the constructor on invocation.
      */
-    private List<PassedParameter> passedParameters = new ArrayList<>();
+    @OneToMany
+    @JoinTable(
+            name = "CONSTRUCTOR_INVOCATION_PASSED_PARAMETER",
+            joinColumns = @JoinColumn(name = "constructor_invocation_id"),
+            inverseJoinColumns = @JoinColumn(name = "passed_parameter_id")
+    )
+    private List<PassedParameter> passedParameters;
 
     /**
      * The constructor of the attribute invocation object.
      *
      * @param name             name of the constructor being invoked
-     * @param passedParameters The list of parameters whit which the constructor has been invoked with
+     * @param passedParameters The list of parameters which the constructor has been invoked with
      */
     public ConstructorInvocation(String name, List<PassedParameter> passedParameters) {
         super(name);
-        if (passedParameters != null) {
-            this.passedParameters.addAll(passedParameters);
-        }
+        this.passedParameters = passedParameters;
     }
 }

@@ -4,14 +4,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
+@Table(name = "PARAMETER_DECLARATION")
 public class ParameterDeclaration extends ElementDeclaration {
 
     /**
      * parameter type
      */
+    @Column(name = "type")
     private String type;
 
     /**

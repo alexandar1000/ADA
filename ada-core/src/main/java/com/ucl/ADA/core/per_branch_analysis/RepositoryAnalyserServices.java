@@ -23,6 +23,9 @@ public class RepositoryAnalyserServices {
     public Snapshot analyseRepositoryService(String url, String branchName) {
 
         // TODO: parse url and branch name
+        String[] repoInfo = RepoDownloader.parseGitUrl(url);
+        String repoOwner = repoInfo[3];
+        String repoName = repoInfo[4];
 
         // TODO: validate owner, repo and branch
 

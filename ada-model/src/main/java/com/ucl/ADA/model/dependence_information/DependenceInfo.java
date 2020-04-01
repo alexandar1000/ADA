@@ -8,13 +8,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class DependenceInfo extends BaseEntity {
+@MappedSuperclass
+public abstract class DependenceInfo extends BaseEntity {
 
     /* ************************************************************************
      *
@@ -25,16 +27,34 @@ public class DependenceInfo extends BaseEntity {
     /**
      * Attributes present in the class. They can be either declared or invoked.
      */
+    @ManyToMany
+    @JoinTable(
+            name = "DEPENDENCE_INFO_ATTRIBUTE_INVOCATION",
+            joinColumns = @JoinColumn(name = "dependence_info_id"),
+            inverseJoinColumns = @JoinColumn(name = "attribute_invocation_id")
+    )
     private Set<AttributeInvocation> attributeInvocations = new HashSet<>();
 
     /**
      * Constructors present in the class. They can be either declared or invoked.
      */
+    @ManyToMany
+    @JoinTable(
+            name = "DEPENDENCE_INFO_CONSTRUCTOR_INVOCATION",
+            joinColumns = @JoinColumn(name = "dependence_info_id"),
+            inverseJoinColumns = @JoinColumn(name = "constructor_invocation_id")
+    )
     private Set<ConstructorInvocation> constructorInvocations = new HashSet<>();
 
     /**
      * Methods present in the class. They can be either declared or invoked.
      */
+    @ManyToMany
+    @JoinTable(
+            name = "DEPENDENCE_INFO_METHOD_INVOCATION",
+            joinColumns = @JoinColumn(name = "dependence_info_id"),
+            inverseJoinColumns = @JoinColumn(name = "method_invocation_id")
+    )
     private Set<MethodInvocation> methodInvocations = new HashSet<>();
 
 
