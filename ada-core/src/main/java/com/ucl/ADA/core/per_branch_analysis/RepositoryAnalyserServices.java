@@ -1,9 +1,10 @@
 package com.ucl.ADA.core.per_branch_analysis;
 
 import com.google.common.collect.SetMultimap;
+import com.ucl.ADA.model.analysis_request.AnalysisRequest;
 import com.ucl.ADA.model.branch.Branch;
 import com.ucl.ADA.model.owner.Owner;
-import com.ucl.ADA.model.owner.OwnerRepository;
+import com.ucl.ADA.model.repository.GitRepo;
 import com.ucl.ADA.model.snapshot.Snapshot;
 import com.ucl.ADA.model.snapshot.SnapshotService;
 import com.ucl.ADA.parser.ParserServices;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
-import java.util.Optional;
 import java.util.Set;
 
 import static com.ucl.ADA.core.transformer.ModelTransformer.*;
@@ -40,7 +40,9 @@ public class RepositoryAnalyserServices {
         String repoName = repoInfo[4];
 
         // Validate the owner, repo and branch name
-        Branch branch = repositoryDownloaderService.validate(repoOwner, repoName, branchName);
+        Owner owner = repositoryDownloaderService.validateOwner(repoOwner);
+        GitRepo repo = repositoryDownloaderService.validateRepo(owner, repoName);
+        Branch branch = repositoryDownloaderService.validateBranch(repo, branchName);
         Snapshot prevSnapshot = null;
 
         // Retrieve previous snapshot
@@ -62,6 +64,13 @@ public class RepositoryAnalyserServices {
         } catch (GitAPIException e) {
             return null;
         }
+
+        if(owner == null) owner = repositoryDownloaderService.saveOwner(repoOwner);
+        if(repo == null) repo = repositoryDownloaderService.saveRepo(owner, repoName);
+        if(branch == null) branch = repositoryDownloaderService.saveBranch(repo, branchName, snapshot);
+
+        AnalysisRequest request = repositoryDownloaderService.saveAnalysisRequest(branch, snapshot);
+
 
         // TODO: if invalid url or branch, store a branch is invalid at last commit time (a flag?)
 

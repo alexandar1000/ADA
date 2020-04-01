@@ -1,5 +1,7 @@
 package com.ucl.ADA.repository_downloader;
 
+import com.ucl.ADA.model.analysis_request.AnalysisRequest;
+import com.ucl.ADA.model.analysis_request.AnalysisRequestRepository;
 import com.ucl.ADA.model.branch.Branch;
 import com.ucl.ADA.model.branch.BranchRepository;
 import com.ucl.ADA.model.owner.Owner;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
@@ -39,6 +42,9 @@ public class RepositoryDownloaderService {
 
     @Autowired
     private SnapshotRepository snapshotRepository;
+
+    @Autowired
+    private AnalysisRequestRepository analysisRequestRepository;
 
 
     /**
@@ -65,11 +71,11 @@ public class RepositoryDownloaderService {
      */
     GitRepoInfo populateDatabase(GitRepoInfo gitRepoInfo) {
 
-        Owner owner = findOwnerByName(gitRepoInfo);
+        Owner owner = saveOwner(repoOwner);
 
-        GitRepo repo = findRepoByOwnerAndName(owner, gitRepoInfo);
+        GitRepo repo = validateRepo(owner, gitRepoInfo);
 
-        Branch branchEntity = findBranchByRepoAndName(repo, gitRepoInfo);
+        Branch branchEntity = validateBranch(repo, gitRepoInfo);
 
         Snapshot snapshot = initSnapshot(gitRepoInfo, branchEntity);
 
@@ -110,74 +116,47 @@ public class RepositoryDownloaderService {
         }
     }
 
-    /**
-     * Create, initalize and save a new Snapshot entity in the DB.
-     *
-     * @param gitRepoInfo helper object containing the source file names of the downloaded repository
-     * @param branchEntity    corresponding Branch entity
-     * @return saved Snapshot entity
-     */
-    private Snapshot initSnapshot(GitRepoInfo gitRepoInfo, Branch branchEntity) {
-        Snapshot snapshot = new Snapshot();
-
-        snapshot.setBranch(branchEntity);
-        snapshot.setTimestamp(gitRepoInfo.getTimestamp());
-
-        return snapshotRepository.save(snapshot);
-    }
-
-    /**
-     * Initialize a Branch entity by searching for existing branch within a repository, and returning it if found.
-     * Otherwise, create, initialize and save a new Branch entity in the DB.
-     *
-     * @param repo           corresponding Git repository
-     * @param downloadedRepo object containing metadata of Git repository
-     * @return an existing (or new) Branch entity.
-     * @see GitRepoInfo#getBranch()
-     */
-    private Branch findBranchByRepoAndName(GitRepo repo, String branchName) {
+    public Branch validateBranch(GitRepo repo, String branchName) {
         return branchRepository.findByRepositoryAndBranchName(repo, branchName);
     }
 
-    /**
-     * Initialize a GitRepository entity by searching for existing repo associated with a given owner, and returning it if found.
-     * Otherwise, create, initialize and return a new GitRepository entity.
-     *
-     * @param owner          corresponding owner
-     * @param downloadedRepo object containing metadata of Git repository
-     * @return an existing (or new) GitRepository
-     */
-    private GitRepo findRepoByOwnerAndName(Owner owner, String repoName) {
+    public GitRepo validateRepo(Owner owner, String repoName) {
         return gitRepoRepository.findByOwnerAndRepoName(owner, repoName);
     }
 
-    /**
-     * Initialize a Owner entity by searching for existing Owner in the database, and returning it if found.
-     * Otherwise, create, initialize and return a new Owner entity.
-     *
-     * @param downloadedRepo object containining metadata of Git repository
-     * @return an existing (or new) Owner
-     */
-    private Owner findOwnerByName(String userName) {
+    public Owner validateOwner(String userName) {
 
         return ownerService.getOwnerByName(userName);
     }
 
-    //todo: check if the null checks work
-    /**
-     * Validate if owner, git repository and branch are present in the DB. If they are, return the branch entity.
-     * @param repoOwner username of the owner of the repository
-     * @param repoName name of the repository
-     * @param branchName name of the branch
-     * @return the corresponding branch entity, or null if non-existant
-     */
-    public Branch validate(String repoOwner, String repoName, String branchName) {
+    public Owner saveOwner(String repoOwner) {
+        Owner owner = new Owner();
+        owner.setUsername(repoOwner);
+        return ownerService.addOwner(owner);
+    }
 
-        Owner owner = findOwnerByName(repoOwner);
-        if(owner == null) return null;
-        GitRepo repo = findRepoByOwnerAndName(owner, repoName);
-        if(repo == null) return null;
+    public GitRepo saveRepo(Owner owner, String repoName) {
+        GitRepo repo = new GitRepo();
+        repo.setOwner(owner);
+        repo.setRepoName(repoName);
+        return gitRepoRepository.save(repo);
+    }
 
-        return findBranchByRepoAndName(repo, branchName);
+    public Branch saveBranch(GitRepo repo, String branchName, Snapshot snapshot) {
+        Branch branch = new Branch();
+        branch.setBranchName(branchName);
+        branch.setRepository(repo);
+        branch.setLastSnapshotTimestamp(snapshot.getCommitTime());
+
+        return branchRepository.save(branch);
+    }
+
+    public AnalysisRequest saveAnalysisRequest(Branch branch, Snapshot snapshot) {
+        AnalysisRequest analysisRequest = new AnalysisRequest();
+        analysisRequest.setBranch(branch);
+        analysisRequest.setSnapshot(snapshot);
+        analysisRequest.setTimestamp(OffsetDateTime.now());
+
+        return analysisRequestRepository.save(analysisRequest);
     }
 }
