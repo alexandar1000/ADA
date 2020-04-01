@@ -3,13 +3,7 @@ package com.ucl.ADA.parser;
 import com.google.common.collect.SetMultimap;
 import com.ucl.ADA.parser.ada_model.ADAClass;
 import com.ucl.ADA.parser.parser.ADAParser;
-import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
 import java.util.Set;
 
 
