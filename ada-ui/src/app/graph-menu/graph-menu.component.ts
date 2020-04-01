@@ -1,5 +1,6 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {GraphComponent} from "../graph/graph.component";
+import { QueryService } from '../query.service';
 
 @Component({
   selector: 'app-graph-menu',
@@ -17,6 +18,7 @@ export class GraphMenuComponent implements OnInit {
   };
 
   private ctx: CanvasRenderingContext2D;
+  // private query: string[];
 
   @Input() areZeroWeightedEdgesHidden: boolean;
   @Input() areNeighbourlessNodesHidden: boolean;
@@ -28,7 +30,7 @@ export class GraphMenuComponent implements OnInit {
   @Output() updateEdgeWeightsAsLabelRepresentationEvent = new EventEmitter();
   @Output() updateEdgesColourCodingRepresentationEvent = new EventEmitter();
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
   }

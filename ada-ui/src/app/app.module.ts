@@ -34,6 +34,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { ElementInsightComponent } from './element-insight/element-insight.component';
 import { GraphMenuComponent } from './graph-menu/graph-menu.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import { QueryFormComponent } from './query-form/query-form.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     FilterPipe,
     ElementInsightComponent,
     GraphMenuComponent,
+    QueryFormComponent,
   ],
     imports: [
         BrowserModule,

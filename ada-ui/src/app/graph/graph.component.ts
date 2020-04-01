@@ -3,6 +3,7 @@ import * as cytoscape from 'cytoscape';
 import {MetricNameConverter} from "../classes/metric-name-converter";
 import {ProjectStructure} from "../classes/project-structure";
 import {CollectionReturnValue} from "cytoscape";
+import { QueryService } from '../query.service';
 
 @Component({
   selector: 'app-graph',
@@ -26,7 +27,39 @@ export class GraphComponent implements OnInit {
   private metricNameConverter = new MetricNameConverter();
 
 
-  constructor() { }
+  constructor(queryService: QueryService) { 
+    if (queryService.receivedQueryEvent$) {
+      queryService.receivedQueryEvent$.subscribe(
+        query => {
+          this.processQuery(query);
+        }
+      )
+    }
+  }
+
+  processQuery(query: string[]): void {
+    let queryType = query[0];
+    let queryText = query[1];
+    if (queryType === "class") {
+      this.queryByClassName(queryText);
+    }
+  }
+
+  queryByClassName(queryText: string): void {
+    let nodes = this.cy.nodes(`[label = "${queryText}"], [id = "${queryText}"]`);
+    for (let node of nodes) {
+      this.highlightElementNeighbourhood(node);
+    }
+  }
+
+  // getNodeByClassName(classname: string): any {
+  //   let nodes = this.getElements().nodes;
+  //   for(let node of nodes) {
+  //     if (node.data.label === classname) {
+  //       return node;
+  //     }
+  //   }
+  // }
 
   ngOnInit() {
     this.initCytoscape();
