@@ -6,6 +6,7 @@ import com.ucl.ADA.parser.ParserServices;
 import com.ucl.ADA.parser.ada_model.ADAClass;
 import com.ucl.ADA.repository_downloader.RepoDownloader;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.util.Set;
@@ -13,6 +14,7 @@ import java.util.Set;
 import static com.ucl.ADA.core.transformer.ModelTransformer.*;
 import static com.ucl.ADA.model.snapshot.SnapshotUtils.*;
 
+@Service
 public class RepositoryAnalyserServices {
 
     private ParserServices parserServices;
@@ -30,6 +32,7 @@ public class RepositoryAnalyserServices {
         Snapshot prevSnapshot = new Snapshot();
 
         // Check last commit time through GitHub API
+        // If there have been no new commits, do not re-analyze, return the previous snapshot
         OffsetDateTime lastCommitTime = RepoDownloader.getLatestCommitTime(url, branchName);
         if (lastCommitTime != null) {
             if (lastCommitTime.isEqual(prevSnapshot.getCommitTime()))
@@ -67,8 +70,7 @@ public class RepositoryAnalyserServices {
         Set<String> addedSourceFiles = getPathsToAddedSourceFiles(snapshot, prevSnapshot);
 
         // Get source paths to parse from addedSourceFiles, and send {root dir path, addedSourceFiles} to Parser
-        SetMultimap<String, ADAClass> filePathToClassStructuresMap = null;
-//        SetMultimap<String, ADAClass> filePathToClassStructuresMap = parserServices.parseRepository(rootDirPath, sourcePaths);
+        SetMultimap<String, ADAClass> filePathToClassStructuresMap = parserServices.parseRepository(rootDirPath, sourcePaths);
 
         // generate Map<String, Set<String>> pathsOfAddedSourceFilesToClassNames
         SetMultimap<String, String> pathsOfAddedSourceFilesToClassNames = getFilePathToClassNamesMap(filePathToClassStructuresMap);
