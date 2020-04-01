@@ -13,8 +13,7 @@ import java.util.*;
 @Getter
 public class ADAClassVisitor extends ASTVisitor {
     private String packageName = "";
-    private Set<String> importedInternalClasses = new HashSet<>();
-    private Set<String> importedExternalClasses = new HashSet<>();
+    private Set<String> importedPackagesAndClasses = new HashSet<>();
     private String className = "";
     private boolean isInterface = false;
     private boolean isEnum = false;
@@ -34,15 +33,13 @@ public class ADAClassVisitor extends ASTVisitor {
     /**
      * A constructor of ADAClassVisitor
      *
-     * @param packageName             Packages name of the Class
-     * @param importedInternalClasses Imported internal classes that are declared in the project
-     * @param importedExternalClasses Imported external classes that are utilized from the external libraries.
+     * @param packageName                Packages name of the Class
+     * @param importedPackagesAndClasses Imported packages and classes that are used in the class
      */
-    public ADAClassVisitor(String packageName, Set<String> importedInternalClasses, Set<String> importedExternalClasses) {
+    public ADAClassVisitor(String packageName, Set<String> importedPackagesAndClasses) {
 
         this.packageName = packageName;
-        this.importedInternalClasses.addAll(importedInternalClasses);
-        this.importedExternalClasses.addAll(importedExternalClasses);
+        this.importedPackagesAndClasses.addAll(importedPackagesAndClasses);
     }
 
 
@@ -52,7 +49,7 @@ public class ADAClassVisitor extends ASTVisitor {
      * @return A ADAClass model containing the extracted class information.
      */
     public ADAClass getExtractedClass() {
-        ADAClass cl = new ADAClass(packageName, importedInternalClasses, importedExternalClasses, className, isInterface, isEnum, parentClassName, implementedInterfaces,
+        ADAClass cl = new ADAClass(packageName, importedPackagesAndClasses, className, isInterface, isEnum, parentClassName, implementedInterfaces,
                 classAttributes, declaredEnums, ADAMethodInvocations, constructorInvocations, methodConstructorDeclaration, exMethodCalls, exConstructorInvocations, exFieldInvocation);
 
         return cl;

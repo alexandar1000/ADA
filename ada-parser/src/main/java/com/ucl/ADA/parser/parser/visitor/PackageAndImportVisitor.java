@@ -13,15 +13,13 @@ import java.util.Set;
 public class PackageAndImportVisitor extends ASTVisitor {
 
     private String packageName = "";
-    private Set<String> importedInternalClasses;
-    private Set<String> importedExternalClasses;
+    private Set<String> importedPackagesAndClasses;
 
     /**
      * A constructor of PackageAndImportVisitor.
      */
     public PackageAndImportVisitor() {
-        importedInternalClasses = new HashSet<>();
-        importedExternalClasses = new HashSet<>();
+        importedPackagesAndClasses = new HashSet<>();
     }
 
     /**
@@ -49,9 +47,9 @@ public class PackageAndImportVisitor extends ASTVisitor {
     public boolean visit(ImportDeclaration node) {
         IBinding binding = node.resolveBinding();
         if (binding != null) {
-            importedInternalClasses.add(node.getName().toString());
+            importedPackagesAndClasses.add(node.getName().toString());
         } else {
-            importedExternalClasses.add(node.getName().toString());
+            importedPackagesAndClasses.add(node.getName().toString());
         }
         return true;
     }

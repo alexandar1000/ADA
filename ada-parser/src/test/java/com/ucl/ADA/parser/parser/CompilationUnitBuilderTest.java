@@ -5,13 +5,17 @@ import com.ucl.ADA.parser.parser.visitor.ADAClassVisitor;
 import com.ucl.ADA.parser.parser.visitor.PackageAndImportVisitor;
 import com.ucl.ADA.parser.parser.visitor.TypeDeclarationVisitor;
 import com.ucl.ADA.parser.parser.visitor.VariableDeclarationVisitor;
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,30 +38,7 @@ public class CompilationUnitBuilderTest {
     private String implementedInterface = "com.ucl.ADA.parser.test_resources.IAnimal";
     List<String> declaredEnum = new ArrayList<>(Arrays.asList("Color.RED", "Color.BLUE"));
 
-    private String classSourceCode = "package com.ucl.ADA.parser.test_resources;\n" +
-            "\n" +
-            "public class WaterAnimal extends Animal implements IAnimal {\n" +
-            "\n" +
-            "    private int id;\n" +
-            "    private String name;\n" +
-            "\n" +
-            "\n" +
-            "    enum Color {RED, BLUE;}\n" +
-            "\n" +
-            "    void swim(int time) {\n" +
-            "        int x = 5;\n" +
-            "        int y = 6;\n" +
-            "    }\n" +
-            "}\n" +
-            "\n" +
-            "class Animal {\n" +
-            "\n" +
-            "}\n" +
-            "\n" +
-            "interface IAnimal {\n" +
-            "}\n" +
-            "\n" +
-            "enum Game {}\n";
+    private String classSourceCode = "";
     private String interfaceSourceCode = "";
     private String enumSourceCode = "";
 
@@ -65,12 +46,15 @@ public class CompilationUnitBuilderTest {
     @BeforeEach
     void setUp() {
         compilationUnitBuilder = new CompilationUnitBuilder();
-
         options = JavaCore.getOptions();
         options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_5);
         options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, JavaCore.VERSION_1_5);
         options.put(JavaCore.COMPILER_SOURCE, JavaCore.VERSION_1_5);
-
+        String resourceName = "WaterAnimal.java";
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource(resourceName).getFile());
+        String absolutePath = file.getAbsolutePath();
+        classSourceCode = getSourceCodeFromSourcePath(absolutePath);
     }
 
     @Test
@@ -90,16 +74,14 @@ public class CompilationUnitBuilderTest {
     }
 
 
-
     @Test
     public void typeDeclarationVisitorTest() {
         CompilationUnit compilationUnit = compilationUnitBuilder.getCompilationUnit(this.filePath, this.classSourceCode, this.sourceDirectories);
         TypeDeclarationVisitor typeVisitor = new TypeDeclarationVisitor();
         compilationUnit.accept(typeVisitor);
         List<AbstractTypeDeclaration> allClassAndEnums = typeVisitor.getAbstractTypeDeclaration();
-        assertEquals(allClassAndEnums.size(), 2);
         assertEquals(allClassAndEnums.get(0).getName().toString(), this.className);
-        assertEquals(allClassAndEnums.get(1).getName().toString(), this.enumName);
+        assertEquals(allClassAndEnums.get(3).getName().toString(), this.enumName);
 
     }
 
@@ -128,7 +110,7 @@ public class CompilationUnitBuilderTest {
         assertEquals(allClassAndEnums.size(), 4);
         for (int i = 0; i < allClassAndEnums.size(); i++) {
             AbstractTypeDeclaration classAndEnumType = allClassAndEnums.get(i);
-            ADAClassVisitor ADAClassVisitor = new ADAClassVisitor(packageVisitor.getPackageName(), packageVisitor.getImportedInternalClasses(), packageVisitor.getImportedExternalClasses());
+            ADAClassVisitor ADAClassVisitor = new ADAClassVisitor(packageVisitor.getPackageName(), packageVisitor.getImportedPackagesAndClasses());
             classAndEnumType.accept(ADAClassVisitor);
             ADAClass extractedClass = ADAClassVisitor.getExtractedClass();
             parsedClasses.add(extractedClass);
@@ -142,6 +124,30 @@ public class CompilationUnitBuilderTest {
         assertTrue(adaClassWater.getImplementedInterfaces().contains(this.implementedInterface));
         assertEquals(adaClassWater.getDeclaredEnums(), declaredEnum);
 
+    }
+
+
+    /**
+     * This method reads the contents from a given source file path.
+     * If the file is empty or cannot be found in the given file path it return a empty string
+     *
+     * @param sourceFilePath Source file path that content has to be read from the path.
+     * @return A single string containing the source code written in that file.
+     * And containing empty string if the file is empty or cannot be found in the specified location.
+     * @IOException if errors occur in IO operation
+     */
+    public static String getSourceCodeFromSourcePath(String sourceFilePath) {
+        String sourceCode = "";
+
+        File sourceFile = new File(sourceFilePath);
+        if (sourceFile.exists()) {
+            try {
+                sourceCode = FileUtils.readFileToString(sourceFile, StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sourceCode;
     }
 
 
