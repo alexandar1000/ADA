@@ -1,4 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {GraphComponent} from "../graph/graph.component";
 
 @Component({
   selector: 'app-graph-menu',
@@ -7,23 +8,62 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class GraphMenuComponent implements OnInit {
 
-  @Input() areZeroWeightsHidden = false;
-  @Input() areNodesWithoutNeighboursHidden = false;
-  @Output() hideZeroWeightsEvent = new EventEmitter();
-  @Output() hideNodesWithoutEdgesEvent = new EventEmitter();
+  private canvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild('colourcodingLegend', { static: false }) public set content(content: ElementRef<HTMLCanvasElement>) {
+    this.canvas = content;
+    if (this.canvas != undefined) {
+      this.createColourcodingLegend();
+    }
+  };
+
+  private ctx: CanvasRenderingContext2D;
+
+  @Input() areZeroWeightedEdgesHidden: boolean;
+  @Input() areNeighbourlessNodesHidden: boolean;
+  @Input() areEdgeWeightsShownAsLabels: boolean;
+  @Input() areEdgesColourCoded: boolean;
+
+  @Output() updateZeroWeightedEdgesRepresentationEvent = new EventEmitter();
+  @Output() updateNeighbourlessNodesRepresentationEvent = new EventEmitter();
+  @Output() updateEdgeWeightsAsLabelRepresentationEvent = new EventEmitter();
+  @Output() updateEdgesColourCodingRepresentationEvent = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  handleZeroWeightsChanged($event: any): void {
-    this.areZeroWeightsHidden = $event.checked;
-    this.hideZeroWeightsEvent.emit(this.areZeroWeightsHidden);
+  createColourcodingLegend(): void {
+    const canvasElement = this.canvas.nativeElement;
+    this.ctx = canvasElement.getContext('2d');
+    // Create gradient
+    var grd = this.ctx.createLinearGradient(0, 0, 200, 0);
+    for (let i = 0; i < GraphComponent.gradients.length; i++) {
+      grd.addColorStop(i*(1/12), GraphComponent.gradients[i]);
+    }
+
+    // Fill with gradient
+    this.ctx.fillStyle = grd;
+    this.ctx.fillRect(0, 0, 200, 20);
   }
 
-  handleNodesWithoutNeighboursChanged($event: any): void {
-    this.areNodesWithoutNeighboursHidden = $event.checked;
-    this.hideNodesWithoutEdgesEvent.emit(this.areNodesWithoutNeighboursHidden);
+  handleZeroWeightedEdgesRepresentationChange($event: any): void {
+    this.areZeroWeightedEdgesHidden = $event.checked;
+    this.updateZeroWeightedEdgesRepresentationEvent.emit(this.areZeroWeightedEdgesHidden);
+  }
+
+  handleNodesWithoutNeighboursRepresentationChange($event: any): void {
+    this.areNeighbourlessNodesHidden = $event.checked;
+    this.updateNeighbourlessNodesRepresentationEvent.emit(this.areNeighbourlessNodesHidden);
+  }
+
+  handleEdgeWeightsAsLabelRepresentationChange($event: any): void {
+    this.areEdgeWeightsShownAsLabels = $event.checked;
+    this.updateEdgeWeightsAsLabelRepresentationEvent.emit(this.areEdgeWeightsShownAsLabels);
+  }
+
+  handleEdgesColourCodingRepresentationChange($event: any): void {
+    this.areEdgesColourCoded = $event.checked;
+    this.updateEdgesColourCodingRepresentationEvent.emit(this.areEdgesColourCoded);
   }
 }

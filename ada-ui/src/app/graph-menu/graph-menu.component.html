@@ -2,10 +2,30 @@
   <p><u>Menu:</u></p>
   <ul>
     <li>
-      <mat-checkbox [checked]="areZeroWeightsHidden" (change)="handleZeroWeightsChanged($event)">Hide zero weights</mat-checkbox>
+      <mat-checkbox [checked]="areZeroWeightedEdgesHidden"
+                    (change)="handleZeroWeightedEdgesRepresentationChange($event)"
+      >Hide zero weights</mat-checkbox>
     </li>
     <li>
-      <mat-checkbox [checked]="areNodesWithoutNeighboursHidden" (change)="handleNodesWithoutNeighboursChanged($event)">Hide nodes without outgoing/incoming edges</mat-checkbox>
+      <mat-checkbox [checked]="areNeighbourlessNodesHidden"
+                    (change)="handleNodesWithoutNeighboursRepresentationChange($event)"
+      >Hide nodes without outgoing/incoming edges</mat-checkbox>
+    </li>
+    <li>
+      <mat-checkbox [checked]="areEdgeWeightsShownAsLabels"
+                    (change)="handleEdgeWeightsAsLabelRepresentationChange($event)"
+      >Show edge metrics as labels</mat-checkbox>
+    </li>
+    <li>
+      <mat-checkbox [checked]="areEdgesColourCoded"
+                    (change)="handleEdgesColourCodingRepresentationChange($event)"
+      >Show edge metrics by colour coding the edges</mat-checkbox>
+    </li>
+    <li>
+      <div>
+        <div *ngIf="areEdgesColourCoded">The Colourcoding Legend from 0 to 10 and above with increments of 1</div>
+        <canvas #colourcodingLegend *ngIf="areEdgesColourCoded" width="200" height="20"  style="border:1px solid #000000;"></canvas>
+      </div>
     </li>
   </ul>
 </div>

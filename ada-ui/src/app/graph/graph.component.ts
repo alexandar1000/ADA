@@ -14,8 +14,12 @@ export class GraphComponent implements OnInit {
   private cy = null;
   @Input() projectStructure: ProjectStructure;
   @Input() selectedMetric: string;
-  @Input() hideZeroEdges = false;
-  @Input() hideNodesWithoutNeighbours = false;
+
+  @Input() areZeroWeightedEdgesHidden: boolean;
+  @Input() areNeighbourlessNodesHidden: boolean;
+  @Input() areEdgeWeightsShownAsLabels: boolean;
+  @Input() areEdgesColourCoded: boolean;
+
   private highlightedNodes: CollectionReturnValue = null;
   @Output() nodeSelectedEvent = new EventEmitter();
   @Output() edgeSelectedEvent = new EventEmitter();
@@ -28,13 +32,20 @@ export class GraphComponent implements OnInit {
     this.initCytoscape();
     this.initEventHandlers();
     this.repopulateGraph();
-    this.initEventHandlers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if ((this.cy != null) && (changes.selectedMetric || changes.hideZeroEdges || changes.hideNodesWithoutNeighbours)) {
-      this.changeMetricRepresentedInGraph();
-      this.reflectGraphMenuStateToGraph();
+    if (this.cy != null) {
+      if (changes.selectedMetric || changes.areZeroWeightedEdgesHidden || changes.areNeighbourlessNodesHidden) {
+        this.changeMetricRepresentedInGraph();
+        this.reflectGraphMenuStateToGraph();
+      }
+      if (changes.areEdgeWeightsShownAsLabels) {
+        this.toggleDisplayOfEdgeWeightsAsLabels(this.areEdgeWeightsShownAsLabels);
+      }
+      if (changes.areEdgesColourCoded) {
+        this.toggleEdgeColourcoding(this.areEdgesColourCoded);
+      }
     }
   }
 
@@ -53,14 +64,21 @@ export class GraphComponent implements OnInit {
           {
             selector: 'node',
             style: {
-              label: 'data(label)'
+              'label': 'data(label)',
+              'min-zoomed-font-size': 10
             }
           },
           {
             selector: 'edge',
             style: {
               'curve-style': 'bezier',
-              'target-arrow-shape': 'triangle',
+              'target-arrow-shape': 'triangle'
+            }
+          },
+          {
+            selector: 'edge.labeled',
+            style: {
+              'min-zoomed-font-size': 10,
               label: 'data(weight)'
             }
           },
@@ -228,8 +246,10 @@ export class GraphComponent implements OnInit {
    */
   private reflectGraphMenuStateToGraph(): void {
     this.cy.elements().unselect();
-    this.updateDisplayOfZeroEdges(this.hideZeroEdges);
-    this.updateDisplayOfNodesWithoutNeighbours(this.hideNodesWithoutNeighbours);
+    this.updateDisplayOfZeroEdges(this.areZeroWeightedEdgesHidden);
+    this.updateDisplayOfNodesWithoutNeighbours(this.areNeighbourlessNodesHidden);
+    this.toggleDisplayOfEdgeWeightsAsLabels(this.areEdgeWeightsShownAsLabels);
+    this.toggleEdgeColourcoding(this.areEdgesColourCoded);
   }
 
   /**
@@ -283,7 +303,7 @@ export class GraphComponent implements OnInit {
             // If there is at least one visible edge, the node needs to be displayed
             for (let edge of connectedEdges) {
               // If the edges are not hidden or the edge is visible, display the node
-              if (!self.hideZeroEdges || edge.data('weight') != 0) {
+              if (!self.areZeroWeightedEdgesHidden || edge.data('weight') != 0) {
                 hideNode = false;
                 break;
               }
@@ -377,7 +397,7 @@ export class GraphComponent implements OnInit {
     // Use a batch update
     this.cy.batch(function() {
       let self = this;
-      if (self.hideZeroEdges) {
+      if (self.areZeroWeightedEdgesHidden) {
         // Only make adjustments to the neighbourhood if some edges are hidden
         neighbourhood.forEach(function (element) {
           if (element.isNode()) {
@@ -426,64 +446,115 @@ export class GraphComponent implements OnInit {
     return neighbourhood;
   }
 
+  private toggleDisplayOfEdgeWeightsAsLabels(areEdgeWeightsAsShownAsLabels: boolean): void {
+    if (areEdgeWeightsAsShownAsLabels) {
+      this.cy.edges().addClass('labeled');
+    } else {
+      this.cy.edges().removeClass('labeled');
+    }
+  }
+
+  private toggleEdgeColourcoding(areEdgesColourCoded: boolean) {
+    let self = this;
+    if (areEdgesColourCoded) {
+      this.cy.edges().forEach(function (edge) {
+        let colour = GraphComponent.getColourCoding(edge.data('weight'));
+        edge.style('line-color', colour);
+        edge.style('source-arrow-color', colour);
+        edge.style('target-arrow-color', colour);
+      });
+    } else {
+      this.cy.edges().forEach(function (edge) {
+        edge.removeStyle('line-color');
+        edge.removeStyle('source-arrow-color');
+        edge.removeStyle('target-arrow-color');
+      });
+    }
+  }
+
+  private static INFINITE_WEIGHT_SPACE = 0;
+  private static NORMALISED_WEIGHT_SPACE = 1;
+  static gradients = ['#34ff29', '#70ff29', '#94ff29', '#b8ff29', '#d8ff29', '#fbff29', '#ffe629', '#ffbf29', '#ff9f29', '#ff7429', '#ff5729', '#ff2929'];
+
+  private static getColourCoding(weight: number, weightSpace: number = GraphComponent.INFINITE_WEIGHT_SPACE): string {
+
+    if (weightSpace == GraphComponent.INFINITE_WEIGHT_SPACE) {
+      if (weight <= 10) {
+        return GraphComponent.gradients[Math.round(weight)];
+      } else {
+        return GraphComponent.gradients[11];
+      }
+    } else if (weightSpace == GraphComponent.NORMALISED_WEIGHT_SPACE) {
+      if (weight == 1) {
+        return GraphComponent.gradients[11];
+      } else if (weight == 0) {
+        return GraphComponent.gradients[0];
+      } else {
+        let correspondingGradient = weight * 10;
+        if (correspondingGradient < 5) {
+          correspondingGradient = Math.ceil(correspondingGradient);
+        } else {
+          correspondingGradient = Math.floor(correspondingGradient);
+        }
+        return GraphComponent.gradients[correspondingGradient];
+      }
+    }
+
+  }
+
+  /**
+   * Abstract the emitting of the event regardless of its type
+   * @param element element which is selected
+   */
+  private emitElementSelectedEvent(element: any): void {
+    if (element.isNode()) {
+      this.nodeSelected(element.id());
+    } else if (element.isEdge()){
+      this.edgeSelected(element.id());
+    }
+  }
+
+  /**
+   * Emit the selection of the node to the dashboard
+   * @param nodeId id of the node which is selected
+   */
+  private nodeSelected(nodeId: string) {
+    this.nodeSelectedEvent.emit(nodeId);
+  }
+
+  /**
+   * Emit the selection of the edge to the dashboard
+   * @param edgeId id of the edge which is selected
+   */
+  private edgeSelected(edgeId: string) {
+    this.edgeSelectedEvent.emit(edgeId);
+  }
+
+  /**
+   * If an element in the graph was selected, handle the event
+   */
   private handleSelectElement(): void {
     let self = this;
     this.cy.on('select', '*', function(evt){
+      self.emitElementSelectedEvent(evt.target);
       self.highlightElementNeighbourhood(evt.target);
     });
   }
 
+  /**
+   * If an element in the graph was unselected, handle the event
+   */
   private handleUnselectElement(): void {
     let self = this;
     this.cy.on('unselect', '*', function(evt){
       self.unhighlightElementNeighbourhood(evt.target);
     });
   }
-    
-  private nodeSelected(nodeId: string) {
-    this.nodeSelectedEvent.emit(nodeId);
-  }
-
-  private edgeSelected(edgeId: string) {
-    this.edgeSelectedEvent.emit(edgeId);
-  }
-
-  private handleOnSelectNodeEvent() {
-    let self = this;
-    this.cy.on('select', 'node', function(evt){
-      var node = evt.target;
-      self.nodeSelected(node.id());
-    });
-  }
-
-  private handleOnUnselectNodeEvent() {
-    let self = this;
-    this.cy.on('unselect', 'node', function(evt){
-      self.nodeSelected(null);
-    });
-  }
-
-  private handleOnSelectEdgeEvent() {
-    let self = this;
-    this.cy.on('select', 'edge', function(evt){
-      var edge = evt.target;
-      self.edgeSelected(edge.id());
-    });
-    }
-
-  private handleOnUnselectEdgeEvent() {
-    let self = this;
-    this.cy.on('unselect', 'edge', function(evt){
-      self.edgeSelected(null);
-    });
-  }
-
-  private initEventHandlers() {
+  /**
+   * Initialise all of the event handlers
+   */
+  private initEventHandlers(): void {
     this.handleSelectElement();
     this.handleUnselectElement();
-    this.handleOnSelectNodeEvent();
-    this.handleOnUnselectNodeEvent();
-    this.handleOnSelectEdgeEvent();
-    this.handleOnUnselectEdgeEvent();
   }
 }
