@@ -1,5 +1,6 @@
 package com.ucl.ADA.model.source_file;
 
+import com.ucl.ADA.model.base_entity.BaseEntity;
 import com.ucl.ADA.model.snapshot.Snapshot;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "SOURCE_FILE")
-public class SourceFile {
+public class SourceFile extends BaseEntity {
 
     /**
      * the snapshot which contains the source file
