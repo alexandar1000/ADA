@@ -19,6 +19,7 @@ export class GraphComponent implements OnInit {
   @Input() areNeighbourlessNodesHidden: boolean;
   @Input() areEdgeWeightsShownAsLabels: boolean;
   @Input() areEdgesColourCoded: boolean;
+  @Input() selectedLayoutOption: string;
 
   private highlightedNodes: CollectionReturnValue = null;
   @Output() nodeSelectedEvent = new EventEmitter();
@@ -45,6 +46,9 @@ export class GraphComponent implements OnInit {
       }
       if (changes.areEdgesColourCoded) {
         this.toggleEdgeColourcoding(this.areEdgesColourCoded);
+      }
+      if (changes.selectedLayoutOption) {
+        this.updateGraphLayout(this.selectedLayoutOption);
       }
     }
   }
@@ -111,7 +115,6 @@ export class GraphComponent implements OnInit {
     this.cy.elements().remove();
     let elements = this.getElements();
     this.cy.add(elements);
-
     this.updateArrowStyle();
 
     this.reflectGraphMenuStateToGraph();
@@ -503,6 +506,18 @@ export class GraphComponent implements OnInit {
   }
 
   /**
+   * Update the layout in which the nodes in the graph are displayed
+   * @param selectedLayoutOption the layout option
+   */
+  private updateGraphLayout(selectedLayoutOption: string): void {
+    var layout = this.cy.layout({
+      name: selectedLayoutOption
+    });
+
+    layout.run();
+  }
+
+  /**
    * Abstract the emitting of the event regardless of its type
    * @param element element which is selected
    */
@@ -547,9 +562,11 @@ export class GraphComponent implements OnInit {
   private handleUnselectElement(): void {
     let self = this;
     this.cy.on('unselect', '*', function(evt){
+      // self.emitElementUnelectedEvent(evt.target);
       self.unhighlightElementNeighbourhood(evt.target);
     });
   }
+
   /**
    * Initialise all of the event handlers
    */

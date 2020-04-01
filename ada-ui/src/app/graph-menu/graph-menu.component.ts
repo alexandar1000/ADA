@@ -48,7 +48,6 @@ export class GraphMenuComponent implements OnInit {
       name: 'Ungrouped',
       graphLayoutOptions: [
         {value: 'circle', viewValue: 'Circle'},
-        {value: 'concentric', viewValue: 'Doughnut'},
         {value: 'grid', viewValue: 'Grid'},
         {value: 'random', viewValue: 'Random'},
       ]
@@ -56,7 +55,7 @@ export class GraphMenuComponent implements OnInit {
     {
       name: 'Grouped',
       graphLayoutOptions: [
-        {value: 'venn', viewValue: 'Venn'},
+        {value: 'concentric', viewValue: 'Doughnut'},
         {value: 'cose', viewValue: 'Cose'}
       ]
     }
