@@ -1,5 +1,17 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {GraphComponent} from "../graph/graph.component";
+import {FormControl} from "@angular/forms";
+
+interface GraphLayoutOption {
+  value: string;
+  viewValue: string;
+}
+
+interface GraphLayoutGroup {
+  disabled?: boolean;
+  name: string;
+  graphLayoutOptions: GraphLayoutOption[];
+}
 
 @Component({
   selector: 'app-graph-menu',
@@ -22,11 +34,33 @@ export class GraphMenuComponent implements OnInit {
   @Input() areNeighbourlessNodesHidden: boolean;
   @Input() areEdgeWeightsShownAsLabels: boolean;
   @Input() areEdgesColourCoded: boolean;
+  @Input() selectedLayoutOption: string;
 
   @Output() updateZeroWeightedEdgesRepresentationEvent = new EventEmitter();
   @Output() updateNeighbourlessNodesRepresentationEvent = new EventEmitter();
   @Output() updateEdgeWeightsAsLabelRepresentationEvent = new EventEmitter();
   @Output() updateEdgesColourCodingRepresentationEvent = new EventEmitter();
+  @Output() updateSelectedLayoutOptionEvent = new EventEmitter();
+
+  graphLayoutControl = new FormControl();
+  public graphLayoutGroups: GraphLayoutGroup[] = [
+    {
+      name: 'Ungrouped',
+      graphLayoutOptions: [
+        {value: 'circle', viewValue: 'Circle'},
+        {value: 'grid', viewValue: 'Grid'},
+        {value: 'random', viewValue: 'Random'},
+      ]
+    },
+    {
+      name: 'Grouped',
+      graphLayoutOptions: [
+        {value: 'concentric', viewValue: 'Doughnut'},
+        {value: 'cose', viewValue: 'Cose'}
+      ]
+    }
+
+    ];
 
   constructor() { }
 
@@ -65,5 +99,10 @@ export class GraphMenuComponent implements OnInit {
   handleEdgesColourCodingRepresentationChange($event: any): void {
     this.areEdgesColourCoded = $event.checked;
     this.updateEdgesColourCodingRepresentationEvent.emit(this.areEdgesColourCoded);
+  }
+
+  handleSelectedLayoutOptionChange($event: any): void {
+    this.selectedLayoutOption = $event.value;
+    this.updateSelectedLayoutOptionEvent.emit(this.selectedLayoutOption);
   }
 }

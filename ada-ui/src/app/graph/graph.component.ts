@@ -19,10 +19,13 @@ export class GraphComponent implements OnInit {
   @Input() areNeighbourlessNodesHidden: boolean;
   @Input() areEdgeWeightsShownAsLabels: boolean;
   @Input() areEdgesColourCoded: boolean;
+  @Input() selectedLayoutOption: string;
 
   private highlightedNodes: CollectionReturnValue = null;
   @Output() nodeSelectedEvent = new EventEmitter();
   @Output() edgeSelectedEvent = new EventEmitter();
+  @Output() nodeUnselectedEvent = new EventEmitter();
+  @Output() edgeUnselectedEvent = new EventEmitter();
   private metricNameConverter = new MetricNameConverter();
 
 
@@ -45,6 +48,9 @@ export class GraphComponent implements OnInit {
       }
       if (changes.areEdgesColourCoded) {
         this.toggleEdgeColourcoding(this.areEdgesColourCoded);
+      }
+      if (changes.selectedLayoutOption) {
+        this.updateGraphLayout(this.selectedLayoutOption);
       }
     }
   }
@@ -111,13 +117,12 @@ export class GraphComponent implements OnInit {
     this.cy.elements().remove();
     let elements = this.getElements();
     this.cy.add(elements);
-
     this.updateArrowStyle();
 
     this.reflectGraphMenuStateToGraph();
 
     var layout = this.cy.layout({
-      name: 'circle'
+      name: this.selectedLayoutOption
     });
 
     layout.run();
@@ -151,11 +156,13 @@ export class GraphComponent implements OnInit {
       // If the class name is empty string, then replace it with a $ symbol
       fullyQualifiedClassName = (fullyQualifiedClassName == '' ? "$" : fullyQualifiedClassName);
       extractedClassName = (extractedClassName == '' ? '$' : extractedClassName);
+      let belongingPackages = this.extractBelongingPackages(fullyQualifiedClassName);
       // Create the node as per cytoscape representation
       let node = {
         data: {
           id: fullyQualifiedClassName,
-          label: extractedClassName
+          label: extractedClassName,
+          belongingPackages: belongingPackages
         }
       };
       nodes.push(node);
@@ -503,14 +510,47 @@ export class GraphComponent implements OnInit {
   }
 
   /**
+   * Update the layout in which the nodes in the graph are displayed
+   * @param selectedLayoutOption the layout option
+   */
+  private updateGraphLayout(selectedLayoutOption: string): void {
+    var layout = this.cy.layout({
+      name: selectedLayoutOption
+    });
+
+    layout.run();
+  }
+
+  /**
+   * Given a fully qualified class name, extract all the packages to which the class belongs
+   * @param fullyQualifiedClassName a fully qualified path name from which to extract the belonging packages
+   */
+  private extractBelongingPackages(fullyQualifiedClassName: String): string[] {
+    let splitString = fullyQualifiedClassName.split('.');
+    let superPackages = [];
+    // Upper bound is not inclusive of the last element because we do not want to include the class name
+    for (let i = 1; i < splitString.length; i++) {
+      let superPackage = '';
+      for (let j = 0; j < i; j++) {
+        if (j != 0) {
+          superPackage += '.';
+        }
+        superPackage += splitString[j];
+      }
+      superPackages.push(superPackage);
+    }
+    return superPackages;
+  }
+
+  /**
    * Abstract the emitting of the event regardless of its type
    * @param element element which is selected
    */
   private emitElementSelectedEvent(element: any): void {
     if (element.isNode()) {
-      this.nodeSelected(element.id());
+      this.emitNodeSelected(element.id());
     } else if (element.isEdge()){
-      this.edgeSelected(element.id());
+      this.emitEdgeSelected(element.id());
     }
   }
 
@@ -518,7 +558,7 @@ export class GraphComponent implements OnInit {
    * Emit the selection of the node to the dashboard
    * @param nodeId id of the node which is selected
    */
-  private nodeSelected(nodeId: string) {
+  private emitNodeSelected(nodeId: string) {
     this.nodeSelectedEvent.emit(nodeId);
   }
 
@@ -526,8 +566,36 @@ export class GraphComponent implements OnInit {
    * Emit the selection of the edge to the dashboard
    * @param edgeId id of the edge which is selected
    */
-  private edgeSelected(edgeId: string) {
+  private emitEdgeSelected(edgeId: string) {
     this.edgeSelectedEvent.emit(edgeId);
+  }
+
+  /**
+   * Abstract the emitting of the unselecting event regardless of its type
+   * @param element element which is selected
+   */
+  private emitElementUnelectedEvent(element: any): void {
+    if (element.isNode()) {
+      this.emitNodeUnselected(element.id());
+    } else if (element.isEdge()){
+      this.emitEdgeUnselected(element.id());
+    }
+  }
+
+  /**
+   * Emit the unselection of the node to the dashboard
+   * @param nodeId id of the node which is selected
+   */
+  private emitNodeUnselected(nodeId: string) {
+    this.nodeUnselectedEvent.emit(nodeId);
+  }
+
+  /**
+   * Emit the unselection of the edge to the dashboard
+   * @param edgeId id of the edge which is selected
+   */
+  private emitEdgeUnselected(edgeId: string) {
+    this.edgeUnselectedEvent.emit(edgeId);
   }
 
   /**
@@ -547,9 +615,11 @@ export class GraphComponent implements OnInit {
   private handleUnselectElement(): void {
     let self = this;
     this.cy.on('unselect', '*', function(evt){
+      self.emitElementUnelectedEvent(evt.target);
       self.unhighlightElementNeighbourhood(evt.target);
     });
   }
+
   /**
    * Initialise all of the event handlers
    */
