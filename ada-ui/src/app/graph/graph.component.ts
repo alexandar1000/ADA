@@ -24,6 +24,8 @@ export class GraphComponent implements OnInit {
   private highlightedNodes: CollectionReturnValue = null;
   @Output() nodeSelectedEvent = new EventEmitter();
   @Output() edgeSelectedEvent = new EventEmitter();
+  @Output() nodeUnselectedEvent = new EventEmitter();
+  @Output() edgeUnselectedEvent = new EventEmitter();
   private metricNameConverter = new MetricNameConverter();
 
 
@@ -546,6 +548,34 @@ export class GraphComponent implements OnInit {
   }
 
   /**
+   * Abstract the emitting of the unselecting event regardless of its type
+   * @param element element which is selected
+   */
+  private emitElementUnelectedEvent(element: any): void {
+    if (element.isNode()) {
+      this.nodeUnselected(element.id());
+    } else if (element.isEdge()){
+      this.edgeUnselected(element.id());
+    }
+  }
+
+  /**
+   * Emit the unselection of the node to the dashboard
+   * @param nodeId id of the node which is selected
+   */
+  private nodeUnselected(nodeId: string) {
+    this.nodeUnselectedEvent.emit(nodeId);
+  }
+
+  /**
+   * Emit the unselection of the edge to the dashboard
+   * @param edgeId id of the edge which is selected
+   */
+  private edgeUnselected(edgeId: string) {
+    this.edgeUnselectedEvent.emit(edgeId);
+  }
+
+  /**
    * If an element in the graph was selected, handle the event
    */
   private handleSelectElement(): void {
@@ -562,7 +592,7 @@ export class GraphComponent implements OnInit {
   private handleUnselectElement(): void {
     let self = this;
     this.cy.on('unselect', '*', function(evt){
-      // self.emitElementUnelectedEvent(evt.target);
+      self.emitElementUnelectedEvent(evt.target);
       self.unhighlightElementNeighbourhood(evt.target);
     });
   }

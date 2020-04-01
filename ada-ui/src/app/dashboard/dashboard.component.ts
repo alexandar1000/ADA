@@ -68,12 +68,20 @@ export class DashboardComponent implements OnInit {
     this.snapshotStyleService.sendClickedSnapshotToSidebar([owner, repository, branch, snapshot]);
   }
 
-  updateAdditionalInformationWithNode($event: any) {
+  updateAdditionalInformationWithNodeAdded($event: any) {
     this.selectedNode = $event;
   }
 
-  updateAdditionalInformationWithEdge($event: any) {
+  updateAdditionalInformationWithEdgeAdded($event: any) {
     this.selectedEdge = $event;
+  }
+
+  updateAdditionalInformationWithNodeRemoved($event: any) {
+    this.selectedNode = null;
+  }
+
+  updateAdditionalInformationWithEdgeRemoved($event: any) {
+    this.selectedEdge = null;
   }
 
   handleUpdateZeroWeightedEdgesRepresentationEvent(state: boolean): void {
