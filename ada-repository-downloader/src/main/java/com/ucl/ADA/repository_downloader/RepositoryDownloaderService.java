@@ -1,9 +1,13 @@
 package com.ucl.ADA.repository_downloader;
 
 import com.ucl.ADA.model.branch.Branch;
+import com.ucl.ADA.model.branch.BranchRepository;
 import com.ucl.ADA.model.owner.Owner;
+import com.ucl.ADA.model.owner.OwnerService;
 import com.ucl.ADA.model.repository.GitRepo;
+import com.ucl.ADA.model.repository.GitRepoRepository;
 import com.ucl.ADA.model.snapshot.Snapshot;
+import com.ucl.ADA.model.snapshot.SnapshotRepository;
 import com.ucl.ADA.model.source_file.SourceFile;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +16,12 @@ import org.springframework.stereotype.Service;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
 
 /**
  * Service class for downloading and storing the Git repository metadata in the DB (owner, repoName, branch, timestamp, .java files etc..)
  *
- * @see GitRepoInfo
  * @see RepoDownloader
  */
 @Service
@@ -38,8 +40,6 @@ public class RepositoryDownloaderService {
     @Autowired
     private SnapshotRepository snapshotRepository;
 
-    @Autowired
-    private SourceFileRepository sourceFileRepository;
 
     /**
      * Download Git repository and populate database, following the hierarchical database model of
@@ -65,11 +65,11 @@ public class RepositoryDownloaderService {
      */
     GitRepoInfo populateDatabase(GitRepoInfo gitRepoInfo) {
 
-        Owner owner = initOwner(gitRepoInfo);
+        Owner owner = findOwnerByName(gitRepoInfo);
 
-        GitRepo repo = initRepo(owner, gitRepoInfo);
+        GitRepo repo = findRepoByOwnerAndName(owner, gitRepoInfo);
 
-        Branch branchEntity = initBranch(repo, gitRepoInfo);
+        Branch branchEntity = findBranchByRepoAndName(repo, gitRepoInfo);
 
         Snapshot snapshot = initSnapshot(gitRepoInfo, branchEntity);
 
@@ -135,22 +135,8 @@ public class RepositoryDownloaderService {
      * @return an existing (or new) Branch entity.
      * @see GitRepoInfo#getBranch()
      */
-    private Branch initBranch(GitRepo repo, GitRepoInfo downloadedRepo) {
-        Set<Branch> branches = repo.getBranches();
-        String branchName = downloadedRepo.getBranch();
-
-        for (Branch b : branches) {
-
-            if (b.getBranchName().equals(branchName)) {
-                return b;
-            }
-        }
-
-        Branch branchEntity = new Branch();
-        branchEntity.setRepository(repo);
-        branchEntity.setBranchName(branchName);
-
-        return branchRepository.save(branchEntity);
+    private Branch findBranchByRepoAndName(GitRepo repo, String branchName) {
+        return branchRepository.findByRepositoryAndBranchName(repo, branchName);
     }
 
     /**
@@ -161,19 +147,8 @@ public class RepositoryDownloaderService {
      * @param downloadedRepo object containing metadata of Git repository
      * @return an existing (or new) GitRepository
      */
-    private GitRepo initRepo(Owner owner, GitRepoInfo downloadedRepo) {
-
-        Set<GitRepo> repos = owner.getRepos();
-        String repoName = downloadedRepo.getRepository();
-        for (GitRepo r : repos) {
-            if (r.getRepoName().equals(repoName)) {
-                return r;
-            }
-        }
-        GitRepo repo = new GitRepo();
-        repo.setOwner(owner);
-        repo.setRepoName(repoName);
-        return gitRepoRepository.save(repo);
+    private GitRepo findRepoByOwnerAndName(Owner owner, String repoName) {
+        return gitRepoRepository.findByOwnerAndRepoName(owner, repoName);
     }
 
     /**
@@ -183,22 +158,26 @@ public class RepositoryDownloaderService {
      * @param downloadedRepo object containining metadata of Git repository
      * @return an existing (or new) Owner
      */
-    private Owner initOwner(GitRepoInfo downloadedRepo) {
+    private Owner findOwnerByName(String userName) {
 
-        List<Owner> owners = ownerService.listOwners();
-        String testUserName = downloadedRepo.getOwner();
-
-        // Search and return existing user, if found
-        for (Owner u : owners) {
-            if (u.getUsername().equals(testUserName)) {
-                return u;
-            }
-        }
-
-        // If not found, create and return a new user
-        Owner owner = new Owner();
-        owner.setUsername(downloadedRepo.getOwner());
-        return ownerService.addOwner(owner);
+        return ownerService.getOwnerByName(userName);
     }
 
+    //todo: check if the null checks work
+    /**
+     * Validate if owner, git repository and branch are present in the DB. If they are, return the branch entity.
+     * @param repoOwner username of the owner of the repository
+     * @param repoName name of the repository
+     * @param branchName name of the branch
+     * @return the corresponding branch entity, or null if non-existant
+     */
+    public Branch validate(String repoOwner, String repoName, String branchName) {
+
+        Owner owner = findOwnerByName(repoOwner);
+        if(owner == null) return null;
+        GitRepo repo = findRepoByOwnerAndName(owner, repoName);
+        if(repo == null) return null;
+
+        return findBranchByRepoAndName(repo, branchName);
+    }
 }
