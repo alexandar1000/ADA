@@ -70,7 +70,7 @@ public class RepositoryAnalyserServices {
         Set<String> addedSourceFiles = getPathsToAddedSourceFiles(snapshot, prevSnapshot);
 
         // Get source paths to parse from addedSourceFiles, and send {root dir path, addedSourceFiles} to Parser
-        SetMultimap<String, ADAClass> filePathToClassStructuresMap = parserServices.parseRepository(rootDirPath, sourcePaths);
+        SetMultimap<String, ADAClass> filePathToClassStructuresMap = parserServices.parseRepository(rootDirPath, addedSourceFiles);
 
         // generate Map<String, Set<String>> pathsOfAddedSourceFilesToClassNames
         SetMultimap<String, String> pathsOfAddedSourceFilesToClassNames = getFilePathToClassNamesMap(filePathToClassStructuresMap);
