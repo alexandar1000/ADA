@@ -87,8 +87,8 @@ public class ClassStructure extends BaseEntity {
      * All of the metric values for the link between the current class and the linking classes.
      */
     @OneToMany
-    @JoinTable(name = "STATIC_INFO_RELATION_METRIC_VALUE",
-            joinColumns = {@JoinColumn(name = "static_info_id")},
+    @JoinTable(name = "CLASS_STRUCTURE_RELATION_METRIC_VALUE",
+            joinColumns = {@JoinColumn(name = "class_structure_id")},
             inverseJoinColumns = {@JoinColumn(name = "relation_metric_value_id")})
     @MapKeyColumn(name = "class_name")
     private Map<String, RelationMetricValue> relationMetricValues = new HashMap<>();

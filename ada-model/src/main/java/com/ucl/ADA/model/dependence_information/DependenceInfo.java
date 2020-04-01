@@ -15,7 +15,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@MappedSuperclass
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class DependenceInfo extends BaseEntity {
 
     /* ************************************************************************
