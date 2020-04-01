@@ -9,8 +9,7 @@ import java.util.Set;
 public class ADAClass {
 
     private String packageName;
-    private Set<String> importedInternalClasses;
-    private Set<String> importedExternalClasses;
+    private Set<String> importedPackagesAndClasses;
     private String className;
     private boolean isInterface;
     private boolean isEnum;
@@ -26,7 +25,7 @@ public class ADAClass {
     private List<String> exFieldInvocation;
 
 
-    public ADAClass(String packageName, Set<String> importedInternalClasses, Set<String> importedExternalClasses,
+    public ADAClass(String packageName, Set<String> importedPackagesAndClasses,
                     String className, boolean isInterface, boolean isEnum, String parentClassName,
                     Set<String> implementedInterfaces, List<ADAClassAttribute> adaClassAttributes,
                     List<String> declaredEnums, List<ADAMethodInvocation> ADAMethodInvocations,
@@ -34,8 +33,7 @@ public class ADAClass {
                     List<ADAMethodOrConstructorDeclaration> ADAMethodOrConstructorDeclaration,
                     List<String> exMethodCalls, List<String> exConstructorInvocations, List<String> exFieldInvocation) {
         this.packageName = packageName;
-        this.importedInternalClasses = importedInternalClasses;
-        this.importedExternalClasses = importedExternalClasses;
+        this.importedPackagesAndClasses = importedPackagesAndClasses;
         this.className = className;
         this.isInterface = isInterface;
         this.isEnum = isEnum;
@@ -60,8 +58,7 @@ public class ADAClass {
         }
         ADAClass ADAClass = (ADAClass) sf;
         return ADAClass.packageName.equals(this.packageName)
-                && ADAClass.importedInternalClasses.equals(this.importedInternalClasses)
-                && ADAClass.importedExternalClasses.equals(this.importedExternalClasses)
+                && ADAClass.importedPackagesAndClasses.equals(this.importedPackagesAndClasses)
                 && ADAClass.className.equals(this.className)
                 && ADAClass.parentClassName.equals(this.parentClassName)
                 && ADAClass.implementedInterfaces.equals(this.implementedInterfaces)
@@ -80,8 +77,7 @@ public class ADAClass {
     public int hashCode() {
         int result = 31;
         result = 31 * result + packageName.hashCode();
-        result = 31 * result + importedInternalClasses.hashCode();
-        result = 31 * result + importedExternalClasses.hashCode();
+        result = 31 * result + importedPackagesAndClasses.hashCode();
         result = 31 * result + className.hashCode();
         result = 31 * result + parentClassName.hashCode();
         result = 31 * result + implementedInterfaces.hashCode();
@@ -100,8 +96,7 @@ public class ADAClass {
     public String toString() {
         return "ADAClass{" +
                 "packageName='" + packageName + '\'' +
-                ", importedInternalClasses=" + importedInternalClasses +
-                ", importedExternalClasses=" + importedExternalClasses +
+                ", importedPackagesAndClasses=" + importedPackagesAndClasses +
                 ", className='" + className + '\'' +
                 ", isInterface=" + isInterface +
                 ", isEnum=" + isEnum +

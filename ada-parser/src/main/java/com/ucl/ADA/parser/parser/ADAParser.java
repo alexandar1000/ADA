@@ -149,7 +149,7 @@ public class ADAParser {
                 List<AbstractTypeDeclaration> allClassAndEnums = typeVisitor.getAbstractTypeDeclaration();
                 for (int i = 0; i < allClassAndEnums.size(); i++) {
                     AbstractTypeDeclaration classAndEnumType = allClassAndEnums.get(i);
-                    ADAClassVisitor ADAClassVisitor = new ADAClassVisitor(packageVisitor.getPackageName(), packageVisitor.getImportedInternalClasses(), packageVisitor.getImportedExternalClasses());
+                    ADAClassVisitor ADAClassVisitor = new ADAClassVisitor(packageVisitor.getPackageName(), packageVisitor.getImportedPackagesAndClasses());
                     classAndEnumType.accept(ADAClassVisitor);
                     ADAClass extractedClass = ADAClassVisitor.getExtractedClass();
                     parsedClasses.add(extractedClass);
@@ -158,6 +158,5 @@ public class ADAParser {
         }
         return parsedClasses;
     }
-
 
 }
