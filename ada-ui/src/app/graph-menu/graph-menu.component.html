@@ -2,6 +2,19 @@
   <p><u>Menu:</u></p>
   <ul>
     <li>
+      <mat-form-field>
+        <mat-label>View Option</mat-label>
+        <mat-select [formControl]="graphLayoutControl" [(value)]="selectedLayoutOption" (selectionChange)="handleSelectedLayoutOptionChange($event)">
+          <mat-optgroup *ngFor="let group of graphLayoutGroups" [label]="group.name"
+                        [disabled]="group.disabled">
+            <mat-option *ngFor="let pokemon of group.graphLayoutOptions" [value]="pokemon.value">
+              {{pokemon.viewValue}}
+            </mat-option>
+          </mat-optgroup>
+        </mat-select>
+      </mat-form-field>
+    </li>
+    <li>
       <mat-checkbox [checked]="areZeroWeightedEdgesHidden"
                     (change)="handleZeroWeightedEdgesRepresentationChange($event)"
       >Hide zero weights</mat-checkbox>

@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit {
   private areNeighbourlessNodesHidden = false;
   private areEdgeWeightsShownAsLabels = false;
   private areEdgesColourCoded = false;
+  private selectedLayoutOption = 'circle';
 
   constructor(private analyserService: AnalyserService,
               private newEntryService: NewEntryService,
@@ -89,5 +90,9 @@ export class DashboardComponent implements OnInit {
 
   handleUpdateEdgesColourCodingRepresentationEvent(state: boolean): void {
     this.areEdgesColourCoded = state;
+  }
+
+  handleUpdateSelectedLayoutOptionEvent($event: string): void {
+    this.selectedLayoutOption = $event;
   }
 }
