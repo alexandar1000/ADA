@@ -388,15 +388,24 @@ export class GraphComponent implements OnInit {
     let self = this;
     // Make all changes to the graph in batch
     this.cy.batch(function() {
-      // Hide only the edges with a weight of zero
+      // If the edges with weight of zero are to be hidden, show ones which are hidden and have weight != 0, and hide
+      // The displayed edges with weight == 0
       if (hideEdges == true) {
+        // For all of the hidden edges show those with a weight of zero
+        this.hiddenEdges.forEach(function (edge) {
+          let weight = edge.data('weight');
+          if (weight != 0) {
+            self.showEdge(edge);
+          }
+        });
+        // For all of the edges in the graph hide those with a weight of zero
         this.cy.edges().forEach(function (edge) {
           let weight = edge.data('weight');
           if (weight == 0) {
             self.hideEdge(edge);
           }
         });
-      // Show all edges
+      // If the edges are not to be hidden, show all edges
       } else {
         this.hiddenEdges.forEach(function (edge) {
           self.showEdge(edge);
