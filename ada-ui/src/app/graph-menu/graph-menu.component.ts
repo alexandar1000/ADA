@@ -29,6 +29,7 @@ export class GraphMenuComponent implements OnInit {
   };
 
   private ctx: CanvasRenderingContext2D;
+  // private query: string[];
 
   @Input() areZeroWeightedEdgesHidden: boolean;
   @Input() areNeighbourlessNodesHidden: boolean;
@@ -62,7 +63,7 @@ export class GraphMenuComponent implements OnInit {
 
     ];
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
   }

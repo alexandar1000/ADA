@@ -1,0 +1,17 @@
+.query-form {
+    padding-top: 1em;
+    padding-left: 2.5em;
+    padding-bottom: 1em;
+    min-width: 50px;
+    max-width: 200px; 
+    width: 100%;
+    display: inline-block;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.query-button {
+    float: right;
+}

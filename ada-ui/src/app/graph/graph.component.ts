@@ -3,6 +3,7 @@ import * as cytoscape from 'cytoscape';
 import {MetricNameConverter} from "../classes/metric-name-converter";
 import {ProjectStructure} from "../classes/project-structure";
 import {CollectionReturnValue} from "cytoscape";
+import { QueryService } from '../query.service';
 
 @Component({
   selector: 'app-graph',
@@ -28,8 +29,87 @@ export class GraphComponent implements OnInit {
   @Output() edgeUnselectedEvent = new EventEmitter();
   private metricNameConverter = new MetricNameConverter();
 
+  private previousNodesQuery;
 
-  constructor() { }
+
+  constructor(queryService: QueryService) { 
+    if (queryService.receivedQueryEvent$) {
+      queryService.receivedQueryEvent$.subscribe(
+        query => {
+          this.processQuery(query);
+        }
+      )
+    }
+  }
+
+  processQuery(query: string[]): void {
+    let queryType = query[0];
+    let queryText = query[1];
+    if (queryType === "class") {
+      this.queryByClassName(queryText);
+    }
+    if (queryType === "package") {
+      this.queryByPackageName(queryText);
+    }
+  }
+
+  queryByClassName(queryText: string): void {
+    let previousNodesQuery = this.previousNodesQuery;
+    if (previousNodesQuery) {
+      this.cy.batch(function() {
+        this.cy.nodes().forEach(function (node) {
+          let className = node.data('label');
+          let fullyQualifiedClassName = node.data('id');
+          for (let toHighlightNode of previousNodesQuery) {
+            if (toHighlightNode.data('label') === className || toHighlightNode.data('id') === fullyQualifiedClassName) {
+              node.unselect();
+            }
+          }
+        });
+      }.bind(this));
+    }
+    let nodes = this.cy.nodes(`[label = "${queryText}"], [id = "${queryText}"]`);
+    this.cy.batch(function() {
+        this.cy.nodes().forEach(function (node) {
+          let className = node.data('label');
+          let fullyQualifiedClassName = node.data('id');
+          for (let toHighlightNode of nodes) {
+            if (toHighlightNode.data('label') === className || toHighlightNode.data('id') === fullyQualifiedClassName) {
+              node.select();
+            }
+          }
+        });
+    }.bind(this));
+    this.previousNodesQuery = nodes;
+  }
+
+  queryByPackageName(queryText: string): void {
+    let previousNodesQuery = this.previousNodesQuery;
+    if (previousNodesQuery) {
+      this.cy.batch(function() {
+        this.cy.nodes().forEach(function (node) {
+          let mainPackage = node.data('mainPackage');
+          for (let toHighlightNode of previousNodesQuery) {
+            if (toHighlightNode.data('mainPackage') === mainPackage) {
+              node.unselect();
+            }
+          }
+        });
+      }.bind(this));
+    }
+    let nodes = this.cy.nodes(`[mainPackage = "${queryText}"]`);
+    this.cy.batch(function() {
+      this.cy.nodes().forEach(function (node) {
+        let mainPackage = node.data('mainPackage');
+        for (let toHighlightNode of nodes) {
+          if (toHighlightNode.data('mainPackage') === mainPackage) {
+            node.select();
+          }
+        }
+      });
+    }.bind(this));
+    this.previousNodesQuery = nodes;
+  }
 
   ngOnInit() {
     this.initCytoscape();
@@ -157,11 +237,16 @@ export class GraphComponent implements OnInit {
       fullyQualifiedClassName = (fullyQualifiedClassName == '' ? "$" : fullyQualifiedClassName);
       extractedClassName = (extractedClassName == '' ? '$' : extractedClassName);
       let belongingPackages = this.extractBelongingPackages(fullyQualifiedClassName);
+      let mainPackage = "";
+      if (belongingPackages) {
+        mainPackage = belongingPackages.pop();
+      }
       // Create the node as per cytoscape representation
       let node = {
         data: {
           id: fullyQualifiedClassName,
           label: extractedClassName,
+          mainPackage: mainPackage,
           belongingPackages: belongingPackages
         }
       };
