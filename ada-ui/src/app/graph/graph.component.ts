@@ -29,6 +29,8 @@ export class GraphComponent implements OnInit {
   @Output() edgeUnselectedEvent = new EventEmitter();
   private metricNameConverter = new MetricNameConverter();
 
+  private previousNodesQuery;
+
 
   constructor(queryService: QueryService) { 
     if (queryService.receivedQueryEvent$) {
@@ -46,23 +48,68 @@ export class GraphComponent implements OnInit {
     if (queryType === "class") {
       this.queryByClassName(queryText);
     }
-  }
-
-  queryByClassName(queryText: string): void {
-    let nodes = this.cy.nodes(`[label = "${queryText}"], [id = "${queryText}"]`);
-    for (let node of nodes) {
-      this.highlightElementNeighbourhood(node);
+    if (queryType === "package") {
+      this.queryByPackageName(queryText);
     }
   }
 
-  // getNodeByClassName(classname: string): any {
-  //   let nodes = this.getElements().nodes;
-  //   for(let node of nodes) {
-  //     if (node.data.label === classname) {
-  //       return node;
-  //     }
-  //   }
-  // }
+  queryByClassName(queryText: string): void {
+    let previousNodesQuery = this.previousNodesQuery;
+    if (previousNodesQuery) {
+      this.cy.batch(function() {
+        this.cy.nodes().forEach(function (node) {
+          let className = node.data('label');
+          let fullyQualifiedClassName = node.data('id');
+          for (let toHighlightNode of previousNodesQuery) {
+            if (toHighlightNode.data('label') === className || toHighlightNode.data('id') === fullyQualifiedClassName) {
+              node.unselect();
+            }
+          }
+        });
+      }.bind(this));
+    }
+    let nodes = this.cy.nodes(`[label = "${queryText}"], [id = "${queryText}"]`);
+    this.cy.batch(function() {
+        this.cy.nodes().forEach(function (node) {
+          let className = node.data('label');
+          let fullyQualifiedClassName = node.data('id');
+          for (let toHighlightNode of nodes) {
+            if (toHighlightNode.data('label') === className || toHighlightNode.data('id') === fullyQualifiedClassName) {
+              node.select();
+            }
+          }
+        });
+    }.bind(this));
+    this.previousNodesQuery = nodes;
+  }
+
+  queryByPackageName(queryText: string): void {
+    let previousNodesQuery = this.previousNodesQuery;
+    if (previousNodesQuery) {
+      this.cy.batch(function() {
+        this.cy.nodes().forEach(function (node) {
+          let packageName = node.data('package');
+          for (let toHighlightNode of previousNodesQuery) {
+            if (toHighlightNode.data('label') === packageName) {
+              node.unselect();
+            }
+          }
+        });
+      }.bind(this));
+    }
+    let nodes = this.cy.nodes(`[package = "${queryText}"]`);
+    this.cy.batch(function() {
+      this.cy.nodes().forEach(function (node) {
+        let packageName = node.data('package');
+        for (let toHighlightNode of nodes) {
+          if (toHighlightNode.data('package') === packageName) {
+            node.select();
+          }
+        }
+      });
+    }.bind(this));
+    this.previousNodesQuery = nodes;
+  }
 
   ngOnInit() {
     this.initCytoscape();
