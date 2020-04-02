@@ -315,7 +315,7 @@ export class GraphComponent implements OnInit {
     this.updateDisplayOfNodesWithoutNeighbours(this.areNeighbourlessNodesHidden);
     this.toggleDisplayOfEdgeWeightsAsLabels(this.areEdgeWeightsShownAsLabels);
     this.toggleEdgeColourcoding(this.areEdgesColourCoded);
-    this.applyLayout(this.selectedLayoutOption);
+    this.updateGraphLayout(this.selectedLayoutOption);
   }
 
   /**
@@ -459,18 +459,6 @@ export class GraphComponent implements OnInit {
         });
       }
     }.bind(this));
-  }
-
-  /**
-   * Organise the elements in the graph according to a selected layout
-   * @param selectedLayoutOption the layout in which to organise the elements of the graph
-   */
-  private applyLayout(selectedLayoutOption: string) {
-    var layout = this.cy.layout({
-      name: selectedLayoutOption
-    });
-
-    layout.run();
   }
 
   /**
@@ -644,14 +632,39 @@ export class GraphComponent implements OnInit {
   }
 
   /**
-   * Update the layout in which the nodes in the graph are displayed
-   * @param selectedLayoutOption the layout option
+   * Organise the elements in the graph according to a selected layout
+   * @param selectedLayoutOption the layout in which to organise the elements of the graph
    */
   private updateGraphLayout(selectedLayoutOption: string): void {
-    var layout = this.cy.layout({
-      name: selectedLayoutOption
-    });
+    let nrOfNodes = this.cy.elements().length;
+    let spacingFactor = undefined;
+    // switch (selectedLayoutOption) {
+    //   case 'circle':
+    //     spacingFactor = Math.max(nrOfNodes/100, 1);
+    //     break;
+    //   case 'grid':
+    //     spacingFactor = Math.max(nrOfNodes/100, 1);
+    //     break;
+    //   case 'random':
+    //     spacingFactor = Math.max(nrOfNodes/150, 1);
+    //     break;
+    //   case 'concentric':
+    //     spacingFactor = Math.max(nrOfNodes/100, 1);
+    //     break;
+    //   case 'cose':
+    //     spacingFactor = undefined;
+    //     break;
+    //   default:
+    //     spacingFactor = 1;
+    // }
 
+    let layoutOptions = {
+      name: selectedLayoutOption,
+      spacingFactor: spacingFactor,
+      animate: true
+    };
+
+    var layout = this.cy.layout(layoutOptions);
     layout.run();
   }
 
@@ -659,7 +672,7 @@ export class GraphComponent implements OnInit {
    * Place all of the elements of the graph into the viewport
    */
   private resetGraphView() {
-    this.cy.fit();
+    this.cy.fit(undefined, 30);
   }
 
   /**
