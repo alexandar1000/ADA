@@ -277,8 +277,6 @@ export class GraphComponent implements OnInit {
     // Get the elements to add to the graph and add them
     let elements = this.getElements();
     this.cy.add(elements);
-    // Make sure that the arrows on the edges correspond to the metrics represented
-    this.updateArrowStyle();
 
     // Remove all the hidden elements from the collections keeping track of them
     this.emptyHiddenElements();
@@ -430,11 +428,6 @@ export class GraphComponent implements OnInit {
           'source-arrow-shape': arrowStyleValue
         })
         .update();
-      this.hiddenEdges
-        .style({
-          'target-arrow-shape': 'none',
-          'source-arrow-shape': arrowStyleValue
-        })
     } else {
       this.cy.style()
         .selector('edge')
@@ -443,11 +436,6 @@ export class GraphComponent implements OnInit {
           'target-arrow-shape': arrowStyleValue
         })
         .update();
-      this.hiddenEdges
-        .style({
-          'source-arrow-shape': 'none',
-          'target-arrow-shape': arrowStyleValue
-        })
     }
   }
 
@@ -459,6 +447,8 @@ export class GraphComponent implements OnInit {
     this.cy.elements().unselect();
     this.updateDisplayOfZeroEdges(this.areZeroWeightedEdgesHidden);
     this.updateDisplayOfNodesWithoutNeighbours(this.areNeighbourlessNodesHidden);
+    // Make sure that the arrows on the displayed edges correspond properly to the metrics represented
+    this.updateArrowStyle();
     this.toggleDisplayOfEdgeWeightsAsLabels(this.areEdgeWeightsShownAsLabels);
     this.toggleEdgeColourcoding(this.areEdgesColourCoded);
     this.updateGraphLayout(this.selectedLayoutOption);
