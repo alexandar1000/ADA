@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit {
   private areNeighbourlessNodesHidden = false;
   private areEdgeWeightsShownAsLabels = false;
   private areEdgesColourCoded = false;
+  private selectedLayoutOption = 'circle';
 
   constructor(private analyserService: AnalyserService,
               private newEntryService: NewEntryService,
@@ -67,12 +68,20 @@ export class DashboardComponent implements OnInit {
     this.snapshotStyleService.sendClickedSnapshotToSidebar([owner, repository, branch, snapshot]);
   }
 
-  updateAdditionalInformationWithNode($event: any) {
+  updateAdditionalInformationWithNodeAdded($event: any) {
     this.selectedNode = $event;
   }
 
-  updateAdditionalInformationWithEdge($event: any) {
+  updateAdditionalInformationWithEdgeAdded($event: any) {
     this.selectedEdge = $event;
+  }
+
+  updateAdditionalInformationWithNodeRemoved($event: any) {
+    this.selectedNode = null;
+  }
+
+  updateAdditionalInformationWithEdgeRemoved($event: any) {
+    this.selectedEdge = null;
   }
 
   handleUpdateZeroWeightedEdgesRepresentationEvent(state: boolean): void {
@@ -89,5 +98,9 @@ export class DashboardComponent implements OnInit {
 
   handleUpdateEdgesColourCodingRepresentationEvent(state: boolean): void {
     this.areEdgesColourCoded = state;
+  }
+
+  handleUpdateSelectedLayoutOptionEvent($event: string): void {
+    this.selectedLayoutOption = $event;
   }
 }
