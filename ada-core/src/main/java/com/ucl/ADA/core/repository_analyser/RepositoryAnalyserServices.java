@@ -50,6 +50,9 @@ public class RepositoryAnalyserServices {
         OffsetDateTime lastCommitTime = RepoDownloader.getLatestCommitTime(url, branchName);
         if (lastCommitTime != null) {
             if (prevSnapshot != null && lastCommitTime.isEqual(prevSnapshot.getCommitTime())) return prevSnapshot;
+        } else {
+            // url OR branch name is invalid
+            return null;
         }
 
         // if need to download and analyze again
@@ -69,10 +72,6 @@ public class RepositoryAnalyserServices {
         databaseUtilityService.saveAnalysisRequest(branch, snapshot);
 
         // TODO: if invalid url or branch, store a branch is invalid at last commit time (a flag?)
-
-        // TODO: record analysis request
-
-        // TODO: store everything
 
         // TODO: pack the owner, repo and branch info into snapshot (through private class?)
         return snapshot;
