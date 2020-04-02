@@ -1,5 +1,7 @@
 package com.ucl.ADA.model.snapshot;
 
+import com.ucl.ADA.model.analysis_request.AnalysisRequest;
+import com.ucl.ADA.model.analysis_request.AnalysisRequestService;
 import com.ucl.ADA.model.branch.Branch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,9 @@ public class SnapshotService {
 
     @Autowired
     private SnapshotRepository snapshotRepository;
+
+    @Autowired
+    private AnalysisRequestService analysisRequestService;
 
     /**
      * find the snapshot given the branch and commit time
@@ -37,4 +42,9 @@ public class SnapshotService {
     public Snapshot addSnapshot(Snapshot snapshot) {
         return snapshotRepository.save(snapshot);
     }
+
+    public Snapshot findSnapshotByAnalysisRequest(AnalysisRequest analysisRequest) {
+        return analysisRequest.getSnapshot();
+    }
+
 }

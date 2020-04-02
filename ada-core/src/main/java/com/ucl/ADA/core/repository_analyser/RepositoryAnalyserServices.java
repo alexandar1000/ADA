@@ -1,7 +1,6 @@
 package com.ucl.ADA.core.repository_analyser;
 
 import com.google.common.collect.SetMultimap;
-import com.ucl.ADA.model.analysis_request.AnalysisRequest;
 import com.ucl.ADA.model.branch.Branch;
 import com.ucl.ADA.model.owner.Owner;
 import com.ucl.ADA.model.repository.GitRepo;
@@ -25,6 +24,7 @@ public class RepositoryAnalyserServices {
     @Autowired
     private DatabaseUtilityService databaseUtilityService;
 
+    @Autowired
     private ParserServices parserServices;
 
     public Snapshot analyseRepositoryService(String url, String branchName) {
@@ -71,9 +71,6 @@ public class RepositoryAnalyserServices {
         databaseUtilityService.saveSnapshot(snapshot, branch, lastCommitTime);
         databaseUtilityService.saveAnalysisRequest(branch, snapshot);
 
-        // TODO: if invalid url or branch, store a branch is invalid at last commit time (a flag?)
-
-        // TODO: pack the owner, repo and branch info into snapshot (through private class?)
         return snapshot;
     }
 
