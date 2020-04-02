@@ -111,4 +111,8 @@ export class GraphMenuComponent implements OnInit {
   handleResetGraphViewButtonPressed($event: MouseEvent) {
     this.resetGraphViewEvent.emit();
   }
+
+  formatSliderLabel(value: number) {
+    return (value/10).toFixed(1);
+  }
 }

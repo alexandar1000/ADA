@@ -3,7 +3,6 @@ import * as cytoscape from 'cytoscape';
 import {MetricNameConverter} from "../classes/metric-name-converter";
 import {ProjectStructure} from "../classes/project-structure";
 import {CollectionReturnValue} from "cytoscape";
-import {SingularElementReturnValue} from "cytoscape";
 import { QueryService } from '../query.service';
 
 @Component({
@@ -37,13 +36,40 @@ export class GraphComponent implements OnInit {
   private previousNodesQuery;
 
 
-  constructor(queryService: QueryService) { 
+  constructor(queryService: QueryService) {
     if (queryService.receivedQueryEvent$) {
       queryService.receivedQueryEvent$.subscribe(
         query => {
           this.processQuery(query);
         }
       )
+    }
+  }
+
+  ngOnInit() {
+    this.initCytoscape();
+    this.initEventHandlers();
+    this.populateGraph();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.cy != null) {
+      if (changes.selectedMetric || changes.areZeroWeightedEdgesHidden || changes.areNeighbourlessNodesHidden) {
+        this.changeMetricRepresentedInGraph();
+        this.reflectGraphMenuStateToGraph();
+      }
+      if (changes.areEdgeWeightsShownAsLabels) {
+        this.toggleDisplayOfEdgeWeightsAsLabels(this.areEdgeWeightsShownAsLabels);
+      }
+      if (changes.areEdgesColourCoded) {
+        this.toggleEdgeColourcoding(this.areEdgesColourCoded);
+      }
+      if (changes.selectedLayoutOption) {
+        this.updateGraphLayout(this.selectedLayoutOption);
+      }
+      if (changes.isGraphViewToBeReset) {
+        this.resetGraphView();
+      }
     }
   }
 
@@ -114,33 +140,6 @@ export class GraphComponent implements OnInit {
       });
     }.bind(this));
     this.previousNodesQuery = nodes;
-  }
-
-  ngOnInit() {
-    this.initCytoscape();
-    this.initEventHandlers();
-    this.populateGraph();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.cy != null) {
-      if (changes.selectedMetric || changes.areZeroWeightedEdgesHidden || changes.areNeighbourlessNodesHidden) {
-        this.changeMetricRepresentedInGraph();
-        this.reflectGraphMenuStateToGraph();
-      }
-      if (changes.areEdgeWeightsShownAsLabels) {
-        this.toggleDisplayOfEdgeWeightsAsLabels(this.areEdgeWeightsShownAsLabels);
-      }
-      if (changes.areEdgesColourCoded) {
-        this.toggleEdgeColourcoding(this.areEdgesColourCoded);
-      }
-      if (changes.selectedLayoutOption) {
-        this.updateGraphLayout(this.selectedLayoutOption);
-      }
-      if (changes.isGraphViewToBeReset) {
-        this.resetGraphView();
-      }
-    }
   }
 
   /**
