@@ -20,6 +20,7 @@ export class GraphComponent implements OnInit {
   @Input() areEdgeWeightsShownAsLabels: boolean;
   @Input() areEdgesColourCoded: boolean;
   @Input() selectedLayoutOption: string;
+  @Input() isGraphViewToBeReset: boolean;
 
   private highlightedNodes: CollectionReturnValue = null;
   @Output() nodeSelectedEvent = new EventEmitter();
@@ -51,6 +52,9 @@ export class GraphComponent implements OnInit {
       }
       if (changes.selectedLayoutOption) {
         this.updateGraphLayout(this.selectedLayoutOption);
+      }
+      if (changes.isGraphViewToBeReset) {
+        this.resetGraphView();
       }
     }
   }
@@ -522,14 +526,20 @@ export class GraphComponent implements OnInit {
   }
 
   /**
+   * Place all of the elements of the graph into the viewport
+   */
+  private resetGraphView() {
+    this.cy.fit();
+  }
+
+  /**
    * Given a fully qualified class name, extract all the packages to which the class belongs
    * @param fullyQualifiedClassName a fully qualified path name from which to extract the belonging packages
    */
   private extractBelongingPackages(fullyQualifiedClassName: String): string[] {
     let splitString = fullyQualifiedClassName.split('.');
     let superPackages = [];
-    // Upper bound is not inclusive of the last element because we do not want to include the class name
-    for (let i = 1; i < splitString.length; i++) {
+    for (let i = 1; i <= splitString.length; i++) {
       let superPackage = '';
       for (let j = 0; j < i; j++) {
         if (j != 0) {
@@ -626,5 +636,6 @@ export class GraphComponent implements OnInit {
   private initEventHandlers(): void {
     this.handleSelectElement();
     this.handleUnselectElement();
+
   }
 }

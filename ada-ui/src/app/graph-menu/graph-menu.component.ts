@@ -41,6 +41,7 @@ export class GraphMenuComponent implements OnInit {
   @Output() updateEdgeWeightsAsLabelRepresentationEvent = new EventEmitter();
   @Output() updateEdgesColourCodingRepresentationEvent = new EventEmitter();
   @Output() updateSelectedLayoutOptionEvent = new EventEmitter();
+  @Output() resetGraphViewEvent = new EventEmitter();
 
   graphLayoutControl = new FormControl();
   public graphLayoutGroups: GraphLayoutGroup[] = [
@@ -104,5 +105,9 @@ export class GraphMenuComponent implements OnInit {
   handleSelectedLayoutOptionChange($event: any): void {
     this.selectedLayoutOption = $event.value;
     this.updateSelectedLayoutOptionEvent.emit(this.selectedLayoutOption);
+  }
+
+  handleResetGraphViewButtonPressed($event: MouseEvent) {
+    this.resetGraphViewEvent.emit();
   }
 }

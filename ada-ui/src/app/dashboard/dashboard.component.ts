@@ -22,6 +22,7 @@ export class DashboardComponent implements OnInit {
   private areEdgeWeightsShownAsLabels = false;
   private areEdgesColourCoded = false;
   private selectedLayoutOption = 'circle';
+  private resetGraphView = false;
 
   constructor(private analyserService: AnalyserService,
               private newEntryService: NewEntryService,
@@ -102,5 +103,9 @@ export class DashboardComponent implements OnInit {
 
   handleUpdateSelectedLayoutOptionEvent($event: string): void {
     this.selectedLayoutOption = $event;
+  }
+
+  handleResetGraphViewEvent() {
+    this.resetGraphView = !this.resetGraphView;
   }
 }
