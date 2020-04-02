@@ -4,6 +4,7 @@ import {MetricNameConverter} from "../classes/metric-name-converter";
 import {ProjectStructure} from "../classes/project-structure";
 import {CollectionReturnValue} from "cytoscape";
 import { QueryService } from '../query.service';
+import {GraphOptionsService} from "../graph-options.service";
 
 @Component({
   selector: 'app-graph',
@@ -22,6 +23,7 @@ export class GraphComponent implements OnInit {
   @Input() areEdgesColourCoded: boolean;
   @Input() selectedLayoutOption: string;
   @Input() isGraphViewToBeReset: boolean;
+  private graphLayoutSpacing: number;
 
   private highlightedNodes: CollectionReturnValue = null;
   private hiddenNodes: CollectionReturnValue;
@@ -36,11 +38,21 @@ export class GraphComponent implements OnInit {
   private previousNodesQuery;
 
 
-  constructor(queryService: QueryService) {
+  constructor(queryService: QueryService, graphOptionsService: GraphOptionsService) {
     if (queryService.receivedQueryEvent$) {
       queryService.receivedQueryEvent$.subscribe(
         query => {
           this.processQuery(query);
+        }
+      )
+    }
+    if (graphOptionsService.sharedSpacingFactor$) {
+      graphOptionsService.sharedSpacingFactor$.subscribe(
+        spacingFactor => {
+          this.graphLayoutSpacing = spacingFactor;
+          if (this.cy != null) {
+            this.updateGraphLayout(this.selectedLayoutOption);
+          }
         }
       )
     }
@@ -744,7 +756,7 @@ export class GraphComponent implements OnInit {
 
     let layoutOptions = {
       name: selectedLayoutOption,
-      spacingFactor: spacingFactor,
+      spacingFactor: this.graphLayoutSpacing,
       animate: true
     };
 

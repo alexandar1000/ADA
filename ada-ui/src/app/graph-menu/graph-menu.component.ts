@@ -1,6 +1,7 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {GraphComponent} from "../graph/graph.component";
 import {FormControl} from "@angular/forms";
+import {GraphOptionsService} from "../graph-options.service";
 
 interface GraphLayoutOption {
   value: string;
@@ -29,7 +30,7 @@ export class GraphMenuComponent implements OnInit {
   };
 
   private ctx: CanvasRenderingContext2D;
-  // private query: string[];
+  private graphLayoutSpacing: number;
 
   @Input() areZeroWeightedEdgesHidden: boolean;
   @Input() areNeighbourlessNodesHidden: boolean;
@@ -64,7 +65,7 @@ export class GraphMenuComponent implements OnInit {
 
     ];
 
-  constructor() {}
+  constructor(private graphOptionsService: GraphOptionsService) {}
 
   ngOnInit() {
   }
@@ -114,5 +115,9 @@ export class GraphMenuComponent implements OnInit {
 
   formatSliderLabel(value: number) {
     return (value/10).toFixed(1);
+  }
+
+  handleLayoutSpacingChange($event: any): void {
+    this.graphOptionsService.setSpacingFactor($event.value/10);
   }
 }
