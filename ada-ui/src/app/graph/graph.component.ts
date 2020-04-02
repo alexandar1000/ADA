@@ -35,6 +35,7 @@ export class GraphComponent implements OnInit {
   private metricNameConverter = new MetricNameConverter();
 
   private previousNodesQuery = [];
+  private coloredNodes = false;
 
   constructor(queryService: QueryService) { 
     if (queryService.receivedQueryEvent$) {
@@ -121,6 +122,8 @@ export class GraphComponent implements OnInit {
     let nodesMainPackage = this.cy.nodes(`[mainPackage = "${queryText}"]`);
     let higherPackages = [];
     let nodesHigherPackages = [];
+
+    this.coloredNodes = seePackageHigherClasses;
 
     this.cy.batch(function() {
       this.cy.nodes().forEach(function(node) {
@@ -918,6 +921,15 @@ export class GraphComponent implements OnInit {
     this.cy.on('unselect', '*', function(evt){
       self.emitElementUnelectedEvent(evt.target);
       self.unhighlightElementNeighbourhood(evt.target);
+
+      if (self.coloredNodes) {
+        self.cy.batch(function() {
+          self.cy.nodes().forEach(function(node) {
+            node.removeStyle('background-color');
+          })
+        }.bind(this));
+        self.coloredNodes = false;
+      }
     });
   }
 
