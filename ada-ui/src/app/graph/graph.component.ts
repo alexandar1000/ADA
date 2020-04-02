@@ -35,7 +35,7 @@ export class GraphComponent implements OnInit {
   private metricNameConverter = new MetricNameConverter();
 
   private previousNodesQuery = [];
-  private coloredNodes = false;
+  private areColoredNodesInGraph = false;
 
   constructor(queryService: QueryService) { 
     if (queryService.receivedQueryEvent$) {
@@ -99,19 +99,20 @@ export class GraphComponent implements OnInit {
   /**
    * Queries the graph using the package name
    * @param queryText a string containing the package name 
-   * @param seePackageHigherClasses a boolean for whether the query should keep higher package classes
+   * @param seeLowerPackageClasses a boolean for whether the query should keep higher package classes
    */
-  queryByPackageName(queryText: string, seePackageHigherClasses: boolean): void {
+  queryByPackageName(queryText: string, seeLowerPackageClasses: boolean): void {
     let previousNodesQuery = this.previousNodesQuery;
     if (previousNodesQuery) {
       // unselect and remove any style from previous queried nodes
+      let self = this;
       this.cy.batch(function() {
         this.cy.nodes().forEach(function (node) {
           let mainPackage = node.data('mainPackage');
           for (let toUnselectNode of previousNodesQuery) {
             if (toUnselectNode.data('mainPackage') === mainPackage) {
-              node.unselect();
               node.removeStyle('background-color');
+              self.unhighlightElementNeighbourhood(node);
             }
           }
         });
@@ -120,33 +121,38 @@ export class GraphComponent implements OnInit {
     }
 
     let nodesMainPackage = this.cy.nodes(`[mainPackage = "${queryText}"]`);
-    let higherPackages = [];
+    let regexMainPackage = new RegExp(queryText, 'gi');
+    let lowerPackages = [];
+    let lowerPackagesSet = new Set();
     let nodesHigherPackages = [];
 
-    this.coloredNodes = seePackageHigherClasses;
+    this.areColoredNodesInGraph = seeLowerPackageClasses;
 
     this.cy.batch(function() {
       this.cy.nodes().forEach(function(node) {
         let mainPackage = node.data('mainPackage');
         for (let toSelectNode of nodesMainPackage) {
-          if (seePackageHigherClasses) {
-            // see classes from higher packages
-            if (toSelectNode.data('mainPackage') === mainPackage) {
-              higherPackages = toSelectNode.data('belongingPackages');
-              node.select();
+          if (seeLowerPackageClasses && mainPackage) {
+            // get packages for lower classes from nodes
+            if (mainPackage.search(regexMainPackage) !== -1 && toSelectNode.data('mainPackage') !== mainPackage) {
+              lowerPackagesSet.add(node.data('mainPackage'));
             }
           }
-          else {
-            if (toSelectNode.data('mainPackage') === mainPackage) {
-              node.select();
-            }
+          if (toSelectNode.data('mainPackage') === mainPackage) {
+            node.select();
           }
         }
       });
     }.bind(this));
 
+    if (lowerPackagesSet) {
+      for (let lowerPackage of lowerPackagesSet) {
+        lowerPackages.push(lowerPackage);
+      }
+    }
+
     // generate a color per higher package
-    let numberColors = higherPackages.length;
+    let numberColors = lowerPackages.length;
     let colors = [];
     for(let i = 0; i < 360; i += 360 / numberColors) {
       let hue = i;
@@ -156,24 +162,25 @@ export class GraphComponent implements OnInit {
       colors.push(formattedStringHslColor);
     }
 
-    if (higherPackages) {
+    if (lowerPackages) {
       let counterPackages = 0;
-      for (let higherPackage of higherPackages) {
-        let nodesHigherPackage = this.cy.nodes(`[mainPackage = "${higherPackage}"]`);
+      for (let lowerPackage of lowerPackages) {
+        let nodesLowerPackage = this.cy.nodes(`[mainPackage = "${lowerPackage}"]`);
+        let self = this;
         this.cy.batch(function() {
           this.cy.nodes().forEach(function(node) {
-            for (let nodeHigherPackage of nodesHigherPackage) {
-              if (node.data('id') === nodeHigherPackage.data('id')) {
+            for (let nodeLowerPackage of nodesLowerPackage) {
+              if (node.data('id') === nodeLowerPackage.data('id')) {
                 node.style({'background-color': `${colors[counterPackages]}`,
                 });
-                node.select();
+                self.highlightElementNeighbourhood(node);
               }
             }
           });
         }.bind(this));
         counterPackages += 1;
-        if (nodesHigherPackage) {
-          nodesHigherPackages.push.apply(nodesHigherPackages, nodesHigherPackage);
+        if (nodesLowerPackage) {
+          nodesHigherPackages.push.apply(nodesHigherPackages, nodesLowerPackage);
         }
       }
     }
@@ -922,13 +929,13 @@ export class GraphComponent implements OnInit {
       self.emitElementUnelectedEvent(evt.target);
       self.unhighlightElementNeighbourhood(evt.target);
 
-      if (self.coloredNodes) {
+      if (self.areColoredNodesInGraph) {
         self.cy.batch(function() {
           self.cy.nodes().forEach(function(node) {
             node.removeStyle('background-color');
           })
         }.bind(this));
-        self.coloredNodes = false;
+        self.areColoredNodesInGraph = false;
       }
     });
   }
