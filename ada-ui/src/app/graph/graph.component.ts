@@ -3,6 +3,7 @@ import * as cytoscape from 'cytoscape';
 import {MetricNameConverter} from "../classes/metric-name-converter";
 import {ProjectStructure} from "../classes/project-structure";
 import {CollectionReturnValue} from "cytoscape";
+import {SingularElementReturnValue} from "cytoscape";
 
 @Component({
   selector: 'app-graph',
@@ -23,8 +24,8 @@ export class GraphComponent implements OnInit {
   @Input() isGraphViewToBeReset: boolean;
 
   private highlightedNodes: CollectionReturnValue = null;
-  private hiddenNodes: CollectionReturnValue = null;
-  private hiddenEdges: CollectionReturnValue = null;
+  private hiddenNodes: CollectionReturnValue;
+  private hiddenEdges: CollectionReturnValue;
 
   @Output() nodeSelectedEvent = new EventEmitter();
   @Output() edgeSelectedEvent = new EventEmitter();
@@ -123,8 +124,7 @@ export class GraphComponent implements OnInit {
 
     // Initialise the helper collections
     this.highlightedNodes = this.cy.collection();
-    this.hiddenNodes = this.cy.collection();
-    this.hiddenEdges = this.cy.collection();
+    this.emptyHiddenElements();
   }
 
   /**
@@ -140,8 +140,7 @@ export class GraphComponent implements OnInit {
     this.updateArrowStyle();
 
     // Remove all the hidden elements from the collections keeping track of them
-    this.hiddenNodes = this.cy.collection();
-    this.hiddenEdges = this.cy.collection();
+    this.emptyHiddenElements();
 
     // Make sure that the selected options from the graph menu hold for the new graph as well
     this.reflectGraphMenuStateToGraph();
@@ -301,6 +300,66 @@ export class GraphComponent implements OnInit {
     this.toggleDisplayOfEdgeWeightsAsLabels(this.areEdgeWeightsShownAsLabels);
     this.toggleEdgeColourcoding(this.areEdgesColourCoded);
     this.applyLayout(this.selectedLayoutOption);
+  }
+
+  /**
+   * Empty the arrays keeping track of the hidden elements
+   */
+  private emptyHiddenElements() {
+    this.hiddenNodes = this.cy.collection();
+    this.hiddenEdges = this.cy.collection();
+  }
+
+  /**
+   * Show a previously hidden node
+   * @param node node to be shown
+   */
+  private showNode(node: SingularElementReturnValue) {
+    if (node.hidden()) {
+      node.restore();
+      this.hiddenNodes = this.hiddenNodes.difference(node);
+    } else {
+      console.error("Tried to show a node which was not previously removed.", node);
+    }
+  }
+
+  /**
+   * Hide a node from the graph
+   * @param node node to be hidden
+   */
+  private hideNode(node: SingularElementReturnValue) {
+    if (node.inside()) {
+      this.hiddenNodes = this.hiddenNodes.union(node);
+      node.remove();
+    } else {
+      console.error("Tried to remove a node which is not in the graph.", node);
+    }
+  }
+
+  /**
+   * Show a previously hidden edge
+   * @param edge edge to be shown
+   */
+  private showEdge(edge: SingularElementReturnValue) {
+    if (edge.hidden()) {
+      edge.restore();
+      this.hiddenEdges = this.hiddenEdges.difference(edge);
+    } else {
+      console.error("Tried to show an edge which was not previously removed.", edge);
+    }
+  }
+
+  /**
+   * Hide an edge from the graph
+   * @param edge edge to be hidden
+   */
+  private hideEdge(edge: SingularElementReturnValue) {
+    if (edge.inside()) {
+      this.hiddenEdges = this.hiddenEdges.union(edge);
+      edge.remove();
+    }  else {
+      console.error("Tried to remove an edge which is not in the graph.", edge);
+    }
   }
 
   /**
