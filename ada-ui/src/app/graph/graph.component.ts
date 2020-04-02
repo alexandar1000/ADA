@@ -461,47 +461,6 @@ export class GraphComponent implements OnInit {
     }.bind(this));
   }
 
- //    private updateDisplayOfNodesWithoutNeighbours(hideNodes: boolean): void {
- //    // Process all of th nodes in batch
- //    this.cy.batch(function() {
- //      let self = this;
- //      if (hideNodes == true) {
- //        // If the nodes are selected to be hidden, hide those without edges or with hidden edges
- //        this.cy.nodes().forEach(function (node) {
- //          let connectedEdges = node.connectedEdges();
- //          let hideNode = true;
- //          if (connectedEdges.length > 0) {
- //            // If there is at least one visible edge, the node needs to be displayed
- //            for (let edge of connectedEdges) {
- //              // If the edges are not hidden or the edge is visible, display the node
- //              if (!self.areZeroWeightedEdgesHidden || edge.data('weight') != 0) {
- //                hideNode = false;
- //                break;
- //              }
- //            }
- //          }
- //          // Based on the processing above, update the node
- //          if (hideNode) {
- //            node.style(
- //              {
- //                'display': 'none'
- //              })
- //          } else {
- //            node.style(
- //              {
- //                'display': 'element'
- //              })
- //          }
- //        });
- //      } else {
- //        // If the nodes should be displayed, show all nodes
- //        this.hiddenNodes.forEach(function (node) {
- //          self.showNode(node);
- //        });
- //      }
- //    }.bind(this));
- //  }
-
   /**
    * Organise the elements in the graph according to a selected layout
    * @param selectedLayoutOption the layout in which to organise the elements of the graph
@@ -710,7 +669,7 @@ export class GraphComponent implements OnInit {
   private extractBelongingPackages(fullyQualifiedClassName: String): string[] {
     let splitString = fullyQualifiedClassName.split('.');
     let superPackages = [];
-    for (let i = 1; i <= splitString.length; i++) {
+    for (let i = 1; i < splitString.length; i++) {
       let superPackage = '';
       for (let j = 0; j < i; j++) {
         if (j != 0) {
