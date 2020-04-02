@@ -10,6 +10,7 @@
              [areEdgeWeightsShownAsLabels]="areEdgeWeightsShownAsLabels"
              [areEdgesColourCoded]="areEdgesColourCoded"
              [selectedLayoutOption]="selectedLayoutOption"
+             [isGraphViewToBeReset]="resetGraphView"
              (nodeSelectedEvent)="updateAdditionalInformationWithNodeAdded($event)"
              (edgeSelectedEvent)="updateAdditionalInformationWithEdgeAdded($event)"
              (nodeUnselectedEvent)="updateAdditionalInformationWithNodeRemoved($event)"
@@ -26,6 +27,7 @@
                     (updateEdgeWeightsAsLabelRepresentationEvent)="handleUpdateEdgeWeightsAsLabelRepresentationEvent($event)"
                     (updateEdgesColourCodingRepresentationEvent)="handleUpdateEdgesColourCodingRepresentationEvent($event)"
                     (updateSelectedLayoutOptionEvent)="handleUpdateSelectedLayoutOptionEvent($event)"
+                    (resetGraphViewEvent)="handleResetGraphViewEvent()"
     ></app-graph-menu>
     <app-element-insight [projectStructure]="projectStructure"
                          [selectedNode]="selectedNode"

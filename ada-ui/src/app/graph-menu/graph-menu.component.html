@@ -40,6 +40,9 @@
         <canvas #colourcodingLegend *ngIf="areEdgesColourCoded" width="200" height="20"  style="border:1px solid #000000;"></canvas>
       </div>
     </li>
+    <li>
+      <button mat-button (click)="handleResetGraphViewButtonPressed($event)">Reset Graph View</button>
+    </li>
   </ul>
   <app-query-form></app-query-form>
 </div>
