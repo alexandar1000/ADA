@@ -5,30 +5,13 @@
 <section *ngIf="!analyserService.isLoading">
   <app-graph [projectStructure]="projectStructure"
              [selectedMetric]="selectedMetric"
-             [areZeroWeightedEdgesHidden]="areZeroWeightedEdgesHidden"
-             [areNeighbourlessNodesHidden]="areNeighbourlessNodesHidden"
-             [areEdgeWeightsShownAsLabels]="areEdgeWeightsShownAsLabels"
-             [areEdgesColourCoded]="areEdgesColourCoded"
-             [selectedLayoutOption]="selectedLayoutOption"
-             [isGraphViewToBeReset]="resetGraphView"
              (nodeSelectedEvent)="updateAdditionalInformationWithNodeAdded($event)"
              (edgeSelectedEvent)="updateAdditionalInformationWithEdgeAdded($event)"
              (nodeUnselectedEvent)="updateAdditionalInformationWithNodeRemoved($event)"
              (edgeUnselectedEvent)="updateAdditionalInformationWithEdgeRemoved($event)"
   ></app-graph>
   <div>
-    <app-graph-menu [areZeroWeightedEdgesHidden]="areZeroWeightedEdgesHidden"
-                    [areNeighbourlessNodesHidden]="areNeighbourlessNodesHidden"
-                    [areEdgeWeightsShownAsLabels]="areEdgeWeightsShownAsLabels"
-                    [areEdgesColourCoded]="areEdgesColourCoded"
-                    [selectedLayoutOption]="selectedLayoutOption"
-                    (updateZeroWeightedEdgesRepresentationEvent)="handleUpdateZeroWeightedEdgesRepresentationEvent($event)"
-                    (updateNeighbourlessNodesRepresentationEvent)="handleUpdateNeighbourlessNodesRepresentationEvent($event)"
-                    (updateEdgeWeightsAsLabelRepresentationEvent)="handleUpdateEdgeWeightsAsLabelRepresentationEvent($event)"
-                    (updateEdgesColourCodingRepresentationEvent)="handleUpdateEdgesColourCodingRepresentationEvent($event)"
-                    (updateSelectedLayoutOptionEvent)="handleUpdateSelectedLayoutOptionEvent($event)"
-                    (resetGraphViewEvent)="handleResetGraphViewEvent()"
-    ></app-graph-menu>
+    <app-graph-menu></app-graph-menu>
     <app-element-insight [projectStructure]="projectStructure"
                          [selectedNode]="selectedNode"
                          [selectedEdge]="selectedEdge"

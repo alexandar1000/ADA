@@ -7,25 +7,25 @@ import {BehaviorSubject} from "rxjs";
 export class GraphOptionsService {
 
   private spacingFactor = new BehaviorSubject(1.0);
-  sharedSpacingFactor$ = this.spacingFactor.asObservable();
+  spacingFactor$ = this.spacingFactor.asObservable();
 
   private areZeroWeightedEdgesHidden = new BehaviorSubject(false);
-  sharedAreZeroWeightedEdgesHidden$ = this.areZeroWeightedEdgesHidden.asObservable();
+  areZeroWeightedEdgesHidden$ = this.areZeroWeightedEdgesHidden.asObservable();
 
   private areNeighbourlessNodesHidden = new BehaviorSubject(false);
-  sharedAreNeighbourlessNodesHidden$ = this.areNeighbourlessNodesHidden.asObservable();
+  areNeighbourlessNodesHidden$ = this.areNeighbourlessNodesHidden.asObservable();
 
   private areEdgeWeightsShownAsLabels = new BehaviorSubject(false);
-  sharedAreEdgeWeightsShownAsLabels$ = this.areEdgeWeightsShownAsLabels.asObservable();
+  areEdgeWeightsShownAsLabels$ = this.areEdgeWeightsShownAsLabels.asObservable();
 
   private areEdgesColourCoded = new BehaviorSubject(false);
-  sharedAreEdgesColourCoded$ = this.areEdgesColourCoded.asObservable();
+  areEdgesColourCoded$ = this.areEdgesColourCoded.asObservable();
 
   private selectedLayoutOption = new BehaviorSubject('circle');
-  sharedSelectedLayoutOption$ = this.selectedLayoutOption.asObservable();
+  selectedLayoutOption$ = this.selectedLayoutOption.asObservable();
 
   private isGraphViewToBeReset = new BehaviorSubject(false);
-  sharedAsGraphViewToBeReset$ = this.isGraphViewToBeReset.asObservable();
+  isGraphViewToBeReset$ = this.isGraphViewToBeReset.asObservable();
 
   constructor() { }
 

@@ -17,12 +17,12 @@ export class GraphComponent implements OnInit {
   @Input() projectStructure: ProjectStructure;
   @Input() selectedMetric: string;
 
-  @Input() areZeroWeightedEdgesHidden: boolean;
-  @Input() areNeighbourlessNodesHidden: boolean;
-  @Input() areEdgeWeightsShownAsLabels: boolean;
-  @Input() areEdgesColourCoded: boolean;
-  @Input() selectedLayoutOption: string;
-  @Input() isGraphViewToBeReset: boolean;
+  private areZeroWeightedEdgesHidden: boolean;
+  private areNeighbourlessNodesHidden: boolean;
+  private areEdgeWeightsShownAsLabels: boolean;
+  private areEdgesColourCoded: boolean;
+  private selectedLayoutOption: string;
+  private isGraphViewToBeReset: boolean;
   private graphLayoutSpacing: number;
 
   private highlightedNodes: CollectionReturnValue = null;
@@ -46,12 +46,74 @@ export class GraphComponent implements OnInit {
         }
       )
     }
-    if (graphOptionsService.sharedSpacingFactor$) {
-      graphOptionsService.sharedSpacingFactor$.subscribe(
-        spacingFactor => {
-          this.graphLayoutSpacing = spacingFactor;
+    if (graphOptionsService.spacingFactor$) {
+      graphOptionsService.spacingFactor$.subscribe(
+        value => {
+          this.graphLayoutSpacing = value;
           if (this.cy != null) {
             this.updateGraphLayout(this.selectedLayoutOption);
+          }
+        }
+      )
+    }
+    if (graphOptionsService.areZeroWeightedEdgesHidden$) {
+      graphOptionsService.areZeroWeightedEdgesHidden$.subscribe(
+        value => {
+          this.areZeroWeightedEdgesHidden = value;
+          if (this.cy != null) {
+            this.changeMetricRepresentedInGraph();
+            this.reflectGraphMenuStateToGraph();
+          }
+        }
+      )
+    }
+    if (graphOptionsService.areNeighbourlessNodesHidden$) {
+      graphOptionsService.areNeighbourlessNodesHidden$.subscribe(
+        value => {
+          this.areNeighbourlessNodesHidden = value;
+          if (this.cy != null) {
+            this.changeMetricRepresentedInGraph();
+            this.reflectGraphMenuStateToGraph();
+          }
+        }
+      )
+    }
+    if (graphOptionsService.areEdgeWeightsShownAsLabels$) {
+      graphOptionsService.areEdgeWeightsShownAsLabels$.subscribe(
+        value => {
+          this.areEdgeWeightsShownAsLabels = value;
+          if (this.cy != null) {
+            this.toggleDisplayOfEdgeWeightsAsLabels(this.areEdgeWeightsShownAsLabels);
+          }
+        }
+      )
+    }
+    if (graphOptionsService.areEdgesColourCoded$) {
+      graphOptionsService.areEdgesColourCoded$.subscribe(
+        value => {
+          this.areEdgesColourCoded = value;
+          if (this.cy != null) {
+            this.toggleEdgeColourcoding(this.areEdgesColourCoded);
+          }
+        }
+      )
+    }
+    if (graphOptionsService.selectedLayoutOption$) {
+      graphOptionsService.selectedLayoutOption$.subscribe(
+        value => {
+          this.selectedLayoutOption = value;
+          if (this.cy != null) {
+            this.updateGraphLayout(this.selectedLayoutOption);
+          }
+        }
+      )
+    }
+    if (graphOptionsService.isGraphViewToBeReset$) {
+      graphOptionsService.isGraphViewToBeReset$.subscribe(
+        value => {
+          this.isGraphViewToBeReset = value;
+          if (this.cy != null) {
+            this.resetGraphView();
           }
         }
       )
@@ -66,21 +128,9 @@ export class GraphComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.cy != null) {
-      if (changes.selectedMetric || changes.areZeroWeightedEdgesHidden || changes.areNeighbourlessNodesHidden) {
+      if (changes.selectedMetric) {
         this.changeMetricRepresentedInGraph();
         this.reflectGraphMenuStateToGraph();
-      }
-      if (changes.areEdgeWeightsShownAsLabels) {
-        this.toggleDisplayOfEdgeWeightsAsLabels(this.areEdgeWeightsShownAsLabels);
-      }
-      if (changes.areEdgesColourCoded) {
-        this.toggleEdgeColourcoding(this.areEdgesColourCoded);
-      }
-      if (changes.selectedLayoutOption) {
-        this.updateGraphLayout(this.selectedLayoutOption);
-      }
-      if (changes.isGraphViewToBeReset) {
-        this.resetGraphView();
       }
     }
   }
