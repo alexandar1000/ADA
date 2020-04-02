@@ -330,7 +330,7 @@ export class GraphComponent implements OnInit {
    * Show a previously hidden node
    * @param node node to be shown
    */
-  private showNode(node: SingularElementReturnValue) {
+  private showNode(node: any) {
     if (node.removed()) {
       node.restore();
       this.hiddenNodes = this.hiddenNodes.difference(node);
@@ -343,7 +343,7 @@ export class GraphComponent implements OnInit {
    * Hide a node from the graph
    * @param node node to be hidden
    */
-  private hideNode(node: SingularElementReturnValue) {
+  private hideNode(node: any) {
     if (node.inside()) {
       this.hiddenNodes = this.hiddenNodes.union(node);
       node.remove();
@@ -356,8 +356,29 @@ export class GraphComponent implements OnInit {
    * Show a previously hidden edge
    * @param edge edge to be shown
    */
-  private showEdge(edge: SingularElementReturnValue) {
+  private showEdge(edge: any) {
+    // If an edge needs to be shown, it needs to have both connected nodes present (i.e. source and the target)
     if (edge.removed()) {
+      // Get the source node
+      let source = edge.data('source');
+      let sourceIdQueryNodeCollection = this.hiddenNodes.nodes('[id = "' + source + '"]');
+      let hiddenSourceNode = sourceIdQueryNodeCollection.length > 0 ? sourceIdQueryNodeCollection[0] : null;
+
+      // Get the target node
+      let target = edge.data('target');
+      let targetIdQueryNodeCollection = this.hiddenNodes.nodes('[id = "' + target + '"]');
+      let hiddenTargetNode = targetIdQueryNodeCollection.length > 0 ? targetIdQueryNodeCollection[0] : null;
+
+      // If the source node is hidden, display it
+      if (hiddenSourceNode) {
+        this.showNode(hiddenSourceNode)
+      }
+      // If the target node is hidden, display it
+      if (hiddenTargetNode) {
+        this.showNode(hiddenTargetNode)
+      }
+
+      // Restore the edge
       edge.restore();
       this.hiddenEdges = this.hiddenEdges.difference(edge);
     } else {
@@ -369,7 +390,7 @@ export class GraphComponent implements OnInit {
    * Hide an edge from the graph
    * @param edge edge to be hidden
    */
-  private hideEdge(edge: SingularElementReturnValue) {
+  private hideEdge(edge: any) {
     if (edge.inside()) {
       this.hiddenEdges = this.hiddenEdges.union(edge);
       edge.remove();
