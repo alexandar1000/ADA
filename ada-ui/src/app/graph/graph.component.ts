@@ -88,21 +88,21 @@ export class GraphComponent implements OnInit {
     if (previousNodesQuery) {
       this.cy.batch(function() {
         this.cy.nodes().forEach(function (node) {
-          let packageName = node.data('package');
+          let mainPackage = node.data('mainPackage');
           for (let toHighlightNode of previousNodesQuery) {
-            if (toHighlightNode.data('label') === packageName) {
+            if (toHighlightNode.data('mainPackage') === mainPackage) {
               node.unselect();
             }
           }
         });
       }.bind(this));
     }
-    let nodes = this.cy.nodes(`[package = "${queryText}"]`);
+    let nodes = this.cy.nodes(`[mainPackage = "${queryText}"]`);
     this.cy.batch(function() {
       this.cy.nodes().forEach(function (node) {
-        let packageName = node.data('package');
+        let mainPackage = node.data('mainPackage');
         for (let toHighlightNode of nodes) {
-          if (toHighlightNode.data('package') === packageName) {
+          if (toHighlightNode.data('mainPackage') === mainPackage) {
             node.select();
           }
         }
@@ -237,11 +237,16 @@ export class GraphComponent implements OnInit {
       fullyQualifiedClassName = (fullyQualifiedClassName == '' ? "$" : fullyQualifiedClassName);
       extractedClassName = (extractedClassName == '' ? '$' : extractedClassName);
       let belongingPackages = this.extractBelongingPackages(fullyQualifiedClassName);
+      let mainPackage = "";
+      if (belongingPackages) {
+        mainPackage = belongingPackages.pop();
+      }
       // Create the node as per cytoscape representation
       let node = {
         data: {
           id: fullyQualifiedClassName,
           label: extractedClassName,
+          mainPackage: mainPackage,
           belongingPackages: belongingPackages
         }
       };
