@@ -29,8 +29,7 @@ export class GraphComponent implements OnInit {
   @Output() edgeUnselectedEvent = new EventEmitter();
   private metricNameConverter = new MetricNameConverter();
 
-  private previousNodesQuery;
-
+  private previousNodesQuery = [];
 
   constructor(queryService: QueryService) { 
     if (queryService.receivedQueryEvent$) {
@@ -42,20 +41,26 @@ export class GraphComponent implements OnInit {
     }
   }
 
-  processQuery(query: string[]): void {
+  processQuery(query: [string, string, boolean]): void {
     let queryType = query[0];
     let queryText = query[1];
+    let seePackageHigherClasses = query[2];
     if (queryType === "class") {
       this.queryByClassName(queryText);
     }
     if (queryType === "package") {
-      this.queryByPackageName(queryText);
+      this.queryByPackageName(queryText, seePackageHigherClasses);
     }
   }
 
+  /**
+   * Queries the graph using the class name or fully qualified class name
+   * @param queryText a string containing the class name or fully qualified class name
+   */
   queryByClassName(queryText: string): void {
     let previousNodesQuery = this.previousNodesQuery;
     if (previousNodesQuery) {
+      // unselect and remove any style from previous queried nodes
       this.cy.batch(function() {
         this.cy.nodes().forEach(function (node) {
           let className = node.data('label');
@@ -63,10 +68,12 @@ export class GraphComponent implements OnInit {
           for (let toHighlightNode of previousNodesQuery) {
             if (toHighlightNode.data('label') === className || toHighlightNode.data('id') === fullyQualifiedClassName) {
               node.unselect();
+              node.removeStyle('background-color');
             }
           }
         });
       }.bind(this));
+      this.previousNodesQuery = [];
     }
     let nodes = this.cy.nodes(`[label = "${queryText}"], [id = "${queryText}"]`);
     this.cy.batch(function() {
@@ -83,32 +90,88 @@ export class GraphComponent implements OnInit {
     this.previousNodesQuery = nodes;
   }
 
-  queryByPackageName(queryText: string): void {
+  /**
+   * Queries the graph using the package name
+   * @param queryText a string containing the package name 
+   * @param seePackageHigherClasses a boolean for whether the query should keep higher package classes
+   */
+  queryByPackageName(queryText: string, seePackageHigherClasses: boolean): void {
     let previousNodesQuery = this.previousNodesQuery;
     if (previousNodesQuery) {
+      // unselect and remove any style from previous queried nodes
       this.cy.batch(function() {
         this.cy.nodes().forEach(function (node) {
           let mainPackage = node.data('mainPackage');
-          for (let toHighlightNode of previousNodesQuery) {
-            if (toHighlightNode.data('mainPackage') === mainPackage) {
+          for (let toUnselectNode of previousNodesQuery) {
+            if (toUnselectNode.data('mainPackage') === mainPackage) {
               node.unselect();
+              node.removeStyle('background-color');
             }
           }
         });
       }.bind(this));
+      this.previousNodesQuery = [];
     }
-    let nodes = this.cy.nodes(`[mainPackage = "${queryText}"]`);
+
+    let nodesMainPackage = this.cy.nodes(`[mainPackage = "${queryText}"]`);
+    let higherPackages = [];
+    let nodesHigherPackages = [];
+
     this.cy.batch(function() {
-      this.cy.nodes().forEach(function (node) {
+      this.cy.nodes().forEach(function(node) {
         let mainPackage = node.data('mainPackage');
-        for (let toHighlightNode of nodes) {
-          if (toHighlightNode.data('mainPackage') === mainPackage) {
-            node.select();
+        for (let toSelectNode of nodesMainPackage) {
+          if (seePackageHigherClasses) {
+            // see classes from higher packages
+            if (toSelectNode.data('mainPackage') === mainPackage) {
+              higherPackages = toSelectNode.data('belongingPackages');
+              node.select();
+            }
+          }
+          else {
+            if (toSelectNode.data('mainPackage') === mainPackage) {
+              node.select();
+            }
           }
         }
       });
     }.bind(this));
-    this.previousNodesQuery = nodes;
+
+    // generate a color per higher package
+    let numberColors = higherPackages.length;
+    let colors = [];
+    for(let i = 0; i < 360; i += 360 / numberColors) {
+      let hue = i;
+      let saturation = 100;
+      let lightness = 50;
+      let formattedStringHslColor = `hsl(${hue},${saturation}%,${lightness}%)`;
+      colors.push(formattedStringHslColor);
+    }
+
+    if (higherPackages) {
+      let counterPackages = 0;
+      for (let higherPackage of higherPackages) {
+        let nodesHigherPackage = this.cy.nodes(`[mainPackage = "${higherPackage}"]`);
+        this.cy.batch(function() {
+          this.cy.nodes().forEach(function(node) {
+            for (let nodeHigherPackage of nodesHigherPackage) {
+              if (node.data('id') === nodeHigherPackage.data('id')) {
+                node.style({'background-color': `${colors[counterPackages]}`,
+                });
+                node.select();
+              }
+            }
+          });
+        }.bind(this));
+        counterPackages += 1;
+        if (nodesHigherPackage) {
+          nodesHigherPackages.push.apply(nodesHigherPackages, nodesHigherPackage);
+        }
+      }
+    }
+
+    this.previousNodesQuery.push.apply(this.previousNodesQuery, nodesMainPackage);
+    this.previousNodesQuery.push.apply(this.previousNodesQuery, nodesHigherPackages);
   }
 
   ngOnInit() {

@@ -6,13 +6,13 @@ import { Subject } from 'rxjs';
 })
 export class QueryService {
 
-  private receivedQuery = new Subject<string[]>();
+  private receivedQuery = new Subject<any>();
 
   receivedQueryEvent$ = this.receivedQuery.asObservable();
 
   constructor() { }
 
-  sendQueryToGraph(query: string[]) {
+  sendQueryToGraph(query: (string|boolean)[]) {
     this.receivedQuery.next(query);
   }
 }
