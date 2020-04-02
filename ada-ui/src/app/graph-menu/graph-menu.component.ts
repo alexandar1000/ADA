@@ -3,17 +3,6 @@ import {GraphComponent} from "../graph/graph.component";
 import {FormControl} from "@angular/forms";
 import {GraphOptionsService} from "../graph-options.service";
 
-interface GraphLayoutOption {
-  value: string;
-  viewValue: string;
-}
-
-interface GraphLayoutGroup {
-  disabled?: boolean;
-  name: string;
-  graphLayoutOptions: GraphLayoutOption[];
-}
-
 @Component({
   selector: 'app-graph-menu',
   templateUrl: './graph-menu.component.html',
@@ -40,28 +29,18 @@ export class GraphMenuComponent implements OnInit {
 
 
   graphLayoutControl = new FormControl();
-  public graphLayoutGroups: GraphLayoutGroup[] = [
-    {
-      name: 'Ungrouped',
-      graphLayoutOptions: [
-        {value: 'circle', viewValue: 'Circle'},
-        {value: 'grid', viewValue: 'Grid'},
-        {value: 'random', viewValue: 'Random'},
-      ]
-    },
-    {
-      name: 'Grouped',
-      graphLayoutOptions: [
-        {value: 'concentric', viewValue: 'Doughnut'},
-        {value: 'cose', viewValue: 'Cose'}
-      ]
-    }
-
-    ];
+  public graphLayoutGroups = null;
 
   constructor(private graphOptionsService: GraphOptionsService) {}
 
   ngOnInit() {
+    this.graphLayoutSpacing = this.graphOptionsService.initialSpacingFactor;
+    this.areZeroWeightedEdgesHidden = this.graphOptionsService.areZeroWeightedEdgesHiddenInitially;
+    this.areNeighbourlessNodesHidden = this.graphOptionsService.areNeighbourlessNodesHiddenInitially;
+    this.areEdgeWeightsShownAsLabels = this.graphOptionsService.areEdgeWeightsShownAsLabelsInitially;
+    this.areEdgesColourCoded = this.graphOptionsService.areEdgesColourCodedInitially;
+    this.selectedLayoutOption = this.graphOptionsService.selectedLayoutOptionInitially;
+    this.graphLayoutGroups = this.graphOptionsService.graphLayoutGroups;
   }
 
   createColourcodingLegend(): void {
@@ -109,6 +88,7 @@ export class GraphMenuComponent implements OnInit {
 
   handleLayoutSpacingChange($event: any): void {
     this.graphOptionsService.setSpacingFactor($event.value/10);
+    this.graphLayoutSpacing = $event.value/10;
   }
 
   formatSliderLabel(value: number) {

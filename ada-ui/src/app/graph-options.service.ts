@@ -1,31 +1,67 @@
 import {Injectable, Input} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 
+interface GraphLayoutOption {
+  value: string;
+  viewValue: string;
+}
+
+interface GraphLayoutGroup {
+  disabled?: boolean;
+  name: string;
+  graphLayoutOptions: GraphLayoutOption[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class GraphOptionsService {
 
-  private spacingFactor = new BehaviorSubject(1.0);
+  public initialSpacingFactor = 1.0;
+  private spacingFactor = new BehaviorSubject(this.initialSpacingFactor);
   spacingFactor$ = this.spacingFactor.asObservable();
 
-  private areZeroWeightedEdgesHidden = new BehaviorSubject(false);
+  public areZeroWeightedEdgesHiddenInitially = false;
+  private areZeroWeightedEdgesHidden = new BehaviorSubject(this.areZeroWeightedEdgesHiddenInitially);
   areZeroWeightedEdgesHidden$ = this.areZeroWeightedEdgesHidden.asObservable();
 
-  private areNeighbourlessNodesHidden = new BehaviorSubject(false);
+  public areNeighbourlessNodesHiddenInitially = false;
+  private areNeighbourlessNodesHidden = new BehaviorSubject(this.areNeighbourlessNodesHiddenInitially);
   areNeighbourlessNodesHidden$ = this.areNeighbourlessNodesHidden.asObservable();
 
-  private areEdgeWeightsShownAsLabels = new BehaviorSubject(false);
+  public areEdgeWeightsShownAsLabelsInitially = false;
+  private areEdgeWeightsShownAsLabels = new BehaviorSubject(this.areEdgeWeightsShownAsLabelsInitially);
   areEdgeWeightsShownAsLabels$ = this.areEdgeWeightsShownAsLabels.asObservable();
 
-  private areEdgesColourCoded = new BehaviorSubject(false);
+  public areEdgesColourCodedInitially = false;
+  private areEdgesColourCoded = new BehaviorSubject(this.areEdgesColourCodedInitially);
   areEdgesColourCoded$ = this.areEdgesColourCoded.asObservable();
 
-  private selectedLayoutOption = new BehaviorSubject('circle');
+  public selectedLayoutOptionInitially = 'circle';
+  private selectedLayoutOption = new BehaviorSubject(this.selectedLayoutOptionInitially);
   selectedLayoutOption$ = this.selectedLayoutOption.asObservable();
 
-  private isGraphViewToBeReset = new BehaviorSubject(false);
+  public isGraphViewToBeResetInitially = false;
+  private isGraphViewToBeReset = new BehaviorSubject(this.isGraphViewToBeResetInitially);
   isGraphViewToBeReset$ = this.isGraphViewToBeReset.asObservable();
+
+  public graphLayoutGroups: GraphLayoutGroup[] = [
+    {
+      name: 'Ungrouped',
+      graphLayoutOptions: [
+        {value: 'circle', viewValue: 'Circle'},
+        {value: 'grid', viewValue: 'Grid'},
+        {value: 'random', viewValue: 'Random'},
+      ]
+    },
+    {
+      name: 'Grouped',
+      graphLayoutOptions: [
+        {value: 'concentric', viewValue: 'Doughnut'},
+        {value: 'cose', viewValue: 'Cose'}
+      ]
+    }
+  ];
 
   constructor() { }
 
