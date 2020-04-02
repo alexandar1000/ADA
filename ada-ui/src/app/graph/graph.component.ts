@@ -315,7 +315,7 @@ export class GraphComponent implements OnInit {
    * @param node node to be shown
    */
   private showNode(node: SingularElementReturnValue) {
-    if (node.hidden()) {
+    if (node.removed()) {
       node.restore();
       this.hiddenNodes = this.hiddenNodes.difference(node);
     } else {
@@ -341,7 +341,7 @@ export class GraphComponent implements OnInit {
    * @param edge edge to be shown
    */
   private showEdge(edge: SingularElementReturnValue) {
-    if (edge.hidden()) {
+    if (edge.removed()) {
       edge.restore();
       this.hiddenEdges = this.hiddenEdges.difference(edge);
     } else {
@@ -372,26 +372,19 @@ export class GraphComponent implements OnInit {
     let self = this;
     // Make all changes to the graph in batch
     this.cy.batch(function() {
-      // Show only edges with a weight other than zero
+      // Hide only the edges with a weight of zero
       if (hideEdges == true) {
         this.cy.edges().forEach(function (edge) {
           let weight = edge.data('weight');
-          if (weight != 0) {
-            edge.style({
-              'display': 'element'
-            })
-          } else {
-            edge.style({
-              'display': 'none'
-            })
+          if (weight == 0) {
+            self.hideEdge(edge);
           }
         });
       // Show all edges
       } else {
-        this.cy.edges().style(
-            {
-              'display': 'element'
-            });
+        this.hiddenEdges.forEach(function (edge) {
+          self.showEdge(edge);
+        });
       }
     }.bind(this));
   }
