@@ -3,6 +3,7 @@ import * as cytoscape from 'cytoscape';
 import {MetricNameConverter} from "../classes/metric-name-converter";
 import {ProjectStructure} from "../classes/project-structure";
 import {CollectionReturnValue} from "cytoscape";
+import {SingularElementReturnValue} from "cytoscape";
 import { QueryService } from '../query.service';
 
 @Component({
@@ -21,8 +22,12 @@ export class GraphComponent implements OnInit {
   @Input() areEdgeWeightsShownAsLabels: boolean;
   @Input() areEdgesColourCoded: boolean;
   @Input() selectedLayoutOption: string;
+  @Input() isGraphViewToBeReset: boolean;
 
   private highlightedNodes: CollectionReturnValue = null;
+  private hiddenNodes: CollectionReturnValue;
+  private hiddenEdges: CollectionReturnValue;
+
   @Output() nodeSelectedEvent = new EventEmitter();
   @Output() edgeSelectedEvent = new EventEmitter();
   @Output() nodeUnselectedEvent = new EventEmitter();
@@ -114,7 +119,7 @@ export class GraphComponent implements OnInit {
   ngOnInit() {
     this.initCytoscape();
     this.initEventHandlers();
-    this.repopulateGraph();
+    this.populateGraph();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -132,9 +137,15 @@ export class GraphComponent implements OnInit {
       if (changes.selectedLayoutOption) {
         this.updateGraphLayout(this.selectedLayoutOption);
       }
+      if (changes.isGraphViewToBeReset) {
+        this.resetGraphView();
+      }
     }
   }
 
+  /**
+   * Initial call to initialise Cytoscape in the component
+   */
   private initCytoscape(): void {
     let elements: any = {};
     this.cy = cytoscape(
@@ -190,24 +201,35 @@ export class GraphComponent implements OnInit {
           }
         ]
       });
+
+    // Initialise the helper collections
     this.highlightedNodes = this.cy.collection();
+    this.emptyHiddenElements();
   }
 
-  private repopulateGraph(): void {
+  /**
+   * Populate the graph with a set of elements, and make sure it adheres to the options selected by the user
+   */
+  private populateGraph(): void {
+    // Remove all elements present in the graph
     this.cy.elements().remove();
+    // Get the elements to add to the graph and add them
     let elements = this.getElements();
     this.cy.add(elements);
+    // Make sure that the arrows on the edges correspond to the metrics represented
     this.updateArrowStyle();
 
+    // Remove all the hidden elements from the collections keeping track of them
+    this.emptyHiddenElements();
+
+    // Make sure that the selected options from the graph menu hold for the new graph as well
     this.reflectGraphMenuStateToGraph();
-
-    var layout = this.cy.layout({
-      name: this.selectedLayoutOption
-    });
-
-    layout.run();
   }
 
+  /**
+   * Extract the class name given a fullyQualifiedClassName
+   * @param fullyQualifiedClassName a fully qualified class name from whcih the class name is to be extracted
+   */
   public extractClassName(fullyQualifiedClassName: String): String {
     let lastIndex = fullyQualifiedClassName.lastIndexOf('.');
     let className = (lastIndex > 0 ? fullyQualifiedClassName.substr(lastIndex + 1, fullyQualifiedClassName.length - 1) : fullyQualifiedClassName);
@@ -215,7 +237,9 @@ export class GraphComponent implements OnInit {
     return className;
   }
 
-
+  /**
+   * Returns the elements in a graph-consumable structure
+   */
   private getElements(): any {
     let elements = {
       nodes: this.extractNodes(),
@@ -224,6 +248,9 @@ export class GraphComponent implements OnInit {
     return elements;
   }
 
+  /**
+   * Extract the nodes from the model returned from the back end
+   */
   public extractNodes() : any {
     let nodes = [];
     // The node names will be the names in the classStructures Map of the ProjectStructure, as it contains all of the
@@ -255,6 +282,9 @@ export class GraphComponent implements OnInit {
     return nodes;
   }
 
+  /**
+   * Extract the edges from the model returned from the back end
+   */
   public extractEdges() : any {
     let edges = [];
     let i = 0;
@@ -279,6 +309,11 @@ export class GraphComponent implements OnInit {
     return edges;
   }
 
+  /**
+   * Get the weights corresponding to the dependence between the source class and the target class
+   * @param source the source class
+   * @param target the target class
+   */
   private getCorrespondingWeight(source: String, target: String): number {
     if (source == '$') {
       source = '';
@@ -290,13 +325,23 @@ export class GraphComponent implements OnInit {
     return weight;
   }
 
+  /**
+   * Change the metrics which are represented in the graph
+   */
   private changeMetricRepresentedInGraph() {
     let newMetric = this.metricNameConverter.translateMetricName(this.selectedMetric.toString());
 
     let self = this;
     if (newMetric != null) {
       this.cy.batch(function(){
+        // Change the arrow for represented edges
         self.cy.edges().forEach(function( edge ){
+          let source = edge.data('source');
+          let target = edge.data('target');
+          edge.data('weight', self.getCorrespondingWeight(source, target));
+        });
+        // Change the arrow for represented edges
+        self.hiddenEdges.forEach(function( edge ){
           let source = edge.data('source');
           let target = edge.data('target');
           edge.data('weight', self.getCorrespondingWeight(source, target));
@@ -308,6 +353,9 @@ export class GraphComponent implements OnInit {
     }
   }
 
+  /**
+   * Update the arrow style so that its points correspond to the represented metric
+   */
   private updateArrowStyle (): void {
     let arrowStyle = this.metricNameConverter.getArrowStyle(this.selectedMetric.toString());
     let arrowStyleKey = arrowStyle[0];
@@ -321,6 +369,11 @@ export class GraphComponent implements OnInit {
           'source-arrow-shape': arrowStyleValue
         })
         .update();
+      this.hiddenEdges
+        .style({
+          'target-arrow-shape': 'none',
+          'source-arrow-shape': arrowStyleValue
+        })
     } else {
       this.cy.style()
         .selector('edge')
@@ -329,6 +382,11 @@ export class GraphComponent implements OnInit {
           'target-arrow-shape': arrowStyleValue
         })
         .update();
+      this.hiddenEdges
+        .style({
+          'source-arrow-shape': 'none',
+          'target-arrow-shape': arrowStyleValue
+        })
     }
   }
 
@@ -342,6 +400,88 @@ export class GraphComponent implements OnInit {
     this.updateDisplayOfNodesWithoutNeighbours(this.areNeighbourlessNodesHidden);
     this.toggleDisplayOfEdgeWeightsAsLabels(this.areEdgeWeightsShownAsLabels);
     this.toggleEdgeColourcoding(this.areEdgesColourCoded);
+    this.updateGraphLayout(this.selectedLayoutOption);
+  }
+
+  /**
+   * Empty the arrays keeping track of the hidden elements
+   */
+  private emptyHiddenElements() {
+    this.hiddenNodes = this.cy.collection();
+    this.hiddenEdges = this.cy.collection();
+  }
+
+  /**
+   * Show a previously hidden node
+   * @param node node to be shown
+   */
+  private showNode(node: any) {
+    if (node.removed()) {
+      node.restore();
+      this.hiddenNodes = this.hiddenNodes.difference(node);
+    } else {
+      console.error("Tried to show a node which was not previously removed.", node);
+    }
+  }
+
+  /**
+   * Hide a node from the graph
+   * @param node node to be hidden
+   */
+  private hideNode(node: any) {
+    if (node.inside()) {
+      this.hiddenNodes = this.hiddenNodes.union(node);
+      node.remove();
+    } else {
+      console.error("Tried to remove a node which is not in the graph.", node);
+    }
+  }
+
+  /**
+   * Show a previously hidden edge
+   * @param edge edge to be shown
+   */
+  private showEdge(edge: any) {
+    // If an edge needs to be shown, it needs to have both connected nodes present (i.e. source and the target)
+    if (edge.removed()) {
+      // Get the source node
+      let source = edge.data('source');
+      let sourceIdQueryNodeCollection = this.hiddenNodes.nodes('[id = "' + source + '"]');
+      let hiddenSourceNode = sourceIdQueryNodeCollection.length > 0 ? sourceIdQueryNodeCollection[0] : null;
+
+      // Get the target node
+      let target = edge.data('target');
+      let targetIdQueryNodeCollection = this.hiddenNodes.nodes('[id = "' + target + '"]');
+      let hiddenTargetNode = targetIdQueryNodeCollection.length > 0 ? targetIdQueryNodeCollection[0] : null;
+
+      // If the source node is hidden, display it
+      if (hiddenSourceNode) {
+        this.showNode(hiddenSourceNode)
+      }
+      // If the target node is hidden, display it
+      if (hiddenTargetNode) {
+        this.showNode(hiddenTargetNode)
+      }
+
+      // Restore the edge
+      edge.restore();
+      this.hiddenEdges = this.hiddenEdges.difference(edge);
+    } else {
+      console.error("Tried to show an edge which was not previously removed.", edge);
+    }
+  }
+
+  /**
+   * Hide an edge from the graph
+   * @param edge edge to be hidden
+   */
+  private hideEdge(edge: any) {
+    if (edge.inside()) {
+      this.hiddenEdges = this.hiddenEdges.union(edge);
+      edge.remove();
+    }  else {
+      console.error("Tried to remove an edge which is not in the graph.", edge);
+    }
   }
 
   /**
@@ -351,28 +491,31 @@ export class GraphComponent implements OnInit {
    * @param hideEdges a flag which defines whether the edges are to be defined
    */
   private updateDisplayOfZeroEdges(hideEdges: boolean): void {
+    let self = this;
     // Make all changes to the graph in batch
     this.cy.batch(function() {
-      // Show only edges with a weight other than zero
+      // If the edges with weight of zero are to be hidden, show ones which are hidden and have weight != 0, and hide
+      // The displayed edges with weight == 0
       if (hideEdges == true) {
-        this.cy.edges().forEach(function (edge) {
+        // For all of the hidden edges show those with a weight of zero
+        this.hiddenEdges.forEach(function (edge) {
           let weight = edge.data('weight');
           if (weight != 0) {
-            edge.style({
-              'display': 'element'
-            })
-          } else {
-            edge.style({
-              'display': 'none'
-            })
+            self.showEdge(edge);
           }
         });
-      // Show all edges
+        // For all of the edges in the graph hide those with a weight of zero
+        this.cy.edges().forEach(function (edge) {
+          let weight = edge.data('weight');
+          if (weight == 0) {
+            self.hideEdge(edge);
+          }
+        });
+      // If the edges are not to be hidden, show all edges
       } else {
-        this.cy.edges().style(
-            {
-              'display': 'element'
-            });
+        this.hiddenEdges.forEach(function (edge) {
+          self.showEdge(edge);
+        });
       }
     }.bind(this));
   }
@@ -383,43 +526,22 @@ export class GraphComponent implements OnInit {
    * @param hideNodes whether to hide the nodes or not
    */
     private updateDisplayOfNodesWithoutNeighbours(hideNodes: boolean): void {
-    // Process all of th nodes in batch
+    // Process all of the nodes in batch
     this.cy.batch(function() {
       let self = this;
       if (hideNodes == true) {
         // If the nodes are selected to be hidden, hide those without edges or with hidden edges
         this.cy.nodes().forEach(function (node) {
           let connectedEdges = node.connectedEdges();
-          let hideNode = true;
-          if (connectedEdges.length > 0) {
-            // If there is at least one visible edge, the node needs to be displayed
-            for (let edge of connectedEdges) {
-              // If the edges are not hidden or the edge is visible, display the node
-              if (!self.areZeroWeightedEdgesHidden || edge.data('weight') != 0) {
-                hideNode = false;
-                break;
-              }
-            }
-          }
-          // Based on the processing above, update the node
-          if (hideNode) {
-            node.style(
-              {
-                'display': 'none'
-              })
-          } else {
-            node.style(
-              {
-                'display': 'element'
-              })
+          if (connectedEdges.length == 0) {
+            self.hideNode(node);
           }
         });
       } else {
-        // If all the nodes should be displayed, show all nodes
-        this.cy.nodes().style(
-          {
-            'display': 'element'
-          })
+        // If the nodes should be displayed, show all nodes
+        this.hiddenNodes.forEach(function (node) {
+          self.showNode(node);
+        });
       }
     }.bind(this));
   }
@@ -595,15 +717,47 @@ export class GraphComponent implements OnInit {
   }
 
   /**
-   * Update the layout in which the nodes in the graph are displayed
-   * @param selectedLayoutOption the layout option
+   * Organise the elements in the graph according to a selected layout
+   * @param selectedLayoutOption the layout in which to organise the elements of the graph
    */
   private updateGraphLayout(selectedLayoutOption: string): void {
-    var layout = this.cy.layout({
-      name: selectedLayoutOption
-    });
+    let nrOfNodes = this.cy.elements().length;
+    let spacingFactor = undefined;
+    // switch (selectedLayoutOption) {
+    //   case 'circle':
+    //     spacingFactor = Math.max(nrOfNodes/100, 1);
+    //     break;
+    //   case 'grid':
+    //     spacingFactor = Math.max(nrOfNodes/100, 1);
+    //     break;
+    //   case 'random':
+    //     spacingFactor = Math.max(nrOfNodes/150, 1);
+    //     break;
+    //   case 'concentric':
+    //     spacingFactor = Math.max(nrOfNodes/100, 1);
+    //     break;
+    //   case 'cose':
+    //     spacingFactor = undefined;
+    //     break;
+    //   default:
+    //     spacingFactor = 1;
+    // }
 
+    let layoutOptions = {
+      name: selectedLayoutOption,
+      spacingFactor: spacingFactor,
+      animate: true
+    };
+
+    var layout = this.cy.layout(layoutOptions);
     layout.run();
+  }
+
+  /**
+   * Place all of the elements of the graph into the viewport
+   */
+  private resetGraphView() {
+    this.cy.fit(undefined, 30);
   }
 
   /**
@@ -613,7 +767,6 @@ export class GraphComponent implements OnInit {
   private extractBelongingPackages(fullyQualifiedClassName: String): string[] {
     let splitString = fullyQualifiedClassName.split('.');
     let superPackages = [];
-    // Upper bound is not inclusive of the last element because we do not want to include the class name
     for (let i = 1; i < splitString.length; i++) {
       let superPackage = '';
       for (let j = 0; j < i; j++) {
@@ -711,5 +864,6 @@ export class GraphComponent implements OnInit {
   private initEventHandlers(): void {
     this.handleSelectElement();
     this.handleUnselectElement();
+
   }
 }
