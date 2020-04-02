@@ -524,7 +524,8 @@ export class GraphComponent implements OnInit {
         this.showNode(hiddenSourceNode)
       }
       // If the target node is hidden, display it
-      if (hiddenTargetNode) {
+      // If the edge is a self-loop, the node would be added twice, hence a check to see if source != target is needed
+      if (hiddenTargetNode && (source != target)) {
         this.showNode(hiddenTargetNode)
       }
 
