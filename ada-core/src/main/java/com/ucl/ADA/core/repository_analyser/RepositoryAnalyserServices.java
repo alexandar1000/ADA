@@ -1,11 +1,16 @@
 package com.ucl.ADA.core.repository_analyser;
 
 import com.google.common.collect.SetMultimap;
+import com.ucl.ADA.model.analysis_request.AnalysisRequest;
+import com.ucl.ADA.model.branch.Branch;
+import com.ucl.ADA.model.owner.Owner;
+import com.ucl.ADA.model.repository.GitRepo;
 import com.ucl.ADA.model.snapshot.Snapshot;
 import com.ucl.ADA.parser.ParserServices;
 import com.ucl.ADA.parser.ada_model.ADAClass;
 import com.ucl.ADA.repository_downloader.RepoDownloader;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -17,26 +22,37 @@ import static com.ucl.ADA.model.snapshot.SnapshotUtils.*;
 @Service
 public class RepositoryAnalyserServices {
 
+    @Autowired
+    private DatabaseUtilityService databaseUtilityService;
+
     private ParserServices parserServices;
 
     public Snapshot analyseRepositoryService(String url, String branchName) {
 
-        // TODO: parse url and branch name
+        // Parse the repo owner and name from the url
         String[] repoInfo = RepoDownloader.parseGitUrl(url);
         String repoOwner = repoInfo[3];
         String repoName = repoInfo[4];
 
-        // TODO: validate owner, repo and branch
+        // Check if the owner/repo/branch have been analyzed before
+        Owner owner = databaseUtilityService.validateOwner(repoOwner);
+        GitRepo repo = databaseUtilityService.validateRepo(owner,repoName);
+        Branch branch = databaseUtilityService.validateBranch(repo, branchName);
 
-        // Retrieve previous snapshot
-        Snapshot prevSnapshot = new Snapshot();
+        // Retrieve previous snapshot, if existing
+        Snapshot prevSnapshot = null;
+        if(branch != null){
+            prevSnapshot = databaseUtilityService.getLastSnapshotOfBranch(branch);
+        }
 
         // Check last commit time through GitHub API
         // If there have been no new commits, do not re-analyze, return the previous snapshot
         OffsetDateTime lastCommitTime = RepoDownloader.getLatestCommitTime(url, branchName);
         if (lastCommitTime != null) {
-            if (lastCommitTime.isEqual(prevSnapshot.getCommitTime()))
-                return prevSnapshot;
+            if (prevSnapshot != null && lastCommitTime.isEqual(prevSnapshot.getCommitTime())) return prevSnapshot;
+        } else {
+            // url OR branch name is invalid
+            return null;
         }
 
         // if need to download and analyze again
@@ -47,11 +63,15 @@ public class RepositoryAnalyserServices {
             return null;
         }
 
+        // save entities in the database
+        if(owner == null) owner = databaseUtilityService.saveOwner(repoOwner);
+        if(repo == null) repo = databaseUtilityService.saveRepo(owner, repoName);
+        if(branch == null) branch = databaseUtilityService.saveBranch(repo, branchName, snapshot);
+
+        databaseUtilityService.saveSnapshot(snapshot, branch, lastCommitTime);
+        databaseUtilityService.saveAnalysisRequest(branch, snapshot);
+
         // TODO: if invalid url or branch, store a branch is invalid at last commit time (a flag?)
-
-        // TODO: record analysis request
-
-        // TODO: store everything
 
         // TODO: pack the owner, repo and branch info into snapshot (through private class?)
         return snapshot;

@@ -34,4 +34,7 @@ public class SnapshotService {
         return findSnapshotByBranchAndTimestamp(branch, commitTime);
     }
 
+    public Snapshot addSnapshot(Snapshot snapshot) {
+        return snapshotRepository.save(snapshot);
+    }
 }

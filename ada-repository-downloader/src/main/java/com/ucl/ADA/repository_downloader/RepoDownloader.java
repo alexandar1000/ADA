@@ -108,6 +108,8 @@ public class RepoDownloader {
             return null;
         }
 
+        if(response.statusCode() == 404) return null;
+
         JSONObject json = new JSONObject(response.body());
 
         String commitTimeString = json.getJSONObject("commit").getJSONObject("commit").getJSONObject("author").getString("date");
