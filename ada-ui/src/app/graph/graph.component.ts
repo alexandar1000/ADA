@@ -23,6 +23,9 @@ export class GraphComponent implements OnInit {
   @Input() isGraphViewToBeReset: boolean;
 
   private highlightedNodes: CollectionReturnValue = null;
+  private hiddenNodes: CollectionReturnValue = null;
+  private hiddenEdges: CollectionReturnValue = null;
+
   @Output() nodeSelectedEvent = new EventEmitter();
   @Output() edgeSelectedEvent = new EventEmitter();
   @Output() nodeUnselectedEvent = new EventEmitter();
@@ -35,7 +38,7 @@ export class GraphComponent implements OnInit {
   ngOnInit() {
     this.initCytoscape();
     this.initEventHandlers();
-    this.repopulateGraph();
+    this.populateGraph();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -59,6 +62,9 @@ export class GraphComponent implements OnInit {
     }
   }
 
+  /**
+   * Initial call to initialise Cytoscape in the component
+   */
   private initCytoscape(): void {
     let elements: any = {};
     this.cy = cytoscape(
@@ -114,24 +120,37 @@ export class GraphComponent implements OnInit {
           }
         ]
       });
+
+    // Initialise the helper collections
     this.highlightedNodes = this.cy.collection();
+    this.hiddenNodes = this.cy.collection();
+    this.hiddenEdges = this.cy.collection();
   }
 
-  private repopulateGraph(): void {
+  /**
+   * Populate the graph with a set of elements, and make sure it adheres to the options selected by the user
+   */
+  private populateGraph(): void {
+    // Remove all elements present in the graph
     this.cy.elements().remove();
+    // Get the elements to add to the graph and add them
     let elements = this.getElements();
     this.cy.add(elements);
+    // Make sure that the arrows on the edges correspond to the metrics represented
     this.updateArrowStyle();
 
+    // Remove all the hidden elements from the collections keeping track of them
+    this.hiddenNodes = this.cy.collection();
+    this.hiddenEdges = this.cy.collection();
+
+    // Make sure that the selected options from the graph menu hold for the new graph as well
     this.reflectGraphMenuStateToGraph();
-
-    var layout = this.cy.layout({
-      name: this.selectedLayoutOption
-    });
-
-    layout.run();
   }
 
+  /**
+   * Extract the class name given a fullyQualifiedClassName
+   * @param fullyQualifiedClassName a fully qualified class name from whcih the class name is to be extracted
+   */
   public extractClassName(fullyQualifiedClassName: String): String {
     let lastIndex = fullyQualifiedClassName.lastIndexOf('.');
     let className = (lastIndex > 0 ? fullyQualifiedClassName.substr(lastIndex + 1, fullyQualifiedClassName.length - 1) : fullyQualifiedClassName);
@@ -139,7 +158,9 @@ export class GraphComponent implements OnInit {
     return className;
   }
 
-
+  /**
+   * Returns the elements in a graph-consumable structure
+   */
   private getElements(): any {
     let elements = {
       nodes: this.extractNodes(),
@@ -148,6 +169,9 @@ export class GraphComponent implements OnInit {
     return elements;
   }
 
+  /**
+   * Extract the nodes from the model returned from the back end
+   */
   public extractNodes() : any {
     let nodes = [];
     // The node names will be the names in the classStructures Map of the ProjectStructure, as it contains all of the
@@ -174,6 +198,9 @@ export class GraphComponent implements OnInit {
     return nodes;
   }
 
+  /**
+   * Extract the edges from the model returned from the back end
+   */
   public extractEdges() : any {
     let edges = [];
     let i = 0;
@@ -198,6 +225,11 @@ export class GraphComponent implements OnInit {
     return edges;
   }
 
+  /**
+   * Get the weights corresponding to the dependence between the source class and the target class
+   * @param source the source class
+   * @param target the target class
+   */
   private getCorrespondingWeight(source: String, target: String): number {
     if (source == '$') {
       source = '';
@@ -209,12 +241,16 @@ export class GraphComponent implements OnInit {
     return weight;
   }
 
+  /**
+   * Change the metrics which are represented in the graph
+   */
   private changeMetricRepresentedInGraph() {
     let newMetric = this.metricNameConverter.translateMetricName(this.selectedMetric.toString());
 
     let self = this;
     if (newMetric != null) {
       this.cy.batch(function(){
+        // Change the arrow for represented edges
         self.cy.edges().forEach(function( edge ){
           let source = edge.data('source');
           let target = edge.data('target');
@@ -227,6 +263,9 @@ export class GraphComponent implements OnInit {
     }
   }
 
+  /**
+   * Update the arrow style so that its points correspond to the represented metric
+   */
   private updateArrowStyle (): void {
     let arrowStyle = this.metricNameConverter.getArrowStyle(this.selectedMetric.toString());
     let arrowStyleKey = arrowStyle[0];
@@ -261,6 +300,7 @@ export class GraphComponent implements OnInit {
     this.updateDisplayOfNodesWithoutNeighbours(this.areNeighbourlessNodesHidden);
     this.toggleDisplayOfEdgeWeightsAsLabels(this.areEdgeWeightsShownAsLabels);
     this.toggleEdgeColourcoding(this.areEdgesColourCoded);
+    this.applyLayout(this.selectedLayoutOption);
   }
 
   /**
@@ -270,6 +310,7 @@ export class GraphComponent implements OnInit {
    * @param hideEdges a flag which defines whether the edges are to be defined
    */
   private updateDisplayOfZeroEdges(hideEdges: boolean): void {
+    let self = this;
     // Make all changes to the graph in batch
     this.cy.batch(function() {
       // Show only edges with a weight other than zero
@@ -294,6 +335,18 @@ export class GraphComponent implements OnInit {
             });
       }
     }.bind(this));
+  }
+
+  /**
+   * Organise the elements in the graph according to a selected layout
+   * @param selectedLayoutOption the layout in which to organise the elements of the graph
+   */
+  private applyLayout(selectedLayoutOption: string) {
+    var layout = this.cy.layout({
+      name: selectedLayoutOption
+    });
+
+    layout.run();
   }
 
   /**
