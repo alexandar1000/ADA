@@ -27,6 +27,9 @@ public class AnalysisRequestService {
         Branch branch = branchService.getBranchGivenOwnerRepoAndName(owner, repository, branchName);
 
         return analysisRequestRepository.findByBranchAndTimestamp(branch, timestamp);
+    }
 
+    public AnalysisRequest addAnalysisRequest(AnalysisRequest analysisRequest){
+        return analysisRequestRepository.save(analysisRequest);
     }
 }

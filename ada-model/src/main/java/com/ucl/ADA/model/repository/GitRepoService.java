@@ -56,4 +56,17 @@ public class GitRepoService {
         return gitRepoRepository.findByOwnerAndRepoName(owner, repository);
     }
 
+    /**
+     * Add a GitRepo entity in the database.
+     * @param repo GitRepo entity to be added
+     * @return the newly added GitRepo entity
+     */
+    public GitRepo addGitRepo(GitRepo repo){
+        return gitRepoRepository.save(repo);
+    }
+
+    public GitRepo getRepoByOwnerAndName(Owner owner, String name){
+        return gitRepoRepository.findByOwnerAndRepoName(owner, name);
+    }
+
 }

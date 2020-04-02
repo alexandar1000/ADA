@@ -41,4 +41,17 @@ public class BranchService {
 
         return branchRepository.findByRepositoryAndBranchName(gitRepo, branch);
     }
+
+    /**
+     * Add a Branch entity to the database
+     * @param branch Branch entity to be added
+     * @return the newly added Branch entity
+     */
+    public Branch addBranch(Branch branch){
+        return branchRepository.save(branch);
+    }
+
+    public Branch getBranchGivenRepoAndName(GitRepo gitRepo, String branch){
+        return branchRepository.findByRepositoryAndBranchName(gitRepo, branch);
+    }
 }
