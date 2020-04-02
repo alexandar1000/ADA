@@ -1,0 +1,23 @@
+<div class="query-form-container">
+	<form (ngSubmit)="onSubmit()" class="query-form" #queryForm="ngForm">
+		<p>Query graph:</p>
+		<mat-form-field class="full-width">
+			<mat-label>Query type</mat-label>
+			<mat-select [(ngModel)]="selectedQueryType" name="queryType" required>
+				<mat-option *ngFor="let queryType of queryTypes" [value]="queryType">
+						{{queryType}}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<mat-form-field class="full-width">
+			<mat-label>Query</mat-label>
+			<input matInput placeholder="Query" 
+						 name="query"
+						 [(ngModel)]="queryText"
+						 required #query="ngModel">
+		</mat-form-field>
+		<button type="submit" [disabled]="!queryForm.form.valid" mat-raised-button color="primary" class="query-button">Go</button>
+	</form>
+</div>
+
+  
