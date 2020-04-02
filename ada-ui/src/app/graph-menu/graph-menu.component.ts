@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {GraphComponent} from "../graph/graph.component";
 import {FormControl} from "@angular/forms";
 import {GraphOptionsService} from "../graph-options.service";
@@ -86,6 +86,10 @@ export class GraphMenuComponent implements OnInit {
     this.graphOptionsService.setIsGraphViewToBeReset(true);
   }
 
+  handleResetGraphLayoutButtonPressed($event: MouseEvent) {
+    this.graphOptionsService.setIsGraphLayoutToBeReset(true);
+  }
+
   handleLayoutSpacingChange($event: any): void {
     this.graphOptionsService.setSpacingFactor($event.value/10);
     this.graphLayoutSpacing = $event.value/10;
@@ -94,5 +98,4 @@ export class GraphMenuComponent implements OnInit {
   formatSliderLabel(value: number) {
     return (value/10).toFixed(1);
   }
-
 }

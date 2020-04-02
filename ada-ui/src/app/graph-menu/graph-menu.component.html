@@ -43,9 +43,13 @@
     <li>
       <button mat-button (click)="handleResetGraphViewButtonPressed($event)">Reset Graph View</button>
     </li>
+    <li>
+      <button mat-button (click)="handleResetGraphLayoutButtonPressed($event)">Adjust Layout</button>
+    </li>
   </ul>
   <app-query-form></app-query-form>
   <mat-slider
+    [value]="graphLayoutSpacing*10"
     thumbLabel
     [displayWith]="formatSliderLabel"
     tickInterval="1"

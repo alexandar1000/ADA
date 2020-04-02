@@ -45,6 +45,10 @@ export class GraphOptionsService {
   private isGraphViewToBeReset = new BehaviorSubject(this.isGraphViewToBeResetInitially);
   isGraphViewToBeReset$ = this.isGraphViewToBeReset.asObservable();
 
+  public isGraphLayoutToBeResetInitially = false;
+  private isGraphLayoutToBeReset = new BehaviorSubject(this.isGraphLayoutToBeResetInitially);
+  isGraphLayoutToBeReset$ = this.isGraphLayoutToBeReset.asObservable();
+
   public graphLayoutGroups: GraphLayoutGroup[] = [
     {
       name: 'Ungrouped',
@@ -93,4 +97,7 @@ export class GraphOptionsService {
     this.isGraphViewToBeReset.next(value);
   }
 
+  setIsGraphLayoutToBeReset(value: boolean) {
+    this.isGraphLayoutToBeReset.next(value);
+  }
 }

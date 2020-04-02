@@ -26,22 +26,23 @@ export class GraphComponent implements OnInit {
   private areEdgesColourCoded: boolean;
   private selectedLayoutOption: string;
   private isGraphViewToBeReset: boolean;
-  private graphLayoutSpacing: number;
+  private isGraphLayoutToBeReset: boolean;
 
+  private graphLayoutSpacing: number;
   private highlightedNodes: CollectionReturnValue = null;
   private hiddenNodes: CollectionReturnValue;
-  private hiddenEdges: CollectionReturnValue;
 
+  private hiddenEdges: CollectionReturnValue;
   @Output() nodeSelectedEvent = new EventEmitter();
   @Output() edgeSelectedEvent = new EventEmitter();
   @Output() nodeUnselectedEvent = new EventEmitter();
   @Output() edgeUnselectedEvent = new EventEmitter();
-  private metricNameConverter = new MetricNameConverter();
 
+  private metricNameConverter = new MetricNameConverter();
   private previousNodesQuery;
 
 
-  constructor(queryService: QueryService, graphOptionsService: GraphOptionsService) {
+  constructor(queryService: QueryService, private graphOptionsService: GraphOptionsService) {
     if (queryService.receivedQueryEvent$) {
       queryService.receivedQueryEvent$.subscribe(
         query => {
@@ -117,6 +118,16 @@ export class GraphComponent implements OnInit {
           this.isGraphViewToBeReset = value;
           if (this.cy != null) {
             this.resetGraphView();
+          }
+        }
+      )
+    }
+    if (graphOptionsService.isGraphLayoutToBeReset$) {
+      graphOptionsService.isGraphLayoutToBeReset$.subscribe(
+        value => {
+          this.isGraphLayoutToBeReset = value;
+          if (this.cy != null) {
+            this.updateGraphLayout(this.selectedLayoutOption);
           }
         }
       )
@@ -775,33 +786,30 @@ export class GraphComponent implements OnInit {
    * @param selectedLayoutOption the layout in which to organise the elements of the graph
    */
   private updateGraphLayout(selectedLayoutOption: string): void {
-    let nrOfNodes = this.cy.elements().length;
-    let spacingFactor = undefined;
-    // switch (selectedLayoutOption) {
-    //   case 'circle':
-    //     spacingFactor = Math.max(nrOfNodes/100, 1);
-    //     break;
-    //   case 'grid':
-    //     spacingFactor = Math.max(nrOfNodes/100, 1);
-    //     break;
-    //   case 'random':
-    //     spacingFactor = Math.max(nrOfNodes/150, 1);
-    //     break;
-    //   case 'concentric':
-    //     spacingFactor = Math.max(nrOfNodes/100, 1);
-    //     break;
-    //   case 'cose':
-    //     spacingFactor = undefined;
-    //     break;
-    //   default:
-    //     spacingFactor = 1;
-    // }
-
     let layoutOptions = {
       name: selectedLayoutOption,
-      spacingFactor: this.graphLayoutSpacing,
-      animate: true
+      animate: true,
+      spacingFactor: this.graphLayoutSpacing
     };
+
+    switch (selectedLayoutOption) {
+      case 'circle':
+        break;
+      case 'grid':
+        break;
+      case 'random':
+        break;
+      case 'concentric':
+        layoutOptions['concentric'] = function( node ){
+         return node.selected() ? 15 : 0;
+        };
+        break;
+      case 'fcose':
+        layoutOptions['idealEdgeLength'] = 75 * this.graphLayoutSpacing;
+        layoutOptions['edgeElasticity'] = 0.45;
+        break;
+      default:
+    }
 
     var layout = this.cy.layout(layoutOptions);
     layout.run();
@@ -898,6 +906,9 @@ export class GraphComponent implements OnInit {
     this.cy.on('select', '*', function(evt){
       self.emitElementSelectedEvent(evt.target);
       self.highlightElementNeighbourhood(evt.target);
+      if (self.selectedLayoutOption == 'concentric') {
+        self.updateGraphLayout(self.selectedLayoutOption);
+      }
     });
   }
 
@@ -909,6 +920,9 @@ export class GraphComponent implements OnInit {
     this.cy.on('unselect', '*', function(evt){
       self.emitElementUnelectedEvent(evt.target);
       self.unhighlightElementNeighbourhood(evt.target);
+      if (self.selectedLayoutOption == 'concentric') {
+        self.updateGraphLayout(self.selectedLayoutOption);
+      }
     });
   }
 
