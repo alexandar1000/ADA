@@ -1,10 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import * as cytoscape from 'cytoscape';
+import fcose from 'cytoscape-fcose';
 import {MetricNameConverter} from "../classes/metric-name-converter";
 import {ProjectStructure} from "../classes/project-structure";
 import {CollectionReturnValue} from "cytoscape";
 import { QueryService } from '../query.service';
 import {GraphOptionsService} from "../graph-options.service";
+
+cytoscape.use( fcose );
 
 @Component({
   selector: 'app-graph',

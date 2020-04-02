@@ -58,7 +58,7 @@ export class GraphOptionsService {
       name: 'Grouped',
       graphLayoutOptions: [
         {value: 'concentric', viewValue: 'Doughnut'},
-        {value: 'cose', viewValue: 'Cose'}
+        {value: 'fcose', viewValue: 'Fcose'}
       ]
     }
   ];
