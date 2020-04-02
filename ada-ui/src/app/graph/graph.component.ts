@@ -420,29 +420,15 @@ export class GraphComponent implements OnInit {
    * @param hideNodes whether to hide the nodes or not
    */
     private updateDisplayOfNodesWithoutNeighbours(hideNodes: boolean): void {
-    // Process all of th nodes in batch
+    // Process all of the nodes in batch
     this.cy.batch(function() {
       let self = this;
       if (hideNodes == true) {
         // If the nodes are selected to be hidden, hide those without edges or with hidden edges
         this.cy.nodes().forEach(function (node) {
           let connectedEdges = node.connectedEdges();
-          let hideNode = true;
-          if (connectedEdges.length > 0) {
-            // If there is at least one visible edge, the node needs to be displayed
-            for (let edge of connectedEdges) {
-              // If the edges are not hidden or the edge is visible, display the node
-              if (!self.areZeroWeightedEdgesHidden || edge.data('weight') != 0) {
-                hideNode = false;
-                break;
-              }
-            }
-          }
-          // Based on the processing above, update the node
-          if (hideNode) {
+          if (connectedEdges.length == 0) {
             self.hideNode(node);
-          } else {
-            self.showNode(node);
           }
         });
       } else {
