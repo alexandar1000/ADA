@@ -255,6 +255,12 @@ export class GraphComponent implements OnInit {
           let target = edge.data('target');
           edge.data('weight', self.getCorrespondingWeight(source, target));
         });
+        // Change the arrow for represented edges
+        self.hiddenEdges.forEach(function( edge ){
+          let source = edge.data('source');
+          let target = edge.data('target');
+          edge.data('weight', self.getCorrespondingWeight(source, target));
+        });
         self.updateArrowStyle();
       });
     } else {
@@ -278,6 +284,11 @@ export class GraphComponent implements OnInit {
           'source-arrow-shape': arrowStyleValue
         })
         .update();
+      this.hiddenEdges
+        .style({
+          'target-arrow-shape': 'none',
+          'source-arrow-shape': arrowStyleValue
+        })
     } else {
       this.cy.style()
         .selector('edge')
@@ -286,6 +297,11 @@ export class GraphComponent implements OnInit {
           'target-arrow-shape': arrowStyleValue
         })
         .update();
+      this.hiddenEdges
+        .style({
+          'source-arrow-shape': 'none',
+          'target-arrow-shape': arrowStyleValue
+        })
     }
   }
 
@@ -390,18 +406,6 @@ export class GraphComponent implements OnInit {
   }
 
   /**
-   * Organise the elements in the graph according to a selected layout
-   * @param selectedLayoutOption the layout in which to organise the elements of the graph
-   */
-  private applyLayout(selectedLayoutOption: string) {
-    var layout = this.cy.layout({
-      name: selectedLayoutOption
-    });
-
-    layout.run();
-  }
-
-  /**
    * Update the nodes in the graph. If hideNodes is true, all of the nodes without outgoing/incoming edges which are
    * displayed on the screen, will be hidden as well.
    * @param hideNodes whether to hide the nodes or not
@@ -427,25 +431,71 @@ export class GraphComponent implements OnInit {
           }
           // Based on the processing above, update the node
           if (hideNode) {
-            node.style(
-              {
-                'display': 'none'
-              })
+            self.hideNode(node);
           } else {
-            node.style(
-              {
-                'display': 'element'
-              })
+            self.showNode(node);
           }
         });
       } else {
-        // If all the nodes should be displayed, show all nodes
-        this.cy.nodes().style(
-          {
-            'display': 'element'
-          })
+        // If the nodes should be displayed, show all nodes
+        this.hiddenNodes.forEach(function (node) {
+          self.showNode(node);
+        });
       }
     }.bind(this));
+  }
+
+ //    private updateDisplayOfNodesWithoutNeighbours(hideNodes: boolean): void {
+ //    // Process all of th nodes in batch
+ //    this.cy.batch(function() {
+ //      let self = this;
+ //      if (hideNodes == true) {
+ //        // If the nodes are selected to be hidden, hide those without edges or with hidden edges
+ //        this.cy.nodes().forEach(function (node) {
+ //          let connectedEdges = node.connectedEdges();
+ //          let hideNode = true;
+ //          if (connectedEdges.length > 0) {
+ //            // If there is at least one visible edge, the node needs to be displayed
+ //            for (let edge of connectedEdges) {
+ //              // If the edges are not hidden or the edge is visible, display the node
+ //              if (!self.areZeroWeightedEdgesHidden || edge.data('weight') != 0) {
+ //                hideNode = false;
+ //                break;
+ //              }
+ //            }
+ //          }
+ //          // Based on the processing above, update the node
+ //          if (hideNode) {
+ //            node.style(
+ //              {
+ //                'display': 'none'
+ //              })
+ //          } else {
+ //            node.style(
+ //              {
+ //                'display': 'element'
+ //              })
+ //          }
+ //        });
+ //      } else {
+ //        // If the nodes should be displayed, show all nodes
+ //        this.hiddenNodes.forEach(function (node) {
+ //          self.showNode(node);
+ //        });
+ //      }
+ //    }.bind(this));
+ //  }
+
+  /**
+   * Organise the elements in the graph according to a selected layout
+   * @param selectedLayoutOption the layout in which to organise the elements of the graph
+   */
+  private applyLayout(selectedLayoutOption: string) {
+    var layout = this.cy.layout({
+      name: selectedLayoutOption
+    });
+
+    layout.run();
   }
 
   /**
