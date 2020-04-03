@@ -15,8 +15,9 @@ public class PackageAndImportVisitorTest {
     private String filePath = "WaterAnimal.java";
     private String packageName = "com.ucl.ADA.parser.test_resources";
     private String classSourceCode = "package com.ucl.ADA.parser.test_resources;\n" +
-            "\n" +
-            "public class WaterAnimal extends Animal implements IAnimal {}";
+            "\n" + "import java.lang.uitl" +
+            "\n" + "import com.ac.uk.test" +
+            "\n" + "public class WaterAnimal extends Animal implements IAnimal {}";
 
     @BeforeEach
     void setUp() {
@@ -30,6 +31,6 @@ public class PackageAndImportVisitorTest {
         PackageAndImportVisitor packageAndImportVisitor = new PackageAndImportVisitor();
         compilationUnit.accept(packageAndImportVisitor);
         assertEquals(packageAndImportVisitor.getPackageName(), this.packageName);
-        assertEquals(packageAndImportVisitor.getImportedPackagesAndClasses().size(), 0);
+        assertEquals(packageAndImportVisitor.getImportedPackagesAndClasses().size(), 1);
     }
 }

@@ -29,6 +29,8 @@ public class ADAClassVisitor extends ASTVisitor {
     private List<String> exConstructorInvocations = new ArrayList<>();
     private List<String> exFieldInvocation = new ArrayList<>();
 
+    private final String[] primitives_types = {"byte", "short", "int", "float", "double", "long", "boolean", "char"};
+    private final Set<String> PRIMITIVE_TYPES = new HashSet<String>(Arrays.asList(primitives_types));
 
     /**
      * A constructor of ADAClassVisitor
@@ -37,7 +39,6 @@ public class ADAClassVisitor extends ASTVisitor {
      * @param importedPackagesAndClasses Imported packages and classes that are used in the class
      */
     public ADAClassVisitor(String packageName, Set<String> importedPackagesAndClasses) {
-
         this.packageName = packageName;
         this.importedPackagesAndClasses.addAll(importedPackagesAndClasses);
     }
@@ -157,8 +158,10 @@ public class ADAClassVisitor extends ASTVisitor {
                 if (fragment.getInitializer() != null) {
                     value = fragment.getInitializer().toString();
                 }
-                ADAClassAttribute sa = new ADAClassAttribute(modifiers, name, type, value);
-                this.classAttributes.add(sa);
+                if ((!type.startsWith("java")) && (!PRIMITIVE_TYPES.contains(type))) {
+                    ADAClassAttribute sa = new ADAClassAttribute(modifiers, name, type, value);
+                    this.classAttributes.add(sa);
+                }
             } else {
                 this.exFieldInvocation.add(fragment.getNodeType() + "");
             }
@@ -182,6 +185,7 @@ public class ADAClassVisitor extends ASTVisitor {
             if (!binding.isConstructor()) {
                 methodCallName = node.getName().toString();
                 calleeName = binding.getDeclaringClass().getQualifiedName();
+                if (calleeName.startsWith("java")) return true;
                 List<ASTNode> list = node.arguments();
                 if (!list.isEmpty()) {
                     for (ASTNode an : list) {
@@ -210,6 +214,7 @@ public class ADAClassVisitor extends ASTVisitor {
         if (binding != null) {
             if (binding.isConstructor()) {
                 name = binding.getDeclaringClass().getQualifiedName();
+                if (name.startsWith("java")) return true;
                 List<ASTNode> list = node.arguments();
                 if (!list.isEmpty()) {
                     for (ASTNode an : list) {
