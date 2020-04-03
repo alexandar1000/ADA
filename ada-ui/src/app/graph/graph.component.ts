@@ -28,11 +28,14 @@ export class GraphComponent implements OnInit {
   private isGraphViewToBeReset: boolean;
   private isGraphLayoutToBeReset: boolean;
 
+  private subscriptions = [];
+  private subscriptionIndex = 0;
+
   private graphLayoutSpacing: number;
   private highlightedNodes: CollectionReturnValue = null;
   private hiddenNodes: CollectionReturnValue;
-
   private hiddenEdges: CollectionReturnValue;
+
   @Output() nodeSelectedEvent = new EventEmitter();
   @Output() edgeSelectedEvent = new EventEmitter();
   @Output() nodeUnselectedEvent = new EventEmitter();
@@ -50,8 +53,11 @@ export class GraphComponent implements OnInit {
         }
       )
     }
-    if (graphOptionsService.spacingFactor$) {
-      graphOptionsService.spacingFactor$.subscribe(
+  }
+
+  ngOnInit() {
+    if (this.graphOptionsService.spacingFactor$) {
+      this.graphOptionsService.spacingFactor$.subscribe(
         value => {
           this.graphLayoutSpacing = value;
           if (this.cy != null) {
@@ -60,8 +66,8 @@ export class GraphComponent implements OnInit {
         }
       )
     }
-    if (graphOptionsService.areZeroWeightedEdgesHidden$) {
-      graphOptionsService.areZeroWeightedEdgesHidden$.subscribe(
+    if (this.graphOptionsService.areZeroWeightedEdgesHidden$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.areZeroWeightedEdgesHidden$.subscribe(
         value => {
           this.areZeroWeightedEdgesHidden = value;
           if (this.cy != null) {
@@ -71,8 +77,8 @@ export class GraphComponent implements OnInit {
         }
       )
     }
-    if (graphOptionsService.areNeighbourlessNodesHidden$) {
-      graphOptionsService.areNeighbourlessNodesHidden$.subscribe(
+    if (this.graphOptionsService.areNeighbourlessNodesHidden$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.areNeighbourlessNodesHidden$.subscribe(
         value => {
           this.areNeighbourlessNodesHidden = value;
           if (this.cy != null) {
@@ -82,8 +88,8 @@ export class GraphComponent implements OnInit {
         }
       )
     }
-    if (graphOptionsService.areEdgeWeightsShownAsLabels$) {
-      graphOptionsService.areEdgeWeightsShownAsLabels$.subscribe(
+    if (this.graphOptionsService.areEdgeWeightsShownAsLabels$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.areEdgeWeightsShownAsLabels$.subscribe(
         value => {
           this.areEdgeWeightsShownAsLabels = value;
           if (this.cy != null) {
@@ -92,8 +98,8 @@ export class GraphComponent implements OnInit {
         }
       )
     }
-    if (graphOptionsService.areEdgesColourCoded$) {
-      graphOptionsService.areEdgesColourCoded$.subscribe(
+    if (this.graphOptionsService.areEdgesColourCoded$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.areEdgesColourCoded$.subscribe(
         value => {
           this.areEdgesColourCoded = value;
           if (this.cy != null) {
@@ -102,8 +108,8 @@ export class GraphComponent implements OnInit {
         }
       )
     }
-    if (graphOptionsService.selectedLayoutOption$) {
-      graphOptionsService.selectedLayoutOption$.subscribe(
+    if (this.graphOptionsService.selectedLayoutOption$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.selectedLayoutOption$.subscribe(
         value => {
           this.selectedLayoutOption = value;
           if (this.cy != null) {
@@ -112,8 +118,8 @@ export class GraphComponent implements OnInit {
         }
       )
     }
-    if (graphOptionsService.isGraphViewToBeReset$) {
-      graphOptionsService.isGraphViewToBeReset$.subscribe(
+    if (this.graphOptionsService.isGraphViewToBeReset$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.isGraphViewToBeReset$.subscribe(
         value => {
           this.isGraphViewToBeReset = value;
           if (this.cy != null) {
@@ -122,8 +128,8 @@ export class GraphComponent implements OnInit {
         }
       )
     }
-    if (graphOptionsService.isGraphLayoutToBeReset$) {
-      graphOptionsService.isGraphLayoutToBeReset$.subscribe(
+    if (this.graphOptionsService.isGraphLayoutToBeReset$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.isGraphLayoutToBeReset$.subscribe(
         value => {
           this.isGraphLayoutToBeReset = value;
           if (this.cy != null) {
@@ -132,9 +138,6 @@ export class GraphComponent implements OnInit {
         }
       )
     }
-  }
-
-  ngOnInit() {
     this.initCytoscape();
     this.initEventHandlers();
     this.populateGraph();
@@ -147,6 +150,12 @@ export class GraphComponent implements OnInit {
         this.reflectGraphMenuStateToGraph();
       }
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach( function (subscription) {
+      subscription.unsubscribe();
+    });
   }
 
   processQuery(query: string[]): void {
@@ -812,8 +821,11 @@ export class GraphComponent implements OnInit {
       default:
     }
 
+    // debugger;
     var layout = this.cy.layout(layoutOptions);
+    // debugger;
     layout.run();
+    // debugger;
   }
 
   /**
