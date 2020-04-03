@@ -91,6 +91,9 @@ public class RepositoryAnalyserServices {
         // Get source paths to parse from addedSourceFiles, and send {root dir path, addedSourceFiles} to Parser
         SetMultimap<String, ADAClass> filePathToClassStructuresMap = parserServices.parseRepository(rootDirPath, addedSourceFiles);
 
+        // delete downloaded repository after analysis
+        FileUtils.deleteQuietly(Paths.get(rootDirPath).toFile());
+
         // generate Map<String, Set<String>> pathsOfAddedSourceFilesToClassNames
         SetMultimap<String, String> pathsOfAddedSourceFilesToClassNames = getFilePathToClassNamesMap(filePathToClassStructuresMap);
 
@@ -107,8 +110,6 @@ public class RepositoryAnalyserServices {
         // this step requires change finished utility or transformer to keep track on all changed class structure
         // need to think carefully how to implement
 
-        // delete downloaded repository after analysis
-        FileUtils.deleteQuietly(Paths.get(rootDirPath).toFile());
 
         return snapshot;
     }
