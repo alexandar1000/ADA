@@ -1,10 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import * as cytoscape from 'cytoscape';
+import fcose from 'cytoscape-fcose';
 import {MetricNameConverter} from "../classes/metric-name-converter";
 import {ProjectStructure} from "../classes/project-structure";
 import {CollectionReturnValue} from "cytoscape";
-import {SingularElementReturnValue} from "cytoscape";
 import { QueryService } from '../query.service';
+import {GraphOptionsService} from "../graph-options.service";
+
+cytoscape.use( fcose );
 
 @Component({
   selector: 'app-graph',
@@ -14,16 +17,21 @@ import { QueryService } from '../query.service';
 export class GraphComponent implements OnInit {
 
   private cy = null;
-  @Input() projectStructure: ProjectStructure;
+  @Input() projectStructure: ProjectStructure = null;
   @Input() selectedMetric: string;
 
-  @Input() areZeroWeightedEdgesHidden: boolean;
-  @Input() areNeighbourlessNodesHidden: boolean;
-  @Input() areEdgeWeightsShownAsLabels: boolean;
-  @Input() areEdgesColourCoded: boolean;
-  @Input() selectedLayoutOption: string;
-  @Input() isGraphViewToBeReset: boolean;
+  private areZeroWeightedEdgesHidden: boolean;
+  private areNeighbourlessNodesHidden: boolean;
+  private areEdgeWeightsShownAsLabels: boolean;
+  private areEdgesColourCoded: boolean;
+  private selectedLayoutOption: string;
+  private isGraphViewToBeReset: boolean;
+  private isGraphLayoutToBeReset: boolean;
 
+  private subscriptions = [];
+  private subscriptionIndex = 0;
+
+  private graphLayoutSpacing: number;
   private highlightedNodes: CollectionReturnValue = null;
   private hiddenNodes: CollectionReturnValue;
   private hiddenEdges: CollectionReturnValue;
@@ -32,15 +40,17 @@ export class GraphComponent implements OnInit {
   @Output() edgeSelectedEvent = new EventEmitter();
   @Output() nodeUnselectedEvent = new EventEmitter();
   @Output() edgeUnselectedEvent = new EventEmitter();
-  private metricNameConverter = new MetricNameConverter();
+
 
   private previousNodesQuery = [];
   private areColoredNodesInGraph = false;
   private queryMessage;
+  private metricNameConverter = new MetricNameConverter();
+  private previousNodesQuery;
 
-  constructor(private queryService: QueryService) { 
-    if (this.queryService.receivedQueryEvent$) {
-      this.queryService.receivedQueryEvent$.subscribe(
+  constructor(private queryService: QueryService, private graphOptionsService: GraphOptionsService) {
+    if (queryService.receivedQueryEvent$) {
+      this.subscriptions[this.subscriptionIndex++] = this.queryService.receivedQueryEvent$.subscribe(
         query => {
           this.processQuery(query);
         }
@@ -48,7 +58,111 @@ export class GraphComponent implements OnInit {
     }
   }
 
+  ngOnInit() {
+    if (this.graphOptionsService.spacingFactor$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.spacingFactor$.subscribe(
+        value => {
+          this.graphLayoutSpacing = value;
+          if (this.cy != null) {
+            this.updateGraphLayout(this.selectedLayoutOption);
+          }
+        }
+      )
+    }
+    if (this.graphOptionsService.areZeroWeightedEdgesHidden$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.areZeroWeightedEdgesHidden$.subscribe(
+        value => {
+          this.areZeroWeightedEdgesHidden = value;
+          if (this.cy != null) {
+            this.changeMetricRepresentedInGraph();
+            this.reflectGraphMenuStateToGraph();
+          }
+        }
+      )
+    }
+    if (this.graphOptionsService.areNeighbourlessNodesHidden$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.areNeighbourlessNodesHidden$.subscribe(
+        value => {
+          this.areNeighbourlessNodesHidden = value;
+          if (this.cy != null) {
+            this.changeMetricRepresentedInGraph();
+            this.reflectGraphMenuStateToGraph();
+          }
+        }
+      )
+    }
+    if (this.graphOptionsService.areEdgeWeightsShownAsLabels$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.areEdgeWeightsShownAsLabels$.subscribe(
+        value => {
+          this.areEdgeWeightsShownAsLabels = value;
+          if (this.cy != null) {
+            this.toggleDisplayOfEdgeWeightsAsLabels(this.areEdgeWeightsShownAsLabels);
+          }
+        }
+      )
+    }
+    if (this.graphOptionsService.areEdgesColourCoded$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.areEdgesColourCoded$.subscribe(
+        value => {
+          this.areEdgesColourCoded = value;
+          if (this.cy != null) {
+            this.toggleEdgeColourcoding(this.areEdgesColourCoded);
+          }
+        }
+      )
+    }
+    if (this.graphOptionsService.selectedLayoutOption$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.selectedLayoutOption$.subscribe(
+        value => {
+          this.selectedLayoutOption = value;
+          if (this.cy != null) {
+            this.updateGraphLayout(this.selectedLayoutOption);
+          }
+        }
+      )
+    }
+    if (this.graphOptionsService.isGraphViewToBeReset$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.isGraphViewToBeReset$.subscribe(
+        value => {
+          this.isGraphViewToBeReset = value;
+          if (this.cy != null) {
+            this.resetGraphView();
+          }
+        }
+      )
+    }
+    if (this.graphOptionsService.isGraphLayoutToBeReset$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.isGraphLayoutToBeReset$.subscribe(
+        value => {
+          this.isGraphLayoutToBeReset = value;
+          if (this.cy != null) {
+            this.updateGraphLayout(this.selectedLayoutOption);
+          }
+        }
+      )
+    }
+    this.initCytoscape();
+    this.initEventHandlers();
+    this.populateGraph();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.cy != null) {
+      if (changes.selectedMetric) {
+        this.changeMetricRepresentedInGraph();
+        this.reflectGraphMenuStateToGraph();
+      }
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach( function (subscription) {
+      subscription.unsubscribe();
+    });
+  }
+
   processQuery(query: [string, string, boolean]): void {
+
     let queryType = query[0];
     let queryText = query[1];
     let seePackageHigherClasses = query[2];
@@ -250,33 +364,6 @@ export class GraphComponent implements OnInit {
     this.previousNodesQuery.push.apply(this.previousNodesQuery, nodesHigherPackages);
   }
 
-  ngOnInit() {
-    this.initCytoscape();
-    this.initEventHandlers();
-    this.populateGraph();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.cy != null) {
-      if (changes.selectedMetric || changes.areZeroWeightedEdgesHidden || changes.areNeighbourlessNodesHidden) {
-        this.changeMetricRepresentedInGraph();
-        this.reflectGraphMenuStateToGraph();
-      }
-      if (changes.areEdgeWeightsShownAsLabels) {
-        this.toggleDisplayOfEdgeWeightsAsLabels(this.areEdgeWeightsShownAsLabels);
-      }
-      if (changes.areEdgesColourCoded) {
-        this.toggleEdgeColourcoding(this.areEdgesColourCoded);
-      }
-      if (changes.selectedLayoutOption) {
-        this.updateGraphLayout(this.selectedLayoutOption);
-      }
-      if (changes.isGraphViewToBeReset) {
-        this.resetGraphView();
-      }
-    }
-  }
-
   /**
    * Initial call to initialise Cytoscape in the component
    */
@@ -293,7 +380,7 @@ export class GraphComponent implements OnInit {
             }
           },
           {
-            selector: 'node',
+            selector: 'node[label]',
             style: {
               'label': 'data(label)',
               'min-zoomed-font-size': 10
@@ -350,8 +437,6 @@ export class GraphComponent implements OnInit {
     // Get the elements to add to the graph and add them
     let elements = this.getElements();
     this.cy.add(elements);
-    // Make sure that the arrows on the edges correspond to the metrics represented
-    this.updateArrowStyle();
 
     // Remove all the hidden elements from the collections keeping track of them
     this.emptyHiddenElements();
@@ -503,11 +588,6 @@ export class GraphComponent implements OnInit {
           'source-arrow-shape': arrowStyleValue
         })
         .update();
-      this.hiddenEdges
-        .style({
-          'target-arrow-shape': 'none',
-          'source-arrow-shape': arrowStyleValue
-        })
     } else {
       this.cy.style()
         .selector('edge')
@@ -516,11 +596,6 @@ export class GraphComponent implements OnInit {
           'target-arrow-shape': arrowStyleValue
         })
         .update();
-      this.hiddenEdges
-        .style({
-          'source-arrow-shape': 'none',
-          'target-arrow-shape': arrowStyleValue
-        })
     }
   }
 
@@ -532,6 +607,8 @@ export class GraphComponent implements OnInit {
     this.cy.elements().unselect();
     this.updateDisplayOfZeroEdges(this.areZeroWeightedEdgesHidden);
     this.updateDisplayOfNodesWithoutNeighbours(this.areNeighbourlessNodesHidden);
+    // Make sure that the arrows on the displayed edges correspond properly to the metrics represented
+    this.updateArrowStyle();
     this.toggleDisplayOfEdgeWeightsAsLabels(this.areEdgeWeightsShownAsLabels);
     this.toggleEdgeColourcoding(this.areEdgesColourCoded);
     this.updateGraphLayout(this.selectedLayoutOption);
@@ -593,7 +670,8 @@ export class GraphComponent implements OnInit {
         this.showNode(hiddenSourceNode)
       }
       // If the target node is hidden, display it
-      if (hiddenTargetNode) {
+      // If the edge is a self-loop, the node would be added twice, hence a check to see if source != target is needed
+      if (hiddenTargetNode && (source != target)) {
         this.showNode(hiddenTargetNode)
       }
 
@@ -855,36 +933,36 @@ export class GraphComponent implements OnInit {
    * @param selectedLayoutOption the layout in which to organise the elements of the graph
    */
   private updateGraphLayout(selectedLayoutOption: string): void {
-    let nrOfNodes = this.cy.elements().length;
-    let spacingFactor = undefined;
-    // switch (selectedLayoutOption) {
-    //   case 'circle':
-    //     spacingFactor = Math.max(nrOfNodes/100, 1);
-    //     break;
-    //   case 'grid':
-    //     spacingFactor = Math.max(nrOfNodes/100, 1);
-    //     break;
-    //   case 'random':
-    //     spacingFactor = Math.max(nrOfNodes/150, 1);
-    //     break;
-    //   case 'concentric':
-    //     spacingFactor = Math.max(nrOfNodes/100, 1);
-    //     break;
-    //   case 'cose':
-    //     spacingFactor = undefined;
-    //     break;
-    //   default:
-    //     spacingFactor = 1;
-    // }
-
     let layoutOptions = {
       name: selectedLayoutOption,
-      spacingFactor: spacingFactor,
-      animate: true
+      animate: true,
+      spacingFactor: this.graphLayoutSpacing
     };
 
+    switch (selectedLayoutOption) {
+      case 'circle':
+        break;
+      case 'grid':
+        break;
+      case 'random':
+        break;
+      case 'concentric':
+        layoutOptions['concentric'] = function( node ){
+         return node.selected() ? 15 : 0;
+        };
+        break;
+      case 'fcose':
+        layoutOptions['idealEdgeLength'] = 75 * this.graphLayoutSpacing;
+        layoutOptions['edgeElasticity'] = 0.45;
+        break;
+      default:
+    }
+
+    // debugger;
     var layout = this.cy.layout(layoutOptions);
+    // debugger;
     layout.run();
+    // debugger;
   }
 
   /**
@@ -978,6 +1056,9 @@ export class GraphComponent implements OnInit {
     this.cy.on('select', '*', function(evt){
       self.emitElementSelectedEvent(evt.target);
       self.highlightElementNeighbourhood(evt.target);
+      if (self.selectedLayoutOption == 'concentric') {
+        self.updateGraphLayout(self.selectedLayoutOption);
+      }
     });
   }
 
@@ -990,6 +1071,7 @@ export class GraphComponent implements OnInit {
       self.emitElementUnelectedEvent(evt.target);
       self.unhighlightElementNeighbourhood(evt.target);
 
+
       if (self.areColoredNodesInGraph) {
         self.cy.batch(function() {
           self.cy.nodes().forEach(function(node) {
@@ -997,6 +1079,10 @@ export class GraphComponent implements OnInit {
           })
         }.bind(this));
         self.areColoredNodesInGraph = false;
+      }
+
+      if (self.selectedLayoutOption == 'concentric') {
+        self.updateGraphLayout(self.selectedLayoutOption);
       }
     });
   }
