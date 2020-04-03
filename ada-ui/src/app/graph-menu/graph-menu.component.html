@@ -1,5 +1,4 @@
 <div class="graph-menu">
-  <p><u>Menu:</u></p>
   <ul>
     <li>
       <mat-form-field>
@@ -16,7 +15,7 @@
     </li>
     <li>
       <div>
-        <mat-grid-list cols="5" rowHeight="80px">
+        <mat-grid-list cols="6" rowHeight="80px">
           <mat-grid-tile colspan="3">
             <div class="my-tile-container">
               <mat-checkbox [checked]="areEdgesBellowWeightThresholdHidden"
@@ -24,7 +23,7 @@
               >Hide zero weights</mat-checkbox>
             </div>
           </mat-grid-tile>
-          <mat-grid-tile colspan="2">
+          <mat-grid-tile colspan="3">
             <div class="my-tile-container">
               <mat-form-field class="weight-threshold-input">
                 <label>
@@ -35,10 +34,10 @@
                 </label>
                 <mat-hint>Weight Threshold</mat-hint>
                 <mat-error *ngIf="weightThresholdFormControl.hasError('required')">
-                  Please enter a weight threshold
+                  Threshold Required
                 </mat-error>
                 <mat-error *ngIf="weightThresholdFormControl.hasError('min')">
-                  Threshold must be a positive number.
+                  Must be Positive
                 </mat-error>
               </mat-form-field>
             </div>
