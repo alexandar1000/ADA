@@ -69,10 +69,10 @@ public class RepoDownloader {
         for (String srcDir : sourceDirectories) {
 
             try (Stream<Path> walk = Files.walk(Paths.get(srcDir))) {
-                sourceFiles = walk.map(Path::toString)
+                walk.map(Path::toString)
                         .filter(f -> f.endsWith(".java") && !f.toLowerCase().endsWith("test.java"))
-                        .map(s -> s.toLowerCase().substring(s.indexOf("src")))
-                        .collect(Collectors.toSet());
+                        .map(s -> s.substring(s.indexOf("src")))
+                        .forEach(sourceFiles::add);
 
             } catch (IOException e) {
                 e.printStackTrace();
