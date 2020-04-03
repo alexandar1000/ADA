@@ -35,6 +35,7 @@ import { ElementInsightComponent } from './element-insight/element-insight.compo
 import { GraphMenuComponent } from './graph-menu/graph-menu.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { QueryFormComponent } from './query-form/query-form.component';
+import {MatGridListModule} from "@angular/material/grid-list";
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { QueryFormComponent } from './query-form/query-form.component';
         MatOptionModule,
         MatSelectModule,
         MatProgressSpinnerModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatGridListModule
     ],
   providers: [AnalyserService, SidebarService],
   bootstrap: [AppComponent]
