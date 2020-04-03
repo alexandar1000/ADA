@@ -46,7 +46,6 @@ export class GraphComponent implements OnInit {
   private areColoredNodesInGraph = false;
   private queryMessage;
   private metricNameConverter = new MetricNameConverter();
-  private previousNodesQuery;
 
   constructor(private queryService: QueryService, private graphOptionsService: GraphOptionsService) {
     if (queryService.receivedQueryEvent$) {
@@ -221,7 +220,7 @@ export class GraphComponent implements OnInit {
 
   /**
    * Queries the graph using the package name
-   * @param queryText a string containing the package name 
+   * @param queryText a string containing the package name
    * @param seeLowerPackageClasses a boolean for whether the query should keep higher package classes
    */
   queryByPackageName(queryText: string, seeLowerPackageClasses: boolean): void {
