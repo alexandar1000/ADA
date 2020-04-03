@@ -53,29 +53,32 @@ public class ModelTransformer {
         Set<String> incomingToAddSet = new HashSet<>();
 
         for (ADAClass adaClass : filePathToClassStructuresMap.values()) {
+            System.out.println("--------------------------------------------------------------");
+            System.out.println("* " + adaClass.getClassName());
+
             // get affected class from constructor invocation
             for (ADAConstructorInvocation adaConstructorInvocation : adaClass.getADAConstructorInvocations()) {
                 String constructorFullName = adaConstructorInvocation.getConstructorClassName();
-//                if (!constructorFullName.startsWith("java"))
                 incomingToAddSet.add(constructorFullName);
+                System.out.println(constructorFullName);
             }
             // get affected class from method invocation
             for (ADAMethodInvocation adaMethodInvocation : adaClass.getADAMethodInvocations()) {
                 String calleeName = adaMethodInvocation.getCalleeName();
-//                if (!calleeName.startsWith("java"))
                 incomingToAddSet.add(calleeName);
+                System.out.println(calleeName);
             }
             // get affected class from attribute invocation
             // as class attributes
             for (ADAClassAttribute adaClassAttribute : adaClass.getAdaClassAttributes()) {
-//                if (!adaClassAttribute.getType().startsWith("java"))
                 incomingToAddSet.add(adaClassAttribute.getType());
+                System.out.println(adaClassAttribute.getType());
             }
             // as local variables
             for (ADAMethodOrConstructorDeclaration declaration : adaClass.getADAMethodOrConstructorDeclaration()) {
                 for (Map.Entry<String, String> entry : declaration.getLocalVariables().entrySet()) {
-//                    if (!entry.getValue().startsWith("java"))
                     incomingToAddSet.add(entry.getValue());
+                    System.out.println(entry.getValue());
                 }
             }
         }
