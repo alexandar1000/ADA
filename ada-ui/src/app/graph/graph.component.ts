@@ -17,7 +17,7 @@ cytoscape.use( fcose );
 export class GraphComponent implements OnInit {
 
   private cy = null;
-  @Input() projectStructure: ProjectStructure;
+  @Input() projectStructure: ProjectStructure = null;
   @Input() selectedMetric: string;
 
   private areZeroWeightedEdgesHidden: boolean;
@@ -243,7 +243,7 @@ export class GraphComponent implements OnInit {
             }
           },
           {
-            selector: 'node',
+            selector: 'node[label]',
             style: {
               'label': 'data(label)',
               'min-zoomed-font-size': 10
