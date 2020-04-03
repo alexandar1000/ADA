@@ -47,7 +47,7 @@ export class GraphComponent implements OnInit {
 
   constructor(queryService: QueryService, private graphOptionsService: GraphOptionsService) {
     if (queryService.receivedQueryEvent$) {
-      queryService.receivedQueryEvent$.subscribe(
+      this.subscriptions[this.subscriptionIndex++] = queryService.receivedQueryEvent$.subscribe(
         query => {
           this.processQuery(query);
         }
@@ -57,7 +57,7 @@ export class GraphComponent implements OnInit {
 
   ngOnInit() {
     if (this.graphOptionsService.spacingFactor$) {
-      this.graphOptionsService.spacingFactor$.subscribe(
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.spacingFactor$.subscribe(
         value => {
           this.graphLayoutSpacing = value;
           if (this.cy != null) {
