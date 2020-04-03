@@ -221,7 +221,7 @@ export class GraphComponent implements OnInit {
   /**
    * Queries the graph using the package name
    * @param queryText a string containing the package name
-   * @param seeLowerPackageClasses a boolean for whether the query should keep higher package classes
+   * @param seeLowerPackageClasses a boolean for whether the query should keep lower package classes
    */
   queryByPackageName(queryText: string, seeLowerPackageClasses: boolean): void {
     let previousNodesQuery = this.previousNodesQuery;
