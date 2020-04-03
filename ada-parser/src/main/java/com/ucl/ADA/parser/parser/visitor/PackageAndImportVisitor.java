@@ -47,7 +47,9 @@ public class PackageAndImportVisitor extends ASTVisitor {
     public boolean visit(ImportDeclaration node) {
         IBinding binding = node.resolveBinding();
         if (binding != null) {
-            importedPackagesAndClasses.add(node.getName().toString());
+            String name = node.getName().toString();
+            if (!name.startsWith("java"))
+                importedPackagesAndClasses.add(name);
         } else {
             importedPackagesAndClasses.add(node.getName().toString());
         }
