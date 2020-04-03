@@ -34,4 +34,10 @@ export class ElementInsightComponent implements OnInit {
       )
     }
   }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach( function (subscription) {
+      subscription.unsubscribe();
+    });
+  }
 }

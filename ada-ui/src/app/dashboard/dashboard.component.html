@@ -6,17 +6,12 @@
   <mat-grid-list cols="3" rowHeight="80vh">
     <mat-grid-tile rowspan="1" colspan="2">
       <app-graph [projectStructure]="projectStructure"
-                 [selectedMetric]="selectedMetric"
       ></app-graph>
     </mat-grid-tile>
     <mat-grid-tile rowspan="1" colspan="1">
       <div id="dashboardSidePanel">
         <app-dashboard-side-panel></app-dashboard-side-panel>
         <app-snapshot-slider [snapshots]="snapshots"></app-snapshot-slider>
-        <app-metric-selector [metrics]="metrics"
-                             [selectedMetric]="selectedMetric"
-                             (selectedMetricChanged)="updateSelectedMetric($event)"
-        ></app-metric-selector>
       </div>
     </mat-grid-tile>
   </mat-grid-list>

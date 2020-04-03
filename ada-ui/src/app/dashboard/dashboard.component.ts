@@ -4,7 +4,6 @@ import {AnalyserService} from "../analyser.service";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import { NewEntryService } from '../new-entry.service';
 import { SnapshotStyleService } from '../snapshot-style.service';
-import {ElementInsightService} from "../element-insight.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -14,8 +13,6 @@ import {ElementInsightService} from "../element-insight.service";
 export class DashboardComponent implements OnInit {
   private projectStructure: ProjectStructure;
   private snapshots = this.analyserService.snapshots;
-  private metrics = this.analyserService.metrics;
-  private selectedMetric = this.metrics[0];
 
   constructor(private analyserService: AnalyserService,
               private newEntryService: NewEntryService,
@@ -46,10 +43,6 @@ export class DashboardComponent implements OnInit {
     this.analyserService.isLoading = true;
     this.analyserService.getPreviousAnalysis(owner, repository, branch, snapshot)
       .subscribe(dataJson => this.updateProjectStructure(dataJson))
-  }
-
-  updateSelectedMetric(newMetric: string): void {
-    this.selectedMetric = newMetric;
   }
 
   private updateProjectStructure(data: JSON): void {

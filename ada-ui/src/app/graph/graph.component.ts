@@ -156,18 +156,20 @@ export class GraphComponent implements OnInit {
         }
       )
     }
+    if (this.graphOptionsService.selectedMetric$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.selectedMetric$.subscribe(
+        value => {
+          this.selectedMetric = value;
+          if (this.cy != null) {
+            this.changeMetricRepresentedInGraph();
+            this.reflectGraphMenuStateToGraph();
+          }
+        }
+      )
+    }
     this.initCytoscape();
     this.initEventHandlers();
     this.populateGraph();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.cy != null) {
-      if (changes.selectedMetric) {
-        this.changeMetricRepresentedInGraph();
-        this.reflectGraphMenuStateToGraph();
-      }
-    }
   }
 
   ngOnDestroy() {

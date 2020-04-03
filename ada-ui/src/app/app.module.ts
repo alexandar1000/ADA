@@ -38,6 +38,7 @@ import { QueryFormComponent } from './query-form/query-form.component';
 import {MatGridListModule} from "@angular/material/grid-list";
 import { DashboardSidePanelComponent } from './dashboard-side-panel/dashboard-side-panel.component';
 import {MatExpansionModule} from "@angular/material/expansion";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import {MatExpansionModule} from "@angular/material/expansion";
         MatProgressSpinnerModule,
         MatCheckboxModule,
         MatGridListModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatSlideToggleModule
     ],
   providers: [AnalyserService, SidebarService],
   bootstrap: [AppComponent]

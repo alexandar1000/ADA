@@ -1,5 +1,6 @@
 import {Injectable, Input} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
+import {AnalyserService} from "./analyser.service";
 
 interface GraphLayoutOption {
   value: string;
@@ -44,6 +45,9 @@ export class GraphOptionsService {
   private _graphEdgeWeightThreshold = new BehaviorSubject(0.0);
   graphEdgeWeightThreshold$ = this._graphEdgeWeightThreshold.asObservable();
 
+  private _selectedMetric = new BehaviorSubject(this.analyserService.metrics[0]);
+  selectedMetric$ = this._selectedMetric.asObservable();
+
   get spacingFactor(): number {
     return this._spacingFactor.value;
   }
@@ -72,6 +76,10 @@ export class GraphOptionsService {
     return this._graphEdgeWeightThreshold.value
   }
 
+  get selectedMetric(): string {
+    return this._selectedMetric.value;
+  }
+
 
   public graphLayoutGroups: GraphLayoutGroup[] = [
     {
@@ -91,7 +99,7 @@ export class GraphOptionsService {
     }
   ];
 
-  constructor() { }
+  constructor(private analyserService: AnalyserService) { }
 
   setSpacingFactor(value: number) {
     this._spacingFactor.next(value)
@@ -127,5 +135,9 @@ export class GraphOptionsService {
 
   setGraphEdgeWeightThreshold(value: number): void {
     this._graphEdgeWeightThreshold.next(value);
+  }
+
+  setSelectedMetric(value: string): void {
+    this._selectedMetric.next(value);
   }
 }

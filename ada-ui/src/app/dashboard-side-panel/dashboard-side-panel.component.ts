@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardSidePanelComponent implements OnInit {
 
-  panelOpenState = false;
+  isMenuOpen = false;
 
   constructor() { }
 

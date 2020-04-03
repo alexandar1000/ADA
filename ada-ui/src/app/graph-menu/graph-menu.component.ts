@@ -3,6 +3,7 @@ import {GraphComponent} from "../graph/graph.component";
 import {FormControl, FormGroupDirective, NgForm, Validators} from "@angular/forms";
 import {GraphOptionsService} from "../graph-options.service";
 import {ErrorStateMatcher} from "@angular/material/core";
+import {AnalyserService} from "../analyser.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -40,10 +41,14 @@ export class GraphMenuComponent implements OnInit {
   private weightThresholdFormControl: any;
 
 
+  private metrics: string[] = this.analyserService.metrics;
+  private selectedMetric: string;
+
+
   graphLayoutControl = new FormControl();
   public graphLayoutGroups = null;
 
-  constructor(private graphOptionsService: GraphOptionsService) {}
+  constructor(private graphOptionsService: GraphOptionsService, private analyserService: AnalyserService) {}
 
   ngOnInit() {
     this.graphLayoutSpacing = this.graphOptionsService.spacingFactor;
@@ -58,6 +63,7 @@ export class GraphMenuComponent implements OnInit {
       Validators.required,
       Validators.min(0.00),
     ]);
+    this.selectedMetric = this.graphOptionsService.selectedMetric;
   }
 
   createColourcodingLegend(): void {
@@ -118,6 +124,10 @@ export class GraphMenuComponent implements OnInit {
   handleLayoutSpacingChange($event: any): void {
     this.graphOptionsService.setSpacingFactor($event.value/10);
     this.graphLayoutSpacing = $event.value/10;
+  }
+
+  handleUpdateSelectedMetric(newMetric: string): void {
+    this.graphOptionsService.setSelectedMetric(newMetric);
   }
 
   formatSliderLabel(value: number) {
