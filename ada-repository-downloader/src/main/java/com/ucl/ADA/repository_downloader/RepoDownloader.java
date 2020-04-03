@@ -64,14 +64,16 @@ public class RepoDownloader {
         File dir = new File(rootDirectory);
         List<String> sourceDirectories = getSourceDirectories(dir);
 
+        int moduleNameIndex = rootDirectory.length();
+
         Set<String> sourceFiles = new HashSet<>();
 
         for (String srcDir : sourceDirectories) {
 
             try (Stream<Path> walk = Files.walk(Paths.get(srcDir))) {
                 walk.map(Path::toString)
-                        .filter(f -> f.endsWith(".java") && !f.toLowerCase().endsWith("test.java"))
-                        .map(s -> s.substring(s.indexOf("src")))
+                        .filter(f -> f.endsWith(".java") && !f.toLowerCase().endsWith("test.java") && !f.toLowerCase().contains("resources"))
+                        .map(s -> s.substring(moduleNameIndex))
                         .forEach(sourceFiles::add);
 
             } catch (IOException e) {
