@@ -1,24 +1,23 @@
-<mat-accordion>
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Graph Menu
-      </mat-panel-title>
-    </mat-expansion-panel-header>
+<div id="dashboardSidePanel">
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Graph Menu
+        </mat-panel-title>
+      </mat-expansion-panel-header>
 
-    <app-graph-menu></app-graph-menu>
+      <app-graph-menu></app-graph-menu>
 
-  </mat-expansion-panel>
-  <mat-expansion-panel (opened)="panelOpenState = true"
-                       (closed)="panelOpenState = false">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Element Insight
-      </mat-panel-title>
-      <mat-panel-description>
-        Currently I am {{panelOpenState ? 'open' : 'closed'}}
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <p>I'm visible because I am open</p>
-  </mat-expansion-panel>
-</mat-accordion>
+    </mat-expansion-panel>
+    <mat-expansion-panel (opened)="panelOpenState = true"
+                         (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Element Insight
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-element-insight></app-element-insight>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

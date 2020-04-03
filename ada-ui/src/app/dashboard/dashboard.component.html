@@ -4,16 +4,14 @@
 </section>
 <section id="dashboardPanel" *ngIf="!analyserService.isLoading">
   <mat-grid-list cols="3" rowHeight="80vh">
-    <mat-grid-tile rowspan="1" colspan="2" style="border: blue 2px solid">
+    <mat-grid-tile rowspan="1" colspan="2">
       <app-graph [projectStructure]="projectStructure"
                  [selectedMetric]="selectedMetric"
       ></app-graph>
     </mat-grid-tile>
-    <mat-grid-tile rowspan="1" colspan="1" style="border: blue 2px solid">
+    <mat-grid-tile rowspan="1" colspan="1">
       <div id="dashboardSidePanel">
         <app-dashboard-side-panel></app-dashboard-side-panel>
-        <app-element-insight [projectStructure]="projectStructure"
-        ></app-element-insight>
         <app-snapshot-slider [snapshots]="snapshots"></app-snapshot-slider>
         <app-metric-selector [metrics]="metrics"
                              [selectedMetric]="selectedMetric"
