@@ -18,7 +18,6 @@ import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -72,7 +71,11 @@ public class RepoDownloader {
 
             try (Stream<Path> walk = Files.walk(Paths.get(srcDir))) {
                 walk.map(Path::toString)
-                        .filter(f -> f.endsWith(".java") && !f.toLowerCase().endsWith("test.java") && !f.toLowerCase().contains("resources"))
+                        .filter(f -> f.endsWith(".java")
+                                && !f.toLowerCase().contains("/test/")
+                                && !f.toLowerCase().contains("\\test\\")
+                                && !f.toLowerCase().contains("/resources/")
+                                && !f.toLowerCase().contains("\\resources\\"))
                         .map(s -> s.substring(moduleNameIndex))
                         .forEach(sourceFiles::add);
 
