@@ -37,8 +37,8 @@ public class RepoDownloader {
      * @throws GitAPIException if the cloning fails
      */
     public static String downloadRepository(String url, String branch) throws GitAPIException {
-
-        String rootDirPath = setupRootPath(url);
+        if(branch.isBlank()) branch = "master";
+        String rootDirPath = setupRootPath(url, branch);
 
         Git.cloneRepository()
                 .setURI(url)
@@ -118,7 +118,7 @@ public class RepoDownloader {
         return OffsetDateTime.parse(commitTimeString, fIn);
     }
 
-    private static String setupRootPath(String url) {
+    private static String setupRootPath(String url, String branch) {
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
@@ -129,7 +129,7 @@ public class RepoDownloader {
         String repoName = data[4];
 
 
-        return System.getProperty("user.dir")+"/temp/"+owner+"/"+repoName+"/"+timeStamp;
+        return System.getProperty("user.dir")+"/temp/"+owner+"/"+repoName+"/"+branch+"/"+timeStamp;
     }
 
     private static List<String> getSourceDirectories(File rootDirectory) {
