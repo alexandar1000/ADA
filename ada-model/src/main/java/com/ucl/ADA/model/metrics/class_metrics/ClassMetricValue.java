@@ -19,18 +19,6 @@ import javax.persistence.Table;
 public class ClassMetricValue extends BaseEntity {
 
     /**
-     * total number of incoming package imports
-     */
-    @Column(name = "number_of_package_imports_incoming", nullable = false)
-    private Float numberOfPackageImportsIncoming = 0f;
-
-    /**
-     * total number of outgoing package imports
-     */
-    @Column(name = "number_of_package_imports_outgoing", nullable = false)
-    private Float numberOfPackageImportsOutgoing = 0f;
-
-    /**
      * total number of incoming attribute invocations
      */
     @Column(name = "number_of_attribute_invocation_incoming", nullable = false)
@@ -68,12 +56,6 @@ public class ClassMetricValue extends BaseEntity {
     @Column(name = "number_of_constructor_invocation_outgoing", nullable = false)
     private Float numberOfConstructorInvocationsOutgoing = 0f;
 
-
-    /**
-     * sum of numbers of incoming and outgoing package imports
-     */
-    @Column(name = "bidirectional_number_of_package_imports", nullable = false)
-    private Float bidirectionalNumberOfPackageImports = 0f;
 
     /**
      * sum of numbers of incoming and outgoing attribute invocations
