@@ -70,20 +70,24 @@ public class SnapshotUtils {
      * @param incomingToAddSet                    the set of names of the affected class structures
      */
     public static void reuseClassStructuresOfSnapshot(@NonNull Snapshot snapshot, Snapshot prevSnapshot, @NonNull SetMultimap<String, String> pathsOfAddedSourceFilesToClassNames, @NonNull Set<String> incomingToAddSet) {
-        // there is no previous snapshot to reuse
-        if (prevSnapshot == null) {
-            return;
-        }
-        // the exception can be removed when working on per-repo optimisation
-        if (snapshot.getBranch().getBranchName().equals(prevSnapshot.getBranch().getBranchName())) {
-            throw new IllegalArgumentException("the two input snapshots must be on the same branch");
-        }
-        if (snapshot.getCommitTime().isBefore(prevSnapshot.getCommitTime())) {
-            throw new IllegalArgumentException("the commit time of the previous snapshot to reuse should be earlier than the initialized one");
+        // validate the relation between current and previous snapshots
+        if (prevSnapshot != null) {
+            // the exception can be removed when working on per-repo optimisation
+            if (snapshot.getBranch().getBranchName().equals(prevSnapshot.getBranch().getBranchName())) {
+                throw new IllegalArgumentException("the two input snapshots must be on the same branch");
+            }
+            if (snapshot.getCommitTime().isBefore(prevSnapshot.getCommitTime())) {
+                throw new IllegalArgumentException("the commit time of the previous snapshot to reuse should be earlier than the initialized one");
+            }
         }
 
         // initialize all class structures that are in the added source files
         initClassStructuresGivenPathToClassNamesMap(snapshot, pathsOfAddedSourceFilesToClassNames);
+
+        // there is nothing to reuse
+        if (prevSnapshot == null) {
+            return;
+        }
 
         // initialize all class structures that are in the shared source files
         initClassStructuresInSharedSourceFiles(snapshot, prevSnapshot);
@@ -196,7 +200,10 @@ public class SnapshotUtils {
      * @param prevSnapshot the previous snapshot
      * @return a set of source paths to the source files in current snapshot but not in the previous one
      */
-    public static Set<String> getPathsToAddedSourceFiles(@NonNull Snapshot snapshot, @NonNull Snapshot prevSnapshot) {
+    public static Set<String> getPathsToAddedSourceFiles(@NonNull Snapshot snapshot, Snapshot prevSnapshot) {
+        if (prevSnapshot == null) {
+            return snapshot.getSourceFiles().keySet();
+        }
         return getPathsToDifferentSourceFiles(snapshot, prevSnapshot);
     }
 

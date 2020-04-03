@@ -36,12 +36,12 @@ public class RepositoryAnalyserServices {
 
         // Check if the owner/repo/branch have been analyzed before
         Owner owner = databaseUtilityService.validateOwner(repoOwner);
-        GitRepo repo = databaseUtilityService.validateRepo(owner,repoName);
+        GitRepo repo = databaseUtilityService.validateRepo(owner, repoName);
         Branch branch = databaseUtilityService.validateBranch(repo, branchName);
 
         // Retrieve previous snapshot, if existing
         Snapshot prevSnapshot = null;
-        if(branch != null){
+        if (branch != null) {
             prevSnapshot = databaseUtilityService.getLastSnapshotOfBranch(branch);
         }
 
@@ -58,15 +58,15 @@ public class RepositoryAnalyserServices {
         // if need to download and analyze again
         Snapshot snapshot;
         try {
-            snapshot = getSnapshot(prevSnapshot, url ,branchName);
+            snapshot = getSnapshot(prevSnapshot, url, branchName);
         } catch (GitAPIException e) {
             return null;
         }
 
         // save entities in the database
-        if(owner == null) owner = databaseUtilityService.saveOwner(repoOwner);
-        if(repo == null) repo = databaseUtilityService.saveRepo(owner, repoName);
-        if(branch == null) branch = databaseUtilityService.saveBranch(repo, branchName, snapshot);
+        if (owner == null) owner = databaseUtilityService.saveOwner(repoOwner);
+        if (repo == null) repo = databaseUtilityService.saveRepo(owner, repoName);
+        if (branch == null) branch = databaseUtilityService.saveBranch(repo, branchName, snapshot);
 
         databaseUtilityService.saveSnapshot(snapshot, branch, lastCommitTime);
         databaseUtilityService.saveAnalysisRequest(branch, snapshot);
@@ -99,7 +99,7 @@ public class RepositoryAnalyserServices {
         reuseClassStructuresOfSnapshot(snapshot, prevSnapshot, pathsOfAddedSourceFilesToClassNames, incomingToAddSet);
 
         // transform detailed information of all added class structures
-        transform(snapshot, (Set<ADAClass>) filePathToClassStructuresMap.values());
+        transform(snapshot, filePathToClassStructuresMap.values());
 
         // TODO: re-calculate all changed class structure's metric
         // this step requires change finished utility or transformer to keep track on all changed class structure

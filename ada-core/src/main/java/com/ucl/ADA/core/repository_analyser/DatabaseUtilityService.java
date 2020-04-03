@@ -44,7 +44,6 @@ public class DatabaseUtilityService {
     }
 
     public Owner validateOwner(String userName) {
-
         return ownerService.getOwnerByName(userName);
     }
 
@@ -66,7 +65,6 @@ public class DatabaseUtilityService {
         branch.setBranchName(branchName);
         branch.setRepository(repo);
         branch.setLastSnapshotTimestamp(snapshot.getCommitTime());
-
         return branchService.addBranch(branch);
     }
 
@@ -75,14 +73,12 @@ public class DatabaseUtilityService {
         analysisRequest.setBranch(branch);
         analysisRequest.setSnapshot(snapshot);
         analysisRequest.setTimestamp(OffsetDateTime.now());
-
         return analysisRequestService.addAnalysisRequest(analysisRequest);
     }
 
-    public Snapshot getLastSnapshotOfBranch(Branch branch){
+    public Snapshot getLastSnapshotOfBranch(Branch branch) {
         return snapshotService.findLastSnapshotOfBranch(branch);
     }
-
 
     public Snapshot saveSnapshot(Snapshot snapshot, Branch branch, OffsetDateTime lastCommitTime) {
         snapshot.setBranch(branch);

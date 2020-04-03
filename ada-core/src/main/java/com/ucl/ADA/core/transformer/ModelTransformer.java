@@ -94,7 +94,7 @@ public class ModelTransformer {
      * @param snapshot      the snapshot that has all class structures initialized
      * @param sourceClasses the set of ADAClass to transform
      */
-    public static void transform(Snapshot snapshot, Set<ADAClass> sourceClasses) {
+    public static void transform(Snapshot snapshot, Collection<ADAClass> sourceClasses) {
         for (ADAClass sourceClass : sourceClasses) {
             transformPackageDeclaration(snapshot, sourceClass);
             transformImportDeclaration(snapshot, sourceClass);
