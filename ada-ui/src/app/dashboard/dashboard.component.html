@@ -2,7 +2,7 @@
 <section *ngIf="analyserService.isLoading">
   <mat-spinner></mat-spinner>
 </section>
-<section *ngIf="!analyserService.isLoading">
+<section id="dashboardPanel" *ngIf="!analyserService.isLoading">
   <mat-grid-list cols="3" rowHeight="80vh">
     <mat-grid-tile rowspan="1" colspan="2" style="border: blue 2px solid">
       <app-graph [projectStructure]="projectStructure"

@@ -29,7 +29,7 @@ export class GraphOptionsService {
   private _areEdgeWeightsShownAsLabels = new BehaviorSubject(false);
   areEdgeWeightsShownAsLabels$ = this._areEdgeWeightsShownAsLabels.asObservable();
 
-  private _areEdgesColourCoded = new BehaviorSubject(false);
+  private _areEdgesColourCoded = new BehaviorSubject(true);
   areEdgesColourCoded$ = this._areEdgesColourCoded.asObservable();
 
   private _selectedLayoutOption = new BehaviorSubject('circle');
