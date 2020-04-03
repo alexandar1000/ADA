@@ -1,5 +1,6 @@
 import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import {ProjectStructure} from "../classes/project-structure";
+import {ElementInsightService} from "../element-insight.service";
 
 @Component({
   selector: 'app-element-insight',
@@ -9,27 +10,28 @@ import {ProjectStructure} from "../classes/project-structure";
 export class ElementInsightComponent implements OnInit {
 
   @Input() projectStructure: ProjectStructure;
-  @Input() selectedNode: string;
-  @Input() selectedEdge: number;
-  constructor() { }
+  private selectedNode: string;
+  private selectedEdge: number;
+
+  private subscriptions = [];
+  private subscriptionIndex = 0;
+
+  constructor(private elementInsightService: ElementInsightService) { }
 
   ngOnInit() {
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.selectedNode) {
-      this.displayCorrespondingNodeInformation(this.selectedNode);
-    } else if (changes.selectedEdge) {
-      this.displayCorrespondingEdgeInformation(this.selectedEdge);
+    if (this.elementInsightService.selectedNode$) {
+      this.subscriptions[this.subscriptionIndex++] = this.elementInsightService.selectedNode$.subscribe(
+        value => {
+          this.selectedNode = value;
+        }
+      )
+    }
+    if (this.elementInsightService.selectedEdge$) {
+      this.subscriptions[this.subscriptionIndex++] = this.elementInsightService.selectedEdge$.subscribe(
+        value => {
+          this.selectedEdge = value;
+        }
+      )
     }
   }
-
-  private displayCorrespondingNodeInformation(nodeId: string): void {
-
-  }
-
-  private displayCorrespondingEdgeInformation(edgeId: number): void {
-
-    }
-
 }

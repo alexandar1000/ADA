@@ -4,6 +4,7 @@ import {AnalyserService} from "../analyser.service";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import { NewEntryService } from '../new-entry.service';
 import { SnapshotStyleService } from '../snapshot-style.service';
+import {ElementInsightService} from "../element-insight.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -15,8 +16,6 @@ export class DashboardComponent implements OnInit {
   private snapshots = this.analyserService.snapshots;
   private metrics = this.analyserService.metrics;
   private selectedMetric = this.metrics[0];
-  private selectedNode: string;
-  private selectedEdge: string;
 
   constructor(private analyserService: AnalyserService,
               private newEntryService: NewEntryService,
@@ -61,21 +60,5 @@ export class DashboardComponent implements OnInit {
   sendNewEntry(owner: string, repository: string, branch: string, snapshot: string) {
     this.newEntryService.confirmNewEntry([owner, repository, branch, snapshot]);
     this.snapshotStyleService.sendClickedSnapshotToSidebar([owner, repository, branch, snapshot]);
-  }
-
-  updateAdditionalInformationWithNodeAdded($event: any) {
-    this.selectedNode = $event;
-  }
-
-  updateAdditionalInformationWithEdgeAdded($event: any) {
-    this.selectedEdge = $event;
-  }
-
-  updateAdditionalInformationWithNodeRemoved($event: any) {
-    this.selectedNode = null;
-  }
-
-  updateAdditionalInformationWithEdgeRemoved($event: any) {
-    this.selectedEdge = null;
   }
 }

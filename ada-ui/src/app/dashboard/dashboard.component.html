@@ -7,18 +7,12 @@
     <mat-grid-tile rowspan="1" colspan="2" style="border: blue 2px solid">
       <app-graph [projectStructure]="projectStructure"
                  [selectedMetric]="selectedMetric"
-                 (nodeSelectedEvent)="updateAdditionalInformationWithNodeAdded($event)"
-                 (edgeSelectedEvent)="updateAdditionalInformationWithEdgeAdded($event)"
-                 (nodeUnselectedEvent)="updateAdditionalInformationWithNodeRemoved($event)"
-                 (edgeUnselectedEvent)="updateAdditionalInformationWithEdgeRemoved($event)"
       ></app-graph>
     </mat-grid-tile>
     <mat-grid-tile rowspan="1" colspan="1" style="border: blue 2px solid">
       <div id="dashboardSidePanel">
         <app-dashboard-side-panel></app-dashboard-side-panel>
         <app-element-insight [projectStructure]="projectStructure"
-                             [selectedNode]="selectedNode"
-                             [selectedEdge]="selectedEdge"
         ></app-element-insight>
         <app-snapshot-slider [snapshots]="snapshots"></app-snapshot-slider>
         <app-metric-selector [metrics]="metrics"

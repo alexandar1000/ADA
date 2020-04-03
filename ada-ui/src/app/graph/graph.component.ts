@@ -6,6 +6,7 @@ import {ProjectStructure} from "../classes/project-structure";
 import {CollectionReturnValue} from "cytoscape";
 import { QueryService } from '../query.service';
 import {GraphOptionsService} from "../graph-options.service";
+import {ElementInsightService} from "../element-insight.service";
 
 cytoscape.use( fcose );
 
@@ -48,7 +49,9 @@ export class GraphComponent implements OnInit {
   private queryMessage;
   private metricNameConverter = new MetricNameConverter();
 
-  constructor(private queryService: QueryService, private graphOptionsService: GraphOptionsService) {
+  constructor(private queryService: QueryService,
+              private graphOptionsService: GraphOptionsService,
+              private elementInsightService: ElementInsightService) {
     if (queryService.receivedQueryEvent$) {
       this.subscriptions[this.subscriptionIndex++] = this.queryService.receivedQueryEvent$.subscribe(
         query => {
@@ -1021,15 +1024,15 @@ export class GraphComponent implements OnInit {
    * @param nodeId id of the node which is selected
    */
   private emitNodeSelected(nodeId: string) {
-    this.nodeSelectedEvent.emit(nodeId);
+    this.elementInsightService.setSelectedNode(nodeId);
   }
 
   /**
    * Emit the selection of the edge to the dashboard
    * @param edgeId id of the edge which is selected
    */
-  private emitEdgeSelected(edgeId: string) {
-    this.edgeSelectedEvent.emit(edgeId);
+  private emitEdgeSelected(edgeId: number) {
+    this.elementInsightService.setSelectedEdge(edgeId);
   }
 
   /**
@@ -1049,15 +1052,15 @@ export class GraphComponent implements OnInit {
    * @param nodeId id of the node which is selected
    */
   private emitNodeUnselected(nodeId: string) {
-    this.nodeUnselectedEvent.emit(nodeId);
+    this.elementInsightService.resetSelectedNode(nodeId);
   }
 
   /**
    * Emit the unselection of the edge to the dashboard
    * @param edgeId id of the edge which is selected
    */
-  private emitEdgeUnselected(edgeId: string) {
-    this.edgeUnselectedEvent.emit(edgeId);
+  private emitEdgeUnselected(edgeId: number) {
+    this.elementInsightService.resetSelectedEdge(edgeId);
   }
 
   /**
