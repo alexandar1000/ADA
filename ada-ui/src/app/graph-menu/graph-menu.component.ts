@@ -74,7 +74,7 @@ export class GraphMenuComponent implements OnInit {
     this.ctx.fillRect(0, 0, 200, 20);
   }
 
-  handleareEdgesBellowWeightThresholdRepresentationChange($event: any): void {
+  handleAreEdgesBellowWeightThresholdRepresentationChange($event: any): void {
     this.graphOptionsService.setAreEdgesBellowWeightThresholdHidden($event.checked);
     this.areEdgesBellowWeightThresholdHidden = $event.checked;
   }

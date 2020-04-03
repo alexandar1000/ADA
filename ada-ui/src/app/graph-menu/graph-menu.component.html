@@ -16,24 +16,34 @@
     </li>
     <li>
       <div>
-        <mat-checkbox [checked]="areEdgesBellowWeightThresholdHidden"
-                      (change)="handleareEdgesBellowWeightThresholdRepresentationChange($event)"
-        >Hide zero weights</mat-checkbox>
-          <mat-form-field class="example-full-width">
-            <label>
-              <input matInput
-                     [formControl]="weightThresholdFormControl"
-                     [errorStateMatcher]="matcher"
-                     type="number" (blur)="handleGraphEdgeWeightThresholdChange($event)">
-            </label>
-            <mat-hint>Weight Threshold</mat-hint>
-            <mat-error *ngIf="weightThresholdFormControl.hasError('required')">
-              Please enter a weight threshold
-            </mat-error>
-            <mat-error *ngIf="weightThresholdFormControl.hasError('min')">
-              Threshold must be a positive number.
-            </mat-error>
-          </mat-form-field>
+        <mat-grid-list cols="5" rowHeight="80px">
+          <mat-grid-tile colspan="3">
+            <div class="my-tile-container">
+              <mat-checkbox [checked]="areEdgesBellowWeightThresholdHidden"
+                            (change)="handleAreEdgesBellowWeightThresholdRepresentationChange($event)"
+              >Hide zero weights</mat-checkbox>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan="2">
+            <div class="my-tile-container">
+              <mat-form-field class="weight-threshold-input">
+                <label>
+                  <input matInput
+                         [formControl]="weightThresholdFormControl"
+                         [errorStateMatcher]="matcher"
+                         type="number" (blur)="handleGraphEdgeWeightThresholdChange($event)">
+                </label>
+                <mat-hint>Weight Threshold</mat-hint>
+                <mat-error *ngIf="weightThresholdFormControl.hasError('required')">
+                  Please enter a weight threshold
+                </mat-error>
+                <mat-error *ngIf="weightThresholdFormControl.hasError('min')">
+                  Threshold must be a positive number.
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
       </div>
 
     </li>

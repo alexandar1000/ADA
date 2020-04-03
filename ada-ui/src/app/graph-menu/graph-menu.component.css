@@ -9,12 +9,11 @@ li {
   list-style-type: none;
 }
 
-.example-form {
-  min-width: 150px;
-  max-width: 500px;
-  width: 100%;
+.weight-threshold-input {
+  min-width: 30%;
+  max-width: 70%;
 }
 
-.example-full-width {
+.my-tile-container {
   width: 100%;
 }
