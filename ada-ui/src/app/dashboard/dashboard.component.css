@@ -5,3 +5,29 @@
   margin-top: -30px;
   margin-left: -30px;
 }
+
+mat-grid-list {
+}
+
+app-graph {
+  width: 98%;
+  height: 98%;
+  padding: 1% 1%;
+}
+
+#dashboardSidePanel {
+  width: 97%;
+  height: 98%;
+  padding: 1% 2%;
+}
+
+app-graph-menu {
+  width: 100%;
+  height: 100%;
+}
+
+#mainDashboardTitle {
+  text-align: center;
+}
+
+

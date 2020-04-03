@@ -17,12 +17,6 @@ export class DashboardComponent implements OnInit {
   private selectedMetric = this.metrics[0];
   private selectedNode: string;
   private selectedEdge: string;
-  private areZeroWeightedEdgesHidden = false;
-  private areNeighbourlessNodesHidden = false;
-  private areEdgeWeightsShownAsLabels = false;
-  private areEdgesColourCoded = false;
-  private selectedLayoutOption = 'circle';
-  private resetGraphView = false;
 
   constructor(private analyserService: AnalyserService,
               private newEntryService: NewEntryService,
@@ -83,29 +77,5 @@ export class DashboardComponent implements OnInit {
 
   updateAdditionalInformationWithEdgeRemoved($event: any) {
     this.selectedEdge = null;
-  }
-
-  handleUpdateZeroWeightedEdgesRepresentationEvent(state: boolean): void {
-    this.areZeroWeightedEdgesHidden = state;
-  }
-
-  handleUpdateNeighbourlessNodesRepresentationEvent(state: boolean): void {
-    this.areNeighbourlessNodesHidden = state;
-  }
-
-  handleUpdateEdgeWeightsAsLabelRepresentationEvent(state: boolean): void {
-    this.areEdgeWeightsShownAsLabels = state;
-  }
-
-  handleUpdateEdgesColourCodingRepresentationEvent(state: boolean): void {
-    this.areEdgesColourCoded = state;
-  }
-
-  handleUpdateSelectedLayoutOptionEvent($event: string): void {
-    this.selectedLayoutOption = $event;
-  }
-
-  handleResetGraphViewEvent() {
-    this.resetGraphView = !this.resetGraphView;
   }
 }

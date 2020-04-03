@@ -27,7 +27,7 @@
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": ["node_modules/numeric/numeric-1.2.6.min.js"]
           },
           "configurations": {
             "production": {

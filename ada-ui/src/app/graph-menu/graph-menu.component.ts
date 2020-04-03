@@ -1,17 +1,7 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {GraphComponent} from "../graph/graph.component";
 import {FormControl} from "@angular/forms";
-
-interface GraphLayoutOption {
-  value: string;
-  viewValue: string;
-}
-
-interface GraphLayoutGroup {
-  disabled?: boolean;
-  name: string;
-  graphLayoutOptions: GraphLayoutOption[];
-}
+import {GraphOptionsService} from "../graph-options.service";
 
 @Component({
   selector: 'app-graph-menu',
@@ -29,44 +19,28 @@ export class GraphMenuComponent implements OnInit {
   };
 
   private ctx: CanvasRenderingContext2D;
-  // private query: string[];
 
-  @Input() areZeroWeightedEdgesHidden: boolean;
-  @Input() areNeighbourlessNodesHidden: boolean;
-  @Input() areEdgeWeightsShownAsLabels: boolean;
-  @Input() areEdgesColourCoded: boolean;
-  @Input() selectedLayoutOption: string;
+  private graphLayoutSpacing: number;
+  private areZeroWeightedEdgesHidden: boolean;
+  private areNeighbourlessNodesHidden: boolean;
+  private areEdgeWeightsShownAsLabels: boolean;
+  private areEdgesColourCoded: boolean;
+  private selectedLayoutOption: string;
 
-  @Output() updateZeroWeightedEdgesRepresentationEvent = new EventEmitter();
-  @Output() updateNeighbourlessNodesRepresentationEvent = new EventEmitter();
-  @Output() updateEdgeWeightsAsLabelRepresentationEvent = new EventEmitter();
-  @Output() updateEdgesColourCodingRepresentationEvent = new EventEmitter();
-  @Output() updateSelectedLayoutOptionEvent = new EventEmitter();
-  @Output() resetGraphViewEvent = new EventEmitter();
 
   graphLayoutControl = new FormControl();
-  public graphLayoutGroups: GraphLayoutGroup[] = [
-    {
-      name: 'Ungrouped',
-      graphLayoutOptions: [
-        {value: 'circle', viewValue: 'Circle'},
-        {value: 'grid', viewValue: 'Grid'},
-        {value: 'random', viewValue: 'Random'},
-      ]
-    },
-    {
-      name: 'Grouped',
-      graphLayoutOptions: [
-        {value: 'concentric', viewValue: 'Doughnut'},
-        {value: 'cose', viewValue: 'Cose'}
-      ]
-    }
+  public graphLayoutGroups = null;
 
-    ];
-
-  constructor() {}
+  constructor(private graphOptionsService: GraphOptionsService) {}
 
   ngOnInit() {
+    this.graphLayoutSpacing = this.graphOptionsService.spacingFactor;
+    this.areZeroWeightedEdgesHidden = this.graphOptionsService.areZeroWeightedEdgesHidden;
+    this.areNeighbourlessNodesHidden = this.graphOptionsService.areNeighbourlessNodesHidden;
+    this.areEdgeWeightsShownAsLabels = this.graphOptionsService.areEdgeWeightsShownAsLabels;
+    this.areEdgesColourCoded = this.graphOptionsService.areEdgesColourCoded;
+    this.selectedLayoutOption = this.graphOptionsService.selectedLayoutOption;
+    this.graphLayoutGroups = this.graphOptionsService.graphLayoutGroups;
   }
 
   createColourcodingLegend(): void {
@@ -84,31 +58,44 @@ export class GraphMenuComponent implements OnInit {
   }
 
   handleZeroWeightedEdgesRepresentationChange($event: any): void {
+    this.graphOptionsService.setAreZeroWeightedEdgesHidden($event.checked);
     this.areZeroWeightedEdgesHidden = $event.checked;
-    this.updateZeroWeightedEdgesRepresentationEvent.emit(this.areZeroWeightedEdgesHidden);
   }
 
   handleNodesWithoutNeighboursRepresentationChange($event: any): void {
+    this.graphOptionsService.setAreNeighbourlessNodesHidden($event.checked);
     this.areNeighbourlessNodesHidden = $event.checked;
-    this.updateNeighbourlessNodesRepresentationEvent.emit(this.areNeighbourlessNodesHidden);
   }
 
   handleEdgeWeightsAsLabelRepresentationChange($event: any): void {
+    this.graphOptionsService.setAreEdgeWeightsShownAsLabels($event.checked);
     this.areEdgeWeightsShownAsLabels = $event.checked;
-    this.updateEdgeWeightsAsLabelRepresentationEvent.emit(this.areEdgeWeightsShownAsLabels);
   }
 
   handleEdgesColourCodingRepresentationChange($event: any): void {
+    this.graphOptionsService.setAreEdgesColourCoded($event.checked);
     this.areEdgesColourCoded = $event.checked;
-    this.updateEdgesColourCodingRepresentationEvent.emit(this.areEdgesColourCoded);
   }
 
   handleSelectedLayoutOptionChange($event: any): void {
+    this.graphOptionsService.setSelectedLayoutOption($event.value);
     this.selectedLayoutOption = $event.value;
-    this.updateSelectedLayoutOptionEvent.emit(this.selectedLayoutOption);
   }
 
   handleResetGraphViewButtonPressed($event: MouseEvent) {
-    this.resetGraphViewEvent.emit();
+    this.graphOptionsService.setIsGraphViewToBeReset(true);
+  }
+
+  handleResetGraphLayoutButtonPressed($event: MouseEvent) {
+    this.graphOptionsService.setIsGraphLayoutToBeReset(true);
+  }
+
+  handleLayoutSpacingChange($event: any): void {
+    this.graphOptionsService.setSpacingFactor($event.value/10);
+    this.graphLayoutSpacing = $event.value/10;
+  }
+
+  formatSliderLabel(value: number) {
+    return (value/10).toFixed(1);
   }
 }
