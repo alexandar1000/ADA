@@ -8,10 +8,12 @@ import com.ucl.ADA.model.snapshot.Snapshot;
 import com.ucl.ADA.parser.ParserServices;
 import com.ucl.ADA.parser.ada_model.ADAClass;
 import com.ucl.ADA.repository_downloader.RepoDownloader;
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.util.Set;
 
@@ -104,6 +106,9 @@ public class RepositoryAnalyserServices {
         // TODO: re-calculate all changed class structure's metric
         // this step requires change finished utility or transformer to keep track on all changed class structure
         // need to think carefully how to implement
+
+        // delete downloaded repository after analysis
+        FileUtils.deleteQuietly(Paths.get(rootDirPath).toFile());
 
         return snapshot;
     }
