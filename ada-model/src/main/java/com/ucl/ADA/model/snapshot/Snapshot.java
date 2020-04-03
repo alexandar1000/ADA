@@ -26,14 +26,14 @@ public class Snapshot extends BaseEntity {
     /**
      * Branch entity corresponding to this snapshot
      */
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "branch_id", nullable = false)
     private Branch branch;
 
     /**
      * Set of analysis request that retrieved this snapshot
      */
-    @OneToMany(mappedBy = "snapshot")
+    @OneToMany(mappedBy = "snapshot", cascade = CascadeType.ALL)
     private Set<AnalysisRequest> analysisRequests = new HashSet<>();
 
     /**
@@ -45,7 +45,7 @@ public class Snapshot extends BaseEntity {
     /**
      * a map of ClassStructures, the key is qualified class name
      */
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "SNAPSHOT_CLASS_STRUCTURE",
             joinColumns = {@JoinColumn(name = "snapshot_id")},
             inverseJoinColumns = {@JoinColumn(name = "class_structure_id")})
@@ -55,7 +55,7 @@ public class Snapshot extends BaseEntity {
     /**
      * a map of source files, the key is the file path
      */
-    @OneToMany(mappedBy = "snapshot")
+    @OneToMany(mappedBy = "snapshot", cascade = CascadeType.ALL)
     @MapKeyColumn(name = "file_path")
     private Map<String, SourceFile> sourceFiles = new HashMap<>();
 

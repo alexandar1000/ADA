@@ -27,7 +27,7 @@ public abstract class DependenceInfo extends BaseEntity {
     /**
      * Attributes present in the class. They can be either declared or invoked.
      */
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "DEPENDENCE_INFO_ATTRIBUTE_INVOCATION",
             joinColumns = @JoinColumn(name = "dependence_info_id"),
@@ -38,7 +38,7 @@ public abstract class DependenceInfo extends BaseEntity {
     /**
      * Constructors present in the class. They can be either declared or invoked.
      */
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "DEPENDENCE_INFO_CONSTRUCTOR_INVOCATION",
             joinColumns = @JoinColumn(name = "dependence_info_id"),
@@ -49,7 +49,7 @@ public abstract class DependenceInfo extends BaseEntity {
     /**
      * Methods present in the class. They can be either declared or invoked.
      */
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "DEPENDENCE_INFO_METHOD_INVOCATION",
             joinColumns = @JoinColumn(name = "dependence_info_id"),

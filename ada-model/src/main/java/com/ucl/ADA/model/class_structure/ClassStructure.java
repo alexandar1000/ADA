@@ -55,7 +55,7 @@ public class ClassStructure extends BaseEntity {
     /**
      * a set of source files that contains this class structure
      */
-    @ManyToMany(mappedBy = "classStructures")
+    @ManyToMany(mappedBy = "classStructures", cascade = CascadeType.ALL)
     private Set<Snapshot> snapshots = new HashSet<>();
 
     /* ************************************************************************
@@ -68,7 +68,7 @@ public class ClassStructure extends BaseEntity {
      * static information contains all declarations, outgoing dependence info and external invocation which is unchanged
      * when source file is not parsed
      */
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "static_info_id")
     private StaticInfo staticInfo = new StaticInfo();
 
@@ -76,7 +76,7 @@ public class ClassStructure extends BaseEntity {
      * Information about the invocations of elements from this class by the other classes. String is the qualified name
      * of the class.
      */
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "STATIC_INFO_INCOMING_DEPENDENCE_INFO",
             joinColumns = {@JoinColumn(name = "static_info_id")},
             inverseJoinColumns = {@JoinColumn(name = "incoming_dependence_info_id")})
@@ -86,7 +86,7 @@ public class ClassStructure extends BaseEntity {
     /**
      * All of the metric values for the link between the current class and the linking classes.
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "CLASS_STRUCTURE_RELATION_METRIC_VALUE",
             joinColumns = {@JoinColumn(name = "class_structure_id")},
             inverseJoinColumns = {@JoinColumn(name = "relation_metric_value_id")})
@@ -96,7 +96,7 @@ public class ClassStructure extends BaseEntity {
     /**
      * The metrics corresponding to the current class
      */
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "class_metric_value_id")
     private ClassMetricValue classMetricValues = new ClassMetricValue();
 

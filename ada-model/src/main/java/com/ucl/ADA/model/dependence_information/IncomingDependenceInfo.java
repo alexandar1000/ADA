@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -17,7 +18,7 @@ import java.util.Set;
 @Table(name = "INCOMING_DEPENDENCE_INFO")
 public class IncomingDependenceInfo extends DependenceInfo {
 
-    @ManyToMany(mappedBy = "incomingDependenceInfos")
+    @ManyToMany(mappedBy = "incomingDependenceInfos", cascade = CascadeType.ALL)
     private Set<ClassStructure> classStructures;
 
 }

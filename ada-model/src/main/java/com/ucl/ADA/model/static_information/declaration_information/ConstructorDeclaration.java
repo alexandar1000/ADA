@@ -30,7 +30,7 @@ public class ConstructorDeclaration extends ElementDeclaration {
     /**
      * List of the parameters which the constructor accepts.
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "CONSTRUCTOR_DECLARATION_PARAMETER_DECLARATION",
             joinColumns = @JoinColumn(name = "constructor_declaration_id"),

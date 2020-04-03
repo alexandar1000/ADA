@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Table(name = "OUTGOING_DEPENDENCE_INFO")
 public class OutgoingDependenceInfo extends DependenceInfo {
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "static_info_id")
     private StaticInfo staticInfo;
 

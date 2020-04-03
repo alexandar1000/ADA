@@ -27,7 +27,7 @@ public class StaticInfo extends BaseEntity {
     /**
      * the class structures that holds this static info
      */
-    @OneToMany(mappedBy = "staticInfo")
+    @OneToMany(mappedBy = "staticInfo", cascade = CascadeType.ALL)
     private Set<ClassStructure> classStructures = new HashSet<>();
 
 
@@ -40,7 +40,7 @@ public class StaticInfo extends BaseEntity {
     /**
      * Packages present in the class. They can be either declared or imported.
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "STATIC_INFO_IMPORT_DECLARATION",
             joinColumns = @JoinColumn(name = "static_info_id"),
@@ -51,14 +51,14 @@ public class StaticInfo extends BaseEntity {
     /**
      * Fully qualified class package name (including the name of the class in the end).
      */
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "package_declaration_id")
     private PackageDeclaration packageDeclaration = new PackageDeclaration();
 
     /**
      * Attributes declared in this class.
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "STATIC_INFO_ATTRIBUTE_DECLARATION",
             joinColumns = @JoinColumn(name = "static_info_id"),
@@ -69,7 +69,7 @@ public class StaticInfo extends BaseEntity {
     /**
      * Constructors declared in this class.
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "STATIC_INFO_CONSTRUCTOR_DECLARATION",
             joinColumns = @JoinColumn(name = "static_info_id"),
@@ -80,7 +80,7 @@ public class StaticInfo extends BaseEntity {
     /**
      * Methods declared in this class.
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "STATIC_INFO_METHOD_DECLARATION",
             joinColumns = @JoinColumn(name = "static_info_id"),

@@ -21,7 +21,7 @@ public class AdaApplication {
 
 	@RequestMapping("/")
 	public String home() {
-		return "Welcome to this wonderfully amazing webpage. Still a bit shy tho..";
+		return "Welcome to this wonderfully amazing web page. Still a bit shy tho..";
 	}
 
 }

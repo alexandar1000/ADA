@@ -36,7 +36,7 @@ public class MethodDeclaration extends ElementDeclaration {
     /**
      * The parameters which the method accepts.
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "METHOD_DECLARATION_PARAMETER_DECLARATION",
             joinColumns = @JoinColumn(name = "method_declaration_id"),
