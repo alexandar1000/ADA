@@ -18,35 +18,35 @@ interface GraphLayoutGroup {
 export class GraphOptionsService {
 
   public initialSpacingFactor = 1.0;
-  private spacingFactor = new BehaviorSubject(this.initialSpacingFactor);
+  public spacingFactor = new BehaviorSubject(this.initialSpacingFactor);
   spacingFactor$ = this.spacingFactor.asObservable();
 
   public areZeroWeightedEdgesHiddenInitially = false;
-  private areZeroWeightedEdgesHidden = new BehaviorSubject(this.areZeroWeightedEdgesHiddenInitially);
+  public areZeroWeightedEdgesHidden = new BehaviorSubject(this.areZeroWeightedEdgesHiddenInitially);
   areZeroWeightedEdgesHidden$ = this.areZeroWeightedEdgesHidden.asObservable();
 
   public areNeighbourlessNodesHiddenInitially = false;
-  private areNeighbourlessNodesHidden = new BehaviorSubject(this.areNeighbourlessNodesHiddenInitially);
+  public areNeighbourlessNodesHidden = new BehaviorSubject(this.areNeighbourlessNodesHiddenInitially);
   areNeighbourlessNodesHidden$ = this.areNeighbourlessNodesHidden.asObservable();
 
   public areEdgeWeightsShownAsLabelsInitially = false;
-  private areEdgeWeightsShownAsLabels = new BehaviorSubject(this.areEdgeWeightsShownAsLabelsInitially);
+  public areEdgeWeightsShownAsLabels = new BehaviorSubject(this.areEdgeWeightsShownAsLabelsInitially);
   areEdgeWeightsShownAsLabels$ = this.areEdgeWeightsShownAsLabels.asObservable();
 
   public areEdgesColourCodedInitially = false;
-  private areEdgesColourCoded = new BehaviorSubject(this.areEdgesColourCodedInitially);
+  public areEdgesColourCoded = new BehaviorSubject(this.areEdgesColourCodedInitially);
   areEdgesColourCoded$ = this.areEdgesColourCoded.asObservable();
 
   public selectedLayoutOptionInitially = 'circle';
-  private selectedLayoutOption = new BehaviorSubject(this.selectedLayoutOptionInitially);
+  public selectedLayoutOption = new BehaviorSubject(this.selectedLayoutOptionInitially);
   selectedLayoutOption$ = this.selectedLayoutOption.asObservable();
 
   public isGraphViewToBeResetInitially = false;
-  private isGraphViewToBeReset = new BehaviorSubject(this.isGraphViewToBeResetInitially);
+  public isGraphViewToBeReset = new BehaviorSubject(this.isGraphViewToBeResetInitially);
   isGraphViewToBeReset$ = this.isGraphViewToBeReset.asObservable();
 
   public isGraphLayoutToBeResetInitially = false;
-  private isGraphLayoutToBeReset = new BehaviorSubject(this.isGraphLayoutToBeResetInitially);
+  public isGraphLayoutToBeReset = new BehaviorSubject(this.isGraphLayoutToBeResetInitially);
   isGraphLayoutToBeReset$ = this.isGraphLayoutToBeReset.asObservable();
 
   public graphLayoutGroups: GraphLayoutGroup[] = [
