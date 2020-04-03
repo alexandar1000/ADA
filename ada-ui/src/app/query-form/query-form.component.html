@@ -16,8 +16,9 @@
 						 [(ngModel)]="queryText"
 						 required #query="ngModel">
 		</mat-form-field>
-		<mat-checkbox [disabled]="!isPackageQuery()" [(ngModel)]="seePackageHigherClasses" name="seePackageHigherClassesCheckbox">See classes from higher packages</mat-checkbox>
+		<mat-checkbox [disabled]="!isPackageQuery()" [(ngModel)]="seePackageHigherClasses" name="seePackageHigherClassesCheckbox">See classes from lower packages</mat-checkbox>
 		<button type="submit" [disabled]="!queryForm.form.valid" mat-raised-button color="primary" class="query-button">Go</button>
+		<p *ngIf="queryMessage">{{queryMessage}}</p>
 	</form>
 </div>
 

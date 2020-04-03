@@ -12,8 +12,17 @@ export class QueryFormComponent implements OnInit {
   private queryTypes = ['Class', 'Package'];
   private queryText: string;
   private seePackageHigherClasses: boolean;
+  private queryMessage;
 
-  constructor(private queryService: QueryService) { }
+  constructor(private queryService: QueryService) { 
+    if (this.queryService.receivedQueryMessageEvent$) {
+      this.queryService.receivedQueryMessageEvent$.subscribe(
+        queryMessage => {
+          this.processMessage(queryMessage);
+        }
+      )
+    }
+  }
 
   ngOnInit() {
     this.seePackageHigherClasses = false;
@@ -26,6 +35,10 @@ export class QueryFormComponent implements OnInit {
       }
     }
     return false;
+  }
+
+  processMessage(queryMessage: string) {
+    this.queryMessage = queryMessage;
   }
 
   onSubmit() {
