@@ -1,7 +1,16 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {GraphComponent} from "../graph/graph.component";
-import {FormControl} from "@angular/forms";
+import {FormControl, FormGroupDirective, NgForm, Validators} from "@angular/forms";
 import {GraphOptionsService} from "../graph-options.service";
+import {ErrorStateMatcher} from "@angular/material/core";
+
+/** Error when invalid control is dirty, touched, or submitted. */
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
 
 @Component({
   selector: 'app-graph-menu',
@@ -9,23 +18,26 @@ import {GraphOptionsService} from "../graph-options.service";
   styleUrls: ['./graph-menu.component.css']
 })
 export class GraphMenuComponent implements OnInit {
+  matcher = new MyErrorStateMatcher();
 
   private canvas: ElementRef<HTMLCanvasElement>;
+
   @ViewChild('colourcodingLegend', { static: false }) public set content(content: ElementRef<HTMLCanvasElement>) {
     this.canvas = content;
     if (this.canvas != undefined) {
       this.createColourcodingLegend();
     }
   };
-
   private ctx: CanvasRenderingContext2D;
 
   private graphLayoutSpacing: number;
-  private areZeroWeightedEdgesHidden: boolean;
+  private areEdgesBellowWeightThresholdHidden: boolean;
   private areNeighbourlessNodesHidden: boolean;
   private areEdgeWeightsShownAsLabels: boolean;
   private areEdgesColourCoded: boolean;
   private selectedLayoutOption: string;
+  private graphEdgeWeightThreshold: number;
+  private weightThresholdFormControl: any;
 
 
   graphLayoutControl = new FormControl();
@@ -35,12 +47,17 @@ export class GraphMenuComponent implements OnInit {
 
   ngOnInit() {
     this.graphLayoutSpacing = this.graphOptionsService.spacingFactor;
-    this.areZeroWeightedEdgesHidden = this.graphOptionsService.areZeroWeightedEdgesHidden;
+    this.areEdgesBellowWeightThresholdHidden = this.graphOptionsService.areEdgesBellowWeightThresholdHidden;
     this.areNeighbourlessNodesHidden = this.graphOptionsService.areNeighbourlessNodesHidden;
     this.areEdgeWeightsShownAsLabels = this.graphOptionsService.areEdgeWeightsShownAsLabels;
     this.areEdgesColourCoded = this.graphOptionsService.areEdgesColourCoded;
     this.selectedLayoutOption = this.graphOptionsService.selectedLayoutOption;
+    this.graphEdgeWeightThreshold = this.graphOptionsService.graphEdgeWeightThreshold;
     this.graphLayoutGroups = this.graphOptionsService.graphLayoutGroups;
+    this.weightThresholdFormControl = new FormControl(this.graphEdgeWeightThreshold, [
+      Validators.required,
+      Validators.min(0.00),
+    ]);
   }
 
   createColourcodingLegend(): void {
@@ -57,9 +74,17 @@ export class GraphMenuComponent implements OnInit {
     this.ctx.fillRect(0, 0, 200, 20);
   }
 
-  handleZeroWeightedEdgesRepresentationChange($event: any): void {
-    this.graphOptionsService.setAreZeroWeightedEdgesHidden($event.checked);
-    this.areZeroWeightedEdgesHidden = $event.checked;
+  handleareEdgesBellowWeightThresholdRepresentationChange($event: any): void {
+    this.graphOptionsService.setAreEdgesBellowWeightThresholdHidden($event.checked);
+    this.areEdgesBellowWeightThresholdHidden = $event.checked;
+  }
+
+  handleGraphEdgeWeightThresholdChange($event: any): void {
+    let value = $event.target.value;
+    if (value > 0) {
+      this.graphOptionsService.setGraphEdgeWeightThreshold(value);
+      this.graphEdgeWeightThreshold = value;
+    }
   }
 
   handleNodesWithoutNeighboursRepresentationChange($event: any): void {

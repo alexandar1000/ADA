@@ -68,8 +68,8 @@ export class GraphComponent implements OnInit {
         }
       )
     }
-    if (this.graphOptionsService.areZeroWeightedEdgesHidden$) {
-      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.areZeroWeightedEdgesHidden$.subscribe(
+    if (this.graphOptionsService.areEdgesBellowWeightThresholdHidden$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.areEdgesBellowWeightThresholdHidden$.subscribe(
         value => {
           this.areZeroWeightedEdgesHidden = value;
           if (this.cy != null) {

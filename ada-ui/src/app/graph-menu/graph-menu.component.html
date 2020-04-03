@@ -7,17 +7,35 @@
         <mat-select [formControl]="graphLayoutControl" [(value)]="selectedLayoutOption" (selectionChange)="handleSelectedLayoutOptionChange($event)">
           <mat-optgroup *ngFor="let group of graphLayoutGroups" [label]="group.name"
                         [disabled]="group.disabled">
-            <mat-option *ngFor="let pokemon of group.graphLayoutOptions" [value]="pokemon.value">
-              {{pokemon.viewValue}}
+            <mat-option *ngFor="let layout of group.graphLayoutOptions" [value]="layout.value">
+              {{layout.viewValue}}
             </mat-option>
           </mat-optgroup>
         </mat-select>
       </mat-form-field>
     </li>
     <li>
-      <mat-checkbox [checked]="areZeroWeightedEdgesHidden"
-                    (change)="handleZeroWeightedEdgesRepresentationChange($event)"
-      >Hide zero weights</mat-checkbox>
+      <div>
+        <mat-checkbox [checked]="areEdgesBellowWeightThresholdHidden"
+                      (change)="handleareEdgesBellowWeightThresholdRepresentationChange($event)"
+        >Hide zero weights</mat-checkbox>
+          <mat-form-field class="example-full-width">
+            <label>
+              <input matInput
+                     [formControl]="weightThresholdFormControl"
+                     [errorStateMatcher]="matcher"
+                     type="number" (blur)="handleGraphEdgeWeightThresholdChange($event)">
+            </label>
+            <mat-hint>Weight Threshold</mat-hint>
+            <mat-error *ngIf="weightThresholdFormControl.hasError('required')">
+              Please enter a weight threshold
+            </mat-error>
+            <mat-error *ngIf="weightThresholdFormControl.hasError('min')">
+              Threshold must be a positive number.
+            </mat-error>
+          </mat-form-field>
+      </div>
+
     </li>
     <li>
       <mat-checkbox [checked]="areNeighbourlessNodesHidden"
