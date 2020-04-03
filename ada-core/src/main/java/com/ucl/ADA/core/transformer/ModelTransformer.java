@@ -56,25 +56,25 @@ public class ModelTransformer {
             // get affected class from constructor invocation
             for (ADAConstructorInvocation adaConstructorInvocation : adaClass.getADAConstructorInvocations()) {
                 String constructorFullName = adaConstructorInvocation.getConstructorClassName();
-                if (!constructorFullName.startsWith("java")) {
-                    incomingToAddSet.add(constructorFullName);
-                }
+//                if (!constructorFullName.startsWith("java"))
+                incomingToAddSet.add(constructorFullName);
             }
             // get affected class from method invocation
             for (ADAMethodInvocation adaMethodInvocation : adaClass.getADAMethodInvocations()) {
                 String calleeName = adaMethodInvocation.getCalleeName();
-                if (!calleeName.startsWith("java")) {
-                    incomingToAddSet.add(calleeName);
-                }
+//                if (!calleeName.startsWith("java"))
+                incomingToAddSet.add(calleeName);
             }
             // get affected class from attribute invocation
             // as class attributes
             for (ADAClassAttribute adaClassAttribute : adaClass.getAdaClassAttributes()) {
+//                if (!adaClassAttribute.getType().startsWith("java"))
                 incomingToAddSet.add(adaClassAttribute.getType());
             }
             // as local variables
             for (ADAMethodOrConstructorDeclaration declaration : adaClass.getADAMethodOrConstructorDeclaration()) {
                 for (Map.Entry<String, String> entry : declaration.getLocalVariables().entrySet()) {
+//                    if (!entry.getValue().startsWith("java"))
                     incomingToAddSet.add(entry.getValue());
                 }
             }
@@ -190,7 +190,7 @@ public class ModelTransformer {
         for (ADAClassAttribute adaClassAttribute : sourceClass.getAdaClassAttributes()) {
             String type = adaClassAttribute.getType();
             // TODO: remove the invoked class checking
-            excludeJavaInvocation(type);
+//            excludeJavaInvocation(type);
             AttributeInvocation attributeInvocation = new AttributeInvocation(adaClassAttribute.getName());
             addInternalInvocationToSnapshot(snapshot, className, type, InvocationType.ATTRIBUTE, attributeInvocation);
         }
@@ -198,7 +198,7 @@ public class ModelTransformer {
         for (ADAMethodOrConstructorDeclaration declaration : sourceClass.getADAMethodOrConstructorDeclaration()) {
             for (Map.Entry<String, String> entry : declaration.getLocalVariables().entrySet()) {
                 // TODO: remove the invoked class checking
-                excludeJavaInvocation(entry.getValue());
+//                excludeJavaInvocation(entry.getValue());
                 AttributeInvocation attributeInvocation = new AttributeInvocation(entry.getKey());
                 addInternalInvocationToSnapshot(snapshot, className, entry.getValue(), InvocationType.ATTRIBUTE, attributeInvocation);
             }
@@ -216,7 +216,7 @@ public class ModelTransformer {
 
         for (ADAConstructorInvocation adaConstructorInvocation : sourceClass.getADAConstructorInvocations()) {
             // TODO: remove the invoked class checking
-            excludeJavaInvocation(adaConstructorInvocation.getConstructorClassName());
+//            excludeJavaInvocation(adaConstructorInvocation.getConstructorClassName());
             List<PassedParameter> parameters = new ArrayList<>();
             for (String value : adaConstructorInvocation.getArguments()) {
                 parameters.add(new PassedParameter(value));
@@ -238,7 +238,7 @@ public class ModelTransformer {
         String className = sourceClass.getClassName();
         for (ADAMethodInvocation adaMethodInvocation : sourceClass.getADAMethodInvocations()) {
             // TODO: remove the invoked class checking
-            excludeJavaInvocation(adaMethodInvocation.getCalleeName());
+//            excludeJavaInvocation(adaMethodInvocation.getCalleeName());
             List<PassedParameter> parameters = new ArrayList<>();
             for (String value : adaMethodInvocation.getArguments()) {
                 parameters.add(new PassedParameter(value));

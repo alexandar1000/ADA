@@ -34,14 +34,14 @@ public class SnapshotUtils {
      * @return a initialized snapshot object
      */
     // TODO: add Branch into parameters
-    public static Snapshot initSnapshotAndSourceFiles(@NonNull Set<String> filePaths) {
+    public static Snapshot initSnapshotAndSourceFiles(@NonNull String rootDir, @NonNull Set<String> filePaths) {
         Snapshot snapshot = new Snapshot();
         Map<String, SourceFile> sourceFiles = snapshot.getSourceFiles();
         for (String filePath : filePaths) {
             // compute file hash
             String fileHash = null;
             try {
-                fileHash = sha1Hex(new FileInputStream(filePath));
+                fileHash = sha1Hex(new FileInputStream(rootDir + filePath));
             } catch (IOException e) {
                 e.printStackTrace();
             }

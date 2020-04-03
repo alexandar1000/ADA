@@ -83,7 +83,7 @@ public class RepositoryAnalyserServices {
         Set<String> sourcePaths = RepoDownloader.getSourceFilePaths(rootDirPath);
 
         // Initialize current snapshot and source files
-        Snapshot snapshot = initSnapshotAndSourceFiles(sourcePaths);
+        Snapshot snapshot = initSnapshotAndSourceFiles(rootDirPath, sourcePaths);
 
         // Get added set of SourceFile
         Set<String> addedSourceFiles = getPathsToAddedSourceFiles(snapshot, prevSnapshot);
