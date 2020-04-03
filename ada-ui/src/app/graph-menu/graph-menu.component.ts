@@ -34,12 +34,12 @@ export class GraphMenuComponent implements OnInit {
   constructor(private graphOptionsService: GraphOptionsService) {}
 
   ngOnInit() {
-    this.graphLayoutSpacing = this.graphOptionsService.spacingFactor.value;
-    this.areZeroWeightedEdgesHidden = this.graphOptionsService.areZeroWeightedEdgesHidden.value;
-    this.areNeighbourlessNodesHidden = this.graphOptionsService.areNeighbourlessNodesHidden.value;
-    this.areEdgeWeightsShownAsLabels = this.graphOptionsService.areEdgeWeightsShownAsLabels.value;
-    this.areEdgesColourCoded = this.graphOptionsService.areEdgesColourCoded.value;
-    this.selectedLayoutOption = this.graphOptionsService.selectedLayoutOption.value;
+    this.graphLayoutSpacing = this.graphOptionsService.spacingFactor;
+    this.areZeroWeightedEdgesHidden = this.graphOptionsService.areZeroWeightedEdgesHidden;
+    this.areNeighbourlessNodesHidden = this.graphOptionsService.areNeighbourlessNodesHidden;
+    this.areEdgeWeightsShownAsLabels = this.graphOptionsService.areEdgeWeightsShownAsLabels;
+    this.areEdgesColourCoded = this.graphOptionsService.areEdgesColourCoded;
+    this.selectedLayoutOption = this.graphOptionsService.selectedLayoutOption;
     this.graphLayoutGroups = this.graphOptionsService.graphLayoutGroups;
   }
 
@@ -59,22 +59,27 @@ export class GraphMenuComponent implements OnInit {
 
   handleZeroWeightedEdgesRepresentationChange($event: any): void {
     this.graphOptionsService.setAreZeroWeightedEdgesHidden($event.checked);
+    this.areZeroWeightedEdgesHidden = $event.checked;
   }
 
   handleNodesWithoutNeighboursRepresentationChange($event: any): void {
     this.graphOptionsService.setAreNeighbourlessNodesHidden($event.checked);
+    this.areNeighbourlessNodesHidden = $event.checked;
   }
 
   handleEdgeWeightsAsLabelRepresentationChange($event: any): void {
     this.graphOptionsService.setAreEdgeWeightsShownAsLabels($event.checked);
+    this.areEdgeWeightsShownAsLabels = $event.checked;
   }
 
   handleEdgesColourCodingRepresentationChange($event: any): void {
     this.graphOptionsService.setAreEdgesColourCoded($event.checked);
+    this.areEdgesColourCoded = $event.checked;
   }
 
   handleSelectedLayoutOptionChange($event: any): void {
     this.graphOptionsService.setSelectedLayoutOption($event.value);
+    this.selectedLayoutOption = $event.value;
   }
 
   handleResetGraphViewButtonPressed($event: MouseEvent) {
@@ -87,6 +92,7 @@ export class GraphMenuComponent implements OnInit {
 
   handleLayoutSpacingChange($event: any): void {
     this.graphOptionsService.setSpacingFactor($event.value/10);
+    this.graphLayoutSpacing = $event.value/10;
   }
 
   formatSliderLabel(value: number) {

@@ -17,37 +17,54 @@ interface GraphLayoutGroup {
 })
 export class GraphOptionsService {
 
-  public initialSpacingFactor = 1.0;
-  public spacingFactor = new BehaviorSubject(this.initialSpacingFactor);
-  spacingFactor$ = this.spacingFactor.asObservable();
+  private _spacingFactor = new BehaviorSubject(1.0);
+  spacingFactor$ = this._spacingFactor.asObservable();
 
-  public areZeroWeightedEdgesHiddenInitially = false;
-  public areZeroWeightedEdgesHidden = new BehaviorSubject(this.areZeroWeightedEdgesHiddenInitially);
-  areZeroWeightedEdgesHidden$ = this.areZeroWeightedEdgesHidden.asObservable();
+  private _areZeroWeightedEdgesHidden = new BehaviorSubject(false);
+  areZeroWeightedEdgesHidden$ = this._areZeroWeightedEdgesHidden.asObservable();
 
-  public areNeighbourlessNodesHiddenInitially = false;
-  public areNeighbourlessNodesHidden = new BehaviorSubject(this.areNeighbourlessNodesHiddenInitially);
-  areNeighbourlessNodesHidden$ = this.areNeighbourlessNodesHidden.asObservable();
+  private _areNeighbourlessNodesHidden = new BehaviorSubject(false);
+  areNeighbourlessNodesHidden$ = this._areNeighbourlessNodesHidden.asObservable();
 
-  public areEdgeWeightsShownAsLabelsInitially = false;
-  public areEdgeWeightsShownAsLabels = new BehaviorSubject(this.areEdgeWeightsShownAsLabelsInitially);
-  areEdgeWeightsShownAsLabels$ = this.areEdgeWeightsShownAsLabels.asObservable();
+  private _areEdgeWeightsShownAsLabels = new BehaviorSubject(false);
+  areEdgeWeightsShownAsLabels$ = this._areEdgeWeightsShownAsLabels.asObservable();
 
-  public areEdgesColourCodedInitially = false;
-  public areEdgesColourCoded = new BehaviorSubject(this.areEdgesColourCodedInitially);
-  areEdgesColourCoded$ = this.areEdgesColourCoded.asObservable();
+  private _areEdgesColourCoded = new BehaviorSubject(false);
+  areEdgesColourCoded$ = this._areEdgesColourCoded.asObservable();
 
-  public selectedLayoutOptionInitially = 'circle';
-  public selectedLayoutOption = new BehaviorSubject(this.selectedLayoutOptionInitially);
-  selectedLayoutOption$ = this.selectedLayoutOption.asObservable();
+  private _selectedLayoutOption = new BehaviorSubject('circle');
+  selectedLayoutOption$ = this._selectedLayoutOption.asObservable();
 
-  public isGraphViewToBeResetInitially = false;
-  public isGraphViewToBeReset = new BehaviorSubject(this.isGraphViewToBeResetInitially);
-  isGraphViewToBeReset$ = this.isGraphViewToBeReset.asObservable();
+  private _isGraphViewToBeReset = new BehaviorSubject(false);
+  isGraphViewToBeReset$ = this._isGraphViewToBeReset.asObservable();
 
-  public isGraphLayoutToBeResetInitially = false;
-  public isGraphLayoutToBeReset = new BehaviorSubject(this.isGraphLayoutToBeResetInitially);
-  isGraphLayoutToBeReset$ = this.isGraphLayoutToBeReset.asObservable();
+  private _isGraphLayoutToBeReset = new BehaviorSubject(false);
+  isGraphLayoutToBeReset$ = this._isGraphLayoutToBeReset.asObservable();
+
+  get spacingFactor(): number {
+    return this._spacingFactor.value;
+  }
+
+  get areZeroWeightedEdgesHidden(): boolean {
+    return this._areZeroWeightedEdgesHidden.value
+  }
+
+  get areNeighbourlessNodesHidden(): boolean {
+    return this._areNeighbourlessNodesHidden.value
+  }
+
+  get areEdgeWeightsShownAsLabels(): boolean {
+    return this._areEdgeWeightsShownAsLabels.value
+  }
+
+  get areEdgesColourCoded(): boolean {
+    return this._areEdgesColourCoded.value
+  }
+
+  get selectedLayoutOption(): string {
+    return this._selectedLayoutOption.value
+  }
+
 
   public graphLayoutGroups: GraphLayoutGroup[] = [
     {
@@ -70,34 +87,34 @@ export class GraphOptionsService {
   constructor() { }
 
   setSpacingFactor(value: number) {
-    this.spacingFactor.next(value)
+    this._spacingFactor.next(value)
   }
 
   setAreZeroWeightedEdgesHidden(value: boolean): void {
-    this.areZeroWeightedEdgesHidden.next(value);
+    this._areZeroWeightedEdgesHidden.next(value);
   }
 
   setAreNeighbourlessNodesHidden(value: boolean): void {
-    this.areNeighbourlessNodesHidden.next(value);
+    this._areNeighbourlessNodesHidden.next(value);
   }
 
   setAreEdgeWeightsShownAsLabels(value: boolean): void {
-    this.areEdgeWeightsShownAsLabels.next(value);
+    this._areEdgeWeightsShownAsLabels.next(value);
   }
 
   setAreEdgesColourCoded(value: boolean): void {
-    this.areEdgesColourCoded.next(value);
+    this._areEdgesColourCoded.next(value);
   }
 
   setSelectedLayoutOption(value: string): void {
-    this.selectedLayoutOption.next(value);
+    this._selectedLayoutOption.next(value);
   }
 
   setIsGraphViewToBeReset(value: boolean): void {
-    this.isGraphViewToBeReset.next(value);
+    this._isGraphViewToBeReset.next(value);
   }
 
   setIsGraphLayoutToBeReset(value: boolean) {
-    this.isGraphLayoutToBeReset.next(value);
+    this._isGraphLayoutToBeReset.next(value);
   }
 }
