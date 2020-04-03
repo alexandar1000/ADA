@@ -81,7 +81,7 @@ export class GraphMenuComponent implements OnInit {
 
   handleGraphEdgeWeightThresholdChange($event: any): void {
     let value = $event.target.value;
-    if (value > 0) {
+    if (value >= 0) {
       this.graphOptionsService.setGraphEdgeWeightThreshold(value);
       this.graphEdgeWeightThreshold = value;
     }

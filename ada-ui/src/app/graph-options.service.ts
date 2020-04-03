@@ -126,8 +126,6 @@ export class GraphOptionsService {
   }
 
   setGraphEdgeWeightThreshold(value: number): void {
-
-    console.log(value);
     this._graphEdgeWeightThreshold.next(value);
   }
 }

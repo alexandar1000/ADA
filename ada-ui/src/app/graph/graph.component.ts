@@ -21,6 +21,7 @@ export class GraphComponent implements OnInit {
   @Input() selectedMetric: string;
 
   private areZeroWeightedEdgesHidden: boolean;
+  private graphEdgeWeightThreshold: number;
   private areNeighbourlessNodesHidden: boolean;
   private areEdgeWeightsShownAsLabels: boolean;
   private areEdgesColourCoded: boolean;
@@ -136,6 +137,18 @@ export class GraphComponent implements OnInit {
           this.isGraphLayoutToBeReset = value;
           if (this.cy != null) {
             this.updateGraphLayout(this.selectedLayoutOption);
+          }
+        }
+      )
+    }
+    if (this.graphOptionsService.graphEdgeWeightThreshold$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.graphEdgeWeightThreshold$.subscribe(
+        value => {
+          if (value != this.graphEdgeWeightThreshold) {
+            this.graphEdgeWeightThreshold = value;
+            if (this.cy != null && this.areZeroWeightedEdgesHidden) {
+              this.reflectGraphMenuStateToGraph();
+            }
           }
         }
       )
@@ -604,7 +617,7 @@ export class GraphComponent implements OnInit {
    */
   private reflectGraphMenuStateToGraph(): void {
     this.cy.elements().unselect();
-    this.updateDisplayOfZeroEdges(this.areZeroWeightedEdgesHidden);
+    this.updateDisplayOfEdgesWithWeightBellowThreshold(this.areZeroWeightedEdgesHidden);
     this.updateDisplayOfNodesWithoutNeighbours(this.areNeighbourlessNodesHidden);
     // Make sure that the arrows on the displayed edges correspond properly to the metrics represented
     this.updateArrowStyle();
@@ -701,7 +714,7 @@ export class GraphComponent implements OnInit {
    * having a lot of zero edges might clutter the graph.
    * @param hideEdges a flag which defines whether the edges are to be defined
    */
-  private updateDisplayOfZeroEdges(hideEdges: boolean): void {
+  private updateDisplayOfEdgesWithWeightBellowThreshold(hideEdges: boolean): void {
     let self = this;
     // Make all changes to the graph in batch
     this.cy.batch(function() {
@@ -711,14 +724,14 @@ export class GraphComponent implements OnInit {
         // For all of the hidden edges show those with a weight of zero
         this.hiddenEdges.forEach(function (edge) {
           let weight = edge.data('weight');
-          if (weight != 0) {
+          if (weight >= self.graphEdgeWeightThreshold) {
             self.showEdge(edge);
           }
         });
         // For all of the edges in the graph hide those with a weight of zero
         this.cy.edges().forEach(function (edge) {
           let weight = edge.data('weight');
-          if (weight == 0) {
+          if (weight < self.graphEdgeWeightThreshold) {
             self.hideEdge(edge);
           }
         });
