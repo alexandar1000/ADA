@@ -19,6 +19,7 @@ app-graph {
   width: 97%;
   height: 98%;
   padding: 1% 2%;
+  overflow: auto;
 }
 
 app-graph-menu {
@@ -28,6 +29,25 @@ app-graph-menu {
 
 #mainDashboardTitle {
   text-align: center;
+}
+
+
+
+#dashboardSidePanel::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  background-color: #F5F5F5;
+}
+
+#dashboardSidePanel::-webkit-scrollbar
+{
+  width: 6px;
+  background-color: #F5F5F5;
+}
+
+#dashboardSidePanel::-webkit-scrollbar-thumb
+{
+  background-color: #000000;
 }
 
 
