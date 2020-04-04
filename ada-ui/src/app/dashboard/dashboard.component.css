@@ -20,6 +20,7 @@ app-graph {
   height: 98%;
   padding: 1% 2%;
   overflow: auto;
+  max-width: 40vh;
 }
 
 app-graph-menu {
