@@ -5,7 +5,15 @@
 }
 
 .full-width {
-    width: 100%;
+    width: 95%;
+}
+
+.left-padding {
+  padding-left: 5%;
+}
+
+.right-padding {
+  padding-right: 5%;
 }
 
 .query-button {
