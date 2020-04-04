@@ -2,7 +2,7 @@ package com.ucl.ADA.model.static_information;
 
 import com.ucl.ADA.model.base_entity.BaseEntity;
 import com.ucl.ADA.model.class_structure.ClassStructure;
-import com.ucl.ADA.model.dependence_information.OutgoingDependenceInfo;
+import com.ucl.ADA.model.dependence_information.DependenceInfo;
 import com.ucl.ADA.model.dependence_information.invocation_information.AttributeInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
@@ -98,9 +98,12 @@ public class StaticInfo extends BaseEntity {
      * Information about the invocations of the elements from the other classes from this class. String is the qualified
      * name of the class.
      */
-    @OneToMany(mappedBy = "staticInfo")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "STATIC_INFO_OUTGOING_DEPENDENCE_INFO",
+            joinColumns = {@JoinColumn(name = "static_info_id")},
+            inverseJoinColumns = {@JoinColumn(name = "dependence_info_id")})
     @MapKeyColumn(name = "class_name")
-    private Map<String, OutgoingDependenceInfo> outgoingDependenceInfos = new HashMap<>();
+    private Map<String, DependenceInfo> outgoingDependenceInfos = new HashMap<>();
 
     /* ************************************************************************
      *
@@ -112,7 +115,7 @@ public class StaticInfo extends BaseEntity {
      * External Method Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "STATIC_INFO_EXTERNAL_METHOD_INVOCATION",
             joinColumns = @JoinColumn(name = "static_info_id"),
@@ -124,7 +127,7 @@ public class StaticInfo extends BaseEntity {
      * External Constructor Invocations. Includes only calls to classes which cannot be resolved within the project.
      * These include the dependencies and libraries.
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "STATIC_INFO_EXTERNAL_CONSTRUCTOR_INVOCATION",
             joinColumns = @JoinColumn(name = "static_info_id"),
@@ -136,7 +139,7 @@ public class StaticInfo extends BaseEntity {
      * External Attribute Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "STATIC_INFO_EXTERNAL_ATTRIBUTE_INVOCATION",
             joinColumns = @JoinColumn(name = "static_info_id"),

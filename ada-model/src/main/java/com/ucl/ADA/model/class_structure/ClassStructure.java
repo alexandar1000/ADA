@@ -1,8 +1,7 @@
 package com.ucl.ADA.model.class_structure;
 
 import com.ucl.ADA.model.base_entity.BaseEntity;
-import com.ucl.ADA.model.dependence_information.IncomingDependenceInfo;
-import com.ucl.ADA.model.dependence_information.OutgoingDependenceInfo;
+import com.ucl.ADA.model.dependence_information.DependenceInfo;
 import com.ucl.ADA.model.dependence_information.invocation_information.AttributeInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
@@ -77,11 +76,11 @@ public class ClassStructure extends BaseEntity {
      * of the class.
      */
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "STATIC_INFO_INCOMING_DEPENDENCE_INFO",
-            joinColumns = {@JoinColumn(name = "static_info_id")},
-            inverseJoinColumns = {@JoinColumn(name = "incoming_dependence_info_id")})
+    @JoinTable(name = "CLASS_STRUCTURE_INCOMING_DEPENDENCE_INFO",
+            joinColumns = {@JoinColumn(name = "class_Structure_id")},
+            inverseJoinColumns = {@JoinColumn(name = "dependence_info_id")})
     @MapKeyColumn(name = "class_name")
-    private Map<String, IncomingDependenceInfo> incomingDependenceInfos = new HashMap<>();
+    private Map<String, DependenceInfo> incomingDependenceInfos = new HashMap<>();
 
     /**
      * All of the metric values for the link between the current class and the linking classes.
@@ -118,7 +117,7 @@ public class ClassStructure extends BaseEntity {
         staticInfo.getExternalAttributeInvocations().add(attributeInvocation);
     }
 
-    protected Map<String, OutgoingDependenceInfo> getOutgoingDependenceInfos() {
+    protected Map<String, DependenceInfo> getOutgoingDependenceInfos() {
         return staticInfo.getOutgoingDependenceInfos();
     }
 

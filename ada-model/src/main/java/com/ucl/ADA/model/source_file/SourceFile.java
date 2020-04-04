@@ -17,6 +17,9 @@ import java.util.Set;
 @Table(name = "SOURCE_FILE")
 public class SourceFile extends BaseEntity {
 
+    @Column(name = "file_path")
+    private String filePath;
+
     /**
      * the snapshot which contains the source file
      */

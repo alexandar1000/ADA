@@ -47,7 +47,9 @@ public class SnapshotUtils {
             }
             // create source file
             SourceFile sourceFile = new SourceFile();
+            sourceFile.setFilePath(filePath);
             sourceFile.setFileHash(fileHash);
+            sourceFile.setSnapshot(snapshot);
             sourceFiles.put(filePath, sourceFile);
         }
         return snapshot;

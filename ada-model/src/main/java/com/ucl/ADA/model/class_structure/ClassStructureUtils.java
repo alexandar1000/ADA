@@ -2,8 +2,6 @@ package com.ucl.ADA.model.class_structure;
 
 import com.google.common.collect.SetMultimap;
 import com.ucl.ADA.model.dependence_information.DependenceInfo;
-import com.ucl.ADA.model.dependence_information.IncomingDependenceInfo;
-import com.ucl.ADA.model.dependence_information.OutgoingDependenceInfo;
 import com.ucl.ADA.model.dependence_information.invocation_information.*;
 import com.ucl.ADA.model.static_information.declaration_information.*;
 import lombok.NonNull;
@@ -84,13 +82,13 @@ public class ClassStructureUtils {
             classStructure.setIncomingDependenceInfos(prevClassStructure.getIncomingDependenceInfos());
         } else {
             // reuse incoming dependence info excludes incomingToDeleteMap from previous class structure
-            Map<String, IncomingDependenceInfo> incomingDependenceInfo = classStructure.getIncomingDependenceInfos();
+            Map<String, DependenceInfo> incomingDependenceInfo = classStructure.getIncomingDependenceInfos();
             if (incomingToDeleteMap.containsKey(className)) {
                 // if there are incoming dependence info to delete, query from incomingToDeleteMap
                 Set<String> incomingToDeleteSet = incomingToDeleteMap.get(className);
-                for (Map.Entry<String, IncomingDependenceInfo> entry : prevClassStructure.getIncomingDependenceInfos().entrySet()) {
+                for (Map.Entry<String, DependenceInfo> entry : prevClassStructure.getIncomingDependenceInfos().entrySet()) {
                     String incomingClass = entry.getKey();
-                    IncomingDependenceInfo dependenceInfo = entry.getValue();
+                    DependenceInfo dependenceInfo = entry.getValue();
                     if (!incomingToDeleteSet.contains(incomingClass)) {
                         incomingDependenceInfo.put(incomingClass, dependenceInfo);
                     }
@@ -182,24 +180,25 @@ public class ClassStructureUtils {
      * @param invocationType      the implemented type of invocation
      */
     public static void addInternalInvocationToClassStructure(@NonNull ClassStructure classStructure, @NonNull String relatingClass, @NonNull InvocationDirection invocationDirection, @NonNull InvocationType invocationType, @NonNull ElementInvocation invocation) {
-        DependenceInfo dependenceInfo;
-        // retrieve outgoing or incoming dependence info
+        // retrieve either outgoing or incoming dependence infos
+        Map<String, DependenceInfo> dependenceInfos;
         switch (invocationDirection) {
             case OUTGOING:
-                if (!classStructure.getOutgoingDependenceInfos().containsKey(relatingClass)) {
-                    classStructure.getOutgoingDependenceInfos().put(relatingClass, new OutgoingDependenceInfo());
-                }
-                dependenceInfo = classStructure.getOutgoingDependenceInfos().get(relatingClass);
+                dependenceInfos = classStructure.getOutgoingDependenceInfos();
                 break;
             case INCOMING:
-                if (!classStructure.getIncomingDependenceInfos().containsKey(relatingClass)) {
-                    classStructure.getIncomingDependenceInfos().put(relatingClass, new IncomingDependenceInfo());
-                }
-                dependenceInfo = classStructure.getIncomingDependenceInfos().get(relatingClass);
+                dependenceInfos = classStructure.getIncomingDependenceInfos();
                 break;
             default:
                 throw new IllegalArgumentException("Invalid invocation direction");
         }
+
+        // check if the dependence info to the relating class exists
+        if (!dependenceInfos.containsKey(relatingClass)) {
+            dependenceInfos.put(relatingClass, new DependenceInfo());
+        }
+        DependenceInfo dependenceInfo = dependenceInfos.get(relatingClass);
+
 
         // add new invocation by its type
         switch (invocationType) {

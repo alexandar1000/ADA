@@ -56,7 +56,7 @@ public class Snapshot extends BaseEntity {
      * a map of source files, the key is the file path
      */
     @OneToMany(mappedBy = "snapshot", cascade = CascadeType.ALL)
-    @MapKeyColumn(name = "file_path")
+    @MapKey(name = "filePath")
     private Map<String, SourceFile> sourceFiles = new HashMap<>();
 
     /**
