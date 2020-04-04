@@ -40,7 +40,7 @@ public class StaticInfo extends BaseEntity {
     /**
      * Packages present in the class. They can be either declared or imported.
      */
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "STATIC_INFO_IMPORT_DECLARATION",
             joinColumns = @JoinColumn(name = "static_info_id"),
@@ -51,14 +51,14 @@ public class StaticInfo extends BaseEntity {
     /**
      * Fully qualified class package name (including the name of the class in the end).
      */
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "package_declaration_id")
     private PackageDeclaration packageDeclaration = new PackageDeclaration();
 
     /**
      * Attributes declared in this class.
      */
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "STATIC_INFO_ATTRIBUTE_DECLARATION",
             joinColumns = @JoinColumn(name = "static_info_id"),
@@ -69,7 +69,7 @@ public class StaticInfo extends BaseEntity {
     /**
      * Constructors declared in this class.
      */
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "STATIC_INFO_CONSTRUCTOR_DECLARATION",
             joinColumns = @JoinColumn(name = "static_info_id"),
@@ -80,7 +80,7 @@ public class StaticInfo extends BaseEntity {
     /**
      * Methods declared in this class.
      */
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "STATIC_INFO_METHOD_DECLARATION",
             joinColumns = @JoinColumn(name = "static_info_id"),
@@ -98,7 +98,7 @@ public class StaticInfo extends BaseEntity {
      * Information about the invocations of the elements from the other classes from this class. String is the qualified
      * name of the class.
      */
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "STATIC_INFO_OUTGOING_DEPENDENCE_INFO",
             joinColumns = {@JoinColumn(name = "static_info_id")},
             inverseJoinColumns = {@JoinColumn(name = "dependence_info_id")})
@@ -115,7 +115,7 @@ public class StaticInfo extends BaseEntity {
      * External Method Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "STATIC_INFO_EXTERNAL_METHOD_INVOCATION",
             joinColumns = @JoinColumn(name = "static_info_id"),
@@ -127,7 +127,7 @@ public class StaticInfo extends BaseEntity {
      * External Constructor Invocations. Includes only calls to classes which cannot be resolved within the project.
      * These include the dependencies and libraries.
      */
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "STATIC_INFO_EXTERNAL_CONSTRUCTOR_INVOCATION",
             joinColumns = @JoinColumn(name = "static_info_id"),
@@ -139,7 +139,7 @@ public class StaticInfo extends BaseEntity {
      * External Attribute Invocations. Includes only calls to classes which cannot be resolved within the project. These
      * include the dependencies and libraries.
      */
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "STATIC_INFO_EXTERNAL_ATTRIBUTE_INVOCATION",
             joinColumns = @JoinColumn(name = "static_info_id"),

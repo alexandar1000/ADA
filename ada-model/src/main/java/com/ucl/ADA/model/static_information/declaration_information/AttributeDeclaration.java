@@ -29,7 +29,7 @@ public class AttributeDeclaration extends ElementDeclaration {
     /**
      * The access modifier assigned to the attribute.
      */
-    @ElementCollection(targetClass = ModifierType.class)
+    @ElementCollection(targetClass = ModifierType.class, fetch = FetchType.EAGER)
     @CollectionTable(
             name = "ATTRIBUTE_DECLARATION_MODIFIER_TYPE",
             joinColumns = @JoinColumn(name = "attribute_declaration_id")

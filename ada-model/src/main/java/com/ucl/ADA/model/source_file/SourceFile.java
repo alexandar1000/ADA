@@ -30,7 +30,7 @@ public class SourceFile extends BaseEntity {
     /**
      * the set of qualified class names of all classes in a source file
      */
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "SOURCE_FILE_CLASS_NAME",
             joinColumns = @JoinColumn(name = "source_file_id")

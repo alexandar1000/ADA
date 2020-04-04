@@ -18,7 +18,7 @@ public class ConstructorDeclaration extends ElementDeclaration {
     /**
      * The access modifier assigned to the constructor.
      */
-    @ElementCollection(targetClass = ModifierType.class)
+    @ElementCollection(targetClass = ModifierType.class, fetch = FetchType.EAGER)
     @CollectionTable(
             name = "CONSTRUCTOR_DECLARATION_MODIFIER_TYPE",
             joinColumns = @JoinColumn(name = "constructor_declaration_id")
@@ -30,7 +30,7 @@ public class ConstructorDeclaration extends ElementDeclaration {
     /**
      * List of the parameters which the constructor accepts.
      */
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "CONSTRUCTOR_DECLARATION_PARAMETER_DECLARATION",
             joinColumns = @JoinColumn(name = "constructor_declaration_id"),

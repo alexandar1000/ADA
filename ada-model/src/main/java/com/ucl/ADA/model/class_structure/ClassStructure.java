@@ -67,7 +67,7 @@ public class ClassStructure extends BaseEntity {
      * static information contains all declarations, outgoing dependence info and external invocation which is unchanged
      * when source file is not parsed
      */
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "static_info_id")
     private StaticInfo staticInfo = new StaticInfo();
 
@@ -75,12 +75,18 @@ public class ClassStructure extends BaseEntity {
      * Information about the invocations of elements from this class by the other classes. String is the qualified name
      * of the class.
      */
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "CLASS_STRUCTURE_INCOMING_DEPENDENCE_INFO",
-            joinColumns = {@JoinColumn(name = "class_Structure_id")},
+            joinColumns = {@JoinColumn(name = "class_structure_id")},
             inverseJoinColumns = {@JoinColumn(name = "dependence_info_id")})
     @MapKeyColumn(name = "class_name")
     private Map<String, DependenceInfo> incomingDependenceInfos = new HashMap<>();
+
+    /* ************************************************************************
+     *
+     *  metric information
+     *
+     **************************************************************************/
 
     /**
      * All of the metric values for the link between the current class and the linking classes.

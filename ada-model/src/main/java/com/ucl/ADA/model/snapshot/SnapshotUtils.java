@@ -4,10 +4,14 @@ import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.SetMultimap;
 import com.ucl.ADA.model.class_structure.ClassStructure;
 import com.ucl.ADA.model.class_structure.ClassStructureUtils;
-import com.ucl.ADA.model.dependence_information.invocation_information.*;
+import com.ucl.ADA.model.dependence_information.invocation_information.ElementInvocation;
+import com.ucl.ADA.model.dependence_information.invocation_information.InvocationDirection;
+import com.ucl.ADA.model.dependence_information.invocation_information.InvocationType;
 import com.ucl.ADA.model.source_file.SourceFile;
-import com.ucl.ADA.model.static_information.declaration_information.*;
+import com.ucl.ADA.model.static_information.declaration_information.DeclarationType;
+import com.ucl.ADA.model.static_information.declaration_information.ElementDeclaration;
 import lombok.NonNull;
+import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,6 +23,7 @@ import java.util.Set;
 import static com.ucl.ADA.model.class_structure.ClassStructureUtils.*;
 import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
 
+@Service
 public class SnapshotUtils {
 
     /* ************************************************************************
