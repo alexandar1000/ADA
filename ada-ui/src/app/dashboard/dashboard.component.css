@@ -8,7 +8,7 @@
 
 #dashboardSidePanel {
   overflow: auto;
-  max-width: 40vh;
+  max-width: 45vh;
 }
 
 .my-dashboard-tile-container {
@@ -33,7 +33,7 @@ app-graph-menu {
 }
 
 #dashboardPanel {
-  padding-top: 5vh;
+  padding-top: 2vh;
 }
 
 #dashboardSidePanel::-webkit-scrollbar-track
