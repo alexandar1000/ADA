@@ -20,6 +20,6 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void loadData() throws FileNotFoundException {
-        repositoryAnalyserServices.analyseRepositoryService("https://github.com/alexandar1000/ADA", "master");
+        repositoryAnalyserServices.analyseRepositoryService("https://github.com/alexandar1000/ADA-test-simple-JAVA-project-0", "master");
     }
 }

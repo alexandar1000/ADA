@@ -110,7 +110,6 @@ public class RepositoryAnalyserServices {
         // this step requires change finished utility or transformer to keep track on all changed class structure
         // need to think carefully how to implement
 
-
         return snapshot;
     }
 

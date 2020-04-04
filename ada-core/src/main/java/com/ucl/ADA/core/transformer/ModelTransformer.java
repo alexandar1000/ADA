@@ -53,34 +53,29 @@ public class ModelTransformer {
         Set<String> incomingToAddSet = new HashSet<>();
 
         for (ADAClass adaClass : filePathToClassStructuresMap.values()) {
-            System.out.println("--------------------------------------------------------------");
-            System.out.println("* " + adaClass.getClassName());
-
             // get affected class from constructor invocation
             for (ADAConstructorInvocation adaConstructorInvocation : adaClass.getADAConstructorInvocations()) {
                 String constructorFullName = adaConstructorInvocation.getConstructorClassName();
                 incomingToAddSet.add(constructorFullName);
-                System.out.println(constructorFullName);
             }
             // get affected class from method invocation
             for (ADAMethodInvocation adaMethodInvocation : adaClass.getADAMethodInvocations()) {
                 String calleeName = adaMethodInvocation.getCalleeName();
                 incomingToAddSet.add(calleeName);
-                System.out.println(calleeName);
             }
-            // get affected class from attribute invocation
-            // as class attributes
-            for (ADAClassAttribute adaClassAttribute : adaClass.getAdaClassAttributes()) {
-                incomingToAddSet.add(adaClassAttribute.getType());
-                System.out.println(adaClassAttribute.getType());
-            }
-            // as local variables
-            for (ADAMethodOrConstructorDeclaration declaration : adaClass.getADAMethodOrConstructorDeclaration()) {
-                for (Map.Entry<String, String> entry : declaration.getLocalVariables().entrySet()) {
-                    incomingToAddSet.add(entry.getValue());
-                    System.out.println(entry.getValue());
-                }
-            }
+//            // get affected class from attribute invocation
+//            // as class attributes
+//            for (ADAClassAttribute adaClassAttribute : adaClass.getAdaClassAttributes()) {
+//                incomingToAddSet.add(adaClassAttribute.getType());
+//                System.out.println(adaClassAttribute.getType());
+//            }
+//            // as local variables
+//            for (ADAMethodOrConstructorDeclaration declaration : adaClass.getADAMethodOrConstructorDeclaration()) {
+//                for (Map.Entry<String, String> entry : declaration.getLocalVariables().entrySet()) {
+//                    incomingToAddSet.add(entry.getValue());
+//                    System.out.println(entry.getValue());
+//                }
+//            }
         }
         return incomingToAddSet;
     }
@@ -104,7 +99,7 @@ public class ModelTransformer {
             transformAttributeDeclaration(snapshot, sourceClass);
             transformConstructorAndMethodDeclaration(snapshot, sourceClass);
 
-            transformAttributeInvocation(snapshot, sourceClass);
+//            transformAttributeInvocation(snapshot, sourceClass);
             transformConstructorInvocation(snapshot, sourceClass);
             transformMethodInvocation(snapshot, sourceClass);
 
@@ -192,16 +187,12 @@ public class ModelTransformer {
         // as class attributes
         for (ADAClassAttribute adaClassAttribute : sourceClass.getAdaClassAttributes()) {
             String type = adaClassAttribute.getType();
-            // TODO: remove the invoked class checking
-//            excludeJavaInvocation(type);
             AttributeInvocation attributeInvocation = new AttributeInvocation(adaClassAttribute.getName());
             addInternalInvocationToSnapshot(snapshot, className, type, InvocationType.ATTRIBUTE, attributeInvocation);
         }
         // as local variables
         for (ADAMethodOrConstructorDeclaration declaration : sourceClass.getADAMethodOrConstructorDeclaration()) {
             for (Map.Entry<String, String> entry : declaration.getLocalVariables().entrySet()) {
-                // TODO: remove the invoked class checking
-//                excludeJavaInvocation(entry.getValue());
                 AttributeInvocation attributeInvocation = new AttributeInvocation(entry.getKey());
                 addInternalInvocationToSnapshot(snapshot, className, entry.getValue(), InvocationType.ATTRIBUTE, attributeInvocation);
             }
@@ -218,8 +209,6 @@ public class ModelTransformer {
         String className = sourceClass.getClassName();
 
         for (ADAConstructorInvocation adaConstructorInvocation : sourceClass.getADAConstructorInvocations()) {
-            // TODO: remove the invoked class checking
-//            excludeJavaInvocation(adaConstructorInvocation.getConstructorClassName());
             List<PassedParameter> parameters = new ArrayList<>();
             for (String value : adaConstructorInvocation.getArguments()) {
                 parameters.add(new PassedParameter(value));
@@ -227,7 +216,7 @@ public class ModelTransformer {
             String constructorFullName = adaConstructorInvocation.getConstructorClassName();
             String[] constructorNameArr = constructorFullName.split("\\.");
             ConstructorInvocation constructorInvocation = new ConstructorInvocation(constructorNameArr[constructorNameArr.length - 1], parameters);
-            addInternalInvocationToSnapshot(snapshot, className, constructorFullName, InvocationType.ATTRIBUTE, constructorInvocation);
+            addInternalInvocationToSnapshot(snapshot, className, constructorFullName, InvocationType.CONSTRUCTOR, constructorInvocation);
         }
     }
 
@@ -240,8 +229,6 @@ public class ModelTransformer {
     public static void transformMethodInvocation(Snapshot snapshot, ADAClass sourceClass) {
         String className = sourceClass.getClassName();
         for (ADAMethodInvocation adaMethodInvocation : sourceClass.getADAMethodInvocations()) {
-            // TODO: remove the invoked class checking
-//            excludeJavaInvocation(adaMethodInvocation.getCalleeName());
             List<PassedParameter> parameters = new ArrayList<>();
             for (String value : adaMethodInvocation.getArguments()) {
                 parameters.add(new PassedParameter(value));
@@ -261,10 +248,10 @@ public class ModelTransformer {
     public static void transformExternalInvocation(Snapshot snapshot, ADAClass sourceClass) {
         String className = sourceClass.getClassName();
 
-        for (String exAttribute : sourceClass.getExFieldInvocation()) {
-            AttributeInvocation attributeInvocation = new AttributeInvocation(exAttribute);
-            addExternalInvocationToSnapshot(snapshot, className, InvocationType.ATTRIBUTE, attributeInvocation);
-        }
+//        for (String exAttribute : sourceClass.getExFieldInvocation()) {
+//            AttributeInvocation attributeInvocation = new AttributeInvocation(exAttribute);
+//            addExternalInvocationToSnapshot(snapshot, className, InvocationType.ATTRIBUTE, attributeInvocation);
+//        }
         for (String exMethodCalls : sourceClass.getExMethodCalls()) {
             MethodInvocation methodInvocation = new MethodInvocation(exMethodCalls, new ArrayList<>(Collections.singletonList(new PassedParameter("parameter_placeholder"))));
             addExternalInvocationToSnapshot(snapshot, className, InvocationType.METHOD, methodInvocation);
