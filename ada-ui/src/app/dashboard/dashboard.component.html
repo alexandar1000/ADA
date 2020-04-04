@@ -1,9 +1,8 @@
-<!--<h2 id="mainDashboardTitle">The Dashboard for Your Project</h2>-->
 <section id="dashboardPanel">
   <mat-grid-list cols="3" rowHeight="80vh">
     <mat-grid-tile rowspan="1" colspan="2">
-      <div class="my-graph-tile-container">
-        <mat-card class="my-graph-tile-container">
+      <div class="my-dashboard-tile-container">
+        <mat-card class="my-dashboard-tile-container">
             <app-graph [projectStructure]="projectStructure" *ngIf="!analyserService.isLoading"
             ></app-graph>
             <mat-spinner diameter="65" *ngIf="analyserService.isLoading"></mat-spinner>
@@ -12,9 +11,11 @@
 
     </mat-grid-tile>
     <mat-grid-tile rowspan="1" colspan="1">
-      <div id="dashboardSidePanel" class="my-graph-tile-container">
-        <app-dashboard-side-panel></app-dashboard-side-panel>
-        <app-snapshot-slider [snapshots]="snapshots"></app-snapshot-slider>
+      <div class="my-dashboard-tile-container">
+        <mat-card id="dashboardSidePanel" class="my-dashboard-tile-container">
+            <app-dashboard-side-panel class="my-dashboard-side-panel-content"></app-dashboard-side-panel>
+            <app-snapshot-slider class="my-dashboard-side-panel-content" [snapshots]="snapshots"></app-snapshot-slider>
+        </mat-card>
       </div>
     </mat-grid-tile>
   </mat-grid-list>

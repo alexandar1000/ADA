@@ -1,4 +1,4 @@
-<div id="dashboardSidePanel">
+<div id="dashboardSidePanelAccordion">
   <mat-accordion>
     <mat-expansion-panel (opened)="isMenuOpen = true"
                          (closed)="isMenuOpen = false">
@@ -9,6 +9,7 @@
       </mat-expansion-panel-header>
       <app-graph-menu></app-graph-menu>
     </mat-expansion-panel>
+
     <mat-expansion-panel [expanded]="!isMenuOpen">
       <mat-expansion-panel-header>
         <mat-panel-title>

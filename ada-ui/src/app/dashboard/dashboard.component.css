@@ -7,15 +7,19 @@
 }
 
 #dashboardSidePanel {
-  /*width: 98%;*/
-  /*height: 98%;*/
   overflow: auto;
   max-width: 40vh;
 }
 
-.my-graph-tile-container {
+.my-dashboard-tile-container {
   width: 98%;
   height: 98%;
+  padding: 0;
+}
+
+.my-dashboard-side-panel-content {
+  width: 90%;
+  height: 90%;
   padding: 0;
 }
 
