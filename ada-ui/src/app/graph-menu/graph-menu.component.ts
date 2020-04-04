@@ -57,6 +57,7 @@ export class GraphMenuComponent implements OnInit {
     this.areEdgeWeightsShownAsLabels = this.graphOptionsService.areEdgeWeightsShownAsLabels;
     this.areEdgesColourCoded = this.graphOptionsService.areEdgesColourCoded;
     this.selectedLayoutOption = this.graphOptionsService.selectedLayoutOption;
+    this.graphLayoutControl.setValue(this.selectedLayoutOption);
     this.graphEdgeWeightThreshold = this.graphOptionsService.graphEdgeWeightThreshold;
     this.graphLayoutGroups = this.graphOptionsService.graphLayoutGroups;
     this.weightThresholdFormControl = new FormControl(this.graphEdgeWeightThreshold, [
