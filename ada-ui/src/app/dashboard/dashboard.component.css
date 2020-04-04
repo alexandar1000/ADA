@@ -1,24 +1,26 @@
 .mat-spinner {
-  position: fixed;
-  top: 50%;
+  position: relative;
+  top: 42%;
   left: 50%;
   margin-top: -30px;
   margin-left: -30px;
 }
 
-mat-grid-list {
+#dashboardSidePanel {
+  overflow: auto;
+  max-width: 45vh;
 }
 
-app-graph {
+.my-dashboard-tile-container {
   width: 98%;
   height: 98%;
-  padding: 1% 1%;
+  padding: 0;
 }
 
-#dashboardSidePanel {
-  width: 97%;
-  height: 98%;
-  padding: 1% 2%;
+.my-dashboard-side-panel-content {
+  width: 90%;
+  height: 90%;
+  padding: 0;
 }
 
 app-graph-menu {
@@ -28,6 +30,27 @@ app-graph-menu {
 
 #mainDashboardTitle {
   text-align: center;
+}
+
+#dashboardPanel {
+  padding-top: 2vh;
+}
+
+#dashboardSidePanel::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  background-color: #F5F5F5;
+}
+
+#dashboardSidePanel::-webkit-scrollbar
+{
+  width: 6px;
+  background-color: #F5F5F5;
+}
+
+#dashboardSidePanel::-webkit-scrollbar-thumb
+{
+  background-color: #000000;
 }
 
 

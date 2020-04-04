@@ -6,6 +6,7 @@ import {ProjectStructure} from "../classes/project-structure";
 import {CollectionReturnValue} from "cytoscape";
 import { QueryService } from '../query.service';
 import {GraphOptionsService} from "../graph-options.service";
+import {ElementInsightService} from "../element-insight.service";
 
 cytoscape.use( fcose );
 
@@ -21,6 +22,7 @@ export class GraphComponent implements OnInit {
   @Input() selectedMetric: string;
 
   private areZeroWeightedEdgesHidden: boolean;
+  private graphEdgeWeightThreshold: number;
   private areNeighbourlessNodesHidden: boolean;
   private areEdgeWeightsShownAsLabels: boolean;
   private areEdgesColourCoded: boolean;
@@ -47,7 +49,9 @@ export class GraphComponent implements OnInit {
   private queryMessage;
   private metricNameConverter = new MetricNameConverter();
 
-  constructor(private queryService: QueryService, private graphOptionsService: GraphOptionsService) {
+  constructor(private queryService: QueryService,
+              private graphOptionsService: GraphOptionsService,
+              private elementInsightService: ElementInsightService) {
     if (queryService.receivedQueryEvent$) {
       this.subscriptions[this.subscriptionIndex++] = this.queryService.receivedQueryEvent$.subscribe(
         query => {
@@ -68,8 +72,8 @@ export class GraphComponent implements OnInit {
         }
       )
     }
-    if (this.graphOptionsService.areZeroWeightedEdgesHidden$) {
-      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.areZeroWeightedEdgesHidden$.subscribe(
+    if (this.graphOptionsService.areEdgesBellowWeightThresholdHidden$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.areEdgesBellowWeightThresholdHidden$.subscribe(
         value => {
           this.areZeroWeightedEdgesHidden = value;
           if (this.cy != null) {
@@ -140,18 +144,32 @@ export class GraphComponent implements OnInit {
         }
       )
     }
+    if (this.graphOptionsService.graphEdgeWeightThreshold$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.graphEdgeWeightThreshold$.subscribe(
+        value => {
+          if (value != this.graphEdgeWeightThreshold) {
+            this.graphEdgeWeightThreshold = value;
+            if (this.cy != null && this.areZeroWeightedEdgesHidden) {
+              this.reflectGraphMenuStateToGraph();
+            }
+          }
+        }
+      )
+    }
+    if (this.graphOptionsService.selectedMetric$) {
+      this.subscriptions[this.subscriptionIndex++] = this.graphOptionsService.selectedMetric$.subscribe(
+        value => {
+          this.selectedMetric = value;
+          if (this.cy != null) {
+            this.changeMetricRepresentedInGraph();
+            this.reflectGraphMenuStateToGraph();
+          }
+        }
+      )
+    }
     this.initCytoscape();
     this.initEventHandlers();
     this.populateGraph();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.cy != null) {
-      if (changes.selectedMetric) {
-        this.changeMetricRepresentedInGraph();
-        this.reflectGraphMenuStateToGraph();
-      }
-    }
   }
 
   ngOnDestroy() {
@@ -604,7 +622,7 @@ export class GraphComponent implements OnInit {
    */
   private reflectGraphMenuStateToGraph(): void {
     this.cy.elements().unselect();
-    this.updateDisplayOfZeroEdges(this.areZeroWeightedEdgesHidden);
+    this.updateDisplayOfEdgesWithWeightBellowThreshold(this.areZeroWeightedEdgesHidden);
     this.updateDisplayOfNodesWithoutNeighbours(this.areNeighbourlessNodesHidden);
     // Make sure that the arrows on the displayed edges correspond properly to the metrics represented
     this.updateArrowStyle();
@@ -701,7 +719,7 @@ export class GraphComponent implements OnInit {
    * having a lot of zero edges might clutter the graph.
    * @param hideEdges a flag which defines whether the edges are to be defined
    */
-  private updateDisplayOfZeroEdges(hideEdges: boolean): void {
+  private updateDisplayOfEdgesWithWeightBellowThreshold(hideEdges: boolean): void {
     let self = this;
     // Make all changes to the graph in batch
     this.cy.batch(function() {
@@ -711,14 +729,14 @@ export class GraphComponent implements OnInit {
         // For all of the hidden edges show those with a weight of zero
         this.hiddenEdges.forEach(function (edge) {
           let weight = edge.data('weight');
-          if (weight != 0) {
+          if (weight >= self.graphEdgeWeightThreshold) {
             self.showEdge(edge);
           }
         });
         // For all of the edges in the graph hide those with a weight of zero
         this.cy.edges().forEach(function (edge) {
           let weight = edge.data('weight');
-          if (weight == 0) {
+          if (weight < self.graphEdgeWeightThreshold) {
             self.hideEdge(edge);
           }
         });
@@ -1008,15 +1026,15 @@ export class GraphComponent implements OnInit {
    * @param nodeId id of the node which is selected
    */
   private emitNodeSelected(nodeId: string) {
-    this.nodeSelectedEvent.emit(nodeId);
+    this.elementInsightService.setSelectedNode(nodeId);
   }
 
   /**
    * Emit the selection of the edge to the dashboard
    * @param edgeId id of the edge which is selected
    */
-  private emitEdgeSelected(edgeId: string) {
-    this.edgeSelectedEvent.emit(edgeId);
+  private emitEdgeSelected(edgeId: number) {
+    this.elementInsightService.setSelectedEdge(edgeId);
   }
 
   /**
@@ -1036,15 +1054,15 @@ export class GraphComponent implements OnInit {
    * @param nodeId id of the node which is selected
    */
   private emitNodeUnselected(nodeId: string) {
-    this.nodeUnselectedEvent.emit(nodeId);
+    this.elementInsightService.resetSelectedNode(nodeId);
   }
 
   /**
    * Emit the unselection of the edge to the dashboard
    * @param edgeId id of the edge which is selected
    */
-  private emitEdgeUnselected(edgeId: string) {
-    this.edgeUnselectedEvent.emit(edgeId);
+  private emitEdgeUnselected(edgeId: number) {
+    this.elementInsightService.resetSelectedEdge(edgeId);
   }
 
   /**

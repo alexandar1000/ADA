@@ -1,10 +1,23 @@
 .graph-menu {
-  width: 100%;
-  height: 50%;
-  border: 2px solid red;
-  overflow: auto;
+  width: 95%;
+  height: 95%;
+  overflow: hidden;
 }
 
 li {
   list-style-type: none;
+}
+
+.weight-threshold-input {
+  min-width: 30%;
+  max-width: 70%;
+}
+
+.my-tile-container {
+  width: 100%;
+  max-height: 30px;
+}
+
+.my-grid-list-separator {
+  max-height: 4px;
 }

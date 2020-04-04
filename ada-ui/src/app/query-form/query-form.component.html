@@ -1,25 +1,56 @@
-<div class="query-form-container">
+<div class="query-form-container my-query-form">
 	<form (ngSubmit)="onSubmit()" class="query-form" #queryForm="ngForm">
-		<p>Query graph:</p>
-		<mat-form-field class="full-width">
-			<mat-label>Query type</mat-label>
-			<mat-select [(ngModel)]="selectedQueryType" name="queryType" required>
-				<mat-option *ngFor="let queryType of queryTypes" [value]="queryType">
-						{{queryType}}
-				</mat-option>
-			</mat-select>
-		</mat-form-field>
-		<mat-form-field class="full-width">
-			<mat-label>Query</mat-label>
-			<input matInput placeholder="Query" 
-						 name="query"
-						 [(ngModel)]="queryText"
-						 required #query="ngModel">
-		</mat-form-field>
-		<mat-checkbox [disabled]="!isPackageQuery()" [(ngModel)]="seePackageHigherClasses" name="seePackageHigherClassesCheckbox">See classes from lower packages</mat-checkbox>
-		<button type="submit" [disabled]="!queryForm.form.valid" mat-raised-button color="primary" class="query-button">Go</button>
-		<p *ngIf="queryMessage">{{queryMessage}}</p>
+    <mat-grid-list cols="6">
+      <mat-grid-tile colspan="6">
+        <div class="full-width">
+          <p>Query graph:</p>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan="3">
+        <div class="full-width right-padding">
+          <mat-form-field class="full-width">
+            <mat-label>Query type</mat-label>
+            <mat-select [(ngModel)]="selectedQueryType" name="queryType" required>
+              <mat-option *ngFor="let queryType of queryTypes" [value]="queryType">
+                {{queryType}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan="3">
+        <div class="full-width left-padding">
+          <mat-form-field class="full-width">
+            <mat-label>Query</mat-label>
+            <input matInput placeholder="Query"
+                   name="query"
+                   [(ngModel)]="queryText"
+                   required #query="ngModel">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan="3">
+        <div class="full-width">
+          <mat-checkbox [disabled]="!isPackageQuery()" [(ngModel)]="seePackageHigherClasses" name="seePackageHigherClassesCheckbox"><span style="text-wrap: normal">See classes from offspring packages</span></mat-checkbox>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="3">
+        <div class="full-width">
+          <button type="submit" [disabled]="!queryForm.form.valid" mat-stroked-button color="primary" class="query-button">Go</button>
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile colspan="6" *ngIf="queryMessage">
+        <div class="full-width">
+          <p>{{queryMessage}}</p>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
 	</form>
 </div>
 
-  

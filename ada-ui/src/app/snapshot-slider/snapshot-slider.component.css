@@ -1,3 +1,7 @@
+#dashboardSidePanelSnapshotSlider {
+  padding: 3%;
+}
+
 mat-slider {
   width: 35%;
 }

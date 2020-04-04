@@ -13,10 +13,6 @@ import { SnapshotStyleService } from '../snapshot-style.service';
 export class DashboardComponent implements OnInit {
   private projectStructure: ProjectStructure;
   private snapshots = this.analyserService.snapshots;
-  private metrics = this.analyserService.metrics;
-  private selectedMetric = this.metrics[0];
-  private selectedNode: string;
-  private selectedEdge: string;
 
   constructor(private analyserService: AnalyserService,
               private newEntryService: NewEntryService,
@@ -49,10 +45,6 @@ export class DashboardComponent implements OnInit {
       .subscribe(dataJson => this.updateProjectStructure(dataJson))
   }
 
-  updateSelectedMetric(newMetric: string): void {
-    this.selectedMetric = newMetric;
-  }
-
   private updateProjectStructure(data: JSON): void {
     this.analyserService.isLoading = false;
     this.projectStructure = new ProjectStructure(data);
@@ -61,21 +53,5 @@ export class DashboardComponent implements OnInit {
   sendNewEntry(owner: string, repository: string, branch: string, snapshot: string) {
     this.newEntryService.confirmNewEntry([owner, repository, branch, snapshot]);
     this.snapshotStyleService.sendClickedSnapshotToSidebar([owner, repository, branch, snapshot]);
-  }
-
-  updateAdditionalInformationWithNodeAdded($event: any) {
-    this.selectedNode = $event;
-  }
-
-  updateAdditionalInformationWithEdgeAdded($event: any) {
-    this.selectedEdge = $event;
-  }
-
-  updateAdditionalInformationWithNodeRemoved($event: any) {
-    this.selectedNode = null;
-  }
-
-  updateAdditionalInformationWithEdgeRemoved($event: any) {
-    this.selectedEdge = null;
   }
 }

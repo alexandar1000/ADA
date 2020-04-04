@@ -1,5 +1,6 @@
 import {Injectable, Input} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
+import {AnalyserService} from "./analyser.service";
 
 interface GraphLayoutOption {
   value: string;
@@ -20,8 +21,8 @@ export class GraphOptionsService {
   private _spacingFactor = new BehaviorSubject(1.0);
   spacingFactor$ = this._spacingFactor.asObservable();
 
-  private _areZeroWeightedEdgesHidden = new BehaviorSubject(false);
-  areZeroWeightedEdgesHidden$ = this._areZeroWeightedEdgesHidden.asObservable();
+  private _areEdgesBellowWeightThresholdHidden = new BehaviorSubject(false);
+  areEdgesBellowWeightThresholdHidden$ = this._areEdgesBellowWeightThresholdHidden.asObservable();
 
   private _areNeighbourlessNodesHidden = new BehaviorSubject(false);
   areNeighbourlessNodesHidden$ = this._areNeighbourlessNodesHidden.asObservable();
@@ -41,12 +42,18 @@ export class GraphOptionsService {
   private _isGraphLayoutToBeReset = new BehaviorSubject(false);
   isGraphLayoutToBeReset$ = this._isGraphLayoutToBeReset.asObservable();
 
+  private _graphEdgeWeightThreshold = new BehaviorSubject(0.0);
+  graphEdgeWeightThreshold$ = this._graphEdgeWeightThreshold.asObservable();
+
+  private _selectedMetric = new BehaviorSubject(this.analyserService.metrics[0]);
+  selectedMetric$ = this._selectedMetric.asObservable();
+
   get spacingFactor(): number {
     return this._spacingFactor.value;
   }
 
-  get areZeroWeightedEdgesHidden(): boolean {
-    return this._areZeroWeightedEdgesHidden.value
+  get areEdgesBellowWeightThresholdHidden(): boolean {
+    return this._areEdgesBellowWeightThresholdHidden.value
   }
 
   get areNeighbourlessNodesHidden(): boolean {
@@ -63,6 +70,14 @@ export class GraphOptionsService {
 
   get selectedLayoutOption(): string {
     return this._selectedLayoutOption.value
+  }
+
+  get graphEdgeWeightThreshold(): number {
+    return this._graphEdgeWeightThreshold.value
+  }
+
+  get selectedMetric(): string {
+    return this._selectedMetric.value;
   }
 
 
@@ -84,14 +99,14 @@ export class GraphOptionsService {
     }
   ];
 
-  constructor() { }
+  constructor(private analyserService: AnalyserService) { }
 
   setSpacingFactor(value: number) {
     this._spacingFactor.next(value)
   }
 
-  setAreZeroWeightedEdgesHidden(value: boolean): void {
-    this._areZeroWeightedEdgesHidden.next(value);
+  setAreEdgesBellowWeightThresholdHidden(value: boolean): void {
+    this._areEdgesBellowWeightThresholdHidden.next(value);
   }
 
   setAreNeighbourlessNodesHidden(value: boolean): void {
@@ -114,7 +129,15 @@ export class GraphOptionsService {
     this._isGraphViewToBeReset.next(value);
   }
 
-  setIsGraphLayoutToBeReset(value: boolean) {
+  setIsGraphLayoutToBeReset(value: boolean): void {
     this._isGraphLayoutToBeReset.next(value);
+  }
+
+  setGraphEdgeWeightThreshold(value: number): void {
+    this._graphEdgeWeightThreshold.next(value);
+  }
+
+  setSelectedMetric(value: string): void {
+    this._selectedMetric.next(value);
   }
 }

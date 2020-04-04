@@ -1,59 +1,152 @@
 <div class="graph-menu">
-  <p><u>Menu:</u></p>
-  <ul>
-    <li>
-      <mat-form-field>
-        <mat-label>View Option</mat-label>
-        <mat-select [formControl]="graphLayoutControl" [(value)]="selectedLayoutOption" (selectionChange)="handleSelectedLayoutOptionChange($event)">
-          <mat-optgroup *ngFor="let group of graphLayoutGroups" [label]="group.name"
-                        [disabled]="group.disabled">
-            <mat-option *ngFor="let pokemon of group.graphLayoutOptions" [value]="pokemon.value">
-              {{pokemon.viewValue}}
-            </mat-option>
-          </mat-optgroup>
-        </mat-select>
-      </mat-form-field>
-    </li>
-    <li>
-      <mat-checkbox [checked]="areZeroWeightedEdgesHidden"
-                    (change)="handleZeroWeightedEdgesRepresentationChange($event)"
-      >Hide zero weights</mat-checkbox>
-    </li>
-    <li>
-      <mat-checkbox [checked]="areNeighbourlessNodesHidden"
-                    (change)="handleNodesWithoutNeighboursRepresentationChange($event)"
-      >Hide nodes without outgoing/incoming edges</mat-checkbox>
-    </li>
-    <li>
-      <mat-checkbox [checked]="areEdgeWeightsShownAsLabels"
-                    (change)="handleEdgeWeightsAsLabelRepresentationChange($event)"
-      >Show edge metrics as labels</mat-checkbox>
-    </li>
-    <li>
-      <mat-checkbox [checked]="areEdgesColourCoded"
-                    (change)="handleEdgesColourCodingRepresentationChange($event)"
-      >Show edge metrics by colour coding the edges</mat-checkbox>
-    </li>
-    <li>
+  <mat-grid-list cols="6">
+
+<!--      Layout      -->
+    <mat-grid-tile colspan="3">
+      <div class="my-tile-container">
+        <mat-form-field>
+          <mat-label>Layout Option</mat-label>
+          <mat-select [formControl]="graphLayoutControl" [(value)]="selectedLayoutOption" (selectionChange)="handleSelectedLayoutOptionChange($event)">
+            <mat-optgroup *ngFor="let group of graphLayoutGroups" [label]="group.name"
+                          [disabled]="group.disabled">
+              <mat-option *ngFor="let layout of group.graphLayoutOptions" [value]="layout.value">
+                {{layout.viewValue}}
+              </mat-option>
+            </mat-optgroup>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+<!--    Metric Selector   -->
+    <mat-grid-tile colspan="3">
+      <div class="my-tile-container">
+        <app-metric-selector [metrics]="metrics"
+                             [selectedMetric]="selectedMetric"
+                             (selectedMetricChanged)="handleUpdateSelectedMetric($event)"
+        ></app-metric-selector>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="6" class="my-grid-list-separator">
+      <div class="my-tile-container">
+        <mat-divider></mat-divider>
+      </div>
+    </mat-grid-tile>
+
+<!--    Hide Edges With Threshold     -->
+    <mat-grid-tile colspan="3">
+      <div class="my-tile-container">
+        <mat-slide-toggle [checked]="areEdgesBellowWeightThresholdHidden"
+                          (change)="handleAreEdgesBellowWeightThresholdRepresentationChange($event)"
+        >Hide zero weights</mat-slide-toggle>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="3">
+      <div class="my-tile-container">
+        <mat-form-field class="weight-threshold-input">
+          <label>
+            <input matInput
+                   [formControl]="weightThresholdFormControl"
+                   [errorStateMatcher]="matcher"
+                   type="number" (blur)="handleGraphEdgeWeightThresholdChange($event)">
+          </label>
+          <mat-hint>Weight Threshold</mat-hint>
+          <mat-error *ngIf="weightThresholdFormControl.hasError('required')">
+            Threshold Required
+          </mat-error>
+          <mat-error *ngIf="weightThresholdFormControl.hasError('min')">
+            Must be Positive
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+<!--    Hide Neighbourless Nodes-->
+    <mat-grid-tile colspan="6">
+      <div class="my-tile-container">
+        <mat-slide-toggle [checked]="areNeighbourlessNodesHidden"
+                          (change)="handleNodesWithoutNeighboursRepresentationChange($event)"
+        >Hide nodes without outgoing/incoming edges</mat-slide-toggle>
+      </div>
+    </mat-grid-tile>
+
+<!--    Show Labels    -->
+    <mat-grid-tile colspan="6">
+      <div class="my-tile-container">
+        <mat-slide-toggle [checked]="areEdgeWeightsShownAsLabels"
+                          (change)="handleEdgeWeightsAsLabelRepresentationChange($event)"
+        >Show edge metrics as labels</mat-slide-toggle>
+      </div>
+    </mat-grid-tile>
+
+<!--    Colourcoding    -->
+    <mat-grid-tile colspan="6">
+      <div class="my-tile-container">
+        <mat-slide-toggle [checked]="areEdgesColourCoded"
+                          (change)="handleEdgesColourCodingRepresentationChange($event)"
+        >Show edge metrics by colour coding the edges</mat-slide-toggle>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="3" *ngIf="areEdgesColourCoded">
       <div>
-        <div *ngIf="areEdgesColourCoded">The Colourcoding Legend from 0 to 10 and above with increments of 1</div>
+        <div><span>Heatmap for [0..10]:</span></div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="3" *ngIf="areEdgesColourCoded">
+      <div>
         <canvas #colourcodingLegend *ngIf="areEdgesColourCoded" width="200" height="20"  style="border:1px solid #000000;"></canvas>
       </div>
-    </li>
-    <li>
-      <button mat-button (click)="handleResetGraphViewButtonPressed($event)">Reset Graph View</button>
-    </li>
-    <li>
-      <button mat-button (click)="handleResetGraphLayoutButtonPressed($event)">Adjust Layout</button>
-    </li>
-  </ul>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="6" class="my-grid-list-separator">
+      <div class="my-tile-container">
+        <mat-divider></mat-divider>
+      </div>
+    </mat-grid-tile>
+
+    <!--    Adjust Spacing Factor-->
+    <mat-grid-tile colspan="3">
+      <div class="my-tile-container">
+        <span>Adjust Spacing Factor:</span>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="3">
+      <div class="my-tile-container">
+        <mat-slider
+          [value]="graphLayoutSpacing*10"
+          thumbLabel
+          [displayWith]="formatSliderLabel"
+          tickInterval="1"
+          min="10"
+          max="50"
+          (change)="handleLayoutSpacingChange($event)"></mat-slider>
+      </div>
+    </mat-grid-tile>
+
+<!--    Adjust View   -->
+    <mat-grid-tile colspan="3">
+      <div>
+        <button mat-stroked-button (click)="handleResetGraphLayoutButtonPressed($event)">Adjust Layout</button>
+      </div>
+    </mat-grid-tile>
+
+<!--    Reset View    -->
+    <mat-grid-tile colspan="3">
+      <div>
+        <button mat-stroked-button (click)="handleResetGraphViewButtonPressed($event)">Reset Graph View</button>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="6" class="my-grid-list-separator">
+      <div class="my-tile-container">
+        <mat-divider></mat-divider>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+<!--  Query form  -->
   <app-query-form></app-query-form>
-  <mat-slider
-    [value]="graphLayoutSpacing*10"
-    thumbLabel
-    [displayWith]="formatSliderLabel"
-    tickInterval="1"
-    min="10"
-    max="50"
-    (change)="handleLayoutSpacingChange($event)"></mat-slider>
+
 </div>

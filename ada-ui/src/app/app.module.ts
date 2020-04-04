@@ -36,6 +36,10 @@ import { GraphMenuComponent } from './graph-menu/graph-menu.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { QueryFormComponent } from './query-form/query-form.component';
 import {MatGridListModule} from "@angular/material/grid-list";
+import { DashboardSidePanelComponent } from './dashboard-side-panel/dashboard-side-panel.component';
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
   declarations: [
@@ -55,6 +59,7 @@ import {MatGridListModule} from "@angular/material/grid-list";
     ElementInsightComponent,
     GraphMenuComponent,
     QueryFormComponent,
+    DashboardSidePanelComponent,
   ],
     imports: [
         BrowserModule,
@@ -76,7 +81,10 @@ import {MatGridListModule} from "@angular/material/grid-list";
         MatSelectModule,
         MatProgressSpinnerModule,
         MatCheckboxModule,
-        MatGridListModule
+        MatGridListModule,
+        MatExpansionModule,
+        MatSlideToggleModule,
+        MatCardModule
     ],
   providers: [AnalyserService, SidebarService],
   bootstrap: [AppComponent]

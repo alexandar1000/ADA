@@ -19,7 +19,7 @@ export class AnalyserService {
     new Snapshot(0, '2019-07-28 01:02')
   ];
 
-  public metrics = [
+  public metrics: string[] = [
     'NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_INCOMING',
     'NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_OUTGOING',
     'NUMBER_OF_RELATION_METHOD_INVOCATIONS_INCOMING',
