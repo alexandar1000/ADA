@@ -39,6 +39,7 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import { DashboardSidePanelComponent } from './dashboard-side-panel/dashboard-side-panel.component';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
         MatCheckboxModule,
         MatGridListModule,
         MatExpansionModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        MatCardModule
     ],
   providers: [AnalyserService, SidebarService],
   bootstrap: [AppComponent]

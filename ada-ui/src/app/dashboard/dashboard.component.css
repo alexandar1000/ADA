@@ -6,21 +6,17 @@
   margin-left: -30px;
 }
 
-mat-grid-list {
-}
-
-app-graph {
-  width: 98%;
-  height: 98%;
-  padding: 1% 1%;
-}
-
 #dashboardSidePanel {
-  width: 97%;
-  height: 98%;
-  padding: 1% 2%;
+  width: 99%;
+  height: 99%;
   overflow: auto;
   max-width: 40vh;
+}
+
+.my-graph-tile-container {
+  width: 99%;
+  height: 99%;
+  padding: 0;
 }
 
 app-graph-menu {

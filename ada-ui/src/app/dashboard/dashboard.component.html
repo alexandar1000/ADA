@@ -5,8 +5,13 @@
 <section id="dashboardPanel" *ngIf="!analyserService.isLoading">
   <mat-grid-list cols="3" rowHeight="80vh">
     <mat-grid-tile rowspan="1" colspan="2">
-      <app-graph [projectStructure]="projectStructure"
-      ></app-graph>
+      <div class="my-graph-tile-container">
+        <mat-card class="my-graph-tile-container">
+          <app-graph [projectStructure]="projectStructure"
+          ></app-graph>
+        </mat-card>
+      </div>
+
     </mat-grid-tile>
     <mat-grid-tile rowspan="1" colspan="1">
       <div id="dashboardSidePanel">
