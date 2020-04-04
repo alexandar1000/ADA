@@ -1,21 +1,21 @@
 .mat-spinner {
-  position: fixed;
-  top: 50%;
+  position: relative;
+  top: 42%;
   left: 50%;
   margin-top: -30px;
   margin-left: -30px;
 }
 
 #dashboardSidePanel {
-  width: 99%;
-  height: 99%;
+  /*width: 98%;*/
+  /*height: 98%;*/
   overflow: auto;
   max-width: 40vh;
 }
 
 .my-graph-tile-container {
-  width: 99%;
-  height: 99%;
+  width: 98%;
+  height: 98%;
   padding: 0;
 }
 

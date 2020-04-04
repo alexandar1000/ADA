@@ -1,20 +1,18 @@
 <!--<h2 id="mainDashboardTitle">The Dashboard for Your Project</h2>-->
-<section *ngIf="analyserService.isLoading">
-  <mat-spinner></mat-spinner>
-</section>
-<section id="dashboardPanel" *ngIf="!analyserService.isLoading">
+<section id="dashboardPanel">
   <mat-grid-list cols="3" rowHeight="80vh">
     <mat-grid-tile rowspan="1" colspan="2">
       <div class="my-graph-tile-container">
         <mat-card class="my-graph-tile-container">
-          <app-graph [projectStructure]="projectStructure"
-          ></app-graph>
+            <app-graph [projectStructure]="projectStructure" *ngIf="!analyserService.isLoading"
+            ></app-graph>
+            <mat-spinner diameter="65" *ngIf="analyserService.isLoading"></mat-spinner>
         </mat-card>
       </div>
 
     </mat-grid-tile>
     <mat-grid-tile rowspan="1" colspan="1">
-      <div id="dashboardSidePanel">
+      <div id="dashboardSidePanel" class="my-graph-tile-container">
         <app-dashboard-side-panel></app-dashboard-side-panel>
         <app-snapshot-slider [snapshots]="snapshots"></app-snapshot-slider>
       </div>
