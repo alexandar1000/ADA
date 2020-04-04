@@ -26,7 +26,7 @@ public class Snapshot extends BaseEntity {
     /**
      * Branch entity corresponding to this snapshot
      */
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "branch_id", nullable = false)
     private Branch branch;
 
