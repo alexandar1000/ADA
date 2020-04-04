@@ -1,7 +1,9 @@
 package com.ucl.ADA.core.repository_analyser;
 
-import com.ucl.ADA.model.snapshot.Snapshot;
+import com.ucl.ADA.repository_downloader.GitRepoInvalidException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,7 +19,14 @@ public class RepositoryAnalyserController {
      */
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(produces = "application/json")
-    public Snapshot analyseRepository(@RequestParam(value = "url", defaultValue = "") String url, @RequestParam(value = "branch", defaultValue = "") String branchName) {
-        return repositoryAnalyserServices.analyseRepositoryService(url, branchName);
+    public ResponseEntity<?> analyseRepository(@RequestParam(value = "url", defaultValue = "") String url,
+                                               @RequestParam(value = "branch", defaultValue = "") String branchName) {
+
+        try {
+            return ResponseEntity.ok(repositoryAnalyserServices.analyseRepositoryService(url, branchName));
+        } catch (GitRepoInvalidException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
+
     }
 }

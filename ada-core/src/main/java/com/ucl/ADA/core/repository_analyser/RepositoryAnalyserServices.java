@@ -29,7 +29,7 @@ public class RepositoryAnalyserServices {
     @Autowired
     private ParserServices parserServices;
 
-    public Snapshot analyseRepositoryService(String url, String branchName) {
+    public Snapshot analyseRepositoryService(String url, String branchName) throws RuntimeException {
 
         // Parse the repo owner and name from the url
         String[] repoInfo = RepoDownloader.parseGitUrl(url);
@@ -53,7 +53,7 @@ public class RepositoryAnalyserServices {
         if (lastCommitTime != null) {
             if (prevSnapshot != null && lastCommitTime.isEqual(prevSnapshot.getCommitTime())) return prevSnapshot;
         } else {
-            // url OR branch name is invalid
+            // IOException or InterruptedException
             return null;
         }
 

@@ -112,10 +112,16 @@ public class RepoDownloader {
         } catch (IOException | InterruptedException e) {
             return null;
         }
-
-        if(response.statusCode() == 404) return null;
-
         JSONObject json = new JSONObject(response.body());
+
+        if(response.statusCode() == 404) {
+            String error = json.getString("message");
+            if(!error.contains("Branch")){
+                error = "Repository name or owner cannot be found";
+            }
+            throw new GitRepoInvalidException(error);
+        }
+
 
         String commitTimeString = json.getJSONObject("commit").getJSONObject("commit").getJSONObject("author").getString("date");
         DateTimeFormatter fIn = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
