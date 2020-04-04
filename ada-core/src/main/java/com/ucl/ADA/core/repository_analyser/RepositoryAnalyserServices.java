@@ -68,9 +68,9 @@ public class RepositoryAnalyserServices {
         // save entities in the database
         if (owner == null) owner = databaseUtilityService.saveOwner(repoOwner);
         if (repo == null) repo = databaseUtilityService.saveRepo(owner, repoName);
-        if (branch == null) branch = databaseUtilityService.saveBranch(repo, branchName, snapshot);
+        if (branch == null) branch = databaseUtilityService.saveBranch(repo, branchName, lastCommitTime);
 
-        databaseUtilityService.saveSnapshot(snapshot, branch, lastCommitTime);
+        databaseUtilityService.saveSnapshot(snapshot, branch);
         databaseUtilityService.saveAnalysisRequest(branch, snapshot);
 
         return snapshot;

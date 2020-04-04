@@ -60,11 +60,11 @@ public class DatabaseUtilityService {
         return gitRepoService.addGitRepo(repo);
     }
 
-    public Branch saveBranch(GitRepo repo, String branchName, Snapshot snapshot) {
+    public Branch saveBranch(GitRepo repo, String branchName, OffsetDateTime lastCommitTime) {
         Branch branch = new Branch();
         branch.setBranchName(branchName);
         branch.setRepository(repo);
-        branch.setLastSnapshotTimestamp(snapshot.getCommitTime());
+        branch.setLastSnapshotTimestamp(lastCommitTime);
         return branchService.addBranch(branch);
     }
 
@@ -80,9 +80,9 @@ public class DatabaseUtilityService {
         return snapshotService.findLastSnapshotOfBranch(branch);
     }
 
-    public Snapshot saveSnapshot(Snapshot snapshot, Branch branch, OffsetDateTime lastCommitTime) {
+    public Snapshot saveSnapshot(Snapshot snapshot, Branch branch) {
         snapshot.setBranch(branch);
-        snapshot.setCommitTime(lastCommitTime);
+        snapshot.setCommitTime(branch.getLastSnapshotTimestamp());
         return snapshotService.addSnapshot(snapshot);
     }
 }
