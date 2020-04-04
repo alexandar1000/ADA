@@ -100,7 +100,6 @@ public class RepoDownloaderTest {
 
             OffsetDateTime dateTime = RepoDownloader.getLatestCommitTime(url, branch);
         });
-        System.out.println(exception.getMessage());
         assertEquals("Repository name or owner cannot be found", exception.getMessage());
     }
 
