@@ -51,6 +51,12 @@ public class BranchService {
         return branchRepository.save(branch);
     }
 
+    /**
+     * Get a branch given a GitRepo entity and the name of the branch
+     * @param gitRepo parent GitRepo entity of the Branch
+     * @param branch name of the branch
+     * @return the corresponding Branch entity
+     */
     public Branch getBranchGivenRepoAndName(GitRepo gitRepo, String branch){
         return branchRepository.findByRepositoryAndBranchName(gitRepo, branch);
     }

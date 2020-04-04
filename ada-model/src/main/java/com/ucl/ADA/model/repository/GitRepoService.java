@@ -65,6 +65,12 @@ public class GitRepoService {
         return gitRepoRepository.save(repo);
     }
 
+    /**
+     * Get a GitRepo entity given its parent Owner entity and the name of the repo
+     * @param owner parent Owner entity
+     * @param name name of the repository
+     * @return the corresponding GitRepo entity
+     */
     public GitRepo getRepoByOwnerAndName(Owner owner, String name){
         return gitRepoRepository.findByOwnerAndRepoName(owner, name);
     }

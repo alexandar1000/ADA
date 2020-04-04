@@ -80,11 +80,27 @@ public class RepoDownloaderTest {
 
     @Test
     void testGetLatestCommitTimeWithWrongBranch(){
-        String branch = "non-existing-branch";
-        String url = "https://github.com/alexandar1000/ADA-test-simple-JAVA-project-0.git";
 
-        OffsetDateTime dateTime = RepoDownloader.getLatestCommitTime(url, branch);
-        assertNull(dateTime);
+        GitRepoInvalidException exception = assertThrows(GitRepoInvalidException.class, ()-> {
+            String branch = "non-existing-branch";
+            String url = "https://github.com/alexandar1000/ADA-test-simple-JAVA-project-0.git";
+
+            OffsetDateTime dateTime = RepoDownloader.getLatestCommitTime(url, branch);
+        });
+
+        assertEquals("Branch not found", exception.getMessage());
+    }
+
+    @Test
+    void testGetLatestCommitTimeWithWrongRepoName(){
+
+        GitRepoInvalidException exception = assertThrows(GitRepoInvalidException.class, ()-> {
+            String branch = "master";
+            String url = "https://github.com/alexandar1000/ADA-test-simpsadgsdagsdle-JAVA-project-0.git";
+
+            OffsetDateTime dateTime = RepoDownloader.getLatestCommitTime(url, branch);
+        });
+        assertEquals("Repository name or owner cannot be found", exception.getMessage());
     }
 
     @Test
