@@ -28,6 +28,12 @@
       </div>
     </mat-grid-tile>
 
+    <mat-grid-tile colspan="6" class="my-grid-list-separator">
+      <div class="my-tile-container">
+        <mat-divider></mat-divider>
+      </div>
+    </mat-grid-tile>
+
 <!--    Hide Edges With Threshold     -->
     <mat-grid-tile colspan="3">
       <div class="my-tile-container">
@@ -93,6 +99,12 @@
       </div>
     </mat-grid-tile>
 
+    <mat-grid-tile colspan="6" class="my-grid-list-separator">
+      <div class="my-tile-container">
+        <mat-divider></mat-divider>
+      </div>
+    </mat-grid-tile>
+
     <!--    Adjust Spacing Factor-->
     <mat-grid-tile colspan="3">
       <div class="my-tile-container">
@@ -118,15 +130,23 @@
         <button mat-stroked-button (click)="handleResetGraphLayoutButtonPressed($event)">Adjust Layout</button>
       </div>
     </mat-grid-tile>
-<!--    Reset View    -->
 
+<!--    Reset View    -->
     <mat-grid-tile colspan="3">
       <div>
         <button mat-stroked-button (click)="handleResetGraphViewButtonPressed($event)">Reset Graph View</button>
       </div>
     </mat-grid-tile>
 
+    <mat-grid-tile colspan="6" class="my-grid-list-separator">
+      <div class="my-tile-container">
+        <mat-divider></mat-divider>
+      </div>
+    </mat-grid-tile>
+
   </mat-grid-list>
+
+
 
   <!--  Query form  -->
   <app-query-form></app-query-form>

@@ -17,3 +17,7 @@ li {
   width: 100%;
   max-height: 30px;
 }
+
+.my-grid-list-separator {
+  max-height: 4px;
+}

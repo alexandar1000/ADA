@@ -32,7 +32,9 @@ app-graph-menu {
   text-align: center;
 }
 
-
+#dashboardPanel {
+  padding-top: 5vh;
+}
 
 #dashboardSidePanel::-webkit-scrollbar-track
 {
