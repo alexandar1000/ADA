@@ -16,7 +16,7 @@ services :
     build:
       context: './ada-ui'
     ports:
-      - "14200:80"
+      - "80:80"
     networks:
       - ada-db-network
     restart: unless-stopped
