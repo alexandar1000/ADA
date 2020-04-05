@@ -1,8 +1,9 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {ProjectStructure} from "../classes/project-structure";
 import {AnalyserService} from "../analyser.service";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import { NewEntryService } from '../new-entry.service';
+import { SnapshotStyleService } from '../snapshot-style.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,13 +11,12 @@ import { NewEntryService } from '../new-entry.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  private projectStructure: ProjectStructure;
-  private snapshots = this.analyserService.snapshots;
-  private metrics = this.analyserService.metrics;
-  private selectedMetric = this.metrics[0];
+  projectStructure: ProjectStructure;
+  snapshots = this.analyserService.snapshots;
 
-  constructor(private analyserService: AnalyserService,
+  constructor(public analyserService: AnalyserService,
               private newEntryService: NewEntryService,
+              private snapshotStyleService: SnapshotStyleService,
               private route: ActivatedRoute,
               private router: Router) { }
 
@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
     if (this.router.url == '/dashboard/current') {
       this.analyserService.isLoading = true;
       this.analyserService.doAnalysis().subscribe(dataJson => {
-        this.updateProjectStructure(dataJson)
+        this.updateProjectStructure(dataJson);
         let owner = dataJson['gitRepoInfo'].owner;
         let repository = dataJson['gitRepoInfo'].repository;
         let branch = dataJson['gitRepoInfo'].branch;
@@ -45,10 +45,6 @@ export class DashboardComponent implements OnInit {
       .subscribe(dataJson => this.updateProjectStructure(dataJson))
   }
 
-  updateSelectedMetric(newMetric: string): void {
-    this.selectedMetric = newMetric;
-  }
-
   private updateProjectStructure(data: JSON): void {
     this.analyserService.isLoading = false;
     this.projectStructure = new ProjectStructure(data);
@@ -56,5 +52,6 @@ export class DashboardComponent implements OnInit {
 
   sendNewEntry(owner: string, repository: string, branch: string, snapshot: string) {
     this.newEntryService.confirmNewEntry([owner, repository, branch, snapshot]);
+    this.snapshotStyleService.sendClickedSnapshotToSidebar([owner, repository, branch, snapshot]);
   }
 }

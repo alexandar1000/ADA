@@ -10,17 +10,62 @@ export class BranchComponent implements OnInit {
   @Input() owner: string;
   @Input() repository: string;
   @Input() branch: string;
-  private snapshots: string[];
-  private clicked: boolean;
-  private cashed: boolean;
+  snapshots: string[];
+  clicked: boolean;
+  cashed: boolean;
+  highlightSnapshot: string[];
+  previousHighlightSnapshot: string[];
+  highlighted: boolean;
 
   @Input()
   set newEntrySnapshot(entry: string[]) {
-    let branch = entry[2];
-    let snapshot = entry[3];
-    if (branch === this.branch && this.snapshots) {
-      if (!this.isSnapshotInList(snapshot)) {
+    if (entry) {
+      let owner = entry[0];
+      let repository = entry[1];
+      let branch = entry[2];
+      let snapshot = entry[3];
+      if (!this.snapshots) {
+        this.snapshots = [];
+      }
+      if (owner === this.owner && repository === this.repository && branch === this.branch) {
+        if (!this.cashed) {
+          this.getSnapshotsList(owner, repository, branch);
+        }
+        else {
+          this.clicked = true;
+        }
         this.snapshots.push(snapshot);
+      }
+    }
+  }
+
+  @Input()
+  set toHighlightSnapshot(entry: string[]) {
+    if (entry) {
+      let ownerToHighlight = entry[0];
+      let repositoryToHighlight = entry[1];
+      let branchToHighlight = entry[2];
+      this.highlightSnapshot = entry;
+      if (branchToHighlight === this.branch && repositoryToHighlight === this.repository && ownerToHighlight === this.owner) {
+        this.highlighted = true;
+      }
+    }
+  }
+
+  @Input()
+  set toUnHighlightSnapshot(entry: string[]) {
+    if (entry) {
+      let branchToUnHighlight = entry[2];
+      this.previousHighlightSnapshot = entry;
+      if (branchToUnHighlight === this.branch) {
+        if (this.highlightSnapshot) {
+          if (this.branch !== this.highlightSnapshot[2]) {
+            this.highlighted = false;
+          }
+          if (this.branch === this.highlightSnapshot[2] && this.repository !== this.highlightSnapshot[1]) {
+            this.highlighted = false;
+          }
+        }
       }
     }
   }
@@ -39,9 +84,9 @@ export class BranchComponent implements OnInit {
         snapshots.forEach(snapshot => {
           this.snapshots.push(snapshot.timestamp);
         });
+        this.clicked = true;
+        this.cashed = true;
       });
-      this.clicked = true;
-      this.cashed = true;
     }
     else if (this.cashed && this.clicked) {
       this.clicked = false;

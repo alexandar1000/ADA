@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 public class GitRepoController {
 
     @Autowired
@@ -18,7 +18,6 @@ public class GitRepoController {
      *
      * @return a List of all GitRepository entities.
      */
-    @CrossOrigin("http://localhost:4200")
     @PostMapping("/repositories")
     public List<GitRepo> listAllRepositories() {
         return gitRepoService.listRepositories();
@@ -29,7 +28,6 @@ public class GitRepoController {
      *
      * @return list of repository names
      */
-    @CrossOrigin("http://localhost:4200")
     @PostMapping("/repositories/names")
     public List<String> listAllRepoNames() {
         return gitRepoService.listRepoNames();
@@ -40,7 +38,6 @@ public class GitRepoController {
      * @param owner username of the owner
      * @return set of repositories owned by the owner
      */
-    @CrossOrigin("http://localhost:4200")
     @PostMapping("/owners/{owner}/repositories")
     public Set<GitRepo> getAllReposForUser(@PathVariable String owner) {
         return gitRepoService.findAllReposByOwner(owner);
@@ -52,7 +49,6 @@ public class GitRepoController {
      * @param repository name of the repository
      * @return the corresponding Git repository
      */
-    @CrossOrigin("http://localhost:4200")
     @PostMapping("/owners/{owner}/repositories/{repository}")
     public GitRepo getRepoByOwnerAndName(@PathVariable String owner,
                                          @PathVariable String repository) {

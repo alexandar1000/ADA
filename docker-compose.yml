@@ -1,6 +1,26 @@
 version : "3"
 
 services :
+  web_app_backend:
+    container_name: ada_web_app_backend_container
+    build:
+      context: './ada-core'
+    ports:
+      - "18080:8080"
+    networks:
+      - ada-db-network
+    restart: unless-stopped
+
+  web_app_frontend:
+    container_name: ada_web_app_frontend_container
+    build:
+      context: './ada-ui'
+    ports:
+      - "14200:80"
+    networks:
+      - ada-db-network
+    restart: unless-stopped
+
   db_dev:
     container_name: postgres_dev_container
     image: postgres
@@ -13,22 +33,6 @@ services :
       - "15432:5432"
     volumes:
       - pgvol_dev:/data/postgresql
-    networks:
-      - ada-db-network
-    restart: unless-stopped
-
-  db_test:
-    container_name: postgres_test_container
-    image: postgres
-    environment:
-      POSTGRES_USER: "ada-team"
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: "ada"
-      PGDATA: /data/postgres
-    ports:
-      - "25432:5432"
-    volumes:
-      - pgvol_test:/data/postgresql
     networks:
       - ada-db-network
     restart: unless-stopped

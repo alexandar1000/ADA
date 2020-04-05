@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RequestMapping("owners/{owner}/repositories/{repository}/branches")
 public class BranchController {
 
@@ -19,7 +19,6 @@ public class BranchController {
      * @param repository name of the Git repository
      * @return a set of all corresponding branches
      */
-    @CrossOrigin("http://localhost:4200")
     @PostMapping
     public Set<Branch> getBranchesByOwnerAndRepo(@PathVariable String owner,
                                                  @PathVariable String repository) {
@@ -33,7 +32,6 @@ public class BranchController {
      * @param branch name of the branch
      * @return the corresponding branch
      */
-    @CrossOrigin("http://localhost:4200")
     @PostMapping("/{branch}")
     public Branch getBranchGivenOwnerRepoAndName(@PathVariable String owner,
                                                  @PathVariable String repository,

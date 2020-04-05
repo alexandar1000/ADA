@@ -14,6 +14,11 @@
   z-index: 2;
 }
 
+.sidenav-content {
+  height: 100%;
+  padding: 1vh 1vw;
+}
+
 h1.app-name {
   margin-left: 8px;
 }
@@ -44,4 +49,8 @@ h1.app-name {
 .mat-toolbar a {
   text-decoration: none;
   color: #FFFFFF;
+}
+
+.highlighted {
+  font-weight: bold;
 }

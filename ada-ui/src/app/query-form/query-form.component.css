@@ -1,0 +1,22 @@
+.my-query-form {
+    min-width: 50px;
+    width: 100%;
+    height: 100%;
+}
+
+.full-width {
+    width: 95%;
+}
+
+.left-padding {
+  padding-left: 5%;
+}
+
+.right-padding {
+  padding-right: 5%;
+}
+
+.query-button {
+    float: right;
+    margin-top: 1em;
+}

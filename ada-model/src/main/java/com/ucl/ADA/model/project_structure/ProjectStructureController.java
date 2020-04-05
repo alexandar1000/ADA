@@ -7,7 +7,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RequestMapping("owners/{owner}/repositories/{repository}/branches/{branch}/snapshots/{timestamp}/project-structure")
 public class ProjectStructureController {
 
@@ -24,7 +24,6 @@ public class ProjectStructureController {
      * @param timestamp  time when ADA received request for the snapshot
      * @return a ProjectStructure object
      */
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping
     public ProjectStructure getProjectStructureGivenOwnerRepoBranchAndTimestamp(@PathVariable String owner,
                                                                                 @PathVariable String repository,
