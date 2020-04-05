@@ -11,10 +11,10 @@ import { SnapshotStyleService } from '../snapshot-style.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  private projectStructure: ProjectStructure;
-  private snapshots = this.analyserService.snapshots;
+  projectStructure: ProjectStructure;
+  snapshots = this.analyserService.snapshots;
 
-  constructor(private analyserService: AnalyserService,
+  constructor(public analyserService: AnalyserService,
               private newEntryService: NewEntryService,
               private snapshotStyleService: SnapshotStyleService,
               private route: ActivatedRoute,

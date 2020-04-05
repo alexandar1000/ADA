@@ -3,14 +3,13 @@ package com.ucl.ADA.model.snapshot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Set;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RequestMapping("owners/{owner}/repositories/{repository}/branches/{branch}/snapshots")
 public class SnapshotController {
 
@@ -25,7 +24,6 @@ public class SnapshotController {
      * @param branch name of branch
      * @return set of all corresponding snapshots
      */
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping
     public Set<Snapshot> getSnapshotsGivenOwnerRepoAndBranch(@PathVariable String owner,
                                                              @PathVariable String repository,
@@ -43,7 +41,6 @@ public class SnapshotController {
      * @return the corresponding Snapshot
      * @throws DateTimeParseException if the timestamp string cannot be parsed
      */
-    @CrossOrigin("http://localhost:4200")
     @PostMapping("/{timestamp}")
     public Snapshot getSnapshotGivenOwnerRepoBranchAndTimestamp(@PathVariable String owner,
                                                                 @PathVariable String repository,

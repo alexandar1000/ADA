@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Snapshot} from "./classes/snapshot";
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnalyserService {
 
-  public analysisEndpointUrl = 'http://localhost:8080/analyser';
+  public analysisEndpointUrl = environment.backendBaseUrl + '/analyser';
   public repoUrl: string;
   public repoBranch: string;
   public isLoading: boolean = false;
@@ -37,7 +38,7 @@ export class AnalyserService {
   constructor(private http: HttpClient) {}
 
   public buildFetchPreviousSnapshotAPIUrl(owner: string, repository: string, branch: string, snapshot: string): string {
-    return 'http://localhost:8080/owners/' + owner +
+    return environment.backendBaseUrl + '/owners/' + owner +
       '/repositories/' + repository +
       '/branches/' + branch +
       '/snapshots/' + snapshot +

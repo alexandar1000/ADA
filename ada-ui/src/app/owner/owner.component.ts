@@ -8,13 +8,13 @@ import { SidebarService } from '../sidebar.service';
 })
 export class OwnerComponent implements OnInit {
   @Input() owner: string;
-  private repositories: string[];
-  private clicked: boolean;
-  private cashed: boolean;
-  private entry: string[];
-  private highlightSnapshot: string[];
-  private previousHighlightSnapshot: string[];
-  private highlighted: boolean;
+  repositories: string[];
+  clicked: boolean;
+  cashed: boolean;
+  entry: string[];
+  highlightSnapshot: string[];
+  previousHighlightSnapshot: string[];
+  highlighted: boolean;
 
   @Input()
   set newEntryRepository(entry: string[]) {

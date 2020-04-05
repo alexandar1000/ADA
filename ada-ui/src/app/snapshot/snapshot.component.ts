@@ -11,8 +11,8 @@ export class SnapshotComponent implements OnInit {
   @Input() repository: string;
   @Input() branch: string;
   @Input() snapshot: string;
-  private highlighted: boolean;
-  private highlightSnapshot: string[];
+  highlighted: boolean;
+  highlightSnapshot: string[];
 
   @Input()
   set toHighlightSnapshot(entry: string[]) {

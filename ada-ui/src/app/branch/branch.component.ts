@@ -10,12 +10,12 @@ export class BranchComponent implements OnInit {
   @Input() owner: string;
   @Input() repository: string;
   @Input() branch: string;
-  private snapshots: string[];
-  private clicked: boolean;
-  private cashed: boolean;
-  private highlightSnapshot: string[];
-  private previousHighlightSnapshot: string[];
-  private highlighted: boolean;
+  snapshots: string[];
+  clicked: boolean;
+  cashed: boolean;
+  highlightSnapshot: string[];
+  previousHighlightSnapshot: string[];
+  highlighted: boolean;
 
   @Input()
   set newEntrySnapshot(entry: string[]) {

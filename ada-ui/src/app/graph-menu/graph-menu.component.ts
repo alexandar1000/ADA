@@ -31,18 +31,18 @@ export class GraphMenuComponent implements OnInit {
   };
   private ctx: CanvasRenderingContext2D;
 
-  private graphLayoutSpacing: number;
-  private areEdgesBellowWeightThresholdHidden: boolean;
-  private areNeighbourlessNodesHidden: boolean;
-  private areEdgeWeightsShownAsLabels: boolean;
-  private areEdgesColourCoded: boolean;
-  private selectedLayoutOption: string;
-  private graphEdgeWeightThreshold: number;
-  private weightThresholdFormControl: any;
+  graphLayoutSpacing: number;
+  areEdgesBellowWeightThresholdHidden: boolean;
+  areNeighbourlessNodesHidden: boolean;
+  areEdgeWeightsShownAsLabels: boolean;
+  areEdgesColourCoded: boolean;
+  selectedLayoutOption: string;
+  graphEdgeWeightThreshold: number;
+  weightThresholdFormControl: any;
 
 
-  private metrics: string[] = this.analyserService.metrics;
-  private selectedMetric: string;
+  metrics: string[] = this.analyserService.metrics;
+  selectedMetric: string;
 
 
   graphLayoutControl = new FormControl();

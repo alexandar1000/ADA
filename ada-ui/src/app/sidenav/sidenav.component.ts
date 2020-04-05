@@ -11,10 +11,11 @@ import { SnapshotStyleService } from '../snapshot-style.service';
 })
 export class SidenavComponent implements OnInit, OnDestroy {
   mobileQuery: MediaQueryList;
-  private owners: string[];
-  private entry: string[];
-  private highglightSnapshot: string[];
-  private previousHighlightSnapshot: string[];
+  owners: string[];
+  entry: string[];
+  highglightSnapshot: string[];
+  previousHighlightSnapshot: string[];
+  searchedOwner: string;
 
   private _mobileQueryListener: () => void;
 

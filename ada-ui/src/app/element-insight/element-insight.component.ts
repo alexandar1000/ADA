@@ -10,8 +10,8 @@ import {ElementInsightService} from "../element-insight.service";
 export class ElementInsightComponent implements OnInit {
 
   @Input() projectStructure: ProjectStructure;
-  private selectedNode: string;
-  private selectedEdge: number;
+  selectedNode: string;
+  selectedEdge: number;
 
   private subscriptions = [];
   private subscriptionIndex = 0;
