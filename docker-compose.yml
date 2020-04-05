@@ -1,6 +1,15 @@
 version : "3"
 
 services :
+  web_app_backend:
+    build:
+      context: .
+    ports:
+      - "18080:8080"
+    networks:
+      - ada-db-network
+    restart: unless-stopped
+
   db_dev:
     container_name: postgres_dev_container
     image: postgres
