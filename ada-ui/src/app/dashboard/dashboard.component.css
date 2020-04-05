@@ -8,7 +8,6 @@
 
 #dashboardSidePanel {
   overflow: auto;
-  max-width: 45vh;
 }
 
 .my-dashboard-tile-container {
