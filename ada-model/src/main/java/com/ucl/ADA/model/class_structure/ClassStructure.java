@@ -54,7 +54,7 @@ public class ClassStructure extends BaseEntity {
     /**
      * a set of source files that contains this class structure
      */
-    @ManyToMany(mappedBy = "classStructures", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "classStructures", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Snapshot> snapshots = new HashSet<>();
 
     /* ************************************************************************

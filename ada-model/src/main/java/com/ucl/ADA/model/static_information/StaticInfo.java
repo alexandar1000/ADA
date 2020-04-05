@@ -1,7 +1,6 @@
 package com.ucl.ADA.model.static_information;
 
 import com.ucl.ADA.model.base_entity.BaseEntity;
-import com.ucl.ADA.model.class_structure.ClassStructure;
 import com.ucl.ADA.model.dependence_information.DependenceInfo;
 import com.ucl.ADA.model.dependence_information.invocation_information.AttributeInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
@@ -23,13 +22,6 @@ import java.util.Set;
 @Entity
 @Table(name = "STATIC_INFO")
 public class StaticInfo extends BaseEntity {
-
-    /**
-     * the class structures that holds this static info
-     */
-    @OneToMany(mappedBy = "staticInfo", fetch = FetchType.EAGER)
-    private Set<ClassStructure> classStructures = new HashSet<>();
-
 
     /* ************************************************************************
      *

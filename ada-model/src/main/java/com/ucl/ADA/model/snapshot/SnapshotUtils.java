@@ -77,31 +77,35 @@ public class SnapshotUtils {
      * @param incomingToAddSet                    the set of names of the affected class structures
      */
     public static void reuseClassStructuresOfSnapshot(@NonNull Snapshot snapshot, Snapshot prevSnapshot, @NonNull SetMultimap<String, String> pathsOfAddedSourceFilesToClassNames, @NonNull Set<String> incomingToAddSet) {
+        Map<String, ClassStructure> classStructureMap = new HashMap<>();
+
         // initialize all class structures that are in the added source files
-        initClassStructuresGivenPathToClassNamesMap(snapshot, pathsOfAddedSourceFilesToClassNames);
+        initClassStructuresGivenPathToClassNamesMap(classStructureMap, snapshot, pathsOfAddedSourceFilesToClassNames);
 
         // there is nothing to reuse
         if (prevSnapshot == null) {
+            for (Map.Entry<String, ClassStructure> entry : classStructureMap.entrySet()) {
+                String key = entry.getKey();
+                ClassStructure value = entry.getValue();
+                snapshot.addClassStructure(key, value);
+            }
             return;
         }
 
         // initialize all class structures that are in the shared source files
-        initClassStructuresInSharedSourceFiles(snapshot, prevSnapshot);
+        initClassStructuresInSharedSourceFiles(classStructureMap, snapshot, prevSnapshot);
 
         // get information of classes affected by deleted source files
         SetMultimap<String, String> incomingToDeleteMap = getIncomingToDeleteMap(snapshot, prevSnapshot);
 
         // reuse class structure from previous snapshot given information of the change on incoming dependence info of a class
         Map<String, ClassStructure> prevClassStructures = prevSnapshot.getClassStructures();
-        Map<String, ClassStructure> reuseUpdatedClassStructures = new HashMap<>();
-        for (Map.Entry<String, ClassStructure> entry : snapshot.getClassStructures().entrySet()) {
+        for (Map.Entry<String, ClassStructure> entry : classStructureMap.entrySet()) {
             String className = entry.getKey();
             ClassStructure initClassStructure = entry.getValue();
-            ClassStructure reuseUpdatedClassStructure = reuseClassStructure(initClassStructure, prevClassStructures.getOrDefault(className, null), incomingToDeleteMap, incomingToAddSet);
-            reuseUpdatedClassStructures.put(className, reuseUpdatedClassStructure);
-            reuseUpdatedClassStructure.getSnapshots().add(snapshot);
+            ClassStructure reusedClassStructure = reuseClassStructure(initClassStructure, prevClassStructures.getOrDefault(className, null), incomingToDeleteMap, incomingToAddSet);
+            snapshot.addClassStructure(className, reusedClassStructure);
         }
-        snapshot.setClassStructures(reuseUpdatedClassStructures);
     }
 
     /**
@@ -112,7 +116,7 @@ public class SnapshotUtils {
      * @param pathsToClassNames a map, where the key is file paths and the value is the set of class names in the source
      *                          path
      */
-    public static void initClassStructuresGivenPathToClassNamesMap(@NonNull Snapshot snapshot, @NonNull SetMultimap<String, String> pathsToClassNames) {
+    public static void initClassStructuresGivenPathToClassNamesMap(Map<String, ClassStructure> classStructureMap, @NonNull Snapshot snapshot, @NonNull SetMultimap<String, String> pathsToClassNames) {
         Map<String, SourceFile> sourceFiles = snapshot.getSourceFiles();
         for (String filePath : pathsToClassNames.keySet()) {
             Set<String> classNames = pathsToClassNames.get(filePath);
@@ -126,8 +130,7 @@ public class SnapshotUtils {
             // initialize all class structures in the snapshot
             for (String className : classNames) {
                 ClassStructure classStructure = ClassStructureUtils.initClassStructureWithFileNameAndFileHash(className, filePath, sourceFile.getFileHash());
-                snapshot.getClassStructures().put(className, classStructure);
-                classStructure.getSnapshots().add(snapshot);
+                classStructureMap.put(className, classStructure);
             }
         }
     }
@@ -138,7 +141,7 @@ public class SnapshotUtils {
      * @param snapshot     the initialized current snapshot
      * @param prevSnapshot the previous snapshot to get class information from
      */
-    public static void initClassStructuresInSharedSourceFiles(@NonNull Snapshot snapshot, Snapshot prevSnapshot) {
+    public static void initClassStructuresInSharedSourceFiles(Map<String, ClassStructure> classStructureMap, @NonNull Snapshot snapshot, Snapshot prevSnapshot) {
         Map<String, SourceFile> sourceFiles = snapshot.getSourceFiles();
         Map<String, SourceFile> prevSourceFiles = prevSnapshot.getSourceFiles();
         Map<String, ClassStructure> prevClassStructures = prevSnapshot.getClassStructures();
@@ -156,8 +159,7 @@ public class SnapshotUtils {
                 ClassStructure prevClassStructure = prevClassStructures.get(className);
                 String fileHash = prevClassStructure.getFileHash();
                 ClassStructure classStructure = ClassStructureUtils.initClassStructureWithFileNameAndFileHash(className, filePath, fileHash);
-                snapshot.getClassStructures().put(className, classStructure);
-                classStructure.getSnapshots().add(snapshot);
+                classStructureMap.put(className, classStructure);
             }
         }
     }

@@ -13,6 +13,10 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     private RepositoryAnalyserServices repositoryAnalyserServices;
 
+    String url = "https://github.com/alexandar1000/ADA";
+//    String url = "https://github.com/alexandar1000/ADA-test-simple-JAVA-project-0";
+    String branch = "master";
+
     @Override
     public void run(String... args) throws Exception {
         // TODO: This is a 'integration testing call and should be omitted for ow'
@@ -20,6 +24,6 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void loadData() throws FileNotFoundException {
-        repositoryAnalyserServices.analyseRepositoryService("https://github.com/alexandar1000/ADA-test-simple-JAVA-project-0", "master");
+        repositoryAnalyserServices.analyseRepositoryService(url, branch);
     }
 }

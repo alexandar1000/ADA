@@ -78,10 +78,11 @@ public class ClassStructureUtils {
         if (reuseStaticInfo) {
             StaticInfo staticInfo = prevClassStructure.getStaticInfo();
             classStructure.setStaticInfo(staticInfo);
-            staticInfo.getClassStructures().add(classStructure);
-        } else {
-            classStructure.getStaticInfo().getClassStructures().add(classStructure);
+//            staticInfo.getClassStructures().add(classStructure);
         }
+//        else {
+//            classStructure.getStaticInfo().getClassStructures().add(classStructure);
+//        }
         if (reuseIncomingDependenceInfo) {
             // reuse all incoming dependence info if available
             classStructure.setIncomingDependenceInfos(prevClassStructure.getIncomingDependenceInfos());
