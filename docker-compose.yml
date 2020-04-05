@@ -3,7 +3,7 @@ version : "3"
 services :
   web_app_backend:
     build:
-      context: .
+      context: './'
     ports:
       - "18080:8080"
     networks:
@@ -22,22 +22,6 @@ services :
       - "15432:5432"
     volumes:
       - pgvol_dev:/data/postgresql
-    networks:
-      - ada-db-network
-    restart: unless-stopped
-
-  db_test:
-    container_name: postgres_test_container
-    image: postgres
-    environment:
-      POSTGRES_USER: "ada-team"
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: "ada"
-      PGDATA: /data/postgres
-    ports:
-      - "25432:5432"
-    volumes:
-      - pgvol_test:/data/postgresql
     networks:
       - ada-db-network
     restart: unless-stopped
