@@ -9,8 +9,8 @@ import {Router} from "@angular/router";
   styleUrls: ['./repo-form.component.css']
 })
 export class RepoFormComponent implements OnInit {
-  private urlForm: string;
-  private branchName: string;
+  urlForm: string;
+  branchName: string;
 
   constructor(private _snackBar: MatSnackBar, private analyserService: AnalyserService, private router: Router) {
   }

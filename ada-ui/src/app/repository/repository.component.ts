@@ -9,13 +9,13 @@ import { SidebarService } from '../sidebar.service';
 export class RepositoryComponent implements OnInit {
   @Input() owner: string;
   @Input() repository: string;
-  private branches: string[];
-  private clicked: boolean;
-  private cashed: boolean;
-  private entry: string[];
-  private highlightSnapshot: string[];
-  private previousHighlightSnapshot: string[];
-  private highlighted: boolean;
+  branches: string[];
+  clicked: boolean;
+  cashed: boolean;
+  entry: string[];
+  highlightSnapshot: string[];
+  previousHighlightSnapshot: string[];
+  highlighted: boolean;
 
   @Input()
   set newEntryBranch(entry: string[]) {
