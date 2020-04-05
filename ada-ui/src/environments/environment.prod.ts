@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  backendBaseUrl: 'http://localhost:18080'
+  backendBaseUrl: 'http://www.ada-project.co.uk:18080'
 };
