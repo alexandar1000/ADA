@@ -18,6 +18,7 @@ public class GitRepoController {
      *
      * @return a List of all GitRepository entities.
      */
+    @CrossOrigin
     @PostMapping("/repositories")
     public List<GitRepo> listAllRepositories() {
         return gitRepoService.listRepositories();
@@ -28,6 +29,7 @@ public class GitRepoController {
      *
      * @return list of repository names
      */
+    @CrossOrigin
     @PostMapping("/repositories/names")
     public List<String> listAllRepoNames() {
         return gitRepoService.listRepoNames();
@@ -38,6 +40,7 @@ public class GitRepoController {
      * @param owner username of the owner
      * @return set of repositories owned by the owner
      */
+    @CrossOrigin
     @PostMapping("/owners/{owner}/repositories")
     public Set<GitRepo> getAllReposForUser(@PathVariable String owner) {
         return gitRepoService.findAllReposByOwner(owner);
@@ -49,6 +52,7 @@ public class GitRepoController {
      * @param repository name of the repository
      * @return the corresponding Git repository
      */
+    @CrossOrigin
     @PostMapping("/owners/{owner}/repositories/{repository}")
     public GitRepo getRepoByOwnerAndName(@PathVariable String owner,
                                          @PathVariable String repository) {

@@ -18,6 +18,7 @@ public class OwnerController {
      * @param owner username of the owner
      * @return retrieved owner
      */
+    @CrossOrigin
     @PostMapping(value = "/{owner}")
     public Owner getOwnerByName(@PathVariable String owner) {
         return ownerService.getOwnerByName(owner);
@@ -27,6 +28,7 @@ public class OwnerController {
      * Endpoint for getting all owners in the database
      * @return list of all owners
      */
+    @CrossOrigin
     @PostMapping
     public List<Owner> listAllUsers() {
         return ownerService.listOwners();
@@ -36,6 +38,7 @@ public class OwnerController {
      * Endpoint for getting all usernames of all owners of Git repositories in the database
      * @return list of all usernames
      */
+    @CrossOrigin
     @PostMapping("/names")
     public List<String> listAllUsername() {
         return ownerService.listAllUsername();
@@ -44,6 +47,7 @@ public class OwnerController {
     /**
      * Endpoint for deleting all owners in the database
      */
+    @CrossOrigin
     @DeleteMapping
     public void deleteAll() {
         ownerService.deleteAllOwners();
@@ -53,6 +57,7 @@ public class OwnerController {
      * Endpoint for deleting a owner given an ID
      * @param id id of a particular owner
      */
+    @CrossOrigin
     @DeleteMapping(value = "/{id}")
     public void deleteOwnerById(@PathVariable Long id) {
         ownerService.deleteOwner(id);

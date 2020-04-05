@@ -24,6 +24,7 @@ public class ProjectStructureController {
      * @param timestamp  time when ADA received request for the snapshot
      * @return a ProjectStructure object
      */
+    @CrossOrigin
     @PostMapping
     public ProjectStructure getProjectStructureGivenOwnerRepoBranchAndTimestamp(@PathVariable String owner,
                                                                                 @PathVariable String repository,

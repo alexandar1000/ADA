@@ -24,6 +24,7 @@ public class SnapshotController {
      * @param branch name of branch
      * @return set of all corresponding snapshots
      */
+    @CrossOrigin
     @PostMapping
     public Set<Snapshot> getSnapshotsGivenOwnerRepoAndBranch(@PathVariable String owner,
                                                              @PathVariable String repository,
@@ -41,6 +42,7 @@ public class SnapshotController {
      * @return the corresponding Snapshot
      * @throws DateTimeParseException if the timestamp string cannot be parsed
      */
+    @CrossOrigin
     @PostMapping("/{timestamp}")
     public Snapshot getSnapshotGivenOwnerRepoBranchAndTimestamp(@PathVariable String owner,
                                                                 @PathVariable String repository,

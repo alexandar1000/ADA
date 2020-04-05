@@ -19,6 +19,7 @@ public class BranchController {
      * @param repository name of the Git repository
      * @return a set of all corresponding branches
      */
+    @CrossOrigin
     @PostMapping
     public Set<Branch> getBranchesByOwnerAndRepo(@PathVariable String owner,
                                                  @PathVariable String repository) {
@@ -32,6 +33,7 @@ public class BranchController {
      * @param branch name of the branch
      * @return the corresponding branch
      */
+    @CrossOrigin
     @PostMapping("/{branch}")
     public Branch getBranchGivenOwnerRepoAndName(@PathVariable String owner,
                                                  @PathVariable String repository,
