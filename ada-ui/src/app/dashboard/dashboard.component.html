@@ -1,11 +1,22 @@
-<h1>Dashboard</h1>
-<section *ngIf="analyserService.isLoading">
-  <mat-spinner></mat-spinner>
-</section>
-<section *ngIf="!analyserService.isLoading">
-  <app-graph [projectStructure]="projectStructure" [selectedMetric]="selectedMetric"></app-graph>
-  <div>
-    <app-snapshot-slider [snapshots]="snapshots"></app-snapshot-slider>
-    <app-metric-selector [metrics]="metrics" [selectedMetric]="selectedMetric" (selectedMetricChanged)="updateSelectedMetric($event)"></app-metric-selector>
-  </div>
+<section id="dashboardPanel">
+  <mat-grid-list cols="3" rowHeight="89vh">
+    <mat-grid-tile rowspan="1" colspan="2">
+      <div class="my-dashboard-tile-container">
+        <mat-card class="my-dashboard-tile-container">
+            <app-graph [projectStructure]="projectStructure" *ngIf="!analyserService.isLoading"
+            ></app-graph>
+            <mat-spinner diameter="65" *ngIf="analyserService.isLoading"></mat-spinner>
+        </mat-card>
+      </div>
+
+    </mat-grid-tile>
+    <mat-grid-tile rowspan="1" colspan="1">
+      <div class="my-dashboard-tile-container">
+        <mat-card id="dashboardSidePanel" class="my-dashboard-tile-container">
+            <app-dashboard-side-panel class="my-dashboard-side-panel-content"></app-dashboard-side-panel>
+            <app-snapshot-slider class="my-dashboard-side-panel-content" [snapshots]="snapshots"></app-snapshot-slider>
+        </mat-card>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
 </section>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { SidebarService } from '../sidebar.service';
 
 @Component({
@@ -8,19 +8,59 @@ import { SidebarService } from '../sidebar.service';
 })
 export class OwnerComponent implements OnInit {
   @Input() owner: string;
-  private repositories: string[];
-  private clicked: boolean;
-  private cashed: boolean;
-  private entry: string[];
+  repositories: string[];
+  clicked: boolean;
+  cashed: boolean;
+  entry: string[];
+  highlightSnapshot: string[];
+  previousHighlightSnapshot: string[];
+  highlighted: boolean;
 
   @Input()
   set newEntryRepository(entry: string[]) {
-    this.entry = entry;
-    let owner = entry[0];
-    let repository = entry[1];
-    if (owner === this.owner && this.repositories) {
-      if (!this.isRepositoryInList(repository)) {
-        this.repositories.push(repository);
+    if (entry) {
+      this.entry = entry;
+      let owner = entry[0];
+      let repository = entry[1];
+      if (!this.repositories) {
+        this.repositories = [];
+      }
+      if (owner === this.owner) {
+        if (!this.cashed) {
+          this.getReposList(owner);
+        }
+        else {
+          this.clicked = true;
+        }
+        if (!this.isRepositoryInList(repository)) {
+          this.repositories.push(repository);
+        }
+      }
+    }
+  }
+
+  @Input()
+  set toHighlightSnapshot(entry: string[]) {
+    if (entry) {
+      let ownerToHighlight = entry[0];
+      this.highlightSnapshot = entry;
+      if (ownerToHighlight === this.owner) {
+        this.highlighted = true;
+      }
+    }
+  }
+
+  @Input()
+  set toUnHighlightSnapshot(entry: string[]) {
+    if (entry) {
+      let ownerToUnHighlight = entry[0];
+      this.previousHighlightSnapshot = entry;
+      if (ownerToUnHighlight === this.owner) {
+        if (this.highlightSnapshot) {
+          if (this.highlightSnapshot[0] !== this.owner) {
+            this.highlighted = false;
+          }
+        }
       }
     }
   }
@@ -39,9 +79,9 @@ export class OwnerComponent implements OnInit {
         repositories.forEach(repository => {
           this.repositories.push(repository.repoName);
         });
+        this.clicked = true;
+        this.cashed = true;
       });
-      this.clicked = true;
-      this.cashed = true;
     }
     else if (this.cashed && this.clicked) {
       this.clicked = false;

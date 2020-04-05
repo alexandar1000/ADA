@@ -31,6 +31,15 @@ import { SnapshotComponent } from './snapshot/snapshot.component';
 import { FilterPipe } from './filter.pipe';
 import { SidebarService } from './sidebar.service';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import { ElementInsightComponent } from './element-insight/element-insight.component';
+import { GraphMenuComponent } from './graph-menu/graph-menu.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import { QueryFormComponent } from './query-form/query-form.component';
+import {MatGridListModule} from "@angular/material/grid-list";
+import { DashboardSidePanelComponent } from './dashboard-side-panel/dashboard-side-panel.component';
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
   declarations: [
@@ -47,27 +56,36 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     BranchComponent,
     SnapshotComponent,
     FilterPipe,
+    ElementInsightComponent,
+    GraphMenuComponent,
+    QueryFormComponent,
+    DashboardSidePanelComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    LayoutModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatInputModule,
-    MatSnackBarModule,
-    ReactiveFormsModule,
-    FormsModule,
-    HttpClientModule,
-    MatSliderModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatProgressSpinnerModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        LayoutModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatSidenavModule,
+        MatIconModule,
+        MatListModule,
+        MatInputModule,
+        MatSnackBarModule,
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientModule,
+        MatSliderModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatProgressSpinnerModule,
+        MatCheckboxModule,
+        MatGridListModule,
+        MatExpansionModule,
+        MatSlideToggleModule,
+        MatCardModule
+    ],
   providers: [AnalyserService, SidebarService],
   bootstrap: [AppComponent]
 })

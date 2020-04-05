@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RequestMapping("/owners")
 public class OwnerController {
 
@@ -18,7 +18,6 @@ public class OwnerController {
      * @param owner username of the owner
      * @return retrieved owner
      */
-    @CrossOrigin("http://localhost:4200")
     @PostMapping(value = "/{owner}")
     public Owner getOwnerByName(@PathVariable String owner) {
         return ownerService.getOwnerByName(owner);
@@ -28,7 +27,6 @@ public class OwnerController {
      * Endpoint for getting all owners in the database
      * @return list of all owners
      */
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping
     public List<Owner> listAllUsers() {
         return ownerService.listOwners();
@@ -38,7 +36,6 @@ public class OwnerController {
      * Endpoint for getting all usernames of all owners of Git repositories in the database
      * @return list of all usernames
      */
-    @CrossOrigin("http://localhost:4200")
     @PostMapping("/names")
     public List<String> listAllUsername() {
         return ownerService.listAllUsername();
@@ -47,7 +44,6 @@ public class OwnerController {
     /**
      * Endpoint for deleting all owners in the database
      */
-    @CrossOrigin("http://localhost:4200")
     @DeleteMapping
     public void deleteAll() {
         ownerService.deleteAllOwners();

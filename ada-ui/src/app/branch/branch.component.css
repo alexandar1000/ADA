@@ -1,3 +1,7 @@
 .branch-container {
     padding-left: 20px;
 }
+
+.highlighted {
+    font-weight: bold;
+}

@@ -9,19 +9,61 @@ import { SidebarService } from '../sidebar.service';
 export class RepositoryComponent implements OnInit {
   @Input() owner: string;
   @Input() repository: string;
-  private branches: string[];
-  private clicked: boolean;
-  private cashed: boolean;
-  private entry: string[];
+  branches: string[];
+  clicked: boolean;
+  cashed: boolean;
+  entry: string[];
+  highlightSnapshot: string[];
+  previousHighlightSnapshot: string[];
+  highlighted: boolean;
 
   @Input()
   set newEntryBranch(entry: string[]) {
-    this.entry = entry;
-    let repository = entry[1];
-    let branch = entry[2];
-    if (repository === this.repository && this.branches) {
-      if (!this.isBranchInList(branch)) {
-        this.branches.push(branch);
+    if (entry) {
+      this.entry = entry;
+      let owner = entry[0];
+      let repository = entry[1];
+      let branch = entry[2];
+      if (!this.branches) {
+        this.branches = [];
+      }
+      if (repository === this.repository) {
+        if (!this.cashed) {
+          this.getBranchesList(owner, repository);
+        }
+        else {
+          this.clicked = true;
+        }
+        if (!this.isBranchInList(branch)) {
+          this.branches.push(branch);
+        }
+      }
+    }
+  }
+
+  @Input()
+  set toHighlightSnapshot(entry: string[]) {
+    if (entry) {
+      let ownerToHighlight = entry[0];
+      let repositoryToHighlight = entry[1];
+      this.highlightSnapshot = entry;
+      if (repositoryToHighlight === this.repository && ownerToHighlight === this.owner) {
+        this.highlighted = true;
+      }
+    }
+  }
+
+  @Input()
+  set toUnHighlightSnapshot(entry: string[]) {
+    if (entry) {
+      let repositoryToUnHighlight = entry[1];
+      this.previousHighlightSnapshot = entry;
+      if (repositoryToUnHighlight === this.repository) {
+        if (this.highlightSnapshot) {
+          if (this.repository !== this.highlightSnapshot[1]) {
+            this.highlighted = false;
+          }
+        }
       }
     }
   }
@@ -40,9 +82,9 @@ export class RepositoryComponent implements OnInit {
         branches.forEach(branch => {
           this.branches.push(branch.branchName);
         });
+        this.clicked = true;
+        this.cashed = true;
       })
-      this.clicked = true;
-      this.cashed = true;
     }
     else if (this.cashed && this.clicked) {
       this.clicked = false;

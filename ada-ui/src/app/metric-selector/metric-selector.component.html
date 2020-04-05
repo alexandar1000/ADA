@@ -1,6 +1,5 @@
-<p>Metrics:</p>
 <mat-form-field>
-  <mat-label>Relational Metric</mat-label>
+  <mat-label>Metric</mat-label>
   <mat-select [(value)]="selectedMetric" (selectionChange)="emitSelectedMetricChange($event)">
     <mat-option *ngFor="let metric of metrics" [value]="metric">
       {{metric}}
