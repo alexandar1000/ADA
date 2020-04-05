@@ -2,9 +2,12 @@ package com.ucl.ADA.core.repository_analyser;
 
 import com.google.common.collect.SetMultimap;
 import com.ucl.ADA.model.branch.Branch;
+import com.ucl.ADA.model.class_structure.ClassStructure;
+import com.ucl.ADA.model.dependence_information.DependenceInfo;
 import com.ucl.ADA.model.owner.Owner;
 import com.ucl.ADA.model.repository.GitRepo;
 import com.ucl.ADA.model.snapshot.Snapshot;
+import com.ucl.ADA.model.static_information.static_info.StaticInfo;
 import com.ucl.ADA.parser.ParserServices;
 import com.ucl.ADA.parser.ada_model.ADAClass;
 import com.ucl.ADA.repository_downloader.RepoDownloader;
@@ -69,6 +72,32 @@ public class RepositoryAnalyserServices {
         if (owner == null) owner = databaseUtilityService.saveOwner(repoOwner);
         if (repo == null) repo = databaseUtilityService.saveRepo(owner, repoName);
         if (branch == null) branch = databaseUtilityService.saveBranch(repo, branchName, lastCommitTime);
+
+        // add relation at both side
+        for (ClassStructure structure : snapshot.getClassStructures().values()) {
+            structure.getSnapshots().add(snapshot);
+            StaticInfo staticInfo = structure.getStaticInfo();
+            staticInfo.getClassStructures().add(structure);
+            for (DependenceInfo info : staticInfo.getOutgoingDependenceInfos().values()) {
+                info.setStaticInfo(staticInfo);
+            }
+            for (DependenceInfo dependenceInfo : structure.getIncomingDependenceInfos().values()) {
+                dependenceInfo.getClassStructures().add(structure);
+            }
+        }
+
+        // save dependence info
+        for (ClassStructure structure : snapshot.getClassStructures().values()) {
+            for (DependenceInfo info : structure.getStaticInfo().getOutgoingDependenceInfos().values()) {
+                databaseUtilityService.saveDependenceInfo(info);
+            }
+            for (DependenceInfo dependenceInfo : structure.getIncomingDependenceInfos().values()) {
+                databaseUtilityService.saveDependenceInfo(dependenceInfo);
+            }
+        }
+
+        // save static info
+        snapshot.getClassStructures().values().forEach(classStructure -> databaseUtilityService.saveStaticInfo(classStructure.getStaticInfo()));
 
         databaseUtilityService.saveSnapshot(snapshot, branch);
         databaseUtilityService.saveAnalysisRequest(branch, snapshot);

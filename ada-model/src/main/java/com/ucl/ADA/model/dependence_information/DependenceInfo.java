@@ -1,9 +1,11 @@
 package com.ucl.ADA.model.dependence_information;
 
 import com.ucl.ADA.model.base_entity.BaseEntity;
+import com.ucl.ADA.model.class_structure.ClassStructure;
 import com.ucl.ADA.model.dependence_information.invocation_information.AttributeInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
+import com.ucl.ADA.model.static_information.static_info.StaticInfo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,12 +21,14 @@ import java.util.Set;
 @Table(name = "DEPENDENCE_INFO")
 public class DependenceInfo extends BaseEntity {
 
-//    @ManyToMany(mappedBy = "incomingDependenceInfos")
-//    Set<ClassStructure> classStructures = new HashSet<>();
+    @ManyToMany(mappedBy = "incomingDependenceInfos", fetch = FetchType.EAGER)
+    private Set<ClassStructure> classStructures = new HashSet<>();
 
-//    @ManyToOne
-//    @Column(name = "static_info_id")
-//    StaticInfo staticInfo;
+    @ManyToOne(targetEntity = StaticInfo.class)
+    private StaticInfo staticInfo;
+
+    @Column(name = "class_name")
+    private String className;
 
     /* ************************************************************************
      *

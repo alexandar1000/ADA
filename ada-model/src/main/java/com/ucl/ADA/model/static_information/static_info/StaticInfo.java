@@ -1,6 +1,7 @@
-package com.ucl.ADA.model.static_information;
+package com.ucl.ADA.model.static_information.static_info;
 
 import com.ucl.ADA.model.base_entity.BaseEntity;
+import com.ucl.ADA.model.class_structure.ClassStructure;
 import com.ucl.ADA.model.dependence_information.DependenceInfo;
 import com.ucl.ADA.model.dependence_information.invocation_information.AttributeInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
@@ -22,6 +23,9 @@ import java.util.Set;
 @Entity
 @Table(name = "STATIC_INFO")
 public class StaticInfo extends BaseEntity {
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "staticInfo")
+    Set<ClassStructure> classStructures = new HashSet<>();
 
     /* ************************************************************************
      *
@@ -90,11 +94,11 @@ public class StaticInfo extends BaseEntity {
      * Information about the invocations of the elements from the other classes from this class. String is the qualified
      * name of the class.
      */
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "STATIC_INFO_OUTGOING_DEPENDENCE_INFO",
             joinColumns = {@JoinColumn(name = "static_info_id")},
             inverseJoinColumns = {@JoinColumn(name = "dependence_info_id")})
-    @MapKeyColumn(name = "class_name")
+    @MapKey(name = "className")
     private Map<String, DependenceInfo> outgoingDependenceInfos = new HashMap<>();
 
     /* ************************************************************************

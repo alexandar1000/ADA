@@ -4,12 +4,16 @@ import com.ucl.ADA.model.analysis_request.AnalysisRequest;
 import com.ucl.ADA.model.analysis_request.AnalysisRequestService;
 import com.ucl.ADA.model.branch.Branch;
 import com.ucl.ADA.model.branch.BranchService;
+import com.ucl.ADA.model.dependence_information.DependenceInfo;
+import com.ucl.ADA.model.dependence_information.DependenceInfoService;
 import com.ucl.ADA.model.owner.Owner;
 import com.ucl.ADA.model.owner.OwnerService;
 import com.ucl.ADA.model.repository.GitRepo;
 import com.ucl.ADA.model.repository.GitRepoService;
 import com.ucl.ADA.model.snapshot.Snapshot;
 import com.ucl.ADA.model.snapshot.SnapshotService;
+import com.ucl.ADA.model.static_information.static_info.StaticInfo;
+import com.ucl.ADA.model.static_information.static_info.StaticInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +21,6 @@ import java.time.OffsetDateTime;
 
 @Service
 public class DatabaseUtilityService {
-
 
     @Autowired
     private OwnerService ownerService;
@@ -34,6 +37,11 @@ public class DatabaseUtilityService {
     @Autowired
     private SnapshotService snapshotService;
 
+    @Autowired
+    private StaticInfoService staticInfoService;
+
+    @Autowired
+    private DependenceInfoService dependenceInfoService;
 
     public Branch validateBranch(GitRepo repo, String branchName) {
         return branchService.getBranchGivenRepoAndName(repo, branchName);
@@ -84,5 +92,13 @@ public class DatabaseUtilityService {
         snapshot.setBranch(branch);
         snapshot.setCommitTime(branch.getLastSnapshotTimestamp());
         return snapshotService.addSnapshot(snapshot);
+    }
+
+    public StaticInfo saveStaticInfo(StaticInfo staticInfo) {
+        return staticInfoService.saveStaticInfo(staticInfo);
+    }
+
+    public DependenceInfo saveDependenceInfo(DependenceInfo dependenceInfo) {
+        return dependenceInfoService.saveDependenceInfo(dependenceInfo);
     }
 }

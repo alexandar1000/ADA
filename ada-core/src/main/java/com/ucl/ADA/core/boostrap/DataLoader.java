@@ -13,8 +13,8 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     private RepositoryAnalyserServices repositoryAnalyserServices;
 
-    String url = "https://github.com/alexandar1000/ADA";
-//    String url = "https://github.com/alexandar1000/ADA-test-simple-JAVA-project-0";
+//    String url = "https://github.com/alexandar1000/ADA";
+    String url = "https://github.com/alexandar1000/ADA-test-simple-JAVA-project-0";
     String branch = "master";
 
     @Override

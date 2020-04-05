@@ -33,7 +33,8 @@ public class Snapshot extends BaseEntity {
     /**
      * Set of analysis request that retrieved this snapshot
      */
-    @OneToMany(mappedBy = "snapshot", cascade = CascadeType.ALL)
+//    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @OneToMany(mappedBy = "snapshot", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<AnalysisRequest> analysisRequests = new HashSet<>();
 
     /**
@@ -71,7 +72,6 @@ public class Snapshot extends BaseEntity {
 
     protected void addClassStructure(String className, ClassStructure classStructure) {
         classStructures.put(className, classStructure);
-        classStructure.getSnapshots().add(this);
     }
 
 }

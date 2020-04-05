@@ -3,7 +3,7 @@ package com.ucl.ADA.model.class_structure;
 import com.google.common.collect.SetMultimap;
 import com.ucl.ADA.model.dependence_information.DependenceInfo;
 import com.ucl.ADA.model.dependence_information.invocation_information.*;
-import com.ucl.ADA.model.static_information.StaticInfo;
+import com.ucl.ADA.model.static_information.static_info.StaticInfo;
 import com.ucl.ADA.model.static_information.declaration_information.*;
 import lombok.NonNull;
 
@@ -78,11 +78,7 @@ public class ClassStructureUtils {
         if (reuseStaticInfo) {
             StaticInfo staticInfo = prevClassStructure.getStaticInfo();
             classStructure.setStaticInfo(staticInfo);
-//            staticInfo.getClassStructures().add(classStructure);
         }
-//        else {
-//            classStructure.getStaticInfo().getClassStructures().add(classStructure);
-//        }
         if (reuseIncomingDependenceInfo) {
             // reuse all incoming dependence info if available
             classStructure.setIncomingDependenceInfos(prevClassStructure.getIncomingDependenceInfos());

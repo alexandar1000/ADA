@@ -8,7 +8,7 @@ import com.ucl.ADA.model.dependence_information.invocation_information.MethodInv
 import com.ucl.ADA.model.metrics.class_metrics.ClassMetricValue;
 import com.ucl.ADA.model.metrics.relation_metrics.RelationMetricValue;
 import com.ucl.ADA.model.snapshot.Snapshot;
-import com.ucl.ADA.model.static_information.StaticInfo;
+import com.ucl.ADA.model.static_information.static_info.StaticInfo;
 import com.ucl.ADA.model.static_information.declaration_information.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -54,7 +54,7 @@ public class ClassStructure extends BaseEntity {
     /**
      * a set of source files that contains this class structure
      */
-    @ManyToMany(mappedBy = "classStructures", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "classStructures", fetch = FetchType.EAGER)
     private Set<Snapshot> snapshots = new HashSet<>();
 
     /* ************************************************************************
@@ -67,7 +67,7 @@ public class ClassStructure extends BaseEntity {
      * static information contains all declarations, outgoing dependence info and external invocation which is unchanged
      * when source file is not parsed
      */
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "static_info_id")
     private StaticInfo staticInfo = new StaticInfo();
 
@@ -75,7 +75,7 @@ public class ClassStructure extends BaseEntity {
      * Information about the invocations of elements from this class by the other classes. String is the qualified name
      * of the class.
      */
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "CLASS_STRUCTURE_INCOMING_DEPENDENCE_INFO",
             joinColumns = {@JoinColumn(name = "class_structure_id")},
             inverseJoinColumns = {@JoinColumn(name = "dependence_info_id")})
