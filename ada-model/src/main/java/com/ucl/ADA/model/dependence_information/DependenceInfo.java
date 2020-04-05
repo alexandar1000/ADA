@@ -1,11 +1,9 @@
 package com.ucl.ADA.model.dependence_information;
 
 import com.ucl.ADA.model.base_entity.BaseEntity;
-import com.ucl.ADA.model.class_structure.ClassStructure;
 import com.ucl.ADA.model.dependence_information.invocation_information.AttributeInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.ConstructorInvocation;
 import com.ucl.ADA.model.dependence_information.invocation_information.MethodInvocation;
-import com.ucl.ADA.model.static_information.StaticInfo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,11 +19,12 @@ import java.util.Set;
 @Table(name = "DEPENDENCE_INFO")
 public class DependenceInfo extends BaseEntity {
 
-    @ManyToMany(mappedBy = "incomingDependenceInfos")
-    Set<ClassStructure> classStructures = new HashSet<>();
+//    @ManyToMany(mappedBy = "incomingDependenceInfos")
+//    Set<ClassStructure> classStructures = new HashSet<>();
 
-    @ManyToOne
-    StaticInfo staticInfo;
+//    @ManyToOne
+//    @Column(name = "static_info_id")
+//    StaticInfo staticInfo;
 
     /* ************************************************************************
      *
@@ -96,8 +95,8 @@ public class DependenceInfo extends BaseEntity {
     /**
      * Adds a new method to the instance.
      *
-     * @param methodInvocationInformation a method invocation information object containing all of the
-     *                                    corresponding information about the method being added
+     * @param methodInvocationInformation a method invocation information object containing all of the corresponding
+     *                                    information about the method being added
      */
     public void addMethodInvocation(MethodInvocation methodInvocationInformation) {
         this.methodInvocations.add(methodInvocationInformation);

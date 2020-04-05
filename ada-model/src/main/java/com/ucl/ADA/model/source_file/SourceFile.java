@@ -23,7 +23,7 @@ public class SourceFile extends BaseEntity {
     /**
      * the snapshot which contains the source file
      */
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "snapshot_id")
     private Snapshot snapshot;
 

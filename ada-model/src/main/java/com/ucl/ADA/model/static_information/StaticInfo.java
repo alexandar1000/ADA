@@ -27,7 +27,7 @@ public class StaticInfo extends BaseEntity {
     /**
      * the class structures that holds this static info
      */
-    @OneToMany(mappedBy = "staticInfo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "staticInfo", fetch = FetchType.EAGER)
     private Set<ClassStructure> classStructures = new HashSet<>();
 
 

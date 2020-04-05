@@ -77,17 +77,6 @@ public class SnapshotUtils {
      * @param incomingToAddSet                    the set of names of the affected class structures
      */
     public static void reuseClassStructuresOfSnapshot(@NonNull Snapshot snapshot, Snapshot prevSnapshot, @NonNull SetMultimap<String, String> pathsOfAddedSourceFilesToClassNames, @NonNull Set<String> incomingToAddSet) {
-        // validate the relation between current and previous snapshots
-        if (prevSnapshot != null) {
-            // the exception can be removed when working on per-repo optimisation
-            if (snapshot.getBranch().getBranchName().equals(prevSnapshot.getBranch().getBranchName())) {
-                throw new IllegalArgumentException("the two input snapshots must be on the same branch");
-            }
-            if (snapshot.getCommitTime().isBefore(prevSnapshot.getCommitTime())) {
-                throw new IllegalArgumentException("the commit time of the previous snapshot to reuse should be earlier than the initialized one");
-            }
-        }
-
         // initialize all class structures that are in the added source files
         initClassStructuresGivenPathToClassNamesMap(snapshot, pathsOfAddedSourceFilesToClassNames);
 
@@ -110,6 +99,7 @@ public class SnapshotUtils {
             ClassStructure initClassStructure = entry.getValue();
             ClassStructure reuseUpdatedClassStructure = reuseClassStructure(initClassStructure, prevClassStructures.getOrDefault(className, null), incomingToDeleteMap, incomingToAddSet);
             reuseUpdatedClassStructures.put(className, reuseUpdatedClassStructure);
+            reuseUpdatedClassStructure.getSnapshots().add(snapshot);
         }
         snapshot.setClassStructures(reuseUpdatedClassStructures);
     }
@@ -137,6 +127,7 @@ public class SnapshotUtils {
             for (String className : classNames) {
                 ClassStructure classStructure = ClassStructureUtils.initClassStructureWithFileNameAndFileHash(className, filePath, sourceFile.getFileHash());
                 snapshot.getClassStructures().put(className, classStructure);
+                classStructure.getSnapshots().add(snapshot);
             }
         }
     }
@@ -166,6 +157,7 @@ public class SnapshotUtils {
                 String fileHash = prevClassStructure.getFileHash();
                 ClassStructure classStructure = ClassStructureUtils.initClassStructureWithFileNameAndFileHash(className, filePath, fileHash);
                 snapshot.getClassStructures().put(className, classStructure);
+                classStructure.getSnapshots().add(snapshot);
             }
         }
     }

@@ -3,6 +3,7 @@ package com.ucl.ADA.model.class_structure;
 import com.google.common.collect.SetMultimap;
 import com.ucl.ADA.model.dependence_information.DependenceInfo;
 import com.ucl.ADA.model.dependence_information.invocation_information.*;
+import com.ucl.ADA.model.static_information.StaticInfo;
 import com.ucl.ADA.model.static_information.declaration_information.*;
 import lombok.NonNull;
 
@@ -75,7 +76,11 @@ public class ClassStructureUtils {
         // if cannot reuse the class structure object,
         // then reuse static info and incoming dependence info if available
         if (reuseStaticInfo) {
-            classStructure.setStaticInfo(prevClassStructure.getStaticInfo());
+            StaticInfo staticInfo = prevClassStructure.getStaticInfo();
+            classStructure.setStaticInfo(staticInfo);
+            staticInfo.getClassStructures().add(classStructure);
+        } else {
+            classStructure.getStaticInfo().getClassStructures().add(classStructure);
         }
         if (reuseIncomingDependenceInfo) {
             // reuse all incoming dependence info if available
@@ -198,7 +203,6 @@ public class ClassStructureUtils {
             dependenceInfos.put(relatingClass, new DependenceInfo());
         }
         DependenceInfo dependenceInfo = dependenceInfos.get(relatingClass);
-
 
         // add new invocation by its type
         switch (invocationType) {

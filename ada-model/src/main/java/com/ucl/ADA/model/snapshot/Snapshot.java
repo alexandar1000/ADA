@@ -45,7 +45,7 @@ public class Snapshot extends BaseEntity {
     /**
      * a map of ClassStructures, the key is qualified class name
      */
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinTable(name = "SNAPSHOT_CLASS_STRUCTURE",
             joinColumns = {@JoinColumn(name = "snapshot_id")},
             inverseJoinColumns = {@JoinColumn(name = "class_structure_id")})
@@ -55,7 +55,7 @@ public class Snapshot extends BaseEntity {
     /**
      * a map of source files, the key is the file path
      */
-    @OneToMany(mappedBy = "snapshot", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "snapshot", cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @MapKey(name = "filePath")
     private Map<String, SourceFile> sourceFiles = new HashMap<>();
 
