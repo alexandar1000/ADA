@@ -20,7 +20,7 @@
       <div *ngIf="selectedEdges.length == 0">
         <p>No edges selected.</p>
       </div>
-      <div *ngIf="selectedEdges.length > 0">
+      <div *ngIf="selectedEdges.length > 0" class="my-element-insight-list-container">
         <div *ngFor="let selectedEdge of selectedEdges">
           <app-edge-insight
             [firstClassStructure]="retrieveNodeInformation(selectedEdge.source)"
