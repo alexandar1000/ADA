@@ -21,19 +21,19 @@ export class ElementInsightService {
 
   constructor() { }
 
-  addSelectedNode(nodeId: string) {
+  addSelectedNode(nodeId: string): void {
     let nodeIdArray = this._selectedNodes.value;
     nodeIdArray.push(nodeId);
     this._selectedNodes.next(nodeIdArray);
   }
 
-  addSelectedEdge(edgeId: number) {
+  addSelectedEdge(edgeId: number): void {
     let edgeIdArray = this._selectedEdges.value;
     edgeIdArray.push(edgeId);
     this._selectedEdges.next(edgeIdArray);
   }
 
-  removeSelectedNode(nodeId: string) {
+  removeSelectedNode(nodeId: string): void {
     let nodeIdArray = this._selectedNodes.value;
     nodeIdArray = nodeIdArray.filter(function (value, index, arr) {
       return nodeId != value;
@@ -41,11 +41,19 @@ export class ElementInsightService {
     this._selectedNodes.next(nodeIdArray);
   }
 
-  removeSelectedEdge(edgeId: number) {
+  removeSelectedEdge(edgeId: number): void {
     let edgeIdArray = this._selectedEdges.value;
     edgeIdArray = edgeIdArray.filter(function (value, index, arr) {
       return edgeId != value;
     });
     this._selectedEdges.next(edgeIdArray);
+  }
+
+  clearSelectedNodes(): void {
+    this._selectedNodes.next([]);
+  }
+
+  clearSelectedEdges(): void {
+    this._selectedEdges.next([]);
   }
 }

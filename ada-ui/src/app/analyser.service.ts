@@ -3,6 +3,7 @@ import {Observable} from "rxjs";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Snapshot} from "./classes/snapshot";
 import { environment } from '../environments/environment';
+import {ElementInsightService} from "./element-insight.service";
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,7 @@ export class AnalyserService {
     'BIDIRECTIONAL_NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS'
   ];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private elementInsightService: ElementInsightService) {}
 
   public buildFetchPreviousSnapshotAPIUrl(owner: string, repository: string, branch: string, snapshot: string): string {
     return environment.backendBaseUrl + '/owners/' + owner +
@@ -50,11 +51,15 @@ export class AnalyserService {
       .set('url', this.repoUrl)
       .set('branch', this.repoBranch);
 
+    this.elementInsightService.clearSelectedNodes();
+    this.elementInsightService.clearSelectedEdges();
     return this.http.post<JSON>(this.analysisEndpointUrl, params);
   }
 
   public getPreviousAnalysis(owner: string, repository: string, branch: string, snapshot: string): Observable<JSON> {
     let apiUrl = this.buildFetchPreviousSnapshotAPIUrl(owner, repository, branch, snapshot);
+    this.elementInsightService.clearSelectedNodes();
+    this.elementInsightService.clearSelectedEdges();
     return this.http.post<JSON>(apiUrl, new HttpParams());
   }
 }

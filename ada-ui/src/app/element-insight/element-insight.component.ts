@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ProjectStructure} from "../classes/project-structure";
 import {ElementInsightService} from "../element-insight.service";
 import {ClassStructure} from "../classes/class-structure";
@@ -20,7 +20,6 @@ export class ElementInsightComponent implements OnInit {
   constructor(private elementInsightService: ElementInsightService) { }
 
   ngOnInit() {
-    console.log(this.projectStructure);
     if (this.elementInsightService.selectedNodes$) {
       this.subscriptions[this.subscriptionIndex++] = this.elementInsightService.selectedNodes$.subscribe(
         value => {
@@ -45,5 +44,14 @@ export class ElementInsightComponent implements OnInit {
 
   retrieveNodeInformation(nodeId): ClassStructure {
     return this.projectStructure.classStructures.get(nodeId);
+  }
+
+  /**
+   * Extract the class name given a fullyQualifiedClassName
+   * @param fullyQualifiedClassName a fully qualified class name from whcih the class name is to be extracted
+   */
+  public extractClassName(fullyQualifiedClassName: string): string {
+    let lastIndex = fullyQualifiedClassName.lastIndexOf('.');
+    return (lastIndex > 0 ? fullyQualifiedClassName.substr(lastIndex + 1, fullyQualifiedClassName.length - 1) : fullyQualifiedClassName);
   }
 }

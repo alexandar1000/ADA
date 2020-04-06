@@ -4,11 +4,10 @@
     <p>No nodes selected.</p>
   </div>
   <div *ngIf="selectedNodes.length > 0">
-    <ul>
-      <li *ngFor="let selectedNode of selectedNodes">
-        Selected Nodes: {{retrieveNodeInformation(selectedNode).packageDeclaration.name}}
-      </li>
-    </ul>
+    <div *ngFor="let selectedNode of selectedNodes">
+      <u><b>{{extractClassName(selectedNode)}}</b></u>
+<!--      retrieveNodeInformation(selectedNode).packageDeclaration.name)-->
+    </div>
   </div>
 
 <!--  Display Edges   -->
@@ -16,8 +15,8 @@
     <p>No edges selected.</p>
   </div>
   <div *ngIf="selectedEdges.length > 0">
-    <ul>
-      <li>Selected Edges Count: {{selectedEdges.length}}</li>
-    </ul>
+    <div *ngFor="let selectedNode of selectedNodes">
+      Selected Edges Count: {{selectedEdges.length}}
+    </div>
   </div>
 </div>
