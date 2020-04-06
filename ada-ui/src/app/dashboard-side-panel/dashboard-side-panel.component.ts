@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {ProjectStructure} from "../classes/project-structure";
 
 @Component({
   selector: 'app-dashboard-side-panel',
@@ -8,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class DashboardSidePanelComponent implements OnInit {
 
   isMenuOpen = false;
+  @Input() projectStructure: ProjectStructure;
 
   constructor() { }
 

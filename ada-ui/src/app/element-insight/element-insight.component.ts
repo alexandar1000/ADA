@@ -1,6 +1,7 @@
 import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import {ProjectStructure} from "../classes/project-structure";
 import {ElementInsightService} from "../element-insight.service";
+import {ClassStructure} from "../classes/class-structure";
 
 @Component({
   selector: 'app-element-insight',
@@ -19,6 +20,7 @@ export class ElementInsightComponent implements OnInit {
   constructor(private elementInsightService: ElementInsightService) { }
 
   ngOnInit() {
+    console.log(this.projectStructure);
     if (this.elementInsightService.selectedNodes$) {
       this.subscriptions[this.subscriptionIndex++] = this.elementInsightService.selectedNodes$.subscribe(
         value => {
@@ -39,5 +41,9 @@ export class ElementInsightComponent implements OnInit {
     this.subscriptions.forEach( function (subscription) {
       subscription.unsubscribe();
     });
+  }
+
+  retrieveNodeInformation(nodeId): ClassStructure {
+    return this.projectStructure.classStructures.get(nodeId);
   }
 }

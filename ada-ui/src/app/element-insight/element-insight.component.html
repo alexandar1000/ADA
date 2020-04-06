@@ -5,9 +5,12 @@
   </div>
   <div *ngIf="selectedNodes.length > 0">
     <ul>
-      <li>Selected Nodes Count: {{selectedNodes.length}}</li>
+      <li *ngFor="let selectedNode of selectedNodes">
+        Selected Nodes: {{retrieveNodeInformation(selectedNode).packageDeclaration.name}}
+      </li>
     </ul>
   </div>
+
 <!--  Display Edges   -->
   <div *ngIf="selectedEdges.length == 0">
     <p>No edges selected.</p>

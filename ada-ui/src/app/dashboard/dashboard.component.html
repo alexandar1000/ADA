@@ -13,7 +13,7 @@
     <mat-grid-tile rowspan="1" colspan="1">
       <div class="my-dashboard-tile-container">
         <mat-card id="dashboardSidePanel" class="my-dashboard-tile-container">
-            <app-dashboard-side-panel class="my-dashboard-side-panel-content"></app-dashboard-side-panel>
+            <app-dashboard-side-panel [projectStructure]="projectStructure" class="my-dashboard-side-panel-content"></app-dashboard-side-panel>
 <!--            <app-snapshot-slider class="my-dashboard-side-panel-content" [snapshots]="snapshots"></app-snapshot-slider>-->
         </mat-card>
       </div>
