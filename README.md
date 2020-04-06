@@ -4,12 +4,14 @@
 
 # ADA - The Architectural Design Advisor
 
-### The repository of ADA, the Architectural Design Advisor
-
 ## General Information
 
 
-The project and sprint backlogs can be found on the project's [Trello board](https://trello.com/invite/b/CHtfAIFN/d2ebc24144c32afd61693a4605d8c898/ada), and the group report on [Overleaf](https://www.overleaf.com/read/fcsmpbsrfndf).
+This is a [Spring Boot](https://spring.io/projects/spring-boot), [PostgreSQL](https://www.postgresql.org/), and [Angular](https://angular.io/) application which helps developers and stakeholders analyse the architectural structure of GitHub Java projects. It focuses on visualising cohesion and coupling in and between classes.
+
+The implementation relies on [Hibernate](https://hibernate.org/) for interacting with the database, while the migrations are handled by [Flyway](https://flywaydb.org/). On the frontend, the graphs are made using [Cytoscape.js](https://js.cytoscape.org/). 
+
+The project and sprint backlogs can be found on the project's [Trello board](https://trello.com/b/CHtfAIFN), and the group report on [Overleaf](https://www.overleaf.com/read/hpbftjncqnsn).
 
 The project uses [a simple Java Android application](https://github.com/alexandar1000/ADA-test-simple-Java-project) for testing.
 
@@ -17,22 +19,57 @@ The project uses [a simple Java Android application](https://github.com/alexanda
 
 ### Prerequisites
 
-In order to get the project started you will need to have [docker](https://www.docker.com/) 19+ installed, along with [compose](https://docs.docker.com/compose/install/). 
+In order to get the project started you will need to have the following software installed:
+  - [Docker](https://www.docker.com/) 19+
+  - [Docker-compose](https://docs.docker.com/compose/install/)
+  - [Maven](https://maven.apache.org/)
 
-Furthermore, this project uses [java 11](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html), so please make sure that you have it installed prior to development.
+Moreover, if you intend to develop the project, you will need to have the following software as well:
+  - [Java 11](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html)
+  - [Node.js](https://nodejs.org/en/)
+  - [Lombok](https://projectlombok.org/) extension for your IDE; otherwise an error that certain methods have not been implemented will be shown in the IDE.
 
-Finally, depending on your environment, you might need to install [maven](https://maven.apache.org/).
+### Deployment
 
-### Setting up the project
+If you wish to deploy the application, this can be done easily as it has been fully dockerised.
+
+#### Local Deployment
+
+In order deploy the software locally, simply follow these steps:
+1. Clone the repository
+2. Set the profile to production in the `application.properties` file by setting `spring.profiles.active=prod`
+3. In `ada-ui/src/environments/environment.prod.ts` set `backendBaseUrl` flag to the localhost address by edditing the corresponding line to:
+  ```
+  'backendBaseUrl: 'http://localhost:18080/api/v1'
+  ```
+4. run `maven clean install`
+5. run `sudo docker-compose up`
+6. You are ready to use the application on `localhost:80`
+
+#### Deployment to a Server
+In order deploy the software to a server, follow these steps:
+1. Clone the repository
+2. Change the `postgres` and `pgadmin` credentials in the `docker-compose.yml` file
+3. Set the profile to production in the `application.properties` file by setting `spring.profiles.active=prod`
+4. In `ada-ui/src/environments/environment.prod.ts` set `backendBaseUrl` flag to the address of the server `www.server-address.com` by edditing the corresponding line to: `'backendBaseUrl: 'http://www.server-address.com:18080/api/v1'`
+5.  Make sure that the the server allows incoming connections to the port 18080
+6. run `maven clean install`
+7. run `sudo docker-compose up`
+8. You are ready to use the application on `www.server-address.com`
+
+
+### Development
 
 In order to set up the project and get ready for development, follow these steps:
 1. Pull the Git repository.
 2. Import the project to your IDE using the `pom.xml` file.
-3. Execute the docker-compose.yml file via running the `docker-compose up -d` command. You should be able to see that both the `postgres` and the `pgadmin` containers are running.
-4. Open `pgadmin` by visiting `localhost:15050`. You can log in using the credidentials as stated in the `docker-compose.yml`.
+3. For the purposes of development, comment out the `web_app_backend` and `web_app_frontend` sections from the `docker-compose.yml` file.
+4. Set the profile to development in the `application.properties` file by editing `spring.profiles.active=prod` to `spring.profiles.active=dev`
+5. Execute the docker-compose.yml file via running the `docker-compose up -d` command. You should be able to see that both the `postgres` and the `pgadmin` containers are running.
+6. Open `pgadmin` by visiting `localhost:15050`. You can log in using the credidentials as stated in the `docker-compose.yml`.
     - **Email**: `ada-team@gmail.com`
     - **Password**: `ada-team`
- 5. Once `pgadmin` is running connect to the dev and test database servers, with the following credentials:
+7. Once `pgadmin` is running connect to the dev database server, with the following credentials:
     
     Dev Database:
     - **Name**: name the dev server as you wish.
@@ -41,39 +78,31 @@ In order to set up the project and get ready for development, follow these steps
     - **Maintenance Database**: `ada`
     - **Username**: `ada-team`
     - **Password**: `1234`
-    
-    Test Database:
-    - **Name**: name the test server as you wish.
-    - **Host name/address**: `db_test`
-    - **Port**: `5432`
-    - **Maintenance Database**: `ada`
-    - **Username**: `ada-team`
-    - **Password**: `1234`
  
     and press `Save`.
-6. Run the application with the `./mvnw spring-boot:run` command.
-7. Open `localhost:8080` and enjoy the masterpiece.
+8. Run the application with the `./mvnw spring-boot:run` command.
+9. The address `localhost:18080` is now the entry for the backend.
+10. Change the directory to `ada-ui`.
+11. Run `npm install`.
+12. In order to serve the front end of your application, run `ng serve`.
+13. Finally, you will be able to access the application at `localhost:4200`.
 
-### Possible Additional Setup
+#### Possible Additional Setup
 
-If you are using IntelliJ, you can similarily connect to PostgreSQL through it. The only difference is that you would have to now
-use the ports `15432` and `25432` respectively. This is due to the connection now being from the host to the container and not from within the docker network.
+If you are using IntelliJ, you can connect to PostgreSQL through it. The process is similair to the one described above, however, the only difference is that you will have to now use `localhost` as the host, and `15432` as the port. This is due to the connection now being from the host to the container and not from within the docker network.
 
-Also, using Maven is a lot easier through IntelliJ.
+Also, it is worth mentioning that using Maven via IntelliJ is supported.
 
 ## Project structure
 
-The project consists out of four modules:
-- ada-core - the main part of the application, invoking and connecting all other components
-- ada-repository-downloader - downloads the git repository and stores the metadata
-- ada-parser - parses different languages and exposes the parsed data
-- ada-metric-calculator - calculation of the metrics based on the output from the parser component
-- ada-model - EXPLAIN THE STRUCTURE OF THE MODEL
-- ada-ui - the user interface of the project
+The project consists out of six modules:
+- `ada-core` - the main part of the application, invoking and connecting all other components
+- `ada-repository-downloader` - downloads the git repository and stores the metadata
+- `ada-parser` - parses the source files and exposes the parsed data
+- `ada-metric-calculator` - calculates the metrics based on the output from the parser module
+- `ada-model` - defines the data model which is used by all other modules
+- `ada-ui` - the user interface of the project
 
-## Deployment
-
-Deployment has not yet been dockerized, but will come soon.
 
 ## Development Instructions
 
@@ -89,14 +118,12 @@ Deployment has not yet been dockerized, but will come soon.
 
 ## Migration Instructions
 
-All of the migrations should be saved in a `.sql` file and in the `src/main/resources/db/migration` folder.
+All of the migrations should be saved in a `.sql` file and in the `ada-core/src/main/resources/db/migration/development` folder.
 Flyway is used for handling the migrations. The explanation and the documentation can be found on their [website](https://flywaydb.org/documentation/migrations).
 
-Keep in mind that the naming convention for the migrations should be as state on the aforementioned website, 
- with the emphasis of naming the versions by stating the year, month, day, hours and minutes in a dotted and zero-padded format.
- Again, please take care of the leading zeros. An example for this would be: `V2020.01.24.19.45__Example_migration.sql`.
+Keep in mind that the naming convention for the migrations should be as stated on the aforementioned website, with the emphasis on naming the versions by stating the year, month, day, hours and minutes in a dotted and zero-padded format. Again, also please take care to include the leading zeros. An example for a correct name would be: `V2020.01.24.19.45__Example_migration.sql`.
 
-This must be done in order to populate the database once the server is deployed, and to be able to restore the database schema in an event of a failure.
+These points must be performed in order to populate the database once the server is deployed, and in order to be able to restore the database schema in an event of a failure.
 
 The unexecuted migrations will be ran automatically upon the start of spring project.
 
@@ -104,14 +131,21 @@ The unexecuted migrations will be ran automatically upon the start of spring pro
 
 - Spring
 - Spring Boot
+- PostgreSQL
 - Hibernate
 - FlyWay
 - Lombok
+- Angular
+- Node
+- Cytoscape.js
  
 ## Helpful Docker Commands
 
 - List all of the running containers `docker ps`
 - List all containers `docker ps -a`
+- Remove a container `docker container rm *container_id*`
+- List docker images `docker image ls`
+- Remove an image `docker image rm *image_id*`
 - Starting the database containers: `docker-compose up -d`
 - Stopping the database containers: `docker-compose stop`
 - Removing the database containers: `docker-compose down`
