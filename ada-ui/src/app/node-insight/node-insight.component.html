@@ -1,0 +1,39 @@
+<ul>
+  <li>
+    <span>Package: {{classStructure.packageDeclaration.name}}</span>
+  </li>
+  <li>
+    <span>Invocations:</span>
+    <ul>
+      <li *ngFor="let className of outgoingRelatingClassNames">
+        <span>{{extractClassName(className)}}</span>
+        <ul>
+          <li>
+            <span>Attributes:</span>
+            <ul>
+              <li *ngFor="let attributeInvocation of outgoingDependenceInfos[className].attributes">
+                {{attributeInvocation.name}}
+              </li>
+            </ul>
+          </li>
+          <li>
+            <span>Constructors:</span>
+            <ul>
+              <li *ngFor="let constructorInvocation of outgoingDependenceInfos[className].constructors">
+                {{constructorInvocation.name}}
+              </li>
+            </ul>
+          </li>
+          <li>
+            <span>Methods:</span>
+            <ul>
+              <li *ngFor="let methodInvocation of outgoingDependenceInfos[className].methods">
+                {{methodInvocation.name}}
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>

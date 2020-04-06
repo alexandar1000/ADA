@@ -8,7 +8,7 @@
       <div *ngIf="selectedNodes.length > 0">
         <div *ngFor="let selectedNode of selectedNodes">
           <u><b>{{extractClassName(selectedNode)}}</b></u>
-          <!--      retrieveNodeInformation(selectedNode).packageDeclaration.name)-->
+          <app-node-insight [classStructure]="retrieveNodeInformation(selectedNode)"></app-node-insight>
         </div>
       </div>
     </mat-tab>

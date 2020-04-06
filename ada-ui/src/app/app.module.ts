@@ -41,6 +41,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatCardModule} from "@angular/material/card";
 import {MatTabsModule} from "@angular/material/tabs";
+import { NodeInsightComponent } from './node-insight/node-insight.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import {MatTabsModule} from "@angular/material/tabs";
     GraphMenuComponent,
     QueryFormComponent,
     DashboardSidePanelComponent,
+    NodeInsightComponent,
   ],
     imports: [
         BrowserModule,
