@@ -22,7 +22,12 @@
       </div>
       <div *ngIf="selectedEdges.length > 0">
         <div *ngFor="let selectedEdge of selectedEdges">
-          <app-edge-insight></app-edge-insight>
+          <app-edge-insight
+            [firstClassStructure]="retrieveNodeInformation(selectedEdge.source)"
+            [secondClassStructure]="retrieveNodeInformation(selectedEdge.target)"
+            [firstFullyQualifiedClassName]="selectedEdge.source"
+            [secondFullyQualifiedClassName]="selectedEdge.target"
+          ></app-edge-insight>
         </div>
       </div>
     </mat-tab>

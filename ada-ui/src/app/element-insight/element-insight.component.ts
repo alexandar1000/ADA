@@ -3,6 +3,12 @@ import {ProjectStructure} from "../classes/project-structure";
 import {ElementInsightService} from "../element-insight.service";
 import {ClassStructure} from "../classes/class-structure";
 
+interface edgeInformation {
+  id: number,
+  source: string,
+  target: string
+}
+
 @Component({
   selector: 'app-element-insight',
   templateUrl: './element-insight.component.html',
@@ -12,7 +18,7 @@ export class ElementInsightComponent implements OnInit {
 
   @Input() projectStructure: ProjectStructure;
   selectedNodes: string[];
-  selectedEdges: number[];
+  selectedEdges: edgeInformation[];
 
   private subscriptions = [];
   private subscriptionIndex = 0;

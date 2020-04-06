@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ClassStructure} from "../classes/class-structure";
+import {DependenceInfo} from "../classes/dependence-info";
 
 @Component({
   selector: 'app-edge-insight',
@@ -10,10 +11,20 @@ export class EdgeInsightComponent implements OnInit {
 
   @Input() firstClassStructure: ClassStructure;
   @Input() secondClassStructure: ClassStructure;
+  @Input() firstFullyQualifiedClassName: string;
+  @Input() secondFullyQualifiedClassName: string;
+  public firstDependenceInfo: DependenceInfo = null;
+  public secondDependenceInfo: DependenceInfo = null;
 
   constructor() {}
 
   ngOnInit() {
+    if (this.firstClassStructure.outgoingDependenceInfo.has(this.secondFullyQualifiedClassName)) {
+      this.firstDependenceInfo = this.firstClassStructure.outgoingDependenceInfo.get(this.secondFullyQualifiedClassName);
+    }
+    if (this.secondClassStructure.outgoingDependenceInfo.has(this.firstFullyQualifiedClassName)) {
+      this.secondDependenceInfo = this.secondClassStructure.outgoingDependenceInfo.get(this.firstFullyQualifiedClassName);
+    }
   }
 
   /**
