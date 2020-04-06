@@ -1,12 +1,12 @@
 <div class="element-insight">
-  <div *ngIf="selectedNode != null">
+  <div *ngIf="selectedNodes != null">
     <ul>
-      <li>Selected Node: {{selectedNode}}</li>
+      <li>Selected Nodes Count: {{selectedNodes.length}}</li>
     </ul>
   </div>
-  <div *ngIf="selectedEdge != null">
+  <div *ngIf="selectedEdges != null">
     <ul>
-      <li>Selected Edge: {{selectedEdge}}</li>
+      <li>Selected Edge: {{selectedEdges.length}}</li>
     </ul>
   </div>
 </div>

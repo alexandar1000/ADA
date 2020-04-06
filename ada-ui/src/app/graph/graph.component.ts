@@ -1026,7 +1026,7 @@ export class GraphComponent implements OnInit {
    * @param nodeId id of the node which is selected
    */
   private emitNodeSelected(nodeId: string) {
-    this.elementInsightService.setSelectedNode(nodeId);
+    this.elementInsightService.addSelectedNode(nodeId);
   }
 
   /**
@@ -1034,7 +1034,7 @@ export class GraphComponent implements OnInit {
    * @param edgeId id of the edge which is selected
    */
   private emitEdgeSelected(edgeId: number) {
-    this.elementInsightService.setSelectedEdge(edgeId);
+    this.elementInsightService.addSelectedEdge(edgeId);
   }
 
   /**
@@ -1054,7 +1054,7 @@ export class GraphComponent implements OnInit {
    * @param nodeId id of the node which is selected
    */
   private emitNodeUnselected(nodeId: string) {
-    this.elementInsightService.resetSelectedNode(nodeId);
+    this.elementInsightService.removeSelectedNode(nodeId);
   }
 
   /**
@@ -1062,7 +1062,7 @@ export class GraphComponent implements OnInit {
    * @param edgeId id of the edge which is selected
    */
   private emitEdgeUnselected(edgeId: number) {
-    this.elementInsightService.resetSelectedEdge(edgeId);
+    this.elementInsightService.removeSelectedEdge(edgeId);
   }
 
   /**

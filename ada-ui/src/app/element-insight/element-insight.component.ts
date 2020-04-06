@@ -10,8 +10,8 @@ import {ElementInsightService} from "../element-insight.service";
 export class ElementInsightComponent implements OnInit {
 
   @Input() projectStructure: ProjectStructure;
-  selectedNode: string;
-  selectedEdge: number;
+  selectedNodes: string[];
+  selectedEdges: number[];
 
   private subscriptions = [];
   private subscriptionIndex = 0;
@@ -19,17 +19,17 @@ export class ElementInsightComponent implements OnInit {
   constructor(private elementInsightService: ElementInsightService) { }
 
   ngOnInit() {
-    if (this.elementInsightService.selectedNode$) {
-      this.subscriptions[this.subscriptionIndex++] = this.elementInsightService.selectedNode$.subscribe(
+    if (this.elementInsightService.selectedNodes$) {
+      this.subscriptions[this.subscriptionIndex++] = this.elementInsightService.selectedNodes$.subscribe(
         value => {
-          this.selectedNode = value;
+          this.selectedNodes = value;
         }
       )
     }
-    if (this.elementInsightService.selectedEdge$) {
-      this.subscriptions[this.subscriptionIndex++] = this.elementInsightService.selectedEdge$.subscribe(
+    if (this.elementInsightService.selectedEdges$) {
+      this.subscriptions[this.subscriptionIndex++] = this.elementInsightService.selectedEdges$.subscribe(
         value => {
-          this.selectedEdge = value;
+          this.selectedEdges = value;
         }
       )
     }

@@ -5,35 +5,47 @@ import {BehaviorSubject} from "rxjs";
   providedIn: 'root'
 })
 export class ElementInsightService {
-  private _selectedNode = new BehaviorSubject(null);
-  selectedNode$ = this._selectedNode.asObservable();
+  private _selectedNodes = new BehaviorSubject<string[]>([]);
+  selectedNodes$ = this._selectedNodes.asObservable();
 
-  private _selectedEdge = new BehaviorSubject(null);
-  selectedEdge$ = this._selectedEdge.asObservable();
+  private _selectedEdges = new BehaviorSubject<number[]>([]);
+  selectedEdges$ = this._selectedEdges.asObservable();
 
-  get selectedNode(): number {
-    return this._selectedNode.value;
+  get selectedNodes(): string[] {
+    return this._selectedNodes.value;
   }
 
-  get selectedEdge(): number {
-    return this._selectedEdge.value;
+  get selectedEdges(): number[] {
+    return this._selectedEdges.value;
   }
 
   constructor() { }
 
-  setSelectedNode(value: string) {
-    this._selectedNode.next(value);
+  addSelectedNode(nodeId: string) {
+    let nodeIdArray = this._selectedNodes.value;
+    nodeIdArray.push(nodeId);
+    this._selectedNodes.next(nodeIdArray);
   }
 
-  setSelectedEdge(value: number) {
-    this._selectedEdge.next(value);
+  addSelectedEdge(edgeId: number) {
+    let edgeIdArray = this._selectedEdges.value;
+    edgeIdArray.push(edgeId);
+    this._selectedEdges.next(edgeIdArray);
   }
 
-  resetSelectedNode(value: string) {
-    this._selectedNode.next(null);
+  removeSelectedNode(nodeId: string) {
+    let nodeIdArray = this._selectedNodes.value;
+    nodeIdArray = nodeIdArray.filter(function (value, index, arr) {
+      return nodeId != value;
+    });
+    this._selectedNodes.next(nodeIdArray);
   }
 
-  resetSelectedEdge(value: number) {
-    this._selectedEdge.next(null);
+  removeSelectedEdge(edgeId: number) {
+    let edgeIdArray = this._selectedEdges.value;
+    edgeIdArray = edgeIdArray.filter(function (value, index, arr) {
+      return edgeId != value;
+    });
+    this._selectedEdges.next(edgeIdArray);
   }
 }
