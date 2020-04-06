@@ -1017,7 +1017,7 @@ export class GraphComponent implements OnInit {
     if (element.isNode()) {
       this.emitNodeSelected(element.id());
     } else if (element.isEdge()){
-      this.emitEdgeSelected(element.id());
+      this.emitEdgeSelected(element);
     }
   }
 
@@ -1031,10 +1031,10 @@ export class GraphComponent implements OnInit {
 
   /**
    * Emit the selection of the edge to the dashboard
-   * @param edgeId id of the edge which is selected
+   * @param edge edge which was selected
    */
-  private emitEdgeSelected(edgeId: number) {
-    this.elementInsightService.addSelectedEdge(edgeId);
+  private emitEdgeSelected(edge: any) {
+    this.elementInsightService.addSelectedEdge(edge.id(), edge.data('source'), edge.data('target'));
   }
 
   /**
