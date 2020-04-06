@@ -1,22 +1,27 @@
 <div class="element-insight">
-<!--  Display Nodes   -->
-  <div *ngIf="selectedNodes.length == 0">
-    <p>No nodes selected.</p>
-  </div>
-  <div *ngIf="selectedNodes.length > 0">
-    <div *ngFor="let selectedNode of selectedNodes">
-      <u><b>{{extractClassName(selectedNode)}}</b></u>
-<!--      retrieveNodeInformation(selectedNode).packageDeclaration.name)-->
-    </div>
-  </div>
+  <mat-tab-group mat-align-tabs="center">
+    <mat-tab label="Nodes">
+      <!--  Display Nodes   -->
+      <div *ngIf="selectedNodes.length == 0">
+        <p>No nodes selected.</p>
+      </div>
+      <div *ngIf="selectedNodes.length > 0">
+        <div *ngFor="let selectedNode of selectedNodes">
+          <u><b>{{extractClassName(selectedNode)}}</b></u>
+          <!--      retrieveNodeInformation(selectedNode).packageDeclaration.name)-->
+        </div>
+      </div>
+    </mat-tab>
 
-<!--  Display Edges   -->
-  <div *ngIf="selectedEdges.length == 0">
-    <p>No edges selected.</p>
-  </div>
-  <div *ngIf="selectedEdges.length > 0">
-    <div *ngFor="let selectedNode of selectedNodes">
-      Selected Edges Count: {{selectedEdges.length}}
-    </div>
-  </div>
+    <mat-tab label="Edges">
+      <!--  Display Edges   -->
+      <div *ngIf="selectedEdges.length == 0">
+        <p>No edges selected.</p>
+      </div>
+      <div *ngIf="selectedEdges.length > 0">
+        <div *ngFor="let selectedNode of selectedNodes">
+          Selected Edges Count: {{selectedEdges.length}}
+        </div>
+      </div></mat-tab>
+  </mat-tab-group>
 </div>
