@@ -42,6 +42,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatCardModule} from "@angular/material/card";
 import {MatTabsModule} from "@angular/material/tabs";
 import { NodeInsightComponent } from './node-insight/node-insight.component';
+import { EdgeInsightComponent } from './edge-insight/edge-insight.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { NodeInsightComponent } from './node-insight/node-insight.component';
     QueryFormComponent,
     DashboardSidePanelComponent,
     NodeInsightComponent,
+    EdgeInsightComponent,
   ],
     imports: [
         BrowserModule,

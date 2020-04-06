@@ -5,10 +5,12 @@
       <div *ngIf="selectedNodes.length == 0">
         <p>No nodes selected.</p>
       </div>
-      <div *ngIf="selectedNodes.length > 0">
+      <div *ngIf="selectedNodes.length > 0" class="my-element-insight-list-container">
         <div *ngFor="let selectedNode of selectedNodes">
-          <u><b>{{extractClassName(selectedNode)}}</b></u>
-          <app-node-insight [classStructure]="retrieveNodeInformation(selectedNode)"></app-node-insight>
+          <app-node-insight
+            [classStructure]="retrieveNodeInformation(selectedNode)"
+            [fullyQualifiedClassName]="selectedNode"
+          ></app-node-insight>
         </div>
       </div>
     </mat-tab>
@@ -20,7 +22,7 @@
       </div>
       <div *ngIf="selectedEdges.length > 0">
         <div *ngFor="let selectedEdge of selectedEdges">
-          Selected Edges Count: {{selectedEdges.length}}
+          <app-edge-insight></app-edge-insight>
         </div>
       </div>
     </mat-tab>

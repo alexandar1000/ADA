@@ -9,6 +9,7 @@ import {ClassStructure} from "../classes/class-structure";
 export class NodeInsightComponent implements OnInit {
 
   @Input() classStructure: ClassStructure;
+  @Input() fullyQualifiedClassName: string;
   public outgoingRelatingClassNames: String[];
   public outgoingDependenceInfos: any[] = [];
 
