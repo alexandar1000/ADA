@@ -1,12 +1,20 @@
 <div class="element-insight">
-  <div *ngIf="selectedNodes != null">
+<!--  Display Nodes   -->
+  <div *ngIf="selectedNodes.length == 0">
+    <p>No nodes selected.</p>
+  </div>
+  <div *ngIf="selectedNodes.length > 0">
     <ul>
       <li>Selected Nodes Count: {{selectedNodes.length}}</li>
     </ul>
   </div>
-  <div *ngIf="selectedEdges != null">
+<!--  Display Edges   -->
+  <div *ngIf="selectedEdges.length == 0">
+    <p>No edges selected.</p>
+  </div>
+  <div *ngIf="selectedEdges.length > 0">
     <ul>
-      <li>Selected Edge: {{selectedEdges.length}}</li>
+      <li>Selected Edges Count: {{selectedEdges.length}}</li>
     </ul>
   </div>
 </div>
