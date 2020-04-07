@@ -54,3 +54,7 @@ h1.app-name {
 .highlighted {
   font-weight: bold;
 }
+
+.my-toolbar-spacing {
+  flex: 1 1 auto;
+}

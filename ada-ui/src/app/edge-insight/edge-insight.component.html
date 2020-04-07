@@ -1,0 +1,60 @@
+<span><u><b>{{extractClassName(firstFullyQualifiedClassName)}} <-> {{extractClassName(secondFullyQualifiedClassName)}}</b></u></span>
+<ul class="my-first-ul">
+  <li>
+    <span>{{extractClassName(firstFullyQualifiedClassName)}} -> {{extractClassName(secondFullyQualifiedClassName)}}</span>
+    <ul>
+      <li>
+        <span>Attributes:</span>
+        <ul *ngIf="firstDependenceInfo != null">
+          <li *ngFor="let attributeInvocation of firstDependenceInfo.attributes">
+            {{attributeInvocation.name}}
+          </li>
+        </ul>
+      </li>
+      <li>
+        <span>Constructors:</span>
+        <ul *ngIf="firstDependenceInfo != null">
+          <li *ngFor="let constructorInvocation of firstDependenceInfo.constructors">
+            {{constructorInvocation.name}}
+          </li>
+        </ul>
+      </li>
+      <li>
+        <span>Methods:</span>
+        <ul *ngIf="firstDependenceInfo != null">
+          <li *ngFor="let methodInvocation of firstDependenceInfo.methods">
+            {{methodInvocation.name}}
+          </li>
+        </ul>
+      </li>
+    </ul>
+  <li>
+    <span>{{extractClassName(firstFullyQualifiedClassName)}} <- {{extractClassName(secondFullyQualifiedClassName)}}</span>
+    <ul>
+      <li>
+        <span>Attributes:</span>
+        <ul *ngIf="secondDependenceInfo != null">
+          <li *ngFor="let attributeInvocation of secondDependenceInfo.attributes">
+            {{attributeInvocation.name}}
+          </li>
+        </ul>
+      </li>
+      <li>
+        <span>Constructors:</span>
+        <ul *ngIf="secondDependenceInfo != null">
+          <li *ngFor="let constructorInvocation of secondDependenceInfo.constructors">
+            {{constructorInvocation.name}}
+          </li>
+        </ul>
+      </li>
+      <li>
+        <span>Methods:</span>
+        <ul *ngIf="secondDependenceInfo != null">
+          <li *ngFor="let methodInvocation of secondDependenceInfo.methods">
+            {{methodInvocation.name}}
+          </li>
+        </ul>
+      </li>
+    </ul>
+</li>
+</ul>

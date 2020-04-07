@@ -4,3 +4,7 @@
   min-height: 150px;
   overflow: hidden;
 }
+
+.my-element-insight-list-container {
+  padding-top: 15px
+}

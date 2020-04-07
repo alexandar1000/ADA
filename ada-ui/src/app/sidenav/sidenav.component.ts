@@ -3,6 +3,8 @@ import {ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { SidebarService } from '../sidebar.service';
 import { NewEntryService } from '../new-entry.service';
 import { SnapshotStyleService } from '../snapshot-style.service';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-sidenav',
@@ -10,6 +12,9 @@ import { SnapshotStyleService } from '../snapshot-style.service';
   styleUrls: ['./sidenav.component.css']
 })
 export class SidenavComponent implements OnInit, OnDestroy {
+  faGithub = faGithub;
+  faQuestion = faQuestion;
+
   mobileQuery: MediaQueryList;
   owners: string[];
   entry: string[];

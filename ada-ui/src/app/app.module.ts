@@ -40,6 +40,10 @@ import { DashboardSidePanelComponent } from './dashboard-side-panel/dashboard-si
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatCardModule} from "@angular/material/card";
+import {MatTabsModule} from "@angular/material/tabs";
+import { NodeInsightComponent } from './node-insight/node-insight.component';
+import { EdgeInsightComponent } from './edge-insight/edge-insight.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -60,6 +64,8 @@ import {MatCardModule} from "@angular/material/card";
     GraphMenuComponent,
     QueryFormComponent,
     DashboardSidePanelComponent,
+    NodeInsightComponent,
+    EdgeInsightComponent,
   ],
     imports: [
         BrowserModule,
@@ -84,7 +90,9 @@ import {MatCardModule} from "@angular/material/card";
         MatGridListModule,
         MatExpansionModule,
         MatSlideToggleModule,
-        MatCardModule
+        MatCardModule,
+        MatTabsModule,
+        FontAwesomeModule
     ],
   providers: [AnalyserService, SidebarService],
   bootstrap: [AppComponent]
