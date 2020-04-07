@@ -4,6 +4,7 @@ import {FormControl, FormGroupDirective, NgForm, Validators} from "@angular/form
 import {GraphOptionsService} from "../graph-options.service";
 import {ErrorStateMatcher} from "@angular/material/core";
 import {AnalyserService} from "../analyser.service";
+import {MetricNameConverter} from "../classes/metric-name-converter";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -40,12 +41,12 @@ export class GraphMenuComponent implements OnInit {
   graphEdgeWeightThreshold: number;
   weightThresholdFormControl: any;
 
-
-  metrics: string[] = this.analyserService.metrics;
   selectedMetric: string;
+  graphMetricMenuItems = new MetricNameConverter().metricOptions;
 
 
   graphLayoutControl = new FormControl();
+  metricLayoutControl = new FormControl();
   public graphLayoutGroups = null;
 
   constructor(private graphOptionsService: GraphOptionsService, private analyserService: AnalyserService) {}
@@ -65,6 +66,7 @@ export class GraphMenuComponent implements OnInit {
       Validators.min(0.00),
     ]);
     this.selectedMetric = this.graphOptionsService.selectedMetric;
+    this.metricLayoutControl.setValue(this.selectedMetric);
   }
 
   createColourcodingLegend(): void {
