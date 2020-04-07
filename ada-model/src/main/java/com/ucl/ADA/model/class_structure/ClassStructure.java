@@ -734,11 +734,37 @@ public class ClassStructure extends BaseEntity {
                     relationMetricValues.get(key).setBidirectionalNumberOfConstructorInvocations(currentMetricValue + metricValue);
                 }
                 break;
+        }
+    }
 
+    /**
+     * Computes the overall metric values.
+     * PLEASE NOTE: This method assumes that all of the incoming/outgoing relation metrics have been computed for the class
+     */
+    public void computeCumulativeMetrics(RelationMetricType relationMetricType) {
+        float metricValue = 0F;
+        float attributesNumberIncoming = 0f;
+        float attributesNumberOutgoing = 0f;
+        float constructorNumberIncoming = 0f;
+        float constructorNumberOutgoing = 0f;
+        float methodsNumberIncoming = 0f;
+        float methodsNumberOutgoing = 0f;
+        float packageNumberIncoming = 0f;
+        float packageNumberOutgoing = 0f;
+
+        switch (relationMetricType) {
             case GENERAL_CUMULATIVE_NORMALISED_BIDIRECTIONAL:
-                // Combines all of the metrics together
+
                 // For all of the relating classes get the corresponding metrics
                 for (String key : outgoingDependenceInfo.keySet()) {
+                    attributesNumberIncoming
+                    attributesNumberOutgoing
+                    constructorNumberIncoming
+                    constructorNumberOutgoing
+                    methodsNumberIncoming
+                    methodsNumberOutgoing
+                    packageNumberIncoming
+                    packageNumberOutgoing
                     metricValue = (float) outgoingDependenceInfo.get(key).getConstructors().size();
                     // Check if the relation metrics for the class have already been computed
                     if (!relationMetricValues.containsKey(key)) {
@@ -758,8 +784,6 @@ public class ClassStructure extends BaseEntity {
                     relationMetricValues.get(key).setBidirectionalNumberOfConstructorInvocations(currentMetricValue + metricValue);
                 }
                 break;
-
-        }
     }
 
     /**
@@ -776,7 +800,11 @@ public class ClassStructure extends BaseEntity {
      */
     public void computeAllRelationMetrics() {
         for (RelationMetricType relationMetricType : RelationMetricType.values()) {
-            this.computeRelationMetric(relationMetricType);
+            if (relationMetricType != RelationMetricType.GENERAL_CUMULATIVE_NORMALISED_BIDIRECTIONAL) {
+                this.computeRelationMetric(relationMetricType);
+            } else {
+                this.computeCumulativeMetrics(relationMetricType);
+            }
         }
     }
 }
