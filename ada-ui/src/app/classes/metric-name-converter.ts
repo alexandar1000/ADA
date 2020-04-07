@@ -14,7 +14,7 @@ interface GraphMetricOption {
 interface GraphMetricGroup {
   disabled?: boolean;
   name: string;
-  graphLayoutOptions: GraphMetricOption[];
+  graphMetricOptions: GraphMetricOption[];
 }
 
 export class MetricNameConverter {
@@ -72,16 +72,13 @@ export class MetricNameConverter {
     this.metricOptions = [
       {
         name: 'Normalised',
-        graphLayoutOptions: normalised
+        graphMetricOptions: normalised
       },
       {
         name: 'Non Normalised',
-        graphLayoutOptions: nonNormalised
+        graphMetricOptions: nonNormalised
       }
     ];
-
-    console.log(this.metricOptions);
-
   }
 
   public translateMetricName(metricDbName: string): string {

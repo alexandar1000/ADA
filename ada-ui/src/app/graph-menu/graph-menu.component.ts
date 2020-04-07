@@ -49,6 +49,7 @@ export class GraphMenuComponent implements OnInit {
 
 
   graphLayoutControl = new FormControl();
+  metricLayoutControl = new FormControl();
   public graphLayoutGroups = null;
 
   constructor(private graphOptionsService: GraphOptionsService, private analyserService: AnalyserService) {}
