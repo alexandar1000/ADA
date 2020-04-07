@@ -43,6 +43,7 @@ import {MatCardModule} from "@angular/material/card";
 import {MatTabsModule} from "@angular/material/tabs";
 import { NodeInsightComponent } from './node-insight/node-insight.component';
 import { EdgeInsightComponent } from './edge-insight/edge-insight.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { EdgeInsightComponent } from './edge-insight/edge-insight.component';
         MatExpansionModule,
         MatSlideToggleModule,
         MatCardModule,
-        MatTabsModule
+        MatTabsModule,
+        FontAwesomeModule
     ],
   providers: [AnalyserService, SidebarService],
   bootstrap: [AppComponent]
