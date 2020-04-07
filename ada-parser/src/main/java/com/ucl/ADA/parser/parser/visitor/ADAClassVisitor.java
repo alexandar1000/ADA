@@ -27,20 +27,22 @@ public class ADAClassVisitor extends ASTVisitor {
     private List<String> exMethodCalls = new ArrayList<>();
     private List<String> exConstructorInvocations = new ArrayList<>();
     private List<String> exFieldInvocation = new ArrayList<>();
-
+    private final String[] primitives_types = {"byte", "short", "int", "float", "double", "long", "boolean", "char"};
+    private final Set<String> PRIMITIVE_TYPES = new HashSet<String>(Arrays.asList(primitives_types));
 
     /**
      * A constructor of ADAClassVisitor
      *
-     * @param packageName              Packages name of the Class
-     * @param importedInternalClasses  Imported internal classes that are declared in the project
-     * @param importedExternalClasses  Imported external classes that are utilized from the external libraries.
+     * @param packageName             Packages name of the Class
+     * @param importedInternalClasses Imported internal classes that are declared in the project
+     * @param importedExternalClasses Imported external classes that are utilized from the external libraries.
      */
     public ADAClassVisitor(String packageName, Set<String> importedInternalClasses, Set<String> importedExternalClasses) {
 
         this.packageName = packageName;
         this.importedInternalClasses.addAll(importedInternalClasses);
         this.importedExternalClasses.addAll(importedExternalClasses);
+
     }
 
 
@@ -63,7 +65,7 @@ public class ADAClassVisitor extends ASTVisitor {
      * It visits the TypeDeclaration node from the AST and
      * retrieves the required information such as class name, parent class name and implemented interface,
      *
-     * @param node  A TypeDeclaration node derived from the AST.
+     * @param node A TypeDeclaration node derived from the AST.
      * @return true if it is required to visit the children node otherwise false
      */
     public boolean visit(TypeDeclaration node) {
@@ -87,7 +89,7 @@ public class ADAClassVisitor extends ASTVisitor {
      * It visits the EnumDeclaration node from the AST and
      * retrieves the required information to populate EnumConstantDeclaration model
      *
-     * @param node  A EnumDeclaration node derived from the AST.
+     * @param node A EnumDeclaration node derived from the AST.
      * @return true if it is required to visit the children node otherwise false
      */
     public boolean visit(EnumDeclaration node) {
@@ -116,7 +118,7 @@ public class ADAClassVisitor extends ASTVisitor {
      * It visits the FieldDeclaration node from the AST and
      * retrieves the required information to populate ADAClassAttribute model
      *
-     * @param node  A FieldDeclaration node derived from the AST.
+     * @param node A FieldDeclaration node derived from the AST.
      * @return true if it is required to visit the children node otherwise false
      */
     public boolean visit(FieldDeclaration node) {
@@ -137,13 +139,15 @@ public class ADAClassVisitor extends ASTVisitor {
                     }
                 }
                 String name = binding.getName();
-                String type = binding.getType().getQualifiedName();
+                String type = node.getType().resolveBinding().getQualifiedName();
                 String value = "";
                 if (fragment.getInitializer() != null) {
                     value = fragment.getInitializer().toString();
                 }
-                ADAClassAttribute sa = new ADAClassAttribute(modifiers, name, type, value);
-                this.classAttributes.add(sa);
+                if ((!type.startsWith("java")) && (!PRIMITIVE_TYPES.contains(type))) {
+                    ADAClassAttribute sa = new ADAClassAttribute(modifiers, name, type, value);
+                    this.classAttributes.add(sa);
+                }
             } else {
                 this.exFieldInvocation.add(fragment.getNodeType() + "");
             }
@@ -155,7 +159,7 @@ public class ADAClassVisitor extends ASTVisitor {
      * It visits the MethodInvocation node from the AST and
      * retrieves the required information to populate ADAMethodInvocation model
      *
-     * @param node  A MethodInvocation node derived from the AST.
+     * @param node A MethodInvocation node derived from the AST.
      * @return true if it is required to visit the children node otherwise false
      */
     public boolean visit(MethodInvocation node) {
@@ -167,6 +171,7 @@ public class ADAClassVisitor extends ASTVisitor {
             if (!binding.isConstructor()) {
                 methodCallName = node.getName().toString();
                 calleeName = binding.getDeclaringClass().getQualifiedName();
+                if (calleeName.startsWith("java")) return true;
                 List<ASTNode> list = node.arguments();
                 if (!list.isEmpty()) {
                     for (ASTNode an : list) {
@@ -185,7 +190,7 @@ public class ADAClassVisitor extends ASTVisitor {
      * It visits the ClassInstanceCreation node from the AST and
      * retrieves the required information to populate ADAConstructorInvocation model
      *
-     * @param node  A ClassInstanceCreation node derived from the AST.
+     * @param node A ClassInstanceCreation node derived from the AST.
      * @return true if it is required to visit the children node otherwise false
      */
     public boolean visit(ClassInstanceCreation node) {
@@ -195,6 +200,7 @@ public class ADAClassVisitor extends ASTVisitor {
         if (binding != null) {
             if (binding.isConstructor()) {
                 name = binding.getDeclaringClass().getQualifiedName();
+                if (name.startsWith("java")) return true;
                 List<ASTNode> list = node.arguments();
                 if (!list.isEmpty()) {
                     for (ASTNode an : list) {
@@ -213,7 +219,7 @@ public class ADAClassVisitor extends ASTVisitor {
      * This method visits the MethodDeclaration node from the AST and
      * retrieves the required information to populate ADAMethodOrConstructorDeclaration model
      *
-     * @param node  A MethodDeclaration node derived from the AST.
+     * @param node A MethodDeclaration node derived from the AST.
      * @return true if it is required to visit the children node otherwise false
      */
     public boolean visit(MethodDeclaration node) {

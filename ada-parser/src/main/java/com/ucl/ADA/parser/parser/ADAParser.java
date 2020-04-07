@@ -16,8 +16,8 @@ import java.util.concurrent.*;
 
 public class ADAParser {
 
-    private final int NUMBER_OF_THREADS = 8;
-    private final int NUMBER_OF_FILES_IN_A_BATCH = 80;
+    private final int NUMBER_OF_THREADS = Runtime.getRuntime().availableProcessors();
+    private final int NUMBER_OF_FILES_IN_A_BATCH = 50;
     private final SourceFileProcessor sourceFileProcessor;
     private final CompilationUnitBuilder compilationUnitBuilder;
 
@@ -154,6 +154,5 @@ public class ADAParser {
         }
         return parsedClasses;
     }
-
 
 }

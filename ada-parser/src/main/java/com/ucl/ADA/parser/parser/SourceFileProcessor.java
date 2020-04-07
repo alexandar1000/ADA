@@ -39,7 +39,7 @@ public class SourceFileProcessor {
      * It takes a list of *.java source file paths and read all the contents of these files.
      *
      * @param paths A list of *.java source file paths
-     * @return  A map containing all *java source file path and its content
+     * @return A map containing all *java source file path and its content
      * in a form of source (file path-> file contents) pair.
      */
     protected Map<String, String> getAllSourceContent(List<String> paths) {
@@ -90,10 +90,8 @@ public class SourceFileProcessor {
             File rootDir = new File(srcDir);
             Collection<File> files = FileUtils.listFiles(rootDir, suffix, true);
             for (File file : files) {
-                if (!file.getPath().endsWith("Test.java") && !file.getPath().endsWith("Tests.java")) {
-                    {
-                        sourceFiles.add(file.getAbsolutePath());
-                    }
+                if (!file.getPath().endsWith("Test.java") && !file.getPath().endsWith("Tests.java") && !file.getPath().contains("Test")) {
+                    sourceFiles.add(file.getAbsolutePath());
                 }
             }
         }
@@ -115,8 +113,8 @@ public class SourceFileProcessor {
                 TrueFileFilter.INSTANCE);
         for (File file : files) {
             if (file.isDirectory()) {
-                if (file.getName().equals("src") || file.getName().equals("Src"))
-                    sourceDirectories.add(file.getAbsolutePath());
+                if (file.getName().equals("java"))
+                    sourceDirectories.add(file.getAbsolutePath() + "/");
             }
         }
         String[] srcDirs = sourceDirectories.stream().toArray(String[]::new);
