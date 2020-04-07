@@ -51,7 +51,7 @@ export class GraphComponent implements OnInit {
   private metricNameConverter: MetricNameConverter;
 
   constructor(private queryService: QueryService,
-              public graphOptionsService: GraphOptionsService,
+              private graphOptionsService: GraphOptionsService,
               private elementInsightService: ElementInsightService) {
     this.metricNameConverter = this.graphOptionsService.metrics;
     if (queryService.receivedQueryEvent$) {

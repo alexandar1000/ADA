@@ -49,7 +49,7 @@ export class GraphMenuComponent implements OnInit {
   metricLayoutControl = new FormControl();
   public graphLayoutGroups = null;
 
-  constructor(private graphOptionsService: GraphOptionsService, private analyserService: AnalyserService) {}
+  constructor(public graphOptionsService: GraphOptionsService) {}
 
   ngOnInit() {
     this.graphLayoutSpacing = this.graphOptionsService.spacingFactor;
