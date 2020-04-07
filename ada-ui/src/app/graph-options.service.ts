@@ -1,6 +1,7 @@
 import {Injectable, Input} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 import {AnalyserService} from "./analyser.service";
+import {MetricNameConverter} from "./classes/metric-name-converter";
 
 interface GraphLayoutOption {
   value: string;
@@ -17,6 +18,8 @@ interface GraphLayoutGroup {
   providedIn: 'root'
 })
 export class GraphOptionsService {
+
+  public metrics = new MetricNameConverter();
 
   private _spacingFactor = new BehaviorSubject(1.0);
   spacingFactor$ = this._spacingFactor.asObservable();
@@ -45,7 +48,7 @@ export class GraphOptionsService {
   private _graphEdgeWeightThreshold = new BehaviorSubject(0.0);
   graphEdgeWeightThreshold$ = this._graphEdgeWeightThreshold.asObservable();
 
-  private _selectedMetric = new BehaviorSubject(this.analyserService.metrics[0]);
+  private _selectedMetric = new BehaviorSubject(this.metrics.getInitialValue());
   selectedMetric$ = this._selectedMetric.asObservable();
 
   get spacingFactor(): number {

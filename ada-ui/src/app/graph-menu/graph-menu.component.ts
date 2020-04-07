@@ -41,10 +41,7 @@ export class GraphMenuComponent implements OnInit {
   graphEdgeWeightThreshold: number;
   weightThresholdFormControl: any;
 
-
-  metrics: string[] = this.analyserService.metrics;
   selectedMetric: string;
-
   graphMetricMenuItems = new MetricNameConverter().metricOptions;
 
 
@@ -69,6 +66,7 @@ export class GraphMenuComponent implements OnInit {
       Validators.min(0.00),
     ]);
     this.selectedMetric = this.graphOptionsService.selectedMetric;
+    this.metricLayoutControl.setValue(this.selectedMetric);
   }
 
   createColourcodingLegend(): void {

@@ -96,4 +96,8 @@ export class MetricNameConverter {
       return ['source-arrow-shape', 'none'];
     }
   }
+
+  public getInitialValue(): string {
+    return 'NUMBER_OF_RELATION_PACKAGE_IMPORTS_INCOMING';
+  }
 }

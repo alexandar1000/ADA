@@ -7,6 +7,7 @@ import {CollectionReturnValue} from "cytoscape";
 import { QueryService } from '../query.service';
 import {GraphOptionsService} from "../graph-options.service";
 import {ElementInsightService} from "../element-insight.service";
+import {AnalyserService} from "../analyser.service";
 
 cytoscape.use( fcose );
 
@@ -19,7 +20,7 @@ export class GraphComponent implements OnInit {
 
   private cy = null;
   @Input() projectStructure: ProjectStructure = null;
-  @Input() selectedMetric: string;
+  public selectedMetric: string;
 
   private areZeroWeightedEdgesHidden: boolean;
   private graphEdgeWeightThreshold: number;
@@ -47,11 +48,12 @@ export class GraphComponent implements OnInit {
   private previousNodesQuery = [];
   private areColoredNodesInGraph = false;
   private queryMessage;
-  private metricNameConverter = new MetricNameConverter();
+  private metricNameConverter: MetricNameConverter;
 
   constructor(private queryService: QueryService,
               private graphOptionsService: GraphOptionsService,
               private elementInsightService: ElementInsightService) {
+    this.metricNameConverter = this.graphOptionsService.metrics;
     if (queryService.receivedQueryEvent$) {
       this.subscriptions[this.subscriptionIndex++] = this.queryService.receivedQueryEvent$.subscribe(
         query => {
