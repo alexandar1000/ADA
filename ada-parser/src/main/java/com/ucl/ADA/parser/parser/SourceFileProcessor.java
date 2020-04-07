@@ -113,7 +113,7 @@ public class SourceFileProcessor {
                 TrueFileFilter.INSTANCE);
         for (File file : files) {
             if (file.isDirectory()) {
-                if (file.getName().equals("java"))
+                if (file.getName().equals("java") || file.getName().equals("src"))
                     sourceDirectories.add(file.getAbsolutePath() + "/");
             }
         }
