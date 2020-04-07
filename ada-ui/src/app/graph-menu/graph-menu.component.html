@@ -2,7 +2,7 @@
   <mat-grid-list cols="6">
 
 <!--      Layout      -->
-    <mat-grid-tile colspan="3">
+    <mat-grid-tile colspan="2">
       <div class="my-tile-container">
         <mat-form-field>
           <mat-label>Layout Option</mat-label>
@@ -19,7 +19,7 @@
     </mat-grid-tile>
 
 <!--    Metric Selector   -->
-    <mat-grid-tile colspan="3">
+    <mat-grid-tile colspan="4">
       <div class="my-tile-container">
         <app-metric-selector [metrics]="metrics"
                              [selectedMetric]="selectedMetric"
@@ -27,7 +27,6 @@
         ></app-metric-selector>
       </div>
     </mat-grid-tile>
-
     <mat-grid-tile colspan="6" class="my-grid-list-separator">
       <div class="my-tile-container">
         <mat-divider></mat-divider>
@@ -35,16 +34,16 @@
     </mat-grid-tile>
 
 <!--    Hide Edges With Threshold     -->
-    <mat-grid-tile colspan="3">
+    <mat-grid-tile colspan="5">
       <div class="my-tile-container">
         <mat-slide-toggle [checked]="areEdgesBellowWeightThresholdHidden"
                           (change)="handleAreEdgesBellowWeightThresholdRepresentationChange($event)"
-        >Hide zero weights</mat-slide-toggle>
+        >Hide Edges Bellow Weight:</mat-slide-toggle>
       </div>
     </mat-grid-tile>
 
 <!--    Threshold Input-->
-    <mat-grid-tile colspan="3">
+    <mat-grid-tile colspan="1">
       <div class="my-tile-container">
         <mat-form-field class="weight-threshold-input">
           <label>
@@ -54,7 +53,7 @@
                    [errorStateMatcher]="matcher"
                    type="number" (blur)="handleGraphEdgeWeightThresholdChange($event)">
           </label>
-          <mat-hint>Weight Threshold</mat-hint>
+          <mat-hint>Threshold</mat-hint>
         </mat-form-field>
       </div>
     </mat-grid-tile>
@@ -64,7 +63,7 @@
       <div class="my-tile-container">
         <mat-slide-toggle [checked]="areNeighbourlessNodesHidden"
                           (change)="handleNodesWithoutNeighboursRepresentationChange($event)"
-        >Hide nodes without outgoing/incoming edges</mat-slide-toggle>
+        >Hide Nodes Without Edges</mat-slide-toggle>
       </div>
     </mat-grid-tile>
 
@@ -73,7 +72,7 @@
       <div class="my-tile-container">
         <mat-slide-toggle [checked]="areEdgeWeightsShownAsLabels"
                           (change)="handleEdgeWeightsAsLabelRepresentationChange($event)"
-        >Show edge metrics as labels</mat-slide-toggle>
+        >Show Edge Weights</mat-slide-toggle>
       </div>
     </mat-grid-tile>
 
@@ -82,17 +81,12 @@
       <div class="my-tile-container">
         <mat-slide-toggle [checked]="areEdgesColourCoded"
                           (change)="handleEdgesColourCodingRepresentationChange($event)"
-        >Show edge metrics by colour coding the edges</mat-slide-toggle>
+        >Colourcode Edges Based On Weight</mat-slide-toggle>
       </div>
     </mat-grid-tile>
-    <mat-grid-tile colspan="3" *ngIf="areEdgesColourCoded">
+    <mat-grid-tile colspan="6" *ngIf="areEdgesColourCoded">
       <div>
-        <div><span>Heatmap for [0..10]:</span></div>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="3" *ngIf="areEdgesColourCoded">
-      <div>
-        <canvas #colourcodingLegend *ngIf="areEdgesColourCoded" width="200" height="20"  style="border:1px solid #000000;"></canvas>
+        <span>0 <canvas #colourcodingLegend *ngIf="areEdgesColourCoded" width="200" height="20"  style="border:1px solid #000000;"></canvas> >10 </span>
       </div>
     </mat-grid-tile>
 
@@ -110,28 +104,29 @@
     </mat-grid-tile>
     <mat-grid-tile colspan="3">
       <div class="my-tile-container">
-        <mat-slider
+        <mat-slider class="my-tile-container"
           [value]="graphLayoutSpacing*10"
           thumbLabel
           [displayWith]="formatSliderLabel"
           tickInterval="1"
           min="10"
           max="50"
-          (change)="handleLayoutSpacingChange($event)"></mat-slider>
+          (change)="handleLayoutSpacingChange($event)"
+        ></mat-slider>
       </div>
     </mat-grid-tile>
 
 <!--    Adjust View   -->
     <mat-grid-tile colspan="3">
       <div>
-        <button mat-stroked-button (click)="handleResetGraphLayoutButtonPressed($event)">Adjust Layout</button>
+        <button mat-stroked-button (click)="handleResetGraphLayoutButtonPressed($event)">Reset Layout</button>
       </div>
     </mat-grid-tile>
 
 <!--    Reset View    -->
     <mat-grid-tile colspan="3">
       <div>
-        <button mat-stroked-button (click)="handleResetGraphViewButtonPressed($event)">Reset Graph View</button>
+        <button mat-stroked-button (click)="handleResetGraphViewButtonPressed($event)">Fit to View</button>
       </div>
     </mat-grid-tile>
 
