@@ -99,10 +99,10 @@ public class ADAClass {
     @Override
     public String toString() {
         return "ADAClass{" +
+                ", className='" + className + '\'' +
                 "packageName='" + packageName + '\'' +
                 ", importedInternalClasses=" + importedInternalClasses +
                 ", importedExternalClasses=" + importedExternalClasses +
-                ", className='" + className + '\'' +
                 ", isInterface=" + isInterface +
                 ", isEnum=" + isEnum +
                 ", parentClassName='" + parentClassName + '\'' +

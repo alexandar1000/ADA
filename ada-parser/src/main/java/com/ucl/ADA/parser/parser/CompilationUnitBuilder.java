@@ -29,7 +29,7 @@ public class CompilationUnitBuilder {
     protected CompilationUnit getCompilationUnit(String filePath, String sourceCode, String[] sourceDirectories) {
         Map options = getParserVersion_1_5();
         ASTParser parser = buildASTParser(sourceDirectories, options);
-        String unitName = new File(filePath).getName();
+        String unitName = new File(filePath).getPath();
         parser.setSource(sourceCode.toCharArray());
         parser.setUnitName(unitName);
         CompilationUnit compilationUnit = null;
