@@ -95,11 +95,11 @@
     </mat-grid-tile>
     <mat-grid-tile colspan="6" *ngIf="areEdgesColourCoded">
       <div>
-        <span>0
+        <span> 0
           <canvas #colourcodingLegend *ngIf="areEdgesColourCoded" width="200" height="20"  style="border:1px solid #000000;"></canvas>
           <!--  Differentiate two cases based on whether the current metric is normalised or not  -->
-          <span *ngIf="graphOptionsService.metrics.isNormalised(selectedMetric)"> 1</span>
-          <span *ngIf="!graphOptionsService.metrics.isNormalised(selectedMetric)"> >10</span>
+          <span *ngIf="graphOptionsService.metrics.isNormalised(selectedMetric)"> 1 </span>
+          <span *ngIf="!graphOptionsService.metrics.isNormalised(selectedMetric)"> >10 </span>
         </span>
       </div>
     </mat-grid-tile>
