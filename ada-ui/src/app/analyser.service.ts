@@ -4,6 +4,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {Snapshot} from "./classes/snapshot";
 import { environment } from '../environments/environment';
 import {ElementInsightService} from "./element-insight.service";
+import {MetricNameConverter} from "./classes/metric-name-converter";
 
 @Injectable({
   providedIn: 'root'
@@ -19,21 +20,6 @@ export class AnalyserService {
     new Snapshot(78, '2020-03-01 15:14'),
     new Snapshot(12, '2019-09-21 13:00'),
     new Snapshot(0, '2019-07-28 01:02')
-  ];
-
-  public metrics: string[] = [
-    'NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_INCOMING',
-    'NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS_OUTGOING',
-    'NUMBER_OF_RELATION_METHOD_INVOCATIONS_INCOMING',
-    'NUMBER_OF_RELATION_METHOD_INVOCATIONS_OUTGOING',
-    'NUMBER_OF_RELATION_PACKAGE_IMPORTS_INCOMING',
-    'NUMBER_OF_RELATION_PACKAGE_IMPORTS_OUTGOING',
-    'NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS_INCOMING',
-    'NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS_OUTGOING',
-    'BIDIRECTIONAL_NUMBER_OF_RELATION_ATTRIBUTE_INVOCATIONS',
-    'BIDIRECTIONAL_NUMBER_OF_RELATION_METHOD_INVOCATIONS',
-    'BIDIRECTIONAL_NUMBER_OF_RELATION_PACKAGE_IMPORTS',
-    'BIDIRECTIONAL_NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS'
   ];
 
   constructor(private http: HttpClient, private elementInsightService: ElementInsightService) {}

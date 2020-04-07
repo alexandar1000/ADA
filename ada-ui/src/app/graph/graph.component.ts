@@ -7,6 +7,7 @@ import {CollectionReturnValue} from "cytoscape";
 import { QueryService } from '../query.service';
 import {GraphOptionsService} from "../graph-options.service";
 import {ElementInsightService} from "../element-insight.service";
+import {AnalyserService} from "../analyser.service";
 
 cytoscape.use( fcose );
 
@@ -19,7 +20,7 @@ export class GraphComponent implements OnInit {
 
   private cy = null;
   @Input() projectStructure: ProjectStructure = null;
-  @Input() selectedMetric: string;
+  public selectedMetric: string;
 
   private areZeroWeightedEdgesHidden: boolean;
   private graphEdgeWeightThreshold: number;
@@ -47,11 +48,12 @@ export class GraphComponent implements OnInit {
   private previousNodesQuery = [];
   private areColoredNodesInGraph = false;
   private queryMessage;
-  private metricNameConverter = new MetricNameConverter();
+  private metricNameConverter: MetricNameConverter;
 
   constructor(private queryService: QueryService,
               private graphOptionsService: GraphOptionsService,
               private elementInsightService: ElementInsightService) {
+    this.metricNameConverter = this.graphOptionsService.metrics;
     if (queryService.receivedQueryEvent$) {
       this.subscriptions[this.subscriptionIndex++] = this.queryService.receivedQueryEvent$.subscribe(
         query => {
@@ -558,6 +560,7 @@ export class GraphComponent implements OnInit {
       target = '';
     }
     let weight = this.projectStructure.classStructures.get(source).relationMetricValues.get(target)[this.metricNameConverter.translateMetricName(this.selectedMetric)];
+
     return weight;
   }
 
@@ -566,7 +569,6 @@ export class GraphComponent implements OnInit {
    */
   private changeMetricRepresentedInGraph() {
     let newMetric = this.metricNameConverter.translateMetricName(this.selectedMetric.toString());
-
     let self = this;
     if (newMetric != null) {
       this.cy.batch(function(){
@@ -899,9 +901,10 @@ export class GraphComponent implements OnInit {
 
   private toggleEdgeColourcoding(areEdgesColourCoded: boolean) {
     let self = this;
+    let weightType = (this.graphOptionsService.metrics.isNormalised(this.selectedMetric) ? GraphComponent.NORMALISED_WEIGHT_SPACE : GraphComponent.INFINITE_WEIGHT_SPACE);
     if (areEdgesColourCoded) {
       this.cy.edges().forEach(function (edge) {
-        let colour = GraphComponent.getColourCoding(edge.data('weight'));
+        let colour = GraphComponent.getColourCoding(edge.data('weight'), weightType);
         edge.style('line-color', colour);
         edge.style('source-arrow-color', colour);
         edge.style('target-arrow-color', colour);

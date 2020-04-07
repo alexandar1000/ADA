@@ -19,6 +19,8 @@ export class RelationMetricValue {
     this.bidirectionalNumberOfMethodInvocations = relationMetricValuesJSON['bidirectionalNumberOfMethodInvocations'];
 
     this.bidirectionalNumberOfConstructorInvocations = relationMetricValuesJSON['bidirectionalNumberOfConstructorInvocations'];
+
+    this.generalCumulativeNormalisedBidirectional = relationMetricValuesJSON['generalCumulativeNormalisedBidirectional'].toFixed(3);
   }
 
   numberOfPackageImportsIncoming: number;
@@ -40,4 +42,6 @@ export class RelationMetricValue {
   bidirectionalNumberOfMethodInvocations: number;
 
   bidirectionalNumberOfConstructorInvocations: number;
+
+  generalCumulativeNormalisedBidirectional: number;
 }

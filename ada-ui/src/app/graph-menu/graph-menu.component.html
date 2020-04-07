@@ -2,7 +2,7 @@
   <mat-grid-list cols="6">
 
 <!--      Layout      -->
-    <mat-grid-tile colspan="2">
+    <mat-grid-tile colspan="3">
       <div class="my-tile-container">
         <mat-form-field>
           <mat-label>Layout Option</mat-label>
@@ -19,14 +19,23 @@
     </mat-grid-tile>
 
 <!--    Metric Selector   -->
-    <mat-grid-tile colspan="4">
+    <mat-grid-tile colspan="3">
       <div class="my-tile-container">
-        <app-metric-selector [metrics]="metrics"
-                             [selectedMetric]="selectedMetric"
-                             (selectedMetricChanged)="handleUpdateSelectedMetric($event)"
-        ></app-metric-selector>
+        <mat-form-field>
+          <mat-label>Metric Option</mat-label>
+          <mat-select [formControl]="metricLayoutControl" [(value)]="selectedMetric" (selectionChange)="handleUpdateSelectedMetric($event.value)">
+            <mat-optgroup *ngFor="let group of graphMetricMenuItems" [label]="group.name"
+                          [disabled]="group.disabled">
+              <mat-option *ngFor="let layout of group.graphMetricOptions" [value]="layout.value">
+                {{layout.viewValue}}
+              </mat-option>
+            </mat-optgroup>
+          </mat-select>
+        </mat-form-field>
       </div>
     </mat-grid-tile>
+
+
     <mat-grid-tile colspan="6" class="my-grid-list-separator">
       <div class="my-tile-container">
         <mat-divider></mat-divider>
@@ -86,7 +95,12 @@
     </mat-grid-tile>
     <mat-grid-tile colspan="6" *ngIf="areEdgesColourCoded">
       <div>
-        <span>0 <canvas #colourcodingLegend *ngIf="areEdgesColourCoded" width="200" height="20"  style="border:1px solid #000000;"></canvas> >10 </span>
+        <span> 0
+          <canvas #colourcodingLegend *ngIf="areEdgesColourCoded" width="200" height="20"  style="border:1px solid #000000;"></canvas>
+          <!--  Differentiate two cases based on whether the current metric is normalised or not  -->
+          <span *ngIf="graphOptionsService.metrics.isNormalised(selectedMetric)"> 1 </span>
+          <span *ngIf="!graphOptionsService.metrics.isNormalised(selectedMetric)"> >10 </span>
+        </span>
       </div>
     </mat-grid-tile>
 
