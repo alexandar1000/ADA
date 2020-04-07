@@ -7,10 +7,20 @@
       </div>
       <div *ngIf="selectedNodes.length > 0" class="my-element-insight-list-container">
         <div *ngFor="let selectedNode of selectedNodes">
-          <app-node-insight
-            [classStructure]="retrieveNodeInformation(selectedNode)"
-            [fullyQualifiedClassName]="selectedNode"
-          ></app-node-insight>
+          <div *ngIf="selectedNode != '$'">
+            <app-node-insight
+              [classStructure]="retrieveNodeInformation(selectedNode)"
+              [fullyQualifiedClassName]="selectedNode"
+            ></app-node-insight>
+          </div>
+          <div *ngIf="selectedNode === '$'">
+            <span><u><b>$</b></u></span>
+            <ul class="my-first-ul" style="padding-left: 20px; margin-top: 3px;">
+              <li>
+                <span>'$' represents all the external classes and hence is omitted from the insight.</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </mat-tab>

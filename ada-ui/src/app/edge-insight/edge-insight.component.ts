@@ -19,10 +19,10 @@ export class EdgeInsightComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    if (this.firstClassStructure.outgoingDependenceInfo.has(this.secondFullyQualifiedClassName)) {
+    if (this.firstClassStructure && this.firstClassStructure.outgoingDependenceInfo.has(this.secondFullyQualifiedClassName)) {
       this.firstDependenceInfo = this.firstClassStructure.outgoingDependenceInfo.get(this.secondFullyQualifiedClassName);
     }
-    if (this.secondClassStructure.outgoingDependenceInfo.has(this.firstFullyQualifiedClassName)) {
+    if (this.secondClassStructure && this.secondClassStructure.outgoingDependenceInfo.has(this.firstFullyQualifiedClassName)) {
       this.secondDependenceInfo = this.secondClassStructure.outgoingDependenceInfo.get(this.firstFullyQualifiedClassName);
     }
   }

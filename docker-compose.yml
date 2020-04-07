@@ -1,25 +1,25 @@
 version : "3"
 
 services :
-#  web_app_backend:
-#    container_name: ada_web_app_backend_container
-#    build:
-#      context: './ada-core'
-#    ports:
-#      - "18080:8080"
-#    networks:
-#      - ada-db-network
-#    restart: unless-stopped
-#
-#  web_app_frontend:
-#    container_name: ada_web_app_frontend_container
-#    build:
-#      context: './ada-ui'
-#    ports:
-#      - "80:80"
-#    networks:
-#      - ada-db-network
-#    restart: unless-stopped
+  web_app_backend:
+    container_name: ada_web_app_backend_container
+    build:
+      context: './ada-core'
+    ports:
+      - "18080:8080"
+    networks:
+      - ada-db-network
+    restart: unless-stopped
+
+  web_app_frontend:
+    container_name: ada_web_app_frontend_container
+    build:
+      context: './ada-ui'
+    ports:
+      - "80:80"
+    networks:
+      - ada-db-network
+    restart: unless-stopped
 
   db_dev:
     container_name: postgres_dev_container
