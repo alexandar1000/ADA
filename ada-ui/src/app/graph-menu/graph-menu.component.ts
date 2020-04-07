@@ -4,6 +4,7 @@ import {FormControl, FormGroupDirective, NgForm, Validators} from "@angular/form
 import {GraphOptionsService} from "../graph-options.service";
 import {ErrorStateMatcher} from "@angular/material/core";
 import {AnalyserService} from "../analyser.service";
+import {MetricNameConverter} from "../classes/metric-name-converter";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -43,6 +44,8 @@ export class GraphMenuComponent implements OnInit {
 
   metrics: string[] = this.analyserService.metrics;
   selectedMetric: string;
+
+  graphMetricMenuItems = new MetricNameConverter().metricOptions;
 
 
   graphLayoutControl = new FormControl();
