@@ -561,7 +561,6 @@ export class GraphComponent implements OnInit {
     }
     let weight = this.projectStructure.classStructures.get(source).relationMetricValues.get(target)[this.metricNameConverter.translateMetricName(this.selectedMetric)];
 
-    console.log(weight);
     return weight;
   }
 
@@ -570,7 +569,6 @@ export class GraphComponent implements OnInit {
    */
   private changeMetricRepresentedInGraph() {
     let newMetric = this.metricNameConverter.translateMetricName(this.selectedMetric.toString());
-    console.log(this.projectStructure);
     let self = this;
     if (newMetric != null) {
       this.cy.batch(function(){
@@ -903,9 +901,10 @@ export class GraphComponent implements OnInit {
 
   private toggleEdgeColourcoding(areEdgesColourCoded: boolean) {
     let self = this;
+    let weightType = (this.graphOptionsService.metrics.isNormalised(this.selectedMetric) ? GraphComponent.NORMALISED_WEIGHT_SPACE : GraphComponent.INFINITE_WEIGHT_SPACE);
     if (areEdgesColourCoded) {
       this.cy.edges().forEach(function (edge) {
-        let colour = GraphComponent.getColourCoding(edge.data('weight'));
+        let colour = GraphComponent.getColourCoding(edge.data('weight'), weightType);
         edge.style('line-color', colour);
         edge.style('source-arrow-color', colour);
         edge.style('target-arrow-color', colour);

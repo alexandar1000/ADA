@@ -104,7 +104,7 @@ export class MetricNameConverter {
   }
 
   public isNormalised(metric: string): boolean {
-    if (this.dictionary.has(metric)) {
+    if (!this.dictionary.has(metric)) {
       console.error('Metric is not in the dictionary');
       return null;
     }
