@@ -50,6 +50,8 @@ export class MetricNameConverter {
     this.dictionary.set('BIDIRECTIONAL_NUMBER_OF_RELATION_METHOD_INVOCATIONS', { fieldName: 'bidirectionalNumberOfMethodInvocations', arrowStyle: ['source-arrow-shape', 'none'], metricType: 'relation', menuName: 'Total Method Invocations', valueType: 'non-normalised'  });
     this.dictionary.set('BIDIRECTIONAL_NUMBER_OF_RELATION_CONSTRUCTOR_INVOCATIONS', { fieldName: 'bidirectionalNumberOfConstructorInvocations', arrowStyle: ['source-arrow-shape', 'none'], metricType: 'relation', menuName: 'Total Constructor Invocations', valueType: 'non-normalised'  });
 
+    this.dictionary.set('GENERAL_CUMULATIVE_NORMALISED_BIDIRECTIONAL', { fieldName: 'generalCumulativeNormalisedBidirectional', arrowStyle: ['source-arrow-shape', 'none'], metricType: 'relation', menuName: 'Overall Coupling', valueType: 'normalised'  });
+
     let normalised: GraphMetricOption[] = [];
     let nonNormalised: GraphMetricOption[] = [];
     let menuOption: GraphMetricOption;

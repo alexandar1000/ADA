@@ -13,5 +13,6 @@ CREATE TABLE RELATION_METRIC_VALUE
     bidirectional_number_of_package_imports         FLOAT4 NOT NULL,
     bidirectional_number_of_attribute_invocations   FLOAT4 NOT NULL,
     bidirectional_number_of_method_invocations      FLOAT4 NOT NULL,
-    bidirectional_number_of_constructor_invocations FLOAT4 NOT NULL
+    bidirectional_number_of_constructor_invocations FLOAT4 NOT NULL,
+    general_cumulative_normalised_bidirectional     FLOAT4 NOT NULL
 )

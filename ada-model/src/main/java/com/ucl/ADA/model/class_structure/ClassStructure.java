@@ -734,6 +734,31 @@ public class ClassStructure extends BaseEntity {
                     relationMetricValues.get(key).setBidirectionalNumberOfConstructorInvocations(currentMetricValue + metricValue);
                 }
                 break;
+
+            case GENERAL_CUMULATIVE_NORMALISED_BIDIRECTIONAL:
+                // Combines all of the metrics together
+                // For all of the relating classes get the corresponding metrics
+                for (String key : outgoingDependenceInfo.keySet()) {
+                    metricValue = (float) outgoingDependenceInfo.get(key).getConstructors().size();
+                    // Check if the relation metrics for the class have already been computed
+                    if (!relationMetricValues.containsKey(key)) {
+                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                        relationMetricValues.put(key, relationMetricValueObject);
+                    }
+                    relationMetricValues.get(key).setBidirectionalNumberOfConstructorInvocations(metricValue);
+                }
+                for (String key : incomingDependenceInfo.keySet()) {
+                    metricValue = (float) incomingDependenceInfo.get(key).getConstructors().size();
+                    // Check if the relation metrics for the class have already been computed
+                    if (!relationMetricValues.containsKey(key)) {
+                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
+                        relationMetricValues.put(key, relationMetricValueObject);
+                    }
+                    float currentMetricValue = relationMetricValues.get(key).getBidirectionalNumberOfConstructorInvocations();
+                    relationMetricValues.get(key).setBidirectionalNumberOfConstructorInvocations(currentMetricValue + metricValue);
+                }
+                break;
+
         }
     }
 

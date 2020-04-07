@@ -92,4 +92,10 @@ public class RelationMetricValue extends BaseEntity {
      */
     @Column(name = "bidirectional_number_of_constructor_invocations", nullable = false)
     private Float bidirectionalNumberOfConstructorInvocations = 0f;
+
+    /**
+     * sum of numbers of incoming and outgoing constructor invocations between the two classes
+     */
+    @Column(name = "general_cumulative_normalised_bidirectional", nullable = false)
+    private Float generalCumulativeNormalisedBidirectional = 0f;
 }
