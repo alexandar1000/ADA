@@ -751,39 +751,34 @@ public class ClassStructure extends BaseEntity {
         float methodsNumberOutgoing = 0f;
         float packageNumberIncoming = 0f;
         float packageNumberOutgoing = 0f;
+        float weightedSumOfMetrics = 0f;
 
         switch (relationMetricType) {
             case GENERAL_CUMULATIVE_NORMALISED_BIDIRECTIONAL:
-
                 // For all of the relating classes get the corresponding metrics
-                for (String key : outgoingDependenceInfo.keySet()) {
-                    attributesNumberIncoming
-                    attributesNumberOutgoing
-                    constructorNumberIncoming
-                    constructorNumberOutgoing
-                    methodsNumberIncoming
-                    methodsNumberOutgoing
-                    packageNumberIncoming
-                    packageNumberOutgoing
-                    metricValue = (float) outgoingDependenceInfo.get(key).getConstructors().size();
-                    // Check if the relation metrics for the class have already been computed
-                    if (!relationMetricValues.containsKey(key)) {
-                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
-                        relationMetricValues.put(key, relationMetricValueObject);
-                    }
-                    relationMetricValues.get(key).setBidirectionalNumberOfConstructorInvocations(metricValue);
+                for (String key : relationMetricValues.keySet()) {
+                    attributesNumberIncoming = (float) relationMetricValues.get(key).getNumberOfAttributeInvocationsIncoming();
+                    attributesNumberOutgoing = (float) relationMetricValues.get(key).getNumberOfAttributeInvocationsOutgoing();
+                    constructorNumberIncoming = (float) relationMetricValues.get(key).getNumberOfConstructorInvocationsIncoming();
+                    constructorNumberOutgoing = (float) relationMetricValues.get(key).getNumberOfConstructorInvocationsOutgoing();
+                    methodsNumberIncoming = (float) relationMetricValues.get(key).getNumberOfMethodInvocationsIncoming();
+                    methodsNumberOutgoing = (float) relationMetricValues.get(key).getNumberOfMethodInvocationsOutgoing();
+                    packageNumberIncoming = (float) relationMetricValues.get(key).getNumberOfPackageImportsIncoming();
+                    packageNumberOutgoing = (float) relationMetricValues.get(key).getNumberOfPackageImportsOutgoing();
+
+
+                    weightedSumOfMetrics =
+                            attributesNumberIncoming +
+                                    2 * (constructorNumberIncoming + methodsNumberIncoming) +
+                                    attributesNumberOutgoing +
+                                    2 * (constructorNumberOutgoing + methodsNumberOutgoing) +
+                                    packageNumberIncoming + packageNumberOutgoing;
+
+                    metricValue = 1f - (weightedSumOfMetrics > 0f ? (1f / weightedSumOfMetrics) : 0);
+
+                    relationMetricValues.get(key).setGeneralCumulativeNormalisedBidirectional(metricValue);
                 }
-                for (String key : incomingDependenceInfo.keySet()) {
-                    metricValue = (float) incomingDependenceInfo.get(key).getConstructors().size();
-                    // Check if the relation metrics for the class have already been computed
-                    if (!relationMetricValues.containsKey(key)) {
-                        RelationMetricValue relationMetricValueObject = new RelationMetricValue();
-                        relationMetricValues.put(key, relationMetricValueObject);
-                    }
-                    float currentMetricValue = relationMetricValues.get(key).getBidirectionalNumberOfConstructorInvocations();
-                    relationMetricValues.get(key).setBidirectionalNumberOfConstructorInvocations(currentMetricValue + metricValue);
-                }
-                break;
+        }
     }
 
     /**
