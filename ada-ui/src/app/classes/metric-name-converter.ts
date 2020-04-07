@@ -100,6 +100,14 @@ export class MetricNameConverter {
   }
 
   public getInitialValue(): string {
-    return 'NUMBER_OF_RELATION_PACKAGE_IMPORTS_INCOMING';
+    return 'GENERAL_CUMULATIVE_NORMALISED_BIDIRECTIONAL';
+  }
+
+  public isNormalised(metric: string): boolean {
+    if (this.dictionary.has(metric)) {
+      console.error('Metric is not in the dictionary');
+      return null;
+    }
+    return this.dictionary.get(metric).valueType === 'normalised';
   }
 }

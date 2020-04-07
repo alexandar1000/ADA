@@ -560,6 +560,8 @@ export class GraphComponent implements OnInit {
       target = '';
     }
     let weight = this.projectStructure.classStructures.get(source).relationMetricValues.get(target)[this.metricNameConverter.translateMetricName(this.selectedMetric)];
+
+    console.log(weight);
     return weight;
   }
 
@@ -568,7 +570,7 @@ export class GraphComponent implements OnInit {
    */
   private changeMetricRepresentedInGraph() {
     let newMetric = this.metricNameConverter.translateMetricName(this.selectedMetric.toString());
-
+    console.log(this.projectStructure);
     let self = this;
     if (newMetric != null) {
       this.cy.batch(function(){
