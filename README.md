@@ -39,7 +39,7 @@ In order deploy the software locally, simply follow these steps:
 1. Clone the repository
 2. Set the profile to production in the `application.properties` file by setting `spring.profiles.active=prod`
 3. In `ada-ui/src/environments/environment.prod.ts` set `backendBaseUrl` flag to the localhost address by edditing the corresponding line to: `'backendBaseUrl: 'http://localhost:18080/api/v1'`
-4. run `maven clean install`
+4. run `mvn clean install`
 5. run `sudo docker-compose up`
 6. You are ready to use the application on `localhost:80`
 
@@ -50,7 +50,7 @@ In order deploy the software to a server, follow these steps:
 3. Set the profile to production in the `application.properties` file by setting `spring.profiles.active=prod`
 4. In `ada-ui/src/environments/environment.prod.ts` set `backendBaseUrl` flag to the address of the server `www.server-address.com` by edditing the corresponding line to: `'backendBaseUrl: 'http://www.server-address.com:18080/api/v1'`
 5.  Make sure that the the server allows incoming connections to the port 18080
-6. run `maven clean install`
+6. run `mvn clean install`
 7. run `sudo docker-compose up`
 8. You are ready to use the application on `www.server-address.com`
 
