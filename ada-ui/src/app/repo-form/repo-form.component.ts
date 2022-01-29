@@ -16,26 +16,47 @@ import {NgxSpinnerService} from "ngx-spinner";
 })
 export class RepoFormComponent implements OnInit {
 
-
+  public org;
+  public repo;
   public repoSearchForm!: FormGroup;
   public branches = [];
   public dropdownSelectedBranch = "master";
-  public githubPastedOrTypedURL="";
-
+  public githubPastedOrTypedURL = "";
+  public loadingMessage = "Loading..."
 
   constructor(public httpClient: HttpClient, private _snackBar: MatSnackBar, private analyserService: AnalyserService,
               private router: Router, private formBuilder: FormBuilder, private repoService: RepoService,
-              private spinner: NgxSpinnerService) {
+              private spinner: NgxSpinnerService, private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
     this.reactiveForm();
+    this.spinner.show();
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 3000);
   }
 
   public reactiveForm(): void {
     this.repoSearchForm = this.formBuilder.group({
       gitURLForm: [null, [Validators.required]], // from-UI
       branchForm: [null, [Validators.required]], // from-UI auto generated
+    });
+  }
+
+  private errorSnackBar(): void {
+    this.snackBar.open('Provided Repository or Branches Not Found', 'Close', {
+      duration: 3000,
+      verticalPosition: 'bottom',
+      horizontalPosition: 'center',
+    });
+  }
+
+  private successSnackBar(): void {
+    this.snackBar.open('Branches Loaded!! Select a Branch', 'Close', {
+      duration: 3000,
+      verticalPosition: 'bottom',
+      horizontalPosition: 'center',
     });
   }
 
@@ -50,7 +71,10 @@ export class RepoFormComponent implements OnInit {
 
   onPaste(event: any) {
     let val = event.clipboardData.getData('Text')
+    this.loadingMessage = "Loading Branches"
     this.spinner.show();
+    setTimeout(() => {
+    }, 3000);
     this.loadbranches(val)
     setTimeout(() => {
       this.spinner.hide();
@@ -65,17 +89,66 @@ export class RepoFormComponent implements OnInit {
     let url = value;
     let map = url.split("https://github.com/");
     let org_repo = map[1].split("/");
-    let org = org_repo[0];
-    let repo = org_repo[1]
-    this.repoService.getBranches(org, repo).subscribe((bran: Branch[]) => {
-      bran.forEach(b => {
-        this.branches.push(b.name)
-      });
-    });
+    this.org = org_repo[0];
+    this.repo = org_repo[1];
+    this.repoService.getBranches(this.org, this.repo).subscribe(
+      (bran) => { //Next callback
+        bran.forEach(b => {
+          this.branches.push(b.name)
+        });
+        setTimeout(() => {
+          this.successSnackBar();
+          this.repoSearchForm.get('gitURLForm').disable();
+        }, 3000);
+
+      },
+      (error) => {//Error callback
+        console.error('error caught in component')
+        setTimeout(() => {
+          this.errorSnackBar();
+          this.githubPastedOrTypedURL = "";
+        }, 3000);
+
+        //throw error;   //You can also throw the error to a global error handler
+      }
+    );
+    // this.repoService.getBranches(this.org, this.repo).subscribe((bran: Branch[]) => {
+    //   bran.forEach(b => {
+    //     this.branches.push(b.name)
+    //   });
+    // });
   }
 
-  onSubmit() {
+  clearForm() {
+    this.githubPastedOrTypedURL = "";
+    this.repoSearchForm.get('gitURLForm').enable();
+    this.branches = [];
+    this.dropdownSelectedBranch = "";
+
+
+  }
+
+  analyze() {
+    this.loadingMessage = "Checking Repository Status"
+    this.spinner.show();
     console.log(this.repoSearchForm.value)
+    this.repoService.checkBranch(this.org, this.repo, this.repoSearchForm.value['branchForm']).subscribe(
+      (response) => { //Next callback
+        console.log('response received')
+        //this.redirectToAnalysisDashBoard();
+      },
+      (error) => { //Error callback
+        console.error('error caught in component')
+        this.errorSnackBar()
+        //throw error;   //You can also throw the error to a global error handler
+      });
+
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 1000);
+  }
+
+  redirectToAnalysisDashBoard() {
     this.analyserService.repoUrl = this.repoSearchForm.value['gitURLForm']
     this.analyserService.repoBranch = this.repoSearchForm.value['branchForm']
     this.router.navigate(['/dashboard/current']);

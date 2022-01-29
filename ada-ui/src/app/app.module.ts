@@ -47,6 +47,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {NotFoundComponent} from './not-found/not-found.component'
 import { RepoService } from './repo-form/reposervice.service';
 import {NgxSpinnerModule} from "ngx-spinner";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 @NgModule({
   declarations: [
@@ -71,34 +72,35 @@ import {NgxSpinnerModule} from "ngx-spinner";
     EdgeInsightComponent,
     NotFoundComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        LayoutModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatSidenavModule,
-        MatIconModule,
-        MatListModule,
-        MatInputModule,
-        MatSnackBarModule,
-        ReactiveFormsModule,
-        FormsModule,
-        HttpClientModule,
-        MatSliderModule,
-        MatOptionModule,
-        MatSelectModule,
-        MatProgressSpinnerModule,
-        MatCheckboxModule,
-        MatGridListModule,
-        MatExpansionModule,
-        MatSlideToggleModule,
-        MatCardModule,
-        MatTabsModule,
-        FontAwesomeModule,
-        NgxSpinnerModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    MatInputModule,
+    MatSnackBarModule,
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule,
+    MatSliderModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatProgressSpinnerModule,
+    MatCheckboxModule,
+    MatGridListModule,
+    MatExpansionModule,
+    MatSlideToggleModule,
+    MatCardModule,
+    MatTabsModule,
+    FontAwesomeModule,
+    NgxSpinnerModule,
+    MatProgressBarModule
+  ],
   providers: [AnalyserService, SidebarService, RepoService],
   bootstrap: [AppComponent]
 })

@@ -13,7 +13,7 @@ export class NotFoundComponent implements OnInit {
     const self = this;
     setTimeout( () => {
       self.router.navigateByUrl('/repo-form');
-    }, 3000);
+    }, 5000);
   }
 
 }

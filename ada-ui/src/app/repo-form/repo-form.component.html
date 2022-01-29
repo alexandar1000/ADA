@@ -1,46 +1,54 @@
-<div class="form-container">
-	<form (ngSubmit)="onSubmit()" class="form" [formGroup]="repoSearchForm" >
+<mat-grid-list cols="1" rowHeight="2:1">
+  <mat-grid-tile>
+    <mat-card class="example-card">
+      <div class="form-container">
+        <form class="form" [formGroup]="repoSearchForm">
+          <img mat-card-image src="../../assets/logos/landing.png" alt="ADA" class="full-width">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Past Your Github Repository URL" formControlName="gitURLForm"
+                   [(ngModel)]="githubPastedOrTypedURL" (paste)="onPaste($event)" required>
+
+            <mat-error *ngIf="repoSearchForm.controls['gitURLForm'].hasError('required')">
+              Please Provide Valid Github URL
+            </mat-error>
+          </mat-form-field>
+          <!--    (change)="onGitURLChanges($event)"-->
+          <!--    (paste)="onPaste($event)"-->
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Select Branches" formControlName="branchForm"
+                        (selectionChange)='onBranchSelected($event)' required>
+              <mat-option *ngFor="let b of branches" [value]="b">
+                {{b}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="repoSearchForm.controls['branchForm'].hasError('required')">
+              <strong>Please select a branch</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <span mat-line></span>
+          <ngx-spinner
+            bdColor="rgba(51,51,51,0.8)"
+            size="medium"
+            color="#fff"
+            type="ball-scale-multiple"
+          >
+            <p style="font-size: 20px; color: white">{{loadingMessage}}</p>
+          </ngx-spinner>
+          <br>
+          <br>
+          <br>
+
+          <mat-card-actions>
+            <button mat-raised-button color="primary" [disabled]="!repoSearchForm.valid" (click)="analyze()">Analyze
+            </button>
+            <button mat-raised-button color="primary" (click)="clearForm()">Clear</button>
+          </mat-card-actions>
+        </form>
+      </div>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
 
 
-    <img mat-card-image src="../../assets/logos/landing.png" alt="Photo of a Shiba Inu">
 
-		<mat-form-field class="full-width">
-			<input matInput placeholder="Past Your Github Repository URL" formControlName="gitURLForm"
-             [(ngModel)]="githubPastedOrTypedURL"  (paste)="onPaste($event)" required>
-
-      <mat-error *ngIf="repoSearchForm.controls['gitURLForm'].hasError('required')">
-					   Please Provide Valid Github URL
-					</mat-error>
-		</mat-form-field>
-<!--    (change)="onGitURLChanges($event)"-->
-<!--    (paste)="onPaste($event)"-->
-		<span mat-line></span>
-		<mat-form-field class="full-width">
-			<mat-select placeholder="Select Branches" formControlName="branchForm"
-						(selectionChange)='onBranchSelected($event)' required>
-				<mat-option *ngFor="let b of branches" [value]="b">
-					{{b}}
-				</mat-option>
-			</mat-select>
-			<mat-error *ngIf="repoSearchForm.controls['branchForm'].hasError('required')">
-				<strong>Please select a branch</strong>
-		   </mat-error>
-		</mat-form-field>
-
-		<span mat-line></span>
-    <ngx-spinner
-      bdColor="rgba(51,51,51,0.8)"
-      size="medium"
-      color="#fff"
-      type="ball-scale-multiple"
-    >
-      <p style="font-size: 20px; color: white">Loading Branches</p>
-    </ngx-spinner>
-    <br>
-    <br>
-    <br>
-		<mat-card-actions >
-			<button mat-raised-button color="primary" type="submit">Analyze</button>
-		</mat-card-actions>
-	</form>
-</div>
