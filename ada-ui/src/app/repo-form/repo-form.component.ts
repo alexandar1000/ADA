@@ -94,29 +94,22 @@ export class RepoFormComponent implements OnInit {
     this.repoService.getBranches(this.org, this.repo).subscribe(
       (bran) => { //Next callback
         bran.forEach(b => {
-          this.branches.push(b.name)
+          this.branches.push(b.name);
+          this.githubPastedOrTypedURL = url;
         });
         setTimeout(() => {
           this.successSnackBar();
           this.repoSearchForm.get('gitURLForm').disable();
         }, 3000);
-
       },
-      (error) => {//Error callback
+      (error) => {
         console.error('error caught in component')
         setTimeout(() => {
           this.errorSnackBar();
           this.githubPastedOrTypedURL = "";
         }, 3000);
-
-        //throw error;   //You can also throw the error to a global error handler
       }
     );
-    // this.repoService.getBranches(this.org, this.repo).subscribe((bran: Branch[]) => {
-    //   bran.forEach(b => {
-    //     this.branches.push(b.name)
-    //   });
-    // });
   }
 
   clearForm() {
@@ -131,26 +124,23 @@ export class RepoFormComponent implements OnInit {
   analyze() {
     this.loadingMessage = "Checking Repository Status"
     this.spinner.show();
-    console.log(this.repoSearchForm.value)
     this.repoService.checkBranch(this.org, this.repo, this.repoSearchForm.value['branchForm']).subscribe(
       (response) => { //Next callback
-        console.log('response received')
-        //this.redirectToAnalysisDashBoard();
+        console.log("given url" + this.githubPastedOrTypedURL);
+        console.log("given branch" + this.dropdownSelectedBranch);
+        this.redirectToAnalysisDashBoard();
       },
       (error) => { //Error callback
-        console.error('error caught in component')
         this.errorSnackBar()
-        //throw error;   //You can also throw the error to a global error handler
       });
-
     setTimeout(() => {
       this.spinner.hide();
     }, 1000);
   }
 
   redirectToAnalysisDashBoard() {
-    this.analyserService.repoUrl = this.repoSearchForm.value['gitURLForm']
-    this.analyserService.repoBranch = this.repoSearchForm.value['branchForm']
+    this.analyserService.repoUrl = this.githubPastedOrTypedURL;
+    this.analyserService.repoBranch = this.dropdownSelectedBranch;
     this.router.navigate(['/dashboard/current']);
   }
 
