@@ -99,6 +99,11 @@ export class SidenavComponent implements OnInit, OnDestroy {
     }
     this.highglightSnapshot = entry;
   }
+
+  goToLink(url: string){
+    window.open(url, "_blank");
+  }
+
 }
 
 

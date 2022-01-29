@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import {ProjectStructure} from "../classes/project-structure";
 import {AnalyserService} from "../analyser.service";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
@@ -20,6 +20,8 @@ export class DashboardComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router) { }
 
+ 
+
   ngOnInit() {
     if (this.router.url == '/dashboard/current') {
       this.analyserService.isLoading = true;
@@ -32,10 +34,11 @@ export class DashboardComponent implements OnInit {
         this.sendNewEntry(owner, repository, branch, snapshot);
       });
     } else {
-      this.route.paramMap.subscribe(
-        (params: ParamMap) =>
-          this.getPreviousAnalysis(params.get('owner'), params.get('repository'), params.get('branch'), params.get('snapshot'))
-      );
+      this.router.navigate(['/repo-form'])
+      // this.route.paramMap.subscribe(
+      //   (params: ParamMap) =>
+      //     this.getPreviousAnalysis(params.get('owner'), params.get('repository'), params.get('branch'), params.get('snapshot'))
+      // );
     }
   }
 

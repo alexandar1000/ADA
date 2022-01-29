@@ -44,6 +44,9 @@ import {MatTabsModule} from "@angular/material/tabs";
 import { NodeInsightComponent } from './node-insight/node-insight.component';
 import { EdgeInsightComponent } from './edge-insight/edge-insight.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {NotFoundComponent} from './not-found/not-found.component'
+import { RepoService } from './repo-form/reposervice.service';
+import {NgxSpinnerModule} from "ngx-spinner";
 
 @NgModule({
   declarations: [
@@ -66,6 +69,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     DashboardSidePanelComponent,
     NodeInsightComponent,
     EdgeInsightComponent,
+    NotFoundComponent
   ],
     imports: [
         BrowserModule,
@@ -92,9 +96,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         MatSlideToggleModule,
         MatCardModule,
         MatTabsModule,
-        FontAwesomeModule
+        FontAwesomeModule,
+        NgxSpinnerModule
     ],
-  providers: [AnalyserService, SidebarService],
+  providers: [AnalyserService, SidebarService, RepoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -9,11 +9,11 @@
         <h1 class="app-name">ADA - The Architectural Design Advisor</h1>
       </a>
       <span class="my-toolbar-spacing"></span>
-      <a href="https://github.com/alexandar1000/ADA">
+      <a href="/" (click)="goToLink('https://github.com/alexandar1000/ADA')">
         <fa-icon [icon]="faGithub"></fa-icon>
       </a>
       <div style="width: 20px"></div>
-      <a href="https://github.com/alexandar1000/ADA/wiki">
+      <a href="/" (click)="goToLink('https://github.com/alexandar1000/ADA/wiki')">
         <fa-icon [icon]="faQuestion"></fa-icon>
       </a>
       <div style="width: 20px"></div>
@@ -21,7 +21,7 @@
 
     <mat-sidenav-container class="sidenav-container"
                            [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-      <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+      <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'over'"
                    [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
         <form class="search-form">
           <mat-form-field>
