@@ -20,7 +20,7 @@ export class RepoFormComponent implements OnInit {
   public repo;
   public repoSearchForm!: FormGroup;
   public branches = [];
-  public dropdownSelectedBranch = "master";
+  public dropdownSelectedBranch = "";
   public githubPastedOrTypedURL = "";
   public loadingMessage = "Loading..."
 
@@ -46,17 +46,24 @@ export class RepoFormComponent implements OnInit {
 
   private errorSnackBar(): void {
     this.snackBar.open('Provided Repository or Branches Not Found', 'Close', {
-      duration: 3000,
+      duration: 5000,
       verticalPosition: 'bottom',
       horizontalPosition: 'center',
     });
   }
 
+  private languageErrorSnackBar(): void {
+    this.snackBar.open('Currently We only support Java Repository', 'Close', {
+      verticalPosition: 'bottom',
+      horizontalPosition: 'start',
+    });
+  }
+
   private successSnackBar(): void {
     this.snackBar.open('Branches Loaded!! Select a Branch', 'Close', {
-      duration: 3000,
+      duration: 5000,
       verticalPosition: 'bottom',
-      horizontalPosition: 'center',
+      horizontalPosition: 'start',
     });
   }
 
@@ -113,6 +120,7 @@ export class RepoFormComponent implements OnInit {
   }
 
   clearForm() {
+    this.reactiveForm();
     this.githubPastedOrTypedURL = "";
     this.repoSearchForm.get('gitURLForm').enable();
     this.branches = [];
@@ -126,9 +134,21 @@ export class RepoFormComponent implements OnInit {
     this.spinner.show();
     this.repoService.checkBranch(this.org, this.repo, this.repoSearchForm.value['branchForm']).subscribe(
       (response) => { //Next callback
-        console.log("given url" + this.githubPastedOrTypedURL);
-        console.log("given branch" + this.dropdownSelectedBranch);
-        this.redirectToAnalysisDashBoard();
+        this.repoService.checkLanguage(this.org, this.repo).subscribe((response) => {
+            let lan = response['items'][0]['language'];
+            console.log(lan);
+            if (lan == "Java") {
+              console.log("given url" + this.githubPastedOrTypedURL);
+              console.log("given branch" + this.dropdownSelectedBranch);
+              //this.redirectToAnalysisDashBoard();
+            } else {
+              this.clearForm();
+              this.languageErrorSnackBar();
+
+            }
+          },
+          (errors) => {
+          });
       },
       (error) => { //Error callback
         this.errorSnackBar()

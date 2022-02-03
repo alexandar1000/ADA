@@ -10,6 +10,7 @@ import {Branch} from './branch.model';
 @Injectable()
 export class RepoService {
   private readonly BASE_API_URL = 'https://api.github.com/repos';
+  private readonly LANGUAGE_Query = "https://api.github.com/search/repositories?q=repo:"
 
   dataChange: BehaviorSubject<Branch[]> = new BehaviorSubject<Branch[]>([]);
   // Temporarily stores data from dialogs
@@ -39,6 +40,10 @@ export class RepoService {
 
   checkBranch(org: string, repo: string, branch: string): Observable<any> {
     return this.httpClient.get(this.BASE_API_URL + '/' + org + "/" + repo + '/branches/' + branch);
+  }
+
+  checkLanguage(org: string, repo: string): Observable<any> {
+    return this.httpClient.get(this.LANGUAGE_Query+ org + "/" + repo);
   }
 
   handleError = (error: any) => {
