@@ -1,9 +1,10 @@
-import {Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ProjectStructure} from "../classes/project-structure";
 import {AnalyserService} from "../analyser.service";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
-import { NewEntryService } from '../new-entry.service';
-import { SnapshotStyleService } from '../snapshot-style.service';
+import {NewEntryService} from '../new-entry.service';
+import {SnapshotStyleService} from '../snapshot-style.service';
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-dashboard',
@@ -18,9 +19,9 @@ export class DashboardComponent implements OnInit {
               private newEntryService: NewEntryService,
               private snapshotStyleService: SnapshotStyleService,
               private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router, private snackBar: MatSnackBar) {
+  }
 
- 
 
   ngOnInit() {
     if (this.router.url == '/dashboard/current') {
@@ -34,18 +35,29 @@ export class DashboardComponent implements OnInit {
         this.sendNewEntry(owner, repository, branch, snapshot);
       });
     } else {
-      this.router.navigate(['/repo-form'])
-      // this.route.paramMap.subscribe(
-      //   (params: ParamMap) =>
-      //     this.getPreviousAnalysis(params.get('owner'), params.get('repository'), params.get('branch'), params.get('snapshot'))
-      // );
+      this.route.paramMap.subscribe(
+        (params: ParamMap) =>
+          this.getPreviousAnalysis(params.get('owner'), params.get('repository'), params.get('branch'), params.get('snapshot')),
+        (error) => {
+          console.log("Did not find")
+        }
+      );
     }
   }
 
   getPreviousAnalysis(owner: string, repository: string, branch: string, snapshot: string): void {
     this.analyserService.isLoading = true;
-    this.analyserService.getPreviousAnalysis(owner, repository, branch, snapshot)
-      .subscribe(dataJson => this.updateProjectStructure(dataJson))
+    this.analyserService.getPreviousAnalysis(owner, repository, branch, snapshot).subscribe(
+      (dataJson) => {
+        this.updateProjectStructure(dataJson)
+      },
+      (error) => {
+        this.errorSnackBar("Given Repository Graph Is Not Available. Check the Selection!!")
+        setTimeout(() => {
+          this.router.navigateByUrl('/repo-form');
+        }, 2000);
+      }
+    )
   }
 
   private updateProjectStructure(data: JSON): void {
@@ -56,5 +68,14 @@ export class DashboardComponent implements OnInit {
   sendNewEntry(owner: string, repository: string, branch: string, snapshot: string) {
     this.newEntryService.confirmNewEntry([owner, repository, branch, snapshot]);
     this.snapshotStyleService.sendClickedSnapshotToSidebar([owner, repository, branch, snapshot]);
+  }
+
+  private errorSnackBar(error): void {
+    this.snackBar.open(error, 'Close', {
+      duration: 5000,
+      verticalPosition: 'bottom',
+      horizontalPosition: 'start',
+    });
+
   }
 }

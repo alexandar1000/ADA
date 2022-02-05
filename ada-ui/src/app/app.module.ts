@@ -48,6 +48,7 @@ import {NotFoundComponent} from './not-found/not-found.component'
 import { RepoService } from './repo-form/reposervice.service';
 import {NgxSpinnerModule} from "ngx-spinner";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {CountdownModule} from "ngx-countdown";
 
 @NgModule({
   declarations: [
@@ -99,7 +100,8 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
     MatTabsModule,
     FontAwesomeModule,
     NgxSpinnerModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    CountdownModule
   ],
   providers: [AnalyserService, SidebarService, RepoService],
   bootstrap: [AppComponent]

@@ -21,7 +21,7 @@
 
     <mat-sidenav-container class="sidenav-container"
                            [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-      <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'over'"
+      <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'push'"
                    [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
         <form class="search-form">
           <mat-form-field>

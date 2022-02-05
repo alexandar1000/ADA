@@ -30,6 +30,7 @@
     "cytoscape": "^3.14.0",
     "cytoscape-fcose": "^1.2.1",
     "hammerjs": "^2.0.8",
+    "ngx-countdown": "^8.0.0",
     "ngx-spinner": "^8.1.0",
     "rxjs": "~6.4.0",
     "save": "^2.4.0",

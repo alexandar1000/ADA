@@ -52,8 +52,19 @@ export class RepoFormComponent implements OnInit {
     });
   }
 
+  private wrongURL(): void {
+    this.snackBar.open('Non-GitHub URL', 'Close', {
+      duration: 5000,
+      verticalPosition: 'bottom',
+      horizontalPosition: 'center',
+    });
+    this.clearForm();
+  }
+
+
   private languageErrorSnackBar(): void {
-    this.snackBar.open('Currently We only support Java Repository', 'Close', {
+    this.snackBar.open('Sorry!! Currently ADA Supports Only Java Repository', 'Close', {
+      duration: 5000,
       verticalPosition: 'bottom',
       horizontalPosition: 'start',
     });
@@ -82,7 +93,11 @@ export class RepoFormComponent implements OnInit {
     this.spinner.show();
     setTimeout(() => {
     }, 3000);
-    this.loadbranches(val)
+    if (val.includes("https://github.com/")) {
+      this.loadbranches(val)
+    }else{
+      this.wrongURL();
+    }
     setTimeout(() => {
       this.spinner.hide();
     }, 3000);
@@ -93,6 +108,7 @@ export class RepoFormComponent implements OnInit {
   }
 
   private loadbranches(value): void {
+
     let url = value;
     let map = url.split("https://github.com/");
     let org_repo = map[1].split("/");
@@ -140,7 +156,7 @@ export class RepoFormComponent implements OnInit {
             if (lan == "Java") {
               console.log("given url" + this.githubPastedOrTypedURL);
               console.log("given branch" + this.dropdownSelectedBranch);
-              //this.redirectToAnalysisDashBoard();
+              this.redirectToAnalysisDashBoard();
             } else {
               this.clearForm();
               this.languageErrorSnackBar();
