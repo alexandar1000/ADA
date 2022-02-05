@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/metrics")
 public class MetricController {
-
     @Autowired
     MetricServices metricServices;
 

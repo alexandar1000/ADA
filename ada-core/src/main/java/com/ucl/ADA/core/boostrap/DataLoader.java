@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 @Component
 public class DataLoader implements CommandLineRunner {
 
-//    private final String test_dir = "ada-parser/src/main/resources/simple";
+    //    private final String test_dir = "ada-parser/src/main/resources/simple";
     private final String test_dir = "ada-parser/src/main/resources/source_to_parse";
 
     private final ProjectStructureService projectStructureService;
@@ -25,14 +25,13 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // TODO: This is a 'integration testing call and should be omitted for ow'
-//        loadData();
+        //loadData();
     }
 
     private void loadData() throws FileNotFoundException {
         ProjectStructure projectStructureToSave = parserServices.parseRepository(test_dir);
         projectStructureService.save(projectStructureToSave);
-
-//        ProjectStructure projectStructureRetrieved = projectStructureService.findById(1L);
+        //ProjectStructure projectStructureRetrieved = projectStructureService.findById(1L);
 
 
     }

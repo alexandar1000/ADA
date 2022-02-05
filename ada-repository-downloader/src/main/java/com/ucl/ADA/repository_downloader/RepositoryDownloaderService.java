@@ -111,7 +111,6 @@ public class RepositoryDownloaderService {
             }
 
             sourceFile.setFileHash(filehash);
-
             sourceFileRepository.save(sourceFile);
         }
     }

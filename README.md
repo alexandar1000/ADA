@@ -7,12 +7,7 @@
 ## General Information
 
 
-This is a [Spring Boot](https://spring.io/projects/spring-boot), [PostgreSQL](https://www.postgresql.org/), and [Angular](https://angular.io/) application which helps developers and stakeholders analyse the architectural structure of GitHub Java projects. It focuses on visualising cohesion and coupling in and between classes.
-
-The implementation relies on [Hibernate](https://hibernate.org/) for interacting with the database, while the migrations are handled by [Flyway](https://flywaydb.org/). On the frontend, the graphs are made using [Cytoscape.js](https://js.cytoscape.org/). 
-
-The project and sprint backlogs can be found on the project's [Trello board](https://trello.com/b/CHtfAIFN), and the group report on [Overleaf](https://www.overleaf.com/read/hpbftjncqnsn).
-
+This is a [Spring Boot](https://spring.io/projects/spring-boot), [PostgreSQL](https://www.postgresql.org/), and [Angular](https://angular.io/) application which helps developers and stakeholders analyse the architectural structure of GitHub Java projects. It focuses on visualising cohesion and coupling in and between classes. The implementation relies on [Hibernate](https://hibernate.org/) for interacting with the database, while the migrations are handled by [Flyway](https://flywaydb.org/). On the frontend, the graphs are made using [Cytoscape.js](https://js.cytoscape.org/). 
 The project uses [a simple Java Android application](https://github.com/alexandar1000/ADA-test-simple-Java-project) for testing.
 
 ## Getting Started

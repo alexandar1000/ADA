@@ -5,13 +5,22 @@
     display: inline-block;
     margin: 40px;
   }
-  
+
 .full-width {
     width: 100%;
 }
-  
+
 .form-container {
-    text-align: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+mat-card{
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .form-button {
@@ -21,3 +30,12 @@
 .repository-container {
     padding-left: 15px;
 }
+
+.mat-raised-button {
+  padding-left: 15px;
+  margin: 10px;
+}
+.example-card {
+  max-width: 1000px;
+}
+

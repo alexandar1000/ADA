@@ -52,4 +52,15 @@ app-graph-menu {
   background-color: #000000;
 }
 
+.center {
+  text-align: center;
+  color: green;
+  font-size: 35px;
+
+}
+
+.count{
+  color: darkred;
+}
+
 
