@@ -1,5 +1,6 @@
 version : "3"
 
+# only for deployment
 services :
   web_app_backend:
     container_name: ada_web_app_backend_container
@@ -21,6 +22,7 @@ services :
       - ada-db-network
     restart: unless-stopped
 
+# only for development
   db_dev:
     container_name: postgres_dev_container
     image: postgres
