@@ -1,3 +1,8 @@
 package animal;
 
-public class Pet {}
+/**
+ * Simple Example of a Pet Class
+ */
+public class Pet {
+
+}
