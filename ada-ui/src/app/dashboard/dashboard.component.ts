@@ -5,6 +5,7 @@ import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {NewEntryService} from '../new-entry.service';
 import {SnapshotStyleService} from '../snapshot-style.service';
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {CountdownConfig} from "ngx-countdown";
 
 @Component({
   selector: 'app-dashboard',
@@ -14,6 +15,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 export class DashboardComponent implements OnInit {
   projectStructure: ProjectStructure;
   snapshots = this.analyserService.snapshots;
+
 
   constructor(public analyserService: AnalyserService,
               private newEntryService: NewEntryService,
@@ -34,6 +36,7 @@ export class DashboardComponent implements OnInit {
         let snapshot = dataJson['gitRepoInfo'].timestamp;
         this.sendNewEntry(owner, repository, branch, snapshot);
       });
+
     } else {
       this.route.paramMap.subscribe(
         (params: ParamMap) =>
@@ -44,6 +47,7 @@ export class DashboardComponent implements OnInit {
       );
     }
   }
+
 
   getPreviousAnalysis(owner: string, repository: string, branch: string, snapshot: string): void {
     this.analyserService.isLoading = true;
@@ -70,7 +74,9 @@ export class DashboardComponent implements OnInit {
     this.snapshotStyleService.sendClickedSnapshotToSidebar([owner, repository, branch, snapshot]);
   }
 
-  private errorSnackBar(error): void {
+  private errorSnackBar(error)
+    :
+    void {
     this.snackBar.open(error, 'Close', {
       duration: 5000,
       verticalPosition: 'bottom',

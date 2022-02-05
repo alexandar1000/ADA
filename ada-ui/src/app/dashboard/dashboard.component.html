@@ -6,12 +6,12 @@
             <app-graph [projectStructure]="projectStructure" *ngIf="!analyserService.isLoading"
             ></app-graph>
             <mat-spinner diameter="65" *ngIf="analyserService.isLoading"></mat-spinner>
-          <div class="center">
-            <h1>
-              Max Time Out <br>
-              <countdown class="count" [config]="{ leftTime: 300 }"></countdown>
-            </h1>
-          </div>
+<!--          <div class="center">-->
+<!--            <h1>-->
+<!--              Max Time Out <br>-->
+<!--              <countdown class="count" [config]="config"></countdown>-->
+<!--            </h1>-->
+<!--          </div>-->
 
         </mat-card>
       </div>

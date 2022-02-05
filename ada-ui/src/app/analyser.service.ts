@@ -5,6 +5,7 @@ import {Snapshot} from "./classes/snapshot";
 import { environment } from '../environments/environment';
 import {ElementInsightService} from "./element-insight.service";
 import {MetricNameConverter} from "./classes/metric-name-converter";
+import {CountdownConfig} from "ngx-countdown";
 
 @Injectable({
   providedIn: 'root'
