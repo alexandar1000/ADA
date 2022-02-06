@@ -75,5 +75,6 @@ testem.log
 /typings
 
 # System Files
+.others
 .DS_Store
 Thumbs.db

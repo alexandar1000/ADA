@@ -44,6 +44,11 @@ import {MatTabsModule} from "@angular/material/tabs";
 import { NodeInsightComponent } from './node-insight/node-insight.component';
 import { EdgeInsightComponent } from './edge-insight/edge-insight.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {NotFoundComponent} from './not-found/not-found.component'
+import { RepoService } from './repo-form/reposervice.service';
+import {NgxSpinnerModule} from "ngx-spinner";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {CountdownModule} from "ngx-countdown";
 
 @NgModule({
   declarations: [
@@ -66,35 +71,39 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     DashboardSidePanelComponent,
     NodeInsightComponent,
     EdgeInsightComponent,
+    NotFoundComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        LayoutModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatSidenavModule,
-        MatIconModule,
-        MatListModule,
-        MatInputModule,
-        MatSnackBarModule,
-        ReactiveFormsModule,
-        FormsModule,
-        HttpClientModule,
-        MatSliderModule,
-        MatOptionModule,
-        MatSelectModule,
-        MatProgressSpinnerModule,
-        MatCheckboxModule,
-        MatGridListModule,
-        MatExpansionModule,
-        MatSlideToggleModule,
-        MatCardModule,
-        MatTabsModule,
-        FontAwesomeModule
-    ],
-  providers: [AnalyserService, SidebarService],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    MatInputModule,
+    MatSnackBarModule,
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule,
+    MatSliderModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatProgressSpinnerModule,
+    MatCheckboxModule,
+    MatGridListModule,
+    MatExpansionModule,
+    MatSlideToggleModule,
+    MatCardModule,
+    MatTabsModule,
+    FontAwesomeModule,
+    NgxSpinnerModule,
+    MatProgressBarModule,
+    CountdownModule
+  ],
+  providers: [AnalyserService, SidebarService, RepoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

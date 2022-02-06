@@ -37,7 +37,6 @@ public class RepositoryAnalyserServices {
      */
 
     public ProjectStructure analyseRepositoryService(String url, String branchName) {
-
         // Download repository and store metadata in DB
         // Also set the path to the downloaded directory, to be used by the parser
         GitRepoInfo populator;
@@ -46,10 +45,7 @@ public class RepositoryAnalyserServices {
         } catch (GitAPIException e) {
             populator = null;
         }
-
         if (populator == null) return null;
-
-
         // Parse the downloaded repository.
         ProjectStructure parsedRepositoryProjectStructure;
         try {
@@ -61,16 +57,13 @@ public class RepositoryAnalyserServices {
         } catch (FileNotFoundException e) {
             parsedRepositoryProjectStructure = null;
         }
-
         // Calculate the metrics for the parsed repository.
         if (parsedRepositoryProjectStructure != null) {
             parsedRepositoryProjectStructure.computeAllMetrics();
             projectStructureService.save(parsedRepositoryProjectStructure);
         }
-
         // Delete downloaded repository since it's been parsed
         FileUtils.deleteQuietly(new File(populator.getDirectoryPath()));
-
         return parsedRepositoryProjectStructure;
     }
 }

@@ -21,7 +21,7 @@ public class RepoDownloaderTests {
         FileUtils.deleteQuietly(new File(path));
     }
 
-    @Test
+    /*@Test
     void testDownloadingRepositoryWithCorrectGitURL() throws GitAPIException {
         GitRepoInfo populator;
         String branch = "";
@@ -32,7 +32,7 @@ public class RepoDownloaderTests {
         assertEquals("sebastianvburlacu",populator.getOwner());
         assertEquals("master",populator.getBranch());
         assertEquals("Fitbit-JSON-Data-Generator",populator.getRepository());
-    }
+    }*/
 
     @Test
     void testGitAPIExceptionThrownIfUrlIsWrong(){

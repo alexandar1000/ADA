@@ -21,7 +21,6 @@ import java.util.List;
 @Entity
 @Table(name = "DEPENDENCE_INFO")
 public class DependenceInfo extends BaseEntity {
-
     // For environmental coupling:
     /**
      * Packages present in the class. They can be either declared or imported.
