@@ -6,9 +6,8 @@
 
 ## General Information
 
-
 This is a [Spring Boot](https://spring.io/projects/spring-boot), [PostgreSQL](https://www.postgresql.org/), and [Angular](https://angular.io/) application which helps developers and stakeholders analyse the architectural structure of GitHub Java projects. It focuses on visualising cohesion and coupling in and between classes. The implementation relies on [Hibernate](https://hibernate.org/) for interacting with the database, while the migrations are handled by [Flyway](https://flywaydb.org/). On the frontend, the graphs are made using [Cytoscape.js](https://js.cytoscape.org/). 
-The project uses [a simple Java Android application](https://github.com/alexandar1000/ADA-test-simple-Java-project) for testing.
+The project uses [an example Java Repository](https://github.com/MRHMisu/ADA-Example-Repository) to evaluate ADA's accurecy.
 
 ## Getting Started
 
@@ -100,13 +99,9 @@ The project consists out of six modules:
 
 1. Writing unit tests is mandatory for all features which are written.
 2. Code review and an approval are mandatory before a merge.
-3. Master branch is to be updated only in the end of a sprint. 
-4. During the sprints all new features are to be developed on branches branching out from development, and are to be mearged back into development.
-5. Prefix your branch names with your initials. An example would be: `asj_simpleBranchExample`.
-6. Adhere to the migration instructions found in the following section.
-7. Please actively use Trello and mark the features which you are working on in order not to have overlaps.
-8. If you believe new tasks should be added to the Trello board, please feel free to add them to the `project backlog`.
-9. Ask for help whenever you are stuck. Also, if you feel that you are progressing a bit slower, please feel free to mention it as soon as possible.
+3. Prefix your branch names with your initials. An example would be: `asj_simpleBranchExample`.
+4. Adhere to the migration instructions found in the following section.
+5. Ask for help whenever you are stuck. Also, if you feel that you are progressing a bit slower, please feel free to mention it as soon as possible.
 
 ## Migration Instructions
 
